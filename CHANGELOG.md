@@ -69,7 +69,7 @@ And as always, friendly reminder, that we have a [bug bounty program](https://ha
   - [crypto] [\#4721](https://github.com/tendermint/tendermint/pull/4721) Remove `SimpleHashFromMap()` and `SimpleProofsFromMap()` (@erikgrinaker)
   - [crypto] [\#4940](https://github.com/tendermint/tendermint/pull/4940) All keys have become `[]byte` instead of `[<size>]byte`. The byte method no longer returns the marshaled value but just the `[]byte` form of the data. (@marbar3778)
   - [crypto] [\#4988](https://github.com/tendermint/tendermint/pull/4988) Removal of key type multisig (@marbar3778)
-    - The key has been moved to the [Cosmos-SDK](https://github.com/cosmos/cosmos-sdk/blob/master/crypto/types/multisig/multisignature.go)
+    - The key has been moved to the [Cosmos-SDK](https://github.com/evdatsion/cosmos-sdk/blob/master/crypto/types/multisig/multisignature.go)
   - [crypto] [\#4989](https://github.com/tendermint/tendermint/pull/4989) Remove `Simple` prefixes from `SimpleProof`, `SimpleValueOp` & `SimpleProofNode`. (@marbar3778)
     - `merkle.Proof` has been renamed to `ProofOps`.
     - Protobuf messages `Proof` & `ProofOp` has been moved to `proto/crypto/merkle`
@@ -86,7 +86,7 @@ And as always, friendly reminder, that we have a [bug bounty program](https://ha
   - [crypto] [\#5214](https://github.com/tendermint/tendermint/pull/5214) Change `GenPrivKeySecp256k1` to `GenPrivKeyFromSecret` to be consistent with other keys (@marbar3778)
   - [crypto] [\#5236](https://github.com/tendermint/tendermint/pull/5236) `VerifyBytes` is now `VerifySignature` on the `crypto.PubKey` interface (@marbar3778)
   - [evidence] [\#5361](https://github.com/tendermint/tendermint/pull/5361) Add LightClientAttackEvidence and change evidence interface (@cmwaters)
-  - [libs] [\#4831](https://github.com/tendermint/tendermint/pull/4831) Remove `Bech32` pkg from Tendermint. This pkg now lives in the [cosmos-sdk](https://github.com/cosmos/cosmos-sdk/tree/4173ea5ebad906dd9b45325bed69b9c655504867/types/bech32) (@marbar3778)
+  - [libs] [\#4831](https://github.com/tendermint/tendermint/pull/4831) Remove `Bech32` pkg from Tendermint. This pkg now lives in the [cosmos-sdk](https://github.com/evdatsion/cosmos-sdk/tree/4173ea5ebad906dd9b45325bed69b9c655504867/types/bech32) (@marbar3778)
   - [light] [\#4946](https://github.com/tendermint/tendermint/pull/4946) Rename `lite2` pkg to `light`. Remove `lite` implementation. (@marbar3778)
   - [light] [\#5347](https://github.com/tendermint/tendermint/pull/5347) `NewClient`, `NewHTTPClient`, `VerifyHeader` and `VerifyLightBlockAtHeight` now accept `context.Context` as 1st param (@melekes)
   - [merkle] [\#5193](https://github.com/tendermint/tendermint/pull/5193) `HashFromByteSlices` and `ProofsFromByteSlices` now return a hash for empty inputs, following RFC6962 (@erikgrinaker)
@@ -1579,16 +1579,16 @@ This release fixes a CLevelDB memory leak. It was happening because we were not
 closing the WriteBatch object after use. See [levigo's
 godoc](https://godoc.org/github.com/jmhodges/levigo#WriteBatch.Close) for the
 Close method. Special thanks goes to @Stumble who both reported an issue in
-[cosmos-sdk](https://github.com/cosmos/cosmos-sdk/issues/3842) and provided a
+[cosmos-sdk](https://github.com/evdatsion/cosmos-sdk/issues/3842) and provided a
 fix here.
 
 ### BREAKING CHANGES:
 
 * Go API
-  - [libs/db] [\#3842](https://github.com/cosmos/cosmos-sdk/issues/3842) Add Close() method to Batch interface (@Stumble)
+  - [libs/db] [\#3842](https://github.com/evdatsion/cosmos-sdk/issues/3842) Add Close() method to Batch interface (@Stumble)
 
 ### BUG FIXES:
-- [libs/db] [\#3842](https://github.com/cosmos/cosmos-sdk/issues/3842) Fix CLevelDB memory leak (@Stumble)
+- [libs/db] [\#3842](https://github.com/evdatsion/cosmos-sdk/issues/3842) Fix CLevelDB memory leak (@Stumble)
 
 ## v0.30.1
 
@@ -2244,8 +2244,8 @@ plit immutable and mutable parts of priv_validator.json
 
 ### IMPROVEMENTS:
 - Additional Metrics
-    - [consensus] [\#2169](https://github.com/cosmos/cosmos-sdk/issues/2169)
-    - [p2p] [\#2169](https://github.com/cosmos/cosmos-sdk/issues/2169)
+    - [consensus] [\#2169](https://github.com/evdatsion/cosmos-sdk/issues/2169)
+    - [p2p] [\#2169](https://github.com/evdatsion/cosmos-sdk/issues/2169)
 - [config] [\#2232](https://github.com/tendermint/tendermint/issues/2232) Added ValidateBasic method, which performs basic checks
 - [crypto/ed25519] [\#2558](https://github.com/tendermint/tendermint/issues/2558) Switch to use latest `golang.org/x/crypto` through our fork at
   github.com/tendermint/crypto

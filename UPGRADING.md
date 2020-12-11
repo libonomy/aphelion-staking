@@ -122,7 +122,7 @@ Tendermint 0.34 includes new and updated consensus parameters.
 * Keys are now byte slices (`[]byte`) instead of byte arrays (`[<size>]byte`).
 * The multisig functionality that was previously in Tendermint now has
   a new home within the Cosmos SDK:
-  [`cosmos/cosmos-sdk/types/multisig`](https://github.com/cosmos/cosmos-sdk/blob/master/crypto/types/multisig/multisignature.go).
+  [`cosmos/cosmos-sdk/types/multisig`](https://github.com/evdatsion/cosmos-sdk/blob/master/crypto/types/multisig/multisignature.go).
 
 #### `merkle` Package
 
@@ -138,7 +138,7 @@ Tendermint 0.34 includes new and updated consensus parameters.
 ### `libs` Package
 
 The `bech32` package has moved to the Cosmos SDK:
-[`cosmos/cosmos-sdk/types/bech32`](https://github.com/cosmos/cosmos-sdk/tree/4173ea5ebad906dd9b45325bed69b9c655504867/types/bech32).
+[`cosmos/cosmos-sdk/types/bech32`](https://github.com/evdatsion/cosmos-sdk/tree/4173ea5ebad906dd9b45325bed69b9c655504867/types/bech32).
 
 ### CLI
 

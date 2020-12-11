@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	ics23 "github.com/confio/ics23/go"
-	"github.com/cosmos/iavl"
+	"github.com/evdatsion/iavl"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
