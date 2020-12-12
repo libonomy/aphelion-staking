@@ -10,13 +10,13 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	dbm "github.com/tendermint/tm-db"
+	dbm "github.com/evdatsion/tm-db"
 
-	"github.com/tendermint/tendermint/abci/example/code"
-	abci "github.com/tendermint/tendermint/abci/types"
-	mempl "github.com/tendermint/tendermint/mempool"
-	sm "github.com/tendermint/tendermint/state"
-	"github.com/tendermint/tendermint/types"
+	"github.com/evdatsion/tendermint/abci/example/code"
+	abci "github.com/evdatsion/tendermint/abci/types"
+	mempl "github.com/evdatsion/tendermint/mempool"
+	sm "github.com/evdatsion/tendermint/state"
+	"github.com/evdatsion/tendermint/types"
 )
 
 // for testing

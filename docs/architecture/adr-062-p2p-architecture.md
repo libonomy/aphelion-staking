@@ -528,4 +528,4 @@ Accepted
 ## References
 
 * [ADR 061: P2P Refactor Scope](adr-061-p2p-refactor-scope.md)
-* [#5670 p2p: internal refactor and architecture redesign](https://github.com/tendermint/tendermint/issues/5670)
+* [#5670 p2p: internal refactor and architecture redesign](https://github.com/evdatsion/tendermint/issues/5670)

@@ -4,8 +4,8 @@ import (
 	"encoding/binary"
 	"testing"
 
-	"github.com/tendermint/tendermint/abci/example/kvstore"
-	"github.com/tendermint/tendermint/proxy"
+	"github.com/evdatsion/tendermint/abci/example/kvstore"
+	"github.com/evdatsion/tendermint/proxy"
 )
 
 func BenchmarkReap(b *testing.B) {

@@ -12,20 +12,20 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	dbm "github.com/tendermint/tm-db"
+	dbm "github.com/evdatsion/tm-db"
 
-	abcicli "github.com/tendermint/tendermint/abci/client"
-	abci "github.com/tendermint/tendermint/abci/types"
-	"github.com/tendermint/tendermint/evidence"
-	"github.com/tendermint/tendermint/libs/log"
-	"github.com/tendermint/tendermint/libs/service"
-	tmsync "github.com/tendermint/tendermint/libs/sync"
-	mempl "github.com/tendermint/tendermint/mempool"
-	"github.com/tendermint/tendermint/p2p"
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	sm "github.com/tendermint/tendermint/state"
-	"github.com/tendermint/tendermint/store"
-	"github.com/tendermint/tendermint/types"
+	abcicli "github.com/evdatsion/tendermint/abci/client"
+	abci "github.com/evdatsion/tendermint/abci/types"
+	"github.com/evdatsion/tendermint/evidence"
+	"github.com/evdatsion/tendermint/libs/log"
+	"github.com/evdatsion/tendermint/libs/service"
+	tmsync "github.com/evdatsion/tendermint/libs/sync"
+	mempl "github.com/evdatsion/tendermint/mempool"
+	"github.com/evdatsion/tendermint/p2p"
+	tmproto "github.com/evdatsion/tendermint/proto/tendermint/types"
+	sm "github.com/evdatsion/tendermint/state"
+	"github.com/evdatsion/tendermint/store"
+	"github.com/evdatsion/tendermint/types"
 )
 
 //----------------------------------------------

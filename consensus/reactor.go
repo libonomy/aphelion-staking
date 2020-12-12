@@ -9,18 +9,18 @@ import (
 
 	"github.com/gogo/protobuf/proto"
 
-	cstypes "github.com/tendermint/tendermint/consensus/types"
-	"github.com/tendermint/tendermint/libs/bits"
-	tmevents "github.com/tendermint/tendermint/libs/events"
-	tmjson "github.com/tendermint/tendermint/libs/json"
-	"github.com/tendermint/tendermint/libs/log"
-	tmsync "github.com/tendermint/tendermint/libs/sync"
-	"github.com/tendermint/tendermint/p2p"
-	tmcons "github.com/tendermint/tendermint/proto/tendermint/consensus"
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	sm "github.com/tendermint/tendermint/state"
-	"github.com/tendermint/tendermint/types"
-	tmtime "github.com/tendermint/tendermint/types/time"
+	cstypes "github.com/evdatsion/tendermint/consensus/types"
+	"github.com/evdatsion/tendermint/libs/bits"
+	tmevents "github.com/evdatsion/tendermint/libs/events"
+	tmjson "github.com/evdatsion/tendermint/libs/json"
+	"github.com/evdatsion/tendermint/libs/log"
+	tmsync "github.com/evdatsion/tendermint/libs/sync"
+	"github.com/evdatsion/tendermint/p2p"
+	tmcons "github.com/evdatsion/tendermint/proto/tendermint/consensus"
+	tmproto "github.com/evdatsion/tendermint/proto/tendermint/types"
+	sm "github.com/evdatsion/tendermint/state"
+	"github.com/evdatsion/tendermint/types"
+	tmtime "github.com/evdatsion/tendermint/types/time"
 )
 
 const (
@@ -221,7 +221,7 @@ func (conR *Reactor) RemovePeer(peer p2p.Peer, reason interface{}) {
 // proposals, block parts, and votes are ordered by the receiveRoutine
 // NOTE: blocks on consensus state for proposals, block parts, and votes
 // XXX: do not call any methods that can block or incur heavy processing.
-// https://github.com/tendermint/tendermint/issues/2888
+// https://github.com/evdatsion/tendermint/issues/2888
 func (conR *Reactor) Receive(chID byte, src p2p.Peer, msgBytes []byte) {
 	if !conR.IsRunning() {
 		conR.Logger.Debug("Receive", "src", src, "chId", chID, "bytes", msgBytes)

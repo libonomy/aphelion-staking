@@ -9,7 +9,7 @@ applications. Tendermint provides unique speed and security properties for
 light client applications.
 
 See our [light
-package](https://pkg.go.dev/github.com/tendermint/tendermint/light?tab=doc).
+package](https://pkg.go.dev/github.com/evdatsion/tendermint/light?tab=doc).
 
 ## Overview
 
@@ -17,7 +17,7 @@ The light client protocol verifies headers by retrieving a chain of headers,
 commits and validator sets from a trusted height to the target height, verifying
 the signatures of each of these intermediary signed headers till it reaches the
 target height. From there, all the application state is verifiable with
-[merkle proofs](https://github.com/tendermint/spec/blob/953523c3cb99fdb8c8f7a2d21e3a99094279e9de/spec/blockchain/encoding.md#iavl-tree).
+[merkle proofs](https://github.com/evdatsion/spec/blob/953523c3cb99fdb8c8f7a2d21e3a99094279e9de/spec/blockchain/encoding.md#iavl-tree).
 
 ## Properties
 
@@ -33,7 +33,7 @@ target height. From there, all the application state is verifiable with
 
 ## Security
 
-A light client is initialized from a point of trust using [Trust Options](https://pkg.go.dev/github.com/tendermint/tendermint/light?tab=doc#TrustOptions),
+A light client is initialized from a point of trust using [Trust Options](https://pkg.go.dev/github.com/evdatsion/tendermint/light?tab=doc#TrustOptions),
 a provider and a set of witnesses. This sets the trust period: the period that
 full nodes should be accountable for faulty behavior and a trust level: the
 fraction of validators in a validator set with which we trust that at least one

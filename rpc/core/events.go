@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"time"
 
-	tmpubsub "github.com/tendermint/tendermint/libs/pubsub"
-	tmquery "github.com/tendermint/tendermint/libs/pubsub/query"
-	ctypes "github.com/tendermint/tendermint/rpc/core/types"
-	rpctypes "github.com/tendermint/tendermint/rpc/jsonrpc/types"
+	tmpubsub "github.com/evdatsion/tendermint/libs/pubsub"
+	tmquery "github.com/evdatsion/tendermint/libs/pubsub/query"
+	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
+	rpctypes "github.com/evdatsion/tendermint/rpc/jsonrpc/types"
 )
 
 const (

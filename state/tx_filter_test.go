@@ -7,11 +7,11 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	dbm "github.com/tendermint/tm-db"
+	dbm "github.com/evdatsion/tm-db"
 
-	tmrand "github.com/tendermint/tendermint/libs/rand"
-	sm "github.com/tendermint/tendermint/state"
-	"github.com/tendermint/tendermint/types"
+	tmrand "github.com/evdatsion/tendermint/libs/rand"
+	sm "github.com/evdatsion/tendermint/state"
+	"github.com/evdatsion/tendermint/types"
 )
 
 func TestTxFilter(t *testing.T) {

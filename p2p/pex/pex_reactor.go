@@ -8,13 +8,13 @@ import (
 
 	"github.com/gogo/protobuf/proto"
 
-	"github.com/tendermint/tendermint/libs/cmap"
-	tmmath "github.com/tendermint/tendermint/libs/math"
-	tmrand "github.com/tendermint/tendermint/libs/rand"
-	"github.com/tendermint/tendermint/libs/service"
-	"github.com/tendermint/tendermint/p2p"
-	"github.com/tendermint/tendermint/p2p/conn"
-	tmp2p "github.com/tendermint/tendermint/proto/tendermint/p2p"
+	"github.com/evdatsion/tendermint/libs/cmap"
+	tmmath "github.com/evdatsion/tendermint/libs/math"
+	tmrand "github.com/evdatsion/tendermint/libs/rand"
+	"github.com/evdatsion/tendermint/libs/service"
+	"github.com/evdatsion/tendermint/p2p"
+	"github.com/evdatsion/tendermint/p2p/conn"
+	tmp2p "github.com/evdatsion/tendermint/proto/tendermint/p2p"
 )
 
 type Peer = p2p.Peer
@@ -237,7 +237,7 @@ func (r *Reactor) logErrAddrBook(err error) {
 
 // Receive implements Reactor by handling incoming PEX messages.
 // XXX: do not call any methods that can block or incur heavy processing.
-// https://github.com/tendermint/tendermint/issues/2888
+// https://github.com/evdatsion/tendermint/issues/2888
 func (r *Reactor) Receive(chID byte, src Peer, msgBytes []byte) {
 	msg, err := decodeMsg(msgBytes)
 	if err != nil {

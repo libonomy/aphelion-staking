@@ -11,23 +11,23 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	dbm "github.com/tendermint/tm-db"
+	dbm "github.com/evdatsion/tm-db"
 
-	abci "github.com/tendermint/tendermint/abci/types"
-	"github.com/tendermint/tendermint/behaviour"
-	bc "github.com/tendermint/tendermint/blockchain"
-	cfg "github.com/tendermint/tendermint/config"
-	"github.com/tendermint/tendermint/libs/log"
-	"github.com/tendermint/tendermint/libs/service"
-	"github.com/tendermint/tendermint/mempool/mock"
-	"github.com/tendermint/tendermint/p2p"
-	"github.com/tendermint/tendermint/p2p/conn"
-	bcproto "github.com/tendermint/tendermint/proto/tendermint/blockchain"
-	"github.com/tendermint/tendermint/proxy"
-	sm "github.com/tendermint/tendermint/state"
-	"github.com/tendermint/tendermint/store"
-	"github.com/tendermint/tendermint/types"
-	tmtime "github.com/tendermint/tendermint/types/time"
+	abci "github.com/evdatsion/tendermint/abci/types"
+	"github.com/evdatsion/tendermint/behaviour"
+	bc "github.com/evdatsion/tendermint/blockchain"
+	cfg "github.com/evdatsion/tendermint/config"
+	"github.com/evdatsion/tendermint/libs/log"
+	"github.com/evdatsion/tendermint/libs/service"
+	"github.com/evdatsion/tendermint/mempool/mock"
+	"github.com/evdatsion/tendermint/p2p"
+	"github.com/evdatsion/tendermint/p2p/conn"
+	bcproto "github.com/evdatsion/tendermint/proto/tendermint/blockchain"
+	"github.com/evdatsion/tendermint/proxy"
+	sm "github.com/evdatsion/tendermint/state"
+	"github.com/evdatsion/tendermint/store"
+	"github.com/evdatsion/tendermint/types"
+	tmtime "github.com/evdatsion/tendermint/types/time"
 )
 
 type mockPeer struct {
@@ -171,7 +171,7 @@ func newTestReactor(p testReactorParams) *BlockchainReactor {
 }
 
 // This test is left here and not deleted to retain the termination cases for
-// future improvement in [#4482](https://github.com/tendermint/tendermint/issues/4482).
+// future improvement in [#4482](https://github.com/evdatsion/tendermint/issues/4482).
 // func TestReactorTerminationScenarios(t *testing.T) {
 
 // 	config := cfg.ResetTestRoot("blockchain_reactor_v2_test")

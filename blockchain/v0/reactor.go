@@ -5,13 +5,13 @@ import (
 	"reflect"
 	"time"
 
-	bc "github.com/tendermint/tendermint/blockchain"
-	"github.com/tendermint/tendermint/libs/log"
-	"github.com/tendermint/tendermint/p2p"
-	bcproto "github.com/tendermint/tendermint/proto/tendermint/blockchain"
-	sm "github.com/tendermint/tendermint/state"
-	"github.com/tendermint/tendermint/store"
-	"github.com/tendermint/tendermint/types"
+	bc "github.com/evdatsion/tendermint/blockchain"
+	"github.com/evdatsion/tendermint/libs/log"
+	"github.com/evdatsion/tendermint/p2p"
+	bcproto "github.com/evdatsion/tendermint/proto/tendermint/blockchain"
+	sm "github.com/evdatsion/tendermint/state"
+	"github.com/evdatsion/tendermint/store"
+	"github.com/evdatsion/tendermint/types"
 )
 
 const (
@@ -205,7 +205,7 @@ func (bcR *BlockchainReactor) respondToPeer(msg *bcproto.BlockRequest,
 
 // Receive implements Reactor by handling 4 types of messages (look below).
 // XXX: do not call any methods that can block or incur heavy processing.
-// https://github.com/tendermint/tendermint/issues/2888
+// https://github.com/evdatsion/tendermint/issues/2888
 func (bcR *BlockchainReactor) Receive(chID byte, src p2p.Peer, msgBytes []byte) {
 	msg, err := bc.DecodeMsg(msgBytes)
 	if err != nil {

@@ -15,7 +15,7 @@ var _ sort.Interface = (ValidatorUpdates)(nil)
 //    Len, Less and Swap
 // are for ValidatorUpdates to implement sort.Interface
 // which will be used by the sort package.
-// See Issue https://github.com/tendermint/abci/issues/212
+// See Issue https://github.com/evdatsion/abci/issues/212
 
 func (v ValidatorUpdates) Len() int {
 	return len(v)

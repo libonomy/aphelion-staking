@@ -12,13 +12,13 @@ algorithm being scattered in a side-effectful container (the current
 `ConsensusState`). In order to test the algorithm a large object-graph needs to
 be set up and even than the non-deterministic parts of the container makes will
 prevent high certainty. Where ideally we have a 1-to-1 representation of the
-[spec](https://github.com/tendermint/spec), ready and easy to test for domain
+[spec](https://github.com/evdatsion/spec), ready and easy to test for domain
 experts.
 
 Addresses:
 
-- [#1495](https://github.com/tendermint/tendermint/issues/1495)
-- [#1692](https://github.com/tendermint/tendermint/issues/1692)
+- [#1495](https://github.com/evdatsion/tendermint/issues/1495)
+- [#1692](https://github.com/evdatsion/tendermint/issues/1692)
 
 ## Decision
 

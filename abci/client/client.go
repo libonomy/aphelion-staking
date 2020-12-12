@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/tendermint/tendermint/abci/types"
-	"github.com/tendermint/tendermint/libs/service"
-	tmsync "github.com/tendermint/tendermint/libs/sync"
+	"github.com/evdatsion/tendermint/abci/types"
+	"github.com/evdatsion/tendermint/libs/service"
+	tmsync "github.com/evdatsion/tendermint/libs/sync"
 )
 
 const (

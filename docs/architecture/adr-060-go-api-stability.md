@@ -12,7 +12,7 @@
 
 With the release of Tendermint 1.0 we will adopt [semantic versioning](https://semver.org). One major implication is a guarantee that we will not make backwards-incompatible changes until Tendermint 2.0 (except in pre-release versions). In order to provide this guarantee for our Go API, we must clearly define which of our APIs are public, and what changes are considered backwards-compatible.
 
-Currently, we list packages that we consider public in our [README](https://github.com/tendermint/tendermint#versioning), but since we are still at version 0.x we do not provide any backwards compatiblity guarantees at all.
+Currently, we list packages that we consider public in our [README](https://github.com/evdatsion/tendermint#versioning), but since we are still at version 0.x we do not provide any backwards compatiblity guarantees at all.
 
 ### Glossary
 
@@ -68,46 +68,46 @@ We may offer additional APIs as well, following further discussions internally a
 For comparison, the following are the number of Tendermint imports in the Cosmos SDK (excluding tests), which should be mostly satisfied by the planned APIs.
 
 ```
-      1 github.com/tendermint/tendermint/abci/server
-     73 github.com/tendermint/tendermint/abci/types
-      2 github.com/tendermint/tendermint/cmd/tendermint/commands
-      7 github.com/tendermint/tendermint/config
-     68 github.com/tendermint/tendermint/crypto
-      1 github.com/tendermint/tendermint/crypto/armor
-     10 github.com/tendermint/tendermint/crypto/ed25519
-      2 github.com/tendermint/tendermint/crypto/encoding
-      3 github.com/tendermint/tendermint/crypto/merkle
-      3 github.com/tendermint/tendermint/crypto/sr25519
-      8 github.com/tendermint/tendermint/crypto/tmhash
-      1 github.com/tendermint/tendermint/crypto/xsalsa20symmetric
-     11 github.com/tendermint/tendermint/libs/bytes
-      2 github.com/tendermint/tendermint/libs/bytes.HexBytes
-     15 github.com/tendermint/tendermint/libs/cli
-      2 github.com/tendermint/tendermint/libs/cli/flags
-      2 github.com/tendermint/tendermint/libs/json
-     30 github.com/tendermint/tendermint/libs/log
-      1 github.com/tendermint/tendermint/libs/math
-     11 github.com/tendermint/tendermint/libs/os
-      4 github.com/tendermint/tendermint/libs/rand
-      1 github.com/tendermint/tendermint/libs/strings
-      5 github.com/tendermint/tendermint/light
-      1 github.com/tendermint/tendermint/mempool
-      3 github.com/tendermint/tendermint/node
-      5 github.com/tendermint/tendermint/p2p
-      4 github.com/tendermint/tendermint/privval
-     10 github.com/tendermint/tendermint/proto/tendermint/crypto
-      1 github.com/tendermint/tendermint/proto/tendermint/libs/bits
-     24 github.com/tendermint/tendermint/proto/tendermint/types
-      3 github.com/tendermint/tendermint/proto/tendermint/version
-      2 github.com/tendermint/tendermint/proxy
-      3 github.com/tendermint/tendermint/rpc/client
-      1 github.com/tendermint/tendermint/rpc/client/http
-      2 github.com/tendermint/tendermint/rpc/client/local
-      3 github.com/tendermint/tendermint/rpc/core/types
-      1 github.com/tendermint/tendermint/rpc/jsonrpc/server
-     33 github.com/tendermint/tendermint/types
-      2 github.com/tendermint/tendermint/types/time
-      1 github.com/tendermint/tendermint/version
+      1 github.com/evdatsion/tendermint/abci/server
+     73 github.com/evdatsion/tendermint/abci/types
+      2 github.com/evdatsion/tendermint/cmd/tendermint/commands
+      7 github.com/evdatsion/tendermint/config
+     68 github.com/evdatsion/tendermint/crypto
+      1 github.com/evdatsion/tendermint/crypto/armor
+     10 github.com/evdatsion/tendermint/crypto/ed25519
+      2 github.com/evdatsion/tendermint/crypto/encoding
+      3 github.com/evdatsion/tendermint/crypto/merkle
+      3 github.com/evdatsion/tendermint/crypto/sr25519
+      8 github.com/evdatsion/tendermint/crypto/tmhash
+      1 github.com/evdatsion/tendermint/crypto/xsalsa20symmetric
+     11 github.com/evdatsion/tendermint/libs/bytes
+      2 github.com/evdatsion/tendermint/libs/bytes.HexBytes
+     15 github.com/evdatsion/tendermint/libs/cli
+      2 github.com/evdatsion/tendermint/libs/cli/flags
+      2 github.com/evdatsion/tendermint/libs/json
+     30 github.com/evdatsion/tendermint/libs/log
+      1 github.com/evdatsion/tendermint/libs/math
+     11 github.com/evdatsion/tendermint/libs/os
+      4 github.com/evdatsion/tendermint/libs/rand
+      1 github.com/evdatsion/tendermint/libs/strings
+      5 github.com/evdatsion/tendermint/light
+      1 github.com/evdatsion/tendermint/mempool
+      3 github.com/evdatsion/tendermint/node
+      5 github.com/evdatsion/tendermint/p2p
+      4 github.com/evdatsion/tendermint/privval
+     10 github.com/evdatsion/tendermint/proto/tendermint/crypto
+      1 github.com/evdatsion/tendermint/proto/tendermint/libs/bits
+     24 github.com/evdatsion/tendermint/proto/tendermint/types
+      3 github.com/evdatsion/tendermint/proto/tendermint/version
+      2 github.com/evdatsion/tendermint/proxy
+      3 github.com/evdatsion/tendermint/rpc/client
+      1 github.com/evdatsion/tendermint/rpc/client/http
+      2 github.com/evdatsion/tendermint/rpc/client/local
+      3 github.com/evdatsion/tendermint/rpc/core/types
+      1 github.com/evdatsion/tendermint/rpc/jsonrpc/server
+     33 github.com/evdatsion/tendermint/types
+      2 github.com/evdatsion/tendermint/types/time
+      1 github.com/evdatsion/tendermint/version
 ```
 
 ### Backwards-Compatible Changes
@@ -188,6 +188,6 @@ Accepted
 
 ## References
 
-- [#4451: Place internal APIs under internal package](https://github.com/tendermint/tendermint/issues/4451)
+- [#4451: Place internal APIs under internal package](https://github.com/evdatsion/tendermint/issues/4451)
 
 - [On Pluggability](https://docs.google.com/document/d/1G08LnwSyb6BAuCVSMF3EKn47CGdhZ5wPZYJQr4-bw58/edit?ts=5f609f11)

@@ -146,7 +146,7 @@ _Fig. 1: Differences between recursive and non-recursive bisections_
 ![Fig. 1](./img/adr-046-fig1.png)
 
 Specification of the non-recursive bisection can be found
-[here](https://github.com/tendermint/spec/blob/zm_non-recursive-verification/spec/consensus/light-client/non-recursive-verification.md).
+[here](https://github.com/evdatsion/spec/blob/zm_non-recursive-verification/spec/consensus/light-client/non-recursive-verification.md).
 
 ## Status
 

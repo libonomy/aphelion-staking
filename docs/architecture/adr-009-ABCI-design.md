@@ -258,14 +258,14 @@ Accepted.
 ## References
 
 - [ABCI v0.10.3 Specification (before this
-  proposal)](https://github.com/tendermint/abci/blob/v0.10.3/specification.rst)
+  proposal)](https://github.com/evdatsion/abci/blob/v0.10.3/specification.rst)
 - [ABCI v0.11.0 Specification (implementing first draft of this
-  proposal)](https://github.com/tendermint/abci/blob/v0.11.0/specification.md)
-- [Ed25519 addresses](https://github.com/tendermint/go-crypto/issues/103)
+  proposal)](https://github.com/evdatsion/abci/blob/v0.11.0/specification.md)
+- [Ed25519 addresses](https://github.com/evdatsion/go-crypto/issues/103)
 - [InitChain contains the
-  Genesis](https://github.com/tendermint/abci/issues/216)
-- [PubKeys](https://github.com/tendermint/tendermint/issues/1524)
+  Genesis](https://github.com/evdatsion/abci/issues/216)
+- [PubKeys](https://github.com/evdatsion/tendermint/issues/1524)
 - [Notes on
-  Header](https://github.com/tendermint/tendermint/issues/1605)
-- [Gogoproto issues](https://github.com/tendermint/abci/issues/256)
-- [Absent Validators](https://github.com/tendermint/abci/issues/231)
+  Header](https://github.com/evdatsion/tendermint/issues/1605)
+- [Gogoproto issues](https://github.com/evdatsion/abci/issues/256)
+- [Absent Validators](https://github.com/evdatsion/abci/issues/231)

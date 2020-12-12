@@ -7,12 +7,12 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/tendermint/tendermint/libs/log"
-	tmmath "github.com/tendermint/tendermint/libs/math"
-	tmsync "github.com/tendermint/tendermint/libs/sync"
-	"github.com/tendermint/tendermint/light/provider"
-	"github.com/tendermint/tendermint/light/store"
-	"github.com/tendermint/tendermint/types"
+	"github.com/evdatsion/tendermint/libs/log"
+	tmmath "github.com/evdatsion/tendermint/libs/math"
+	tmsync "github.com/evdatsion/tendermint/libs/sync"
+	"github.com/evdatsion/tendermint/light/provider"
+	"github.com/evdatsion/tendermint/light/store"
+	"github.com/evdatsion/tendermint/types"
 )
 
 type mode byte
@@ -485,7 +485,7 @@ func (c *Client) VerifyLightBlockAtHeight(ctx context.Context, height int64, now
 // headers are not adjacent, verifySkipping is performed and necessary (not all)
 // intermediate headers will be requested. See the specification for details.
 // Intermediate headers are not saved to database.
-// https://github.com/tendermint/spec/blob/master/spec/consensus/light-client.md
+// https://github.com/evdatsion/spec/blob/master/spec/consensus/light-client.md
 //
 // If the header, which is older than the currently trusted header, is
 // requested and the light client does not have it, VerifyHeader will perform:

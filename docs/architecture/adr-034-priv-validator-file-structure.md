@@ -11,9 +11,9 @@ Even in an insecure mode which does not encrypt private key on disk, it is reaso
 the mutable part and immutable part.
 
 References:
-[#1181](https://github.com/tendermint/tendermint/issues/1181)
-[#2657](https://github.com/tendermint/tendermint/issues/2657)
-[#2313](https://github.com/tendermint/tendermint/issues/2313)
+[#1181](https://github.com/evdatsion/tendermint/issues/1181)
+[#2657](https://github.com/evdatsion/tendermint/issues/2657)
+[#2313](https://github.com/evdatsion/tendermint/issues/2313)
 
 ## Proposed Solution
 
@@ -57,7 +57,7 @@ What we need to do next is changing the methods of `FilePV`.
 
 ## Status
 
-Accepted and implemented in [#2870](https://github.com/tendermint/tendermint/pull/2870).
+Accepted and implemented in [#2870](https://github.com/evdatsion/tendermint/pull/2870).
 
 ## Consequences
 

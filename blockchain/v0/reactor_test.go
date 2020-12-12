@@ -10,18 +10,18 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	dbm "github.com/tendermint/tm-db"
+	dbm "github.com/evdatsion/tm-db"
 
-	abci "github.com/tendermint/tendermint/abci/types"
-	cfg "github.com/tendermint/tendermint/config"
-	"github.com/tendermint/tendermint/libs/log"
-	"github.com/tendermint/tendermint/mempool/mock"
-	"github.com/tendermint/tendermint/p2p"
-	"github.com/tendermint/tendermint/proxy"
-	sm "github.com/tendermint/tendermint/state"
-	"github.com/tendermint/tendermint/store"
-	"github.com/tendermint/tendermint/types"
-	tmtime "github.com/tendermint/tendermint/types/time"
+	abci "github.com/evdatsion/tendermint/abci/types"
+	cfg "github.com/evdatsion/tendermint/config"
+	"github.com/evdatsion/tendermint/libs/log"
+	"github.com/evdatsion/tendermint/mempool/mock"
+	"github.com/evdatsion/tendermint/p2p"
+	"github.com/evdatsion/tendermint/proxy"
+	sm "github.com/evdatsion/tendermint/state"
+	"github.com/evdatsion/tendermint/store"
+	"github.com/evdatsion/tendermint/types"
+	tmtime "github.com/evdatsion/tendermint/types/time"
 )
 
 var config *cfg.Config

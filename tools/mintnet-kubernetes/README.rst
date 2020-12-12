@@ -26,7 +26,7 @@ MacOS
     curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.18.0/minikube-darwin-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
     minikube start
 
-    git clone https://github.com/tendermint/tools.git && cd tools/mintnet-kubernetes/examples/basecoin && make create
+    git clone https://github.com/evdatsion/tools.git && cd tools/mintnet-kubernetes/examples/basecoin && make create
 
 Linux
 ^^^^^
@@ -37,7 +37,7 @@ Linux
     curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.18.0/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
     minikube start
 
-    git clone https://github.com/tendermint/tools.git && cd tools/mintnet-kubernetes/examples/basecoin && make create
+    git clone https://github.com/evdatsion/tools.git && cd tools/mintnet-kubernetes/examples/basecoin && make create
 
 Verify it worked
 ~~~~~~~~~~~~~~~~
@@ -151,7 +151,7 @@ Download a template:
 
 ::
 
-    curl -Lo app.yaml https://github.com/tendermint/tools/raw/master/mintnet-kubernetes/app.template.yaml
+    curl -Lo app.yaml https://github.com/evdatsion/tools/raw/master/mintnet-kubernetes/app.template.yaml
 
 Open ``app.yaml`` in your favorite editor and configure your app
 container (navigate to ``- name: app``). Kubernetes DSL (Domain Specific

@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"strings"
 
-	e2e "github.com/tendermint/tendermint/test/e2e/pkg"
-	"github.com/tendermint/tendermint/types"
+	e2e "github.com/evdatsion/tendermint/test/e2e/pkg"
+	"github.com/evdatsion/tendermint/types"
 )
 
 var (
@@ -44,7 +44,7 @@ var (
 	nodeMisbehaviors = weightedChoice{
 		// FIXME evidence disabled due to node panicing when not
 		// having sufficient block history to process evidence.
-		// https://github.com/tendermint/tendermint/issues/5617
+		// https://github.com/evdatsion/tendermint/issues/5617
 		// misbehaviorOption{"double-prevote"}: 1,
 		misbehaviorOption{}: 9,
 	}

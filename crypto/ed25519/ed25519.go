@@ -9,9 +9,9 @@ import (
 
 	"github.com/hdevalence/ed25519consensus"
 
-	"github.com/tendermint/tendermint/crypto"
-	"github.com/tendermint/tendermint/crypto/tmhash"
-	tmjson "github.com/tendermint/tendermint/libs/json"
+	"github.com/evdatsion/tendermint/crypto"
+	"github.com/evdatsion/tendermint/crypto/tmhash"
+	tmjson "github.com/evdatsion/tendermint/libs/json"
 )
 
 //-------------------------------------

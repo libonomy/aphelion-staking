@@ -7,14 +7,14 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	dbm "github.com/tendermint/tm-db"
+	dbm "github.com/evdatsion/tm-db"
 
-	abci "github.com/tendermint/tendermint/abci/types"
-	tmstate "github.com/tendermint/tendermint/proto/tendermint/state"
-	ctypes "github.com/tendermint/tendermint/rpc/core/types"
-	rpctypes "github.com/tendermint/tendermint/rpc/jsonrpc/types"
-	sm "github.com/tendermint/tendermint/state"
-	"github.com/tendermint/tendermint/types"
+	abci "github.com/evdatsion/tendermint/abci/types"
+	tmstate "github.com/evdatsion/tendermint/proto/tendermint/state"
+	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
+	rpctypes "github.com/evdatsion/tendermint/rpc/jsonrpc/types"
+	sm "github.com/evdatsion/tendermint/state"
+	"github.com/evdatsion/tendermint/types"
 )
 
 func TestBlockchainInfo(t *testing.T) {

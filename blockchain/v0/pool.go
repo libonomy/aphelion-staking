@@ -7,12 +7,12 @@ import (
 	"sync/atomic"
 	"time"
 
-	flow "github.com/tendermint/tendermint/libs/flowrate"
-	"github.com/tendermint/tendermint/libs/log"
-	"github.com/tendermint/tendermint/libs/service"
-	tmsync "github.com/tendermint/tendermint/libs/sync"
-	"github.com/tendermint/tendermint/p2p"
-	"github.com/tendermint/tendermint/types"
+	flow "github.com/evdatsion/tendermint/libs/flowrate"
+	"github.com/evdatsion/tendermint/libs/log"
+	"github.com/evdatsion/tendermint/libs/service"
+	tmsync "github.com/evdatsion/tendermint/libs/sync"
+	"github.com/evdatsion/tendermint/p2p"
+	"github.com/evdatsion/tendermint/types"
 )
 
 /*

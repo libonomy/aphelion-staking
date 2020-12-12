@@ -5,13 +5,13 @@ import (
 	"sort"
 	"time"
 
-	abci "github.com/tendermint/tendermint/abci/types"
-	tmsync "github.com/tendermint/tendermint/libs/sync"
-	"github.com/tendermint/tendermint/p2p"
-	ssproto "github.com/tendermint/tendermint/proto/tendermint/statesync"
-	"github.com/tendermint/tendermint/proxy"
-	sm "github.com/tendermint/tendermint/state"
-	"github.com/tendermint/tendermint/types"
+	abci "github.com/evdatsion/tendermint/abci/types"
+	tmsync "github.com/evdatsion/tendermint/libs/sync"
+	"github.com/evdatsion/tendermint/p2p"
+	ssproto "github.com/evdatsion/tendermint/proto/tendermint/statesync"
+	"github.com/evdatsion/tendermint/proxy"
+	sm "github.com/evdatsion/tendermint/state"
+	"github.com/evdatsion/tendermint/types"
 )
 
 const (
@@ -91,7 +91,7 @@ func (r *Reactor) RemovePeer(peer p2p.Peer, reason interface{}) {
 
 // Receive implements p2p.Reactor.
 // XXX: do not call any methods that can block or incur heavy processing.
-// https://github.com/tendermint/tendermint/issues/2888
+// https://github.com/evdatsion/tendermint/issues/2888
 func (r *Reactor) Receive(chID byte, src p2p.Peer, msgBytes []byte) {
 	if !r.IsRunning() {
 		return

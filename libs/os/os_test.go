@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	tmos "github.com/tendermint/tendermint/libs/os"
+	tmos "github.com/evdatsion/tendermint/libs/os"
 )
 
 func TestCopyFile(t *testing.T) {

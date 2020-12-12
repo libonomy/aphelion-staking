@@ -209,7 +209,7 @@ spec:
       #   - "-c"
       #   - |
       #     set -ex
-      #     go get github.com/tendermint/merkleeyes/cmd/merkleeyes
+      #     go get github.com/evdatsion/merkleeyes/cmd/merkleeyes
       #     rm -f /socks/data.sock # remove old socket
       #     merkleeyes server --address="unix:///socks/data.sock"
       #   volumeMounts:

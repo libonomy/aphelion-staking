@@ -21,13 +21,13 @@ Tendermint?](introduction/what-is-tendermint.md).
 
 To get started quickly with an example application, see the [quick start guide](introduction/quick-start.md).
 
-To learn about application development on Tendermint, see the [Application Blockchain Interface](https://github.com/tendermint/spec/tree/master/spec/abci).
+To learn about application development on Tendermint, see the [Application Blockchain Interface](https://github.com/evdatsion/spec/tree/master/spec/abci).
 
 For more details on using Tendermint, see the respective documentation for
 [Tendermint Core](tendermint-core/), [benchmarking and monitoring](tools/), and [network deployments](networks/).
 
-To find out about the Tendermint ecosystem you can go [here](https://github.com/tendermint/awesome#ecosystem). If you are a project that is using Tendermint you are welcome to make a PR to add your project to the list.
+To find out about the Tendermint ecosystem you can go [here](https://github.com/evdatsion/awesome#ecosystem). If you are a project that is using Tendermint you are welcome to make a PR to add your project to the list.
 
 ## Contribute
 
-To contribute to the documentation, see [this file](https://github.com/tendermint/tendermint/blob/master/docs/DOCS_README.md) for details of the build process and considerations when making changes.
+To contribute to the documentation, see [this file](https://github.com/evdatsion/tendermint/blob/master/docs/DOCS_README.md) for details of the build process and considerations when making changes.

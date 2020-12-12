@@ -5,10 +5,10 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/tendermint/tendermint/libs/log"
-	tmos "github.com/tendermint/tendermint/libs/os"
-	"github.com/tendermint/tendermint/privval"
-	"github.com/tendermint/tendermint/types"
+	"github.com/evdatsion/tendermint/libs/log"
+	tmos "github.com/evdatsion/tendermint/libs/os"
+	"github.com/evdatsion/tendermint/privval"
+	"github.com/evdatsion/tendermint/types"
 )
 
 // ResetAllCmd removes the database of this Tendermint core

@@ -10,16 +10,16 @@ import (
 	"github.com/gogo/protobuf/proto"
 	gogotypes "github.com/gogo/protobuf/types"
 
-	"github.com/tendermint/tendermint/crypto"
-	"github.com/tendermint/tendermint/crypto/merkle"
-	"github.com/tendermint/tendermint/crypto/tmhash"
-	"github.com/tendermint/tendermint/libs/bits"
-	tmbytes "github.com/tendermint/tendermint/libs/bytes"
-	tmmath "github.com/tendermint/tendermint/libs/math"
-	tmsync "github.com/tendermint/tendermint/libs/sync"
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	tmversion "github.com/tendermint/tendermint/proto/tendermint/version"
-	"github.com/tendermint/tendermint/version"
+	"github.com/evdatsion/tendermint/crypto"
+	"github.com/evdatsion/tendermint/crypto/merkle"
+	"github.com/evdatsion/tendermint/crypto/tmhash"
+	"github.com/evdatsion/tendermint/libs/bits"
+	tmbytes "github.com/evdatsion/tendermint/libs/bytes"
+	tmmath "github.com/evdatsion/tendermint/libs/math"
+	tmsync "github.com/evdatsion/tendermint/libs/sync"
+	tmproto "github.com/evdatsion/tendermint/proto/tendermint/types"
+	tmversion "github.com/evdatsion/tendermint/proto/tendermint/version"
+	"github.com/evdatsion/tendermint/version"
 )
 
 const (
@@ -330,7 +330,7 @@ func MakeBlock(height int64, txs []Tx, lastCommit *Commit, evidence []Evidence) 
 // NOTE: changes to the Header should be duplicated in:
 // - header.Hash()
 // - abci.Header
-// - https://github.com/tendermint/spec/blob/master/spec/blockchain/blockchain.md
+// - https://github.com/evdatsion/spec/blob/master/spec/blockchain/blockchain.md
 type Header struct {
 	// basic block info
 	Version tmversion.Consensus `json:"version"`

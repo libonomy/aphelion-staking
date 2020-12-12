@@ -10,18 +10,18 @@ import (
 
 	"github.com/spf13/viper"
 
-	"github.com/tendermint/tendermint/abci/server"
-	"github.com/tendermint/tendermint/config"
-	"github.com/tendermint/tendermint/crypto/ed25519"
-	tmflags "github.com/tendermint/tendermint/libs/cli/flags"
-	"github.com/tendermint/tendermint/libs/log"
-	tmnet "github.com/tendermint/tendermint/libs/net"
-	"github.com/tendermint/tendermint/node"
-	"github.com/tendermint/tendermint/p2p"
-	"github.com/tendermint/tendermint/privval"
-	"github.com/tendermint/tendermint/proxy"
-	mcs "github.com/tendermint/tendermint/test/maverick/consensus"
-	maverick "github.com/tendermint/tendermint/test/maverick/node"
+	"github.com/evdatsion/tendermint/abci/server"
+	"github.com/evdatsion/tendermint/config"
+	"github.com/evdatsion/tendermint/crypto/ed25519"
+	tmflags "github.com/evdatsion/tendermint/libs/cli/flags"
+	"github.com/evdatsion/tendermint/libs/log"
+	tmnet "github.com/evdatsion/tendermint/libs/net"
+	"github.com/evdatsion/tendermint/node"
+	"github.com/evdatsion/tendermint/p2p"
+	"github.com/evdatsion/tendermint/privval"
+	"github.com/evdatsion/tendermint/proxy"
+	mcs "github.com/evdatsion/tendermint/test/maverick/consensus"
+	maverick "github.com/evdatsion/tendermint/test/maverick/node"
 )
 
 var logger = log.NewTMLogger(log.NewSyncWriter(os.Stdout))

@@ -9,15 +9,15 @@ import (
 	"testing"
 	"time"
 
-	dbm "github.com/tendermint/tm-db"
+	dbm "github.com/evdatsion/tm-db"
 
-	"github.com/tendermint/tendermint/abci/example/kvstore"
-	"github.com/tendermint/tendermint/libs/log"
-	"github.com/tendermint/tendermint/light"
-	"github.com/tendermint/tendermint/light/provider"
-	httpp "github.com/tendermint/tendermint/light/provider/http"
-	dbs "github.com/tendermint/tendermint/light/store/db"
-	rpctest "github.com/tendermint/tendermint/rpc/test"
+	"github.com/evdatsion/tendermint/abci/example/kvstore"
+	"github.com/evdatsion/tendermint/libs/log"
+	"github.com/evdatsion/tendermint/light"
+	"github.com/evdatsion/tendermint/light/provider"
+	httpp "github.com/evdatsion/tendermint/light/provider/http"
+	dbs "github.com/evdatsion/tendermint/light/store/db"
+	rpctest "github.com/evdatsion/tendermint/rpc/test"
 )
 
 // Automatically getting new headers and verifying them.

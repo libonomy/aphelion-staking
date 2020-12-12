@@ -32,8 +32,8 @@ echo export PATH=\"\$PATH:\$GOPATH/bin\" >> ~/.bash_profile
 Then run
 
 ```sh
-go get github.com/tendermint/tendermint
-cd $GOPATH/src/github.com/tendermint/tendermint
+go get github.com/evdatsion/tendermint
+cd $GOPATH/src/github.com/evdatsion/tendermint
 make tools
 make install_abci
 ```
@@ -148,7 +148,7 @@ of the ASCII of `abcd`. You can verify this in a python 2 shell by
 running `"YWJjZA==".decode('base64')` or in python 3 shell by running
 `import codecs; codecs.decode(b"YWJjZA==", 'base64').decode('ascii')`.
 Stay tuned for a future release that [makes this output more
-human-readable](https://github.com/tendermint/tendermint/issues/1794).
+human-readable](https://github.com/evdatsion/tendermint/issues/1794).
 
 Now let's try setting a different key and value:
 
@@ -260,10 +260,10 @@ we'll run a Javascript version of the `counter`. To run it, you'll need
 to [install node](https://nodejs.org/en/download/).
 
 You'll also need to fetch the relevant repository, from
-[here](https://github.com/tendermint/js-abci), then install it:
+[here](https://github.com/evdatsion/js-abci), then install it:
 
 ```sh
-git clone https://github.com/tendermint/js-abci.git
+git clone https://github.com/evdatsion/js-abci.git
 cd js-abci
 npm install abci
 ```

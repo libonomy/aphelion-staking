@@ -135,4 +135,4 @@ Accepted
 
 ## References
 
-- [#5291: new end-to-end test suite](https://github.com/tendermint/tendermint/issues/5291)
+- [#5291: new end-to-end test suite](https://github.com/evdatsion/tendermint/issues/5291)
