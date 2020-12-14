@@ -1,4 +1,4 @@
-# Openapi docs
+## Swagger docs
 
-Do not forget to update ../openapi/openapi.yaml if making changes to any
+Do not forget to update ../swagger/swagger.yaml if making changes to any
 endpoint.

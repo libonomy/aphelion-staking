@@ -1,12 +1,9 @@
 package state
 
 import (
-	dbm "github.com/evdatsion/tm-db"
-
 	abci "github.com/evdatsion/tendermint/abci/types"
-	tmstate "github.com/evdatsion/tendermint/proto/tendermint/state"
-	tmproto "github.com/evdatsion/tendermint/proto/tendermint/types"
 	"github.com/evdatsion/tendermint/types"
+	dbm "github.com/evdatsion/tm-db"
 )
 
 //
@@ -28,7 +25,7 @@ func UpdateState(
 	state State,
 	blockID types.BlockID,
 	header *types.Header,
-	abciResponses *tmstate.ABCIResponses,
+	abciResponses *ABCIResponses,
 	validatorUpdates []*types.Validator,
 ) (State, error) {
 	return updateState(state, blockID, header, abciResponses, validatorUpdates)
@@ -36,13 +33,30 @@ func UpdateState(
 
 // ValidateValidatorUpdates is an alias for validateValidatorUpdates exported
 // from execution.go, exclusively and explicitly for testing.
-func ValidateValidatorUpdates(abciUpdates []abci.ValidatorUpdate, params tmproto.ValidatorParams) error {
+func ValidateValidatorUpdates(abciUpdates []abci.ValidatorUpdate, params types.ValidatorParams) error {
 	return validateValidatorUpdates(abciUpdates, params)
+}
+
+// CalcValidatorsKey is an alias for the private calcValidatorsKey method in
+// store.go, exported exclusively and explicitly for testing.
+func CalcValidatorsKey(height int64) []byte {
+	return calcValidatorsKey(height)
+}
+
+// SaveABCIResponses is an alias for the private saveABCIResponses method in
+// store.go, exported exclusively and explicitly for testing.
+func SaveABCIResponses(db dbm.DB, height int64, abciResponses *ABCIResponses) {
+	saveABCIResponses(db, height, abciResponses)
+}
+
+// SaveConsensusParamsInfo is an alias for the private saveConsensusParamsInfo
+// method in store.go, exported exclusively and explicitly for testing.
+func SaveConsensusParamsInfo(db dbm.DB, nextHeight, changeHeight int64, params types.ConsensusParams) {
+	saveConsensusParamsInfo(db, nextHeight, changeHeight, params)
 }
 
 // SaveValidatorsInfo is an alias for the private saveValidatorsInfo method in
 // store.go, exported exclusively and explicitly for testing.
-func SaveValidatorsInfo(db dbm.DB, height, lastHeightChanged int64, valSet *types.ValidatorSet) error {
-	stateStore := dbStore{db}
-	return stateStore.saveValidatorsInfo(height, lastHeightChanged, valSet)
+func SaveValidatorsInfo(db dbm.DB, height, lastHeightChanged int64, valSet *types.ValidatorSet) {
+	saveValidatorsInfo(db, height, lastHeightChanged, valSet)
 }

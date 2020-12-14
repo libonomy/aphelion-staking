@@ -2,28 +2,23 @@ package client_test
 
 import (
 	"bytes"
-	"context"
 	"fmt"
-	"log"
 
 	"github.com/evdatsion/tendermint/abci/example/kvstore"
-	rpchttp "github.com/evdatsion/tendermint/rpc/client/http"
+	"github.com/evdatsion/tendermint/rpc/client"
 	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
 	rpctest "github.com/evdatsion/tendermint/rpc/test"
 )
 
 func ExampleHTTP_simple() {
 	// Start a tendermint node (and kvstore) in the background to test against
-	app := kvstore.NewApplication()
+	app := kvstore.NewKVStoreApplication()
 	node := rpctest.StartTendermint(app, rpctest.SuppressStdout, rpctest.RecreateConfig)
 	defer rpctest.StopTendermint(node)
 
 	// Create our RPC client
 	rpcAddr := rpctest.GetConfig().RPC.ListenAddress
-	c, err := rpchttp.New(rpcAddr, "/websocket")
-	if err != nil {
-		log.Fatal(err) //nolint:gocritic
-	}
+	c := client.NewHTTP(rpcAddr, "/websocket")
 
 	// Create a transaction
 	k := []byte("name")
@@ -31,28 +26,28 @@ func ExampleHTTP_simple() {
 	tx := append(k, append([]byte("="), v...)...)
 
 	// Broadcast the transaction and wait for it to commit (rather use
-	// c.BroadcastTxSync though in production).
-	bres, err := c.BroadcastTxCommit(context.Background(), tx)
+	// c.BroadcastTxSync though in production)
+	bres, err := c.BroadcastTxCommit(tx)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	if bres.CheckTx.IsErr() || bres.DeliverTx.IsErr() {
-		log.Fatal("BroadcastTxCommit transaction failed")
+		panic("BroadcastTxCommit transaction failed")
 	}
 
 	// Now try to fetch the value for the key
-	qres, err := c.ABCIQuery(context.Background(), "/key", k)
+	qres, err := c.ABCIQuery("/key", k)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	if qres.Response.IsErr() {
-		log.Fatal("ABCIQuery failed")
+		panic("ABCIQuery failed")
 	}
 	if !bytes.Equal(qres.Response.Key, k) {
-		log.Fatal("returned key does not match queried key")
+		panic("returned key does not match queried key")
 	}
 	if !bytes.Equal(qres.Response.Value, v) {
-		log.Fatal("returned value does not match sent value")
+		panic("returned value does not match sent value")
 	}
 
 	fmt.Println("Sent tx     :", string(tx))
@@ -67,17 +62,13 @@ func ExampleHTTP_simple() {
 
 func ExampleHTTP_batching() {
 	// Start a tendermint node (and kvstore) in the background to test against
-	app := kvstore.NewApplication()
+	app := kvstore.NewKVStoreApplication()
 	node := rpctest.StartTendermint(app, rpctest.SuppressStdout, rpctest.RecreateConfig)
+	defer rpctest.StopTendermint(node)
 
 	// Create our RPC client
 	rpcAddr := rpctest.GetConfig().RPC.ListenAddress
-	c, err := rpchttp.New(rpcAddr, "/websocket")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	defer rpctest.StopTendermint(node)
+	c := client.NewHTTP(rpcAddr, "/websocket")
 
 	// Create our two transactions
 	k1 := []byte("firstName")
@@ -95,30 +86,28 @@ func ExampleHTTP_batching() {
 
 	// Queue up our transactions
 	for _, tx := range txs {
-		// Broadcast the transaction and wait for it to commit (rather use
-		// c.BroadcastTxSync though in production).
-		if _, err := batch.BroadcastTxCommit(context.Background(), tx); err != nil {
-			log.Fatal(err) //nolint:gocritic
+		if _, err := batch.BroadcastTxCommit(tx); err != nil {
+			panic(err)
 		}
 	}
 
 	// Send the batch of 2 transactions
-	if _, err := batch.Send(context.Background()); err != nil {
-		log.Fatal(err)
+	if _, err := batch.Send(); err != nil {
+		panic(err)
 	}
 
 	// Now let's query for the original results as a batch
 	keys := [][]byte{k1, k2}
 	for _, key := range keys {
-		if _, err := batch.ABCIQuery(context.Background(), "/key", key); err != nil {
-			log.Fatal(err)
+		if _, err := batch.ABCIQuery("/key", key); err != nil {
+			panic(err)
 		}
 	}
 
 	// Send the 2 queries and keep the results
-	results, err := batch.Send(context.Background())
+	results, err := batch.Send()
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	// Each result in the returned list is the deserialized result of each
@@ -126,7 +115,7 @@ func ExampleHTTP_batching() {
 	for _, result := range results {
 		qr, ok := result.(*ctypes.ResultABCIQuery)
 		if !ok {
-			log.Fatal("invalid result type from ABCIQuery request")
+			panic("invalid result type from ABCIQuery request")
 		}
 		fmt.Println(string(qr.Response.Key), "=", string(qr.Response.Value))
 	}

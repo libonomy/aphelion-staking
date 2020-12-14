@@ -2,7 +2,7 @@
 order: 4
 ---
 
-# What is Tendermint
+# What is Tendermint?
 
 Tendermint is software for securely and consistently replicating an
 application on many machines. By securely, we mean that Tendermint works
@@ -74,7 +74,7 @@ Tendermint is in essence similar software, but with two key differences:
   the application logic that's right for them, from key-value store to
   cryptocurrency to e-voting platform and beyond.
 
-### Bitcoin, Ethereum, etc
+### Bitcoin, Ethereum, etc.
 
 Tendermint emerged in the tradition of cryptocurrencies like Bitcoin,
 Ethereum, etc. with the goal of providing a more efficient and secure
@@ -227,7 +227,7 @@ design their message handlers to create a blockchain that does anything
 useful but this architecture provides a place to start. The diagram
 below illustrates the flow of messages via ABCI.
 
-![abci](../imgs/abci.png)
+![](../imgs/abci.png)
 
 ## A Note on Determinism
 
@@ -263,7 +263,7 @@ Tendermint is an easy-to-understand, mostly asynchronous, BFT consensus
 protocol. The protocol follows a simple state machine that looks like
 this:
 
-![consensus-logic](../imgs/consensus_logic.png)
+![](../imgs/consensus_logic.png)
 
 Participants in the protocol are called **validators**; they take turns
 proposing blocks of transactions and voting on them. Blocks are
@@ -299,8 +299,8 @@ introduces a few **locking** rules which modulate which paths can be
 followed in the flow diagram. Once a validator precommits a block, it is
 locked on that block. Then,
 
-1. it must prevote for the block it is locked on
-2. it can only unlock, and precommit for a new block, if there is a
+1.  it must prevote for the block it is locked on
+2.  it can only unlock, and precommit for a new block, if there is a
     polka for that block in a later round
 
 ## Stake
@@ -325,6 +325,8 @@ The [Cosmos Network](https://cosmos.network) is designed to use this
 Proof-of-Stake mechanism across an array of cryptocurrencies implemented
 as ABCI applications.
 
-The following diagram is Tendermint in a (technical) nutshell.
+The following diagram is Tendermint in a (technical) nutshell. [See here
+for high resolution
+version](https://github.com/mobfoundry/hackatom/blob/master/tminfo.pdf).
 
-![tx-flow](../imgs/tm-transaction-flow.png)
+![](../imgs/tm-transaction-flow.png)

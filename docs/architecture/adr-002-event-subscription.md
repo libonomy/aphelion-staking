@@ -65,6 +65,7 @@ For historic queries we will need a indexing storage (Postgres, SQLite, ...).
 
 ### Issues
 
+- https://github.com/evdatsion/basecoin/issues/91
 - https://github.com/evdatsion/tendermint/issues/376
 - https://github.com/evdatsion/tendermint/issues/287
 - https://github.com/evdatsion/tendermint/issues/525 (related)

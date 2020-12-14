@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/evdatsion/tendermint/crypto/ed25519"
+	p2pconn "github.com/evdatsion/tendermint/p2p/conn"
 )
 
 const (
@@ -21,29 +22,29 @@ type timeoutError interface {
 // TCP Listener
 
 // TCPListenerOption sets an optional parameter on the tcpListener.
-type TCPListenerOption func(*TCPListener)
+type TCPListenerOption func(*tcpListener)
 
 // TCPListenerTimeoutAccept sets the timeout for the listener.
 // A zero time value disables the timeout.
 func TCPListenerTimeoutAccept(timeout time.Duration) TCPListenerOption {
-	return func(tl *TCPListener) { tl.timeoutAccept = timeout }
+	return func(tl *tcpListener) { tl.timeoutAccept = timeout }
 }
 
 // TCPListenerTimeoutReadWrite sets the read and write timeout for connections
 // from external signing processes.
 func TCPListenerTimeoutReadWrite(timeout time.Duration) TCPListenerOption {
-	return func(tl *TCPListener) { tl.timeoutReadWrite = timeout }
+	return func(tl *tcpListener) { tl.timeoutReadWrite = timeout }
 }
 
 // tcpListener implements net.Listener.
-var _ net.Listener = (*TCPListener)(nil)
+var _ net.Listener = (*tcpListener)(nil)
 
-// TCPListener wraps a *net.TCPListener to standardise protocol timeouts
+// tcpListener wraps a *net.TCPListener to standardise protocol timeouts
 // and potentially other tuning parameters. It also returns encrypted connections.
-type TCPListener struct {
+type tcpListener struct {
 	*net.TCPListener
 
-	secretConnKey ed25519.PrivKey
+	secretConnKey ed25519.PrivKeyEd25519
 
 	timeoutAccept    time.Duration
 	timeoutReadWrite time.Duration
@@ -51,8 +52,8 @@ type TCPListener struct {
 
 // NewTCPListener returns a listener that accepts authenticated encrypted connections
 // using the given secretConnKey and the default timeout values.
-func NewTCPListener(ln net.Listener, secretConnKey ed25519.PrivKey) *TCPListener {
-	return &TCPListener{
+func NewTCPListener(ln net.Listener, secretConnKey ed25519.PrivKeyEd25519) *tcpListener {
+	return &tcpListener{
 		TCPListener:      ln.(*net.TCPListener),
 		secretConnKey:    secretConnKey,
 		timeoutAccept:    time.Second * defaultTimeoutAcceptSeconds,
@@ -61,7 +62,7 @@ func NewTCPListener(ln net.Listener, secretConnKey ed25519.PrivKey) *TCPListener
 }
 
 // Accept implements net.Listener.
-func (ln *TCPListener) Accept() (net.Conn, error) {
+func (ln *tcpListener) Accept() (net.Conn, error) {
 	deadline := time.Now().Add(ln.timeoutAccept)
 	err := ln.SetDeadline(deadline)
 	if err != nil {
@@ -75,7 +76,7 @@ func (ln *TCPListener) Accept() (net.Conn, error) {
 
 	// Wrap the conn in our timeout and encryption wrappers
 	timeoutConn := newTimeoutConn(tc, ln.timeoutReadWrite)
-	secretConn, err := MakeSecretConnection(timeoutConn, ln.secretConnKey)
+	secretConn, err := p2pconn.MakeSecretConnection(timeoutConn, ln.secretConnKey)
 	if err != nil {
 		return nil, err
 	}
@@ -87,25 +88,25 @@ func (ln *TCPListener) Accept() (net.Conn, error) {
 // Unix Listener
 
 // unixListener implements net.Listener.
-var _ net.Listener = (*UnixListener)(nil)
+var _ net.Listener = (*unixListener)(nil)
 
-type UnixListenerOption func(*UnixListener)
+type UnixListenerOption func(*unixListener)
 
 // UnixListenerTimeoutAccept sets the timeout for the listener.
 // A zero time value disables the timeout.
 func UnixListenerTimeoutAccept(timeout time.Duration) UnixListenerOption {
-	return func(ul *UnixListener) { ul.timeoutAccept = timeout }
+	return func(ul *unixListener) { ul.timeoutAccept = timeout }
 }
 
 // UnixListenerTimeoutReadWrite sets the read and write timeout for connections
 // from external signing processes.
 func UnixListenerTimeoutReadWrite(timeout time.Duration) UnixListenerOption {
-	return func(ul *UnixListener) { ul.timeoutReadWrite = timeout }
+	return func(ul *unixListener) { ul.timeoutReadWrite = timeout }
 }
 
-// UnixListener wraps a *net.UnixListener to standardise protocol timeouts
+// unixListener wraps a *net.UnixListener to standardise protocol timeouts
 // and potentially other tuning parameters. It returns unencrypted connections.
-type UnixListener struct {
+type unixListener struct {
 	*net.UnixListener
 
 	timeoutAccept    time.Duration
@@ -114,8 +115,8 @@ type UnixListener struct {
 
 // NewUnixListener returns a listener that accepts unencrypted connections
 // using the default timeout values.
-func NewUnixListener(ln net.Listener) *UnixListener {
-	return &UnixListener{
+func NewUnixListener(ln net.Listener) *unixListener {
+	return &unixListener{
 		UnixListener:     ln.(*net.UnixListener),
 		timeoutAccept:    time.Second * defaultTimeoutAcceptSeconds,
 		timeoutReadWrite: time.Second * defaultTimeoutReadWriteSeconds,
@@ -123,7 +124,7 @@ func NewUnixListener(ln net.Listener) *UnixListener {
 }
 
 // Accept implements net.Listener.
-func (ln *UnixListener) Accept() (net.Conn, error) {
+func (ln *unixListener) Accept() (net.Conn, error) {
 	deadline := time.Now().Add(ln.timeoutAccept)
 	err := ln.SetDeadline(deadline)
 	if err != nil {

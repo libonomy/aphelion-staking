@@ -2,22 +2,22 @@ package core
 
 import (
 	abci "github.com/evdatsion/tendermint/abci/types"
-	"github.com/evdatsion/tendermint/libs/bytes"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 	"github.com/evdatsion/tendermint/proxy"
 	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
-	rpctypes "github.com/evdatsion/tendermint/rpc/jsonrpc/types"
+	rpctypes "github.com/evdatsion/tendermint/rpc/lib/types"
 )
 
 // ABCIQuery queries the application for some information.
-// More: https://docs.tendermint.com/master/rpc/#/ABCI/abci_query
+// More: https://tendermint.com/rpc/#/ABCI/abci_query
 func ABCIQuery(
 	ctx *rpctypes.Context,
 	path string,
-	data bytes.HexBytes,
+	data cmn.HexBytes,
 	height int64,
 	prove bool,
 ) (*ctypes.ResultABCIQuery, error) {
-	resQuery, err := env.ProxyAppQuery.QuerySync(abci.RequestQuery{
+	resQuery, err := proxyAppQuery.QuerySync(abci.RequestQuery{
 		Path:   path,
 		Data:   data,
 		Height: height,
@@ -26,14 +26,14 @@ func ABCIQuery(
 	if err != nil {
 		return nil, err
 	}
-	env.Logger.Info("ABCIQuery", "path", path, "data", data, "result", resQuery)
+	logger.Info("ABCIQuery", "path", path, "data", data, "result", resQuery)
 	return &ctypes.ResultABCIQuery{Response: *resQuery}, nil
 }
 
 // ABCIInfo gets some info about the application.
-// More: https://docs.tendermint.com/master/rpc/#/ABCI/abci_info
+// More: https://tendermint.com/rpc/#/ABCI/abci_info
 func ABCIInfo(ctx *rpctypes.Context) (*ctypes.ResultABCIInfo, error) {
-	resInfo, err := env.ProxyAppQuery.InfoSync(proxy.RequestInfo)
+	resInfo, err := proxyAppQuery.InfoSync(proxy.RequestInfo)
 	if err != nil {
 		return nil, err
 	}

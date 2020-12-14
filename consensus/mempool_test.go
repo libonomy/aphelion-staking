@@ -8,15 +8,13 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
-
-	dbm "github.com/evdatsion/tm-db"
 
 	"github.com/evdatsion/tendermint/abci/example/code"
 	abci "github.com/evdatsion/tendermint/abci/types"
 	mempl "github.com/evdatsion/tendermint/mempool"
 	sm "github.com/evdatsion/tendermint/state"
 	"github.com/evdatsion/tendermint/types"
+	dbm "github.com/evdatsion/tm-db"
 )
 
 // for testing
@@ -29,7 +27,7 @@ func TestMempoolNoProgressUntilTxsAvailable(t *testing.T) {
 	defer os.RemoveAll(config.RootDir)
 	config.Consensus.CreateEmptyBlocks = false
 	state, privVals := randGenesisState(1, false, 10)
-	cs := newStateWithConfig(config, state, privVals[0], NewCounterApplication())
+	cs := newConsensusStateWithConfig(config, state, privVals[0], NewCounterApplication())
 	assertMempool(cs.txNotifier).EnableTxsAvailable()
 	height, round := cs.Height, cs.Round
 	newBlockCh := subscribe(cs.eventBus, types.EventQueryNewBlock)
@@ -46,15 +44,13 @@ func TestMempoolNoProgressUntilTxsAvailable(t *testing.T) {
 func TestMempoolProgressAfterCreateEmptyBlocksInterval(t *testing.T) {
 	config := ResetConfig("consensus_mempool_txs_available_test")
 	defer os.RemoveAll(config.RootDir)
-
 	config.Consensus.CreateEmptyBlocksInterval = ensureTimeout
 	state, privVals := randGenesisState(1, false, 10)
-	cs := newStateWithConfig(config, state, privVals[0], NewCounterApplication())
-
+	cs := newConsensusStateWithConfig(config, state, privVals[0], NewCounterApplication())
 	assertMempool(cs.txNotifier).EnableTxsAvailable()
-
+	height, round := cs.Height, cs.Round
 	newBlockCh := subscribe(cs.eventBus, types.EventQueryNewBlock)
-	startTestRound(cs, cs.Height, cs.Round)
+	startTestRound(cs, height, round)
 
 	ensureNewEventOnChannel(newBlockCh)   // first block gets committed
 	ensureNoNewEventOnChannel(newBlockCh) // then we dont make a block ...
@@ -66,7 +62,7 @@ func TestMempoolProgressInHigherRound(t *testing.T) {
 	defer os.RemoveAll(config.RootDir)
 	config.Consensus.CreateEmptyBlocks = false
 	state, privVals := randGenesisState(1, false, 10)
-	cs := newStateWithConfig(config, state, privVals[0], NewCounterApplication())
+	cs := newConsensusStateWithConfig(config, state, privVals[0], NewCounterApplication())
 	assertMempool(cs.txNotifier).EnableTxsAvailable()
 	height, round := cs.Height, cs.Round
 	newBlockCh := subscribe(cs.eventBus, types.EventQueryNewBlock)
@@ -98,7 +94,7 @@ func TestMempoolProgressInHigherRound(t *testing.T) {
 	ensureNewEventOnChannel(newBlockCh)       // now we can commit the block
 }
 
-func deliverTxsRange(cs *State, start, end int) {
+func deliverTxsRange(cs *ConsensusState, start, end int) {
 	// Deliver some txs.
 	for i := start; i < end; i++ {
 		txBytes := make([]byte, 8)
@@ -113,23 +109,23 @@ func deliverTxsRange(cs *State, start, end int) {
 func TestMempoolTxConcurrentWithCommit(t *testing.T) {
 	state, privVals := randGenesisState(1, false, 10)
 	blockDB := dbm.NewMemDB()
-	stateStore := sm.NewStore(blockDB)
-	cs := newStateWithConfigAndBlockStore(config, state, privVals[0], NewCounterApplication(), blockDB)
-	err := stateStore.Save(state)
-	require.NoError(t, err)
-	newBlockHeaderCh := subscribe(cs.eventBus, types.EventQueryNewBlockHeader)
+	cs := newConsensusStateWithConfigAndBlockStore(config, state, privVals[0], NewCounterApplication(), blockDB)
+	sm.SaveState(blockDB, state)
+	height, round := cs.Height, cs.Round
+	newBlockCh := subscribe(cs.eventBus, types.EventQueryNewBlock)
 
-	const numTxs int64 = 3000
-	go deliverTxsRange(cs, 0, int(numTxs))
+	NTxs := 3000
+	go deliverTxsRange(cs, 0, NTxs)
 
-	startTestRound(cs, cs.Height, cs.Round)
-	for n := int64(0); n < numTxs; {
+	startTestRound(cs, height, round)
+	for nTxs := 0; nTxs < NTxs; {
+		ticker := time.NewTicker(time.Second * 30)
 		select {
-		case msg := <-newBlockHeaderCh:
-			headerEvent := msg.Data().(types.EventDataNewBlockHeader)
-			n += headerEvent.NumTxs
-		case <-time.After(30 * time.Second):
-			t.Fatal("Timed out waiting 30s to commit blocks with transactions")
+		case msg := <-newBlockCh:
+			blockEvent := msg.Data().(types.EventDataNewBlock)
+			nTxs += int(blockEvent.Block.Header.NumTxs)
+		case <-ticker.C:
+			panic("Timed out waiting to commit blocks with transactions")
 		}
 	}
 }
@@ -138,10 +134,8 @@ func TestMempoolRmBadTx(t *testing.T) {
 	state, privVals := randGenesisState(1, false, 10)
 	app := NewCounterApplication()
 	blockDB := dbm.NewMemDB()
-	stateStore := sm.NewStore(blockDB)
-	cs := newStateWithConfigAndBlockStore(config, state, privVals[0], app, blockDB)
-	err := stateStore.Save(state)
-	require.NoError(t, err)
+	cs := newConsensusStateWithConfigAndBlockStore(config, state, privVals[0], app, blockDB)
+	sm.SaveState(blockDB, state)
 
 	// increment the counter by 1
 	txBytes := make([]byte, 8)
@@ -167,7 +161,7 @@ func TestMempoolRmBadTx(t *testing.T) {
 			checkTxRespCh <- struct{}{}
 		}, mempl.TxInfo{})
 		if err != nil {
-			t.Errorf("error after CheckTx: %v", err)
+			t.Errorf("Error after CheckTx: %v", err)
 			return
 		}
 
@@ -188,7 +182,7 @@ func TestMempoolRmBadTx(t *testing.T) {
 	case <-checkTxRespCh:
 		// success
 	case <-ticker:
-		t.Errorf("timed out waiting for tx to return")
+		t.Errorf("Timed out waiting for tx to return")
 		return
 	}
 
@@ -198,7 +192,7 @@ func TestMempoolRmBadTx(t *testing.T) {
 	case <-emptyMempoolCh:
 		// success
 	case <-ticker:
-		t.Errorf("timed out waiting for tx to be removed")
+		t.Errorf("Timed out waiting for tx to be removed")
 		return
 	}
 }

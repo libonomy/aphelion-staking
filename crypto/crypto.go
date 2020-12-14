@@ -2,7 +2,7 @@ package crypto
 
 import (
 	"github.com/evdatsion/tendermint/crypto/tmhash"
-	"github.com/evdatsion/tendermint/libs/bytes"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 )
 
 const (
@@ -13,7 +13,7 @@ const (
 // An address is a []byte, but hex-encoded even in JSON.
 // []byte leaves us the option to change the address length.
 // Use an alias so Unmarshal methods (with ptr receivers) are available too.
-type Address = bytes.HexBytes
+type Address = cmn.HexBytes
 
 func AddressHash(bz []byte) Address {
 	return Address(tmhash.SumTruncated(bz))
@@ -22,9 +22,8 @@ func AddressHash(bz []byte) Address {
 type PubKey interface {
 	Address() Address
 	Bytes() []byte
-	VerifySignature(msg []byte, sig []byte) bool
+	VerifyBytes(msg []byte, sig []byte) bool
 	Equals(PubKey) bool
-	Type() string
 }
 
 type PrivKey interface {
@@ -32,7 +31,6 @@ type PrivKey interface {
 	Sign(msg []byte) ([]byte, error)
 	PubKey() PubKey
 	Equals(PrivKey) bool
-	Type() string
 }
 
 type Symmetric interface {

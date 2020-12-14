@@ -1,24 +1,24 @@
 package privval
 
 import (
-	"errors"
 	"fmt"
 	"net"
 
+	"github.com/pkg/errors"
+
 	"github.com/evdatsion/tendermint/crypto/ed25519"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 	"github.com/evdatsion/tendermint/libs/log"
-	tmnet "github.com/evdatsion/tendermint/libs/net"
 )
 
 // IsConnTimeout returns a boolean indicating whether the error is known to
 // report that a connection timeout occurred. This detects both fundamental
 // network timeouts, as well as ErrConnTimeout errors.
 func IsConnTimeout(err error) bool {
-	_, ok := errors.Unwrap(err).(timeoutError)
-	switch {
-	case errors.As(err, &EndpointTimeoutError{}):
+	switch errors.Cause(err).(type) {
+	case EndpointTimeoutError:
 		return true
-	case ok:
+	case timeoutError:
 		return true
 	default:
 		return false
@@ -29,7 +29,7 @@ func IsConnTimeout(err error) bool {
 func NewSignerListener(listenAddr string, logger log.Logger) (*SignerListenerEndpoint, error) {
 	var listener net.Listener
 
-	protocol, address := tmnet.ProtocolAndAddress(listenAddr)
+	protocol, address := cmn.ProtocolAndAddress(listenAddr)
 	ln, err := net.Listen(protocol, address)
 	if err != nil {
 		return nil, err
@@ -54,7 +54,7 @@ func NewSignerListener(listenAddr string, logger log.Logger) (*SignerListenerEnd
 
 // GetFreeLocalhostAddrPort returns a free localhost:port address
 func GetFreeLocalhostAddrPort() string {
-	port, err := tmnet.GetFreePort()
+	port, err := cmn.GetFreePort()
 	if err != nil {
 		panic(err)
 	}

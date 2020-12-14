@@ -5,11 +5,12 @@ import (
 	"net"
 	"time"
 
+	"github.com/pkg/errors"
+
 	"github.com/evdatsion/tendermint/crypto"
 	"github.com/evdatsion/tendermint/crypto/ed25519"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 	"github.com/evdatsion/tendermint/libs/log"
-	tmnet "github.com/evdatsion/tendermint/libs/net"
-	tmrand "github.com/evdatsion/tendermint/libs/rand"
 
 	"github.com/evdatsion/tendermint/config"
 	"github.com/evdatsion/tendermint/p2p/conn"
@@ -29,10 +30,10 @@ func (ni mockNodeInfo) Validate() error                     { return nil }
 func (ni mockNodeInfo) CompatibleWith(other NodeInfo) error { return nil }
 
 func AddPeerToSwitchPeerSet(sw *Switch, peer Peer) {
-	sw.peers.Add(peer) //nolint:errcheck // ignore error
+	sw.peers.Add(peer)
 }
 
-func CreateRandomPeer(outbound bool) Peer {
+func CreateRandomPeer(outbound bool) *peer {
 	addr, netAddr := CreateRoutableAddr()
 	p := &peer{
 		peerConn: peerConn{
@@ -51,11 +52,11 @@ func CreateRoutableAddr() (addr string, netAddr *NetAddress) {
 	for {
 		var err error
 		addr = fmt.Sprintf("%X@%v.%v.%v.%v:26656",
-			tmrand.Bytes(20),
-			tmrand.Int()%256,
-			tmrand.Int()%256,
-			tmrand.Int()%256,
-			tmrand.Int()%256)
+			cmn.RandBytes(20),
+			cmn.RandInt()%256,
+			cmn.RandInt()%256,
+			cmn.RandInt()%256,
+			cmn.RandInt()%256)
 		netAddr, err = NewNetAddressString(addr)
 		if err != nil {
 			panic(err)
@@ -70,7 +71,7 @@ func CreateRoutableAddr() (addr string, netAddr *NetAddress) {
 //------------------------------------------------------------------
 // Connects switches via arbitrary net.Conn. Used for testing.
 
-const TestHost = "localhost"
+const TEST_HOST = "localhost"
 
 // MakeConnectedSwitches returns n switches, connected according to the connect func.
 // If connect==Connect2Switches, the switches will be fully connected.
@@ -83,7 +84,7 @@ func MakeConnectedSwitches(cfg *config.P2PConfig,
 ) []*Switch {
 	switches := make([]*Switch, n)
 	for i := 0; i < n; i++ {
-		switches[i] = MakeSwitch(cfg, i, TestHost, "123.123.123", initSwitch)
+		switches[i] = MakeSwitch(cfg, i, TEST_HOST, "123.123.123", initSwitch)
 	}
 
 	if err := StartSwitches(switches); err != nil {
@@ -234,10 +235,16 @@ func testPeerConn(
 ) (pc peerConn, err error) {
 	conn := rawConn
 
+	// Fuzz connection
+	if cfg.TestFuzz {
+		// so we have time to do peer handshakes and get set up
+		conn = FuzzConnAfterFromConfig(conn, 10*time.Second, cfg.TestFuzzConfig)
+	}
+
 	// Encrypt connection
 	conn, err = upgradeSecretConn(conn, cfg.HandshakeTimeout, ourNodePrivKey)
 	if err != nil {
-		return pc, fmt.Errorf("error creating peer: %w", err)
+		return pc, errors.Wrap(err, "Error creating peer")
 	}
 
 	// Only the information we already have
@@ -254,7 +261,7 @@ func testNodeInfo(id ID, name string) NodeInfo {
 func testNodeInfoWithNetwork(id ID, name, network string) NodeInfo {
 	return DefaultNodeInfo{
 		ProtocolVersion: defaultProtocolVersion,
-		DefaultNodeID:   id,
+		ID_:             id,
 		ListenAddr:      fmt.Sprintf("127.0.0.1:%d", getFreePort()),
 		Network:         network,
 		Version:         "1.2.3-rc0-deadbeef",
@@ -268,41 +275,9 @@ func testNodeInfoWithNetwork(id ID, name, network string) NodeInfo {
 }
 
 func getFreePort() int {
-	port, err := tmnet.GetFreePort()
+	port, err := cmn.GetFreePort()
 	if err != nil {
 		panic(err)
 	}
 	return port
-}
-
-type AddrBookMock struct {
-	Addrs        map[string]struct{}
-	OurAddrs     map[string]struct{}
-	PrivateAddrs map[string]struct{}
-}
-
-var _ AddrBook = (*AddrBookMock)(nil)
-
-func (book *AddrBookMock) AddAddress(addr *NetAddress, src *NetAddress) error {
-	book.Addrs[addr.String()] = struct{}{}
-	return nil
-}
-func (book *AddrBookMock) AddOurAddress(addr *NetAddress) { book.OurAddrs[addr.String()] = struct{}{} }
-func (book *AddrBookMock) OurAddress(addr *NetAddress) bool {
-	_, ok := book.OurAddrs[addr.String()]
-	return ok
-}
-func (book *AddrBookMock) MarkGood(ID) {}
-func (book *AddrBookMock) HasAddress(addr *NetAddress) bool {
-	_, ok := book.Addrs[addr.String()]
-	return ok
-}
-func (book *AddrBookMock) RemoveAddress(addr *NetAddress) {
-	delete(book.Addrs, addr.String())
-}
-func (book *AddrBookMock) Save() {}
-func (book *AddrBookMock) AddPrivateIDs(addrs []string) {
-	for _, addr := range addrs {
-		book.PrivateAddrs[addr] = struct{}{}
-	}
 }

@@ -1,6 +1,6 @@
 package query
 
-// Empty query matches any set of events.
+// Empty query matches any set of tags.
 type Empty struct {
 }
 

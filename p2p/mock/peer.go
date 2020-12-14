@@ -4,13 +4,13 @@ import (
 	"net"
 
 	"github.com/evdatsion/tendermint/crypto/ed25519"
-	"github.com/evdatsion/tendermint/libs/service"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 	"github.com/evdatsion/tendermint/p2p"
 	"github.com/evdatsion/tendermint/p2p/conn"
 )
 
 type Peer struct {
-	*service.BaseService
+	*cmn.BaseService
 	ip                   net.IP
 	id                   p2p.ID
 	addr                 *p2p.NetAddress
@@ -35,20 +35,18 @@ func NewPeer(ip net.IP) *Peer {
 		addr: netAddr,
 		kv:   make(map[string]interface{}),
 	}
-	mp.BaseService = service.NewBaseService(nil, "MockPeer", mp)
-	if err := mp.Start(); err != nil {
-		panic(err)
-	}
+	mp.BaseService = cmn.NewBaseService(nil, "MockPeer", mp)
+	mp.Start()
 	return mp
 }
 
-func (mp *Peer) FlushStop()                              { mp.Stop() } //nolint:errcheck //ignore error
+func (mp *Peer) FlushStop()                              { mp.Stop() }
 func (mp *Peer) TrySend(chID byte, msgBytes []byte) bool { return true }
 func (mp *Peer) Send(chID byte, msgBytes []byte) bool    { return true }
 func (mp *Peer) NodeInfo() p2p.NodeInfo {
 	return p2p.DefaultNodeInfo{
-		DefaultNodeID: mp.addr.ID,
-		ListenAddr:    mp.addr.DialString(),
+		ID_:        mp.addr.ID,
+		ListenAddr: mp.addr.DialString(),
 	}
 }
 func (mp *Peer) Status() conn.ConnectionStatus { return conn.ConnectionStatus{} }

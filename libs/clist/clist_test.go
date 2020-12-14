@@ -8,8 +8,7 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
-
-	tmrand "github.com/evdatsion/tendermint/libs/rand"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 )
 
 func TestPanicOnMaxLength(t *testing.T) {
@@ -33,21 +32,21 @@ func TestSmall(t *testing.T) {
 		t.Error("Expected len 3, got ", l.Len())
 	}
 
-	// fmt.Printf("%p %v\n", el1, el1)
-	// fmt.Printf("%p %v\n", el2, el2)
-	// fmt.Printf("%p %v\n", el3, el3)
+	//fmt.Printf("%p %v\n", el1, el1)
+	//fmt.Printf("%p %v\n", el2, el2)
+	//fmt.Printf("%p %v\n", el3, el3)
 
 	r1 := l.Remove(el1)
 
-	// fmt.Printf("%p %v\n", el1, el1)
-	// fmt.Printf("%p %v\n", el2, el2)
-	// fmt.Printf("%p %v\n", el3, el3)
+	//fmt.Printf("%p %v\n", el1, el1)
+	//fmt.Printf("%p %v\n", el2, el2)
+	//fmt.Printf("%p %v\n", el3, el3)
 
 	r2 := l.Remove(el2)
 
-	// fmt.Printf("%p %v\n", el1, el1)
-	// fmt.Printf("%p %v\n", el2, el2)
-	// fmt.Printf("%p %v\n", el3, el3)
+	//fmt.Printf("%p %v\n", el1, el1)
+	//fmt.Printf("%p %v\n", el2, el2)
+	//fmt.Printf("%p %v\n", el3, el3)
 
 	r3 := l.Remove(el3)
 
@@ -97,10 +96,10 @@ func _TestGCFifo(t *testing.T) {
 
 	for el := l.Front(); el != nil; {
 		l.Remove(el)
-		// oldEl := el
+		//oldEl := el
 		el = el.Next()
-		// oldEl.DetachPrev()
-		// oldEl.DetachNext()
+		//oldEl.DetachPrev()
+		//oldEl.DetachNext()
 	}
 
 	runtime.GC()
@@ -110,7 +109,7 @@ func _TestGCFifo(t *testing.T) {
 	_ = done
 
 	if *gcCount != numElements {
-		t.Errorf("expected gcCount to be %v, got %v", numElements,
+		t.Errorf("Expected gcCount to be %v, got %v", numElements,
 			*gcCount)
 	}
 }
@@ -148,7 +147,7 @@ func _TestGCRandom(t *testing.T) {
 		els = append(els, el)
 	}
 
-	for _, i := range tmrand.Perm(numElements) {
+	for _, i := range cmn.RandPerm(numElements) {
 		el := els[i]
 		l.Remove(el)
 		_ = el.Next()
@@ -158,7 +157,7 @@ func _TestGCRandom(t *testing.T) {
 	time.Sleep(time.Second * 3)
 
 	if gcCount != numElements {
-		t.Errorf("expected gcCount to be %v, got %v", numElements,
+		t.Errorf("Expected gcCount to be %v, got %v", numElements,
 			gcCount)
 	}
 }
@@ -206,12 +205,12 @@ func TestScanRightDeleteRandom(t *testing.T) {
 	// Remove an element, push back an element.
 	for i := 0; i < numTimes; i++ {
 		// Pick an element to remove
-		rmElIdx := tmrand.Intn(len(els))
+		rmElIdx := cmn.RandIntn(len(els))
 		rmEl := els[rmElIdx]
 
 		// Remove it
 		l.Remove(rmEl)
-		// fmt.Print(".")
+		//fmt.Print(".")
 
 		// Insert a new element
 		newEl := l.PushBack(-1*i - 1)
@@ -260,7 +259,7 @@ func TestWaitChan(t *testing.T) {
 		for i := 1; i < 100; i++ {
 			l.PushBack(i)
 			pushed++
-			time.Sleep(time.Duration(tmrand.Intn(25)) * time.Millisecond)
+			time.Sleep(time.Duration(cmn.RandIntn(25)) * time.Millisecond)
 		}
 		// apply a deterministic pause so the counter has time to catch up
 		time.Sleep(25 * time.Millisecond)

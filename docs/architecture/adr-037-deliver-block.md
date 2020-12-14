@@ -70,7 +70,7 @@ type RequestDeliverBlock struct {
 type ResponseDeliverBlock struct {
     ValidatorUpdates      []ValidatorUpdate
     ConsensusParamUpdates *ConsensusParams
-    Tags                  []kv.Pair
+    Tags                  []common.KVPair
     TxResults             []ResponseDeliverTx
 }
 

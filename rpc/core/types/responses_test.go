@@ -1,4 +1,4 @@
-package coretypes
+package core_types
 
 import (
 	"testing"

@@ -1,27 +1,26 @@
 package v0
 
 import (
-	"fmt"
 	"os"
 	"sort"
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
+	"github.com/pkg/errors"
+	"github.com/evdatsion/tendermint/store"
 
-	dbm "github.com/evdatsion/tm-db"
+	"github.com/stretchr/testify/assert"
 
 	abci "github.com/evdatsion/tendermint/abci/types"
 	cfg "github.com/evdatsion/tendermint/config"
 	"github.com/evdatsion/tendermint/libs/log"
-	"github.com/evdatsion/tendermint/mempool/mock"
+	"github.com/evdatsion/tendermint/mock"
 	"github.com/evdatsion/tendermint/p2p"
 	"github.com/evdatsion/tendermint/proxy"
 	sm "github.com/evdatsion/tendermint/state"
-	"github.com/evdatsion/tendermint/store"
 	"github.com/evdatsion/tendermint/types"
 	tmtime "github.com/evdatsion/tendermint/types/time"
+	dbm "github.com/evdatsion/tm-db"
 )
 
 var config *cfg.Config
@@ -65,17 +64,16 @@ func newBlockchainReactor(
 	proxyApp := proxy.NewAppConns(cc)
 	err := proxyApp.Start()
 	if err != nil {
-		panic(fmt.Errorf("error start app: %w", err))
+		panic(errors.Wrap(err, "error start app"))
 	}
 
 	blockDB := dbm.NewMemDB()
 	stateDB := dbm.NewMemDB()
-	stateStore := sm.NewStore(stateDB)
 	blockStore := store.NewBlockStore(blockDB)
 
-	state, err := stateStore.LoadFromDBOrGenesisDoc(genDoc)
+	state, err := sm.LoadStateFromDBOrGenesisDoc(stateDB, genDoc)
 	if err != nil {
-		panic(fmt.Errorf("error constructing state from genesis file: %w", err))
+		panic(errors.Wrap(err, "error constructing state from genesis file"))
 	}
 
 	// Make the BlockchainReactor itself.
@@ -83,16 +81,13 @@ func newBlockchainReactor(
 	// pool.height is determined from the store.
 	fastSync := true
 	db := dbm.NewMemDB()
-	stateStore = sm.NewStore(db)
-	blockExec := sm.NewBlockExecutor(stateStore, log.TestingLogger(), proxyApp.Consensus(),
-		mock.Mempool{}, sm.EmptyEvidencePool{})
-	if err = stateStore.Save(state); err != nil {
-		panic(err)
-	}
+	blockExec := sm.NewBlockExecutor(db, log.TestingLogger(), proxyApp.Consensus(),
+		mock.Mempool{}, sm.MockEvidencePool{})
+	sm.SaveState(db, state)
 
 	// let's add some blocks in
 	for blockHeight := int64(1); blockHeight <= maxBlockHeight; blockHeight++ {
-		lastCommit := types.NewCommit(blockHeight-1, 0, types.BlockID{}, nil)
+		lastCommit := types.NewCommit(types.BlockID{}, nil)
 		if blockHeight > 1 {
 			lastBlockMeta := blockStore.LoadBlockMeta(blockHeight - 1)
 			lastBlock := blockStore.LoadBlock(blockHeight - 1)
@@ -102,24 +97,22 @@ func newBlockchainReactor(
 				lastBlockMeta.BlockID,
 				state.Validators,
 				privVals[0],
-				lastBlock.Header.ChainID,
-				time.Now(),
-			)
+				lastBlock.Header.ChainID)
 			if err != nil {
 				panic(err)
 			}
-			lastCommit = types.NewCommit(vote.Height, vote.Round,
-				lastBlockMeta.BlockID, []types.CommitSig{vote.CommitSig()})
+			voteCommitSig := vote.CommitSig()
+			lastCommit = types.NewCommit(lastBlockMeta.BlockID, []*types.CommitSig{voteCommitSig})
 		}
 
 		thisBlock := makeBlock(blockHeight, state, lastCommit)
 
 		thisParts := thisBlock.MakePartSet(types.BlockPartSizeBytes)
-		blockID := types.BlockID{Hash: thisBlock.Hash(), PartSetHeader: thisParts.Header()}
+		blockID := types.BlockID{Hash: thisBlock.Hash(), PartsHeader: thisParts.Header()}
 
-		state, _, err = blockExec.ApplyBlock(state, blockID, thisBlock)
+		state, err = blockExec.ApplyBlock(state, blockID, thisBlock)
 		if err != nil {
-			panic(fmt.Errorf("error apply block: %w", err))
+			panic(errors.Wrap(err, "error apply block"))
 		}
 
 		blockStore.SaveBlock(thisBlock, thisParts, lastCommit)
@@ -151,10 +144,8 @@ func TestNoBlockResponse(t *testing.T) {
 
 	defer func() {
 		for _, r := range reactorPairs {
-			err := r.reactor.Stop()
-			require.NoError(t, err)
-			err = r.app.Stop()
-			require.NoError(t, err)
+			r.reactor.Stop()
+			r.app.Stop()
 		}
 	}()
 
@@ -200,15 +191,10 @@ func TestBadBlockStopsPeer(t *testing.T) {
 
 	maxBlockHeight := int64(148)
 
-	// Other chain needs a different validator set
-	otherGenDoc, otherPrivVals := randGenesisDoc(1, false, 30)
-	otherChain := newBlockchainReactor(log.TestingLogger(), otherGenDoc, otherPrivVals, maxBlockHeight)
-
+	otherChain := newBlockchainReactor(log.TestingLogger(), genDoc, privVals, maxBlockHeight)
 	defer func() {
-		err := otherChain.reactor.Stop()
-		require.Error(t, err)
-		err = otherChain.app.Stop()
-		require.NoError(t, err)
+		otherChain.reactor.Stop()
+		otherChain.app.Stop()
 	}()
 
 	reactorPairs := make([]BlockchainReactorPair, 4)
@@ -226,32 +212,23 @@ func TestBadBlockStopsPeer(t *testing.T) {
 
 	defer func() {
 		for _, r := range reactorPairs {
-			err := r.reactor.Stop()
-			require.NoError(t, err)
-
-			err = r.app.Stop()
-			require.NoError(t, err)
+			r.reactor.Stop()
+			r.app.Stop()
 		}
 	}()
 
 	for {
-		time.Sleep(1 * time.Second)
-		caughtUp := true
-		for _, r := range reactorPairs {
-			if !r.reactor.pool.IsCaughtUp() {
-				caughtUp = false
-			}
-		}
-		if caughtUp {
+		if reactorPairs[3].reactor.pool.IsCaughtUp() {
 			break
 		}
+
+		time.Sleep(1 * time.Second)
 	}
 
-	// at this time, reactors[0-3] is the newest
+	//at this time, reactors[0-3] is the newest
 	assert.Equal(t, 3, reactorPairs[1].reactor.Switch.Peers().Size())
 
-	// Mark reactorPairs[3] as an invalid peer. Fiddling with .store without a mutex is a data
-	// race, but can't be easily avoided.
+	//mark reactorPairs[3] is an invalid peer
 	reactorPairs[3].reactor.store = otherChain.reactor.store
 
 	lastReactorPair := newBlockchainReactor(log.TestingLogger(), genDoc, privVals, 0)
@@ -276,6 +253,86 @@ func TestBadBlockStopsPeer(t *testing.T) {
 	}
 
 	assert.True(t, lastReactorPair.reactor.Switch.Peers().Size() < len(reactorPairs)-1)
+}
+
+func TestBcBlockRequestMessageValidateBasic(t *testing.T) {
+	testCases := []struct {
+		testName      string
+		requestHeight int64
+		expectErr     bool
+	}{
+		{"Valid Request Message", 0, false},
+		{"Valid Request Message", 1, false},
+		{"Invalid Request Message", -1, true},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.testName, func(t *testing.T) {
+			request := bcBlockRequestMessage{Height: tc.requestHeight}
+			assert.Equal(t, tc.expectErr, request.ValidateBasic() != nil, "Validate Basic had an unexpected result")
+		})
+	}
+}
+
+func TestBcNoBlockResponseMessageValidateBasic(t *testing.T) {
+	testCases := []struct {
+		testName          string
+		nonResponseHeight int64
+		expectErr         bool
+	}{
+		{"Valid Non-Response Message", 0, false},
+		{"Valid Non-Response Message", 1, false},
+		{"Invalid Non-Response Message", -1, true},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.testName, func(t *testing.T) {
+			nonResponse := bcNoBlockResponseMessage{Height: tc.nonResponseHeight}
+			assert.Equal(t, tc.expectErr, nonResponse.ValidateBasic() != nil, "Validate Basic had an unexpected result")
+		})
+	}
+}
+
+func TestBcStatusRequestMessageValidateBasic(t *testing.T) {
+	testCases := []struct {
+		testName      string
+		requestHeight int64
+		expectErr     bool
+	}{
+		{"Valid Request Message", 0, false},
+		{"Valid Request Message", 1, false},
+		{"Invalid Request Message", -1, true},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.testName, func(t *testing.T) {
+			request := bcStatusRequestMessage{Height: tc.requestHeight}
+			assert.Equal(t, tc.expectErr, request.ValidateBasic() != nil, "Validate Basic had an unexpected result")
+		})
+	}
+}
+
+func TestBcStatusResponseMessageValidateBasic(t *testing.T) {
+	testCases := []struct {
+		testName       string
+		responseHeight int64
+		expectErr      bool
+	}{
+		{"Valid Response Message", 0, false},
+		{"Valid Response Message", 1, false},
+		{"Invalid Response Message", -1, true},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.testName, func(t *testing.T) {
+			response := bcStatusResponseMessage{Height: tc.responseHeight}
+			assert.Equal(t, tc.expectErr, response.ValidateBasic() != nil, "Validate Basic had an unexpected result")
+		})
+	}
 }
 
 //----------------------------------------------

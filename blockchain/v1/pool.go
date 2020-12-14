@@ -66,9 +66,9 @@ func (pool *BlockPool) updateMaxPeerHeight() {
 	pool.MaxPeerHeight = newMax
 }
 
-// UpdatePeer adds a new peer or updates an existing peer with a new base and height.
+// UpdatePeer adds a new peer or updates an existing peer with a new height.
 // If a peer is short it is not added.
-func (pool *BlockPool) UpdatePeer(peerID p2p.ID, base int64, height int64) error {
+func (pool *BlockPool) UpdatePeer(peerID p2p.ID, height int64) error {
 
 	peer := pool.peers[peerID]
 
@@ -79,10 +79,10 @@ func (pool *BlockPool) UpdatePeer(peerID p2p.ID, base int64, height int64) error
 			return errPeerTooShort
 		}
 		// Add new peer.
-		peer = NewBpPeer(peerID, base, height, pool.toBcR.sendPeerError, nil)
+		peer = NewBpPeer(peerID, height, pool.toBcR.sendPeerError, nil)
 		peer.SetLogger(pool.logger.With("peer", peerID))
 		pool.peers[peerID] = peer
-		pool.logger.Info("added peer", "peerID", peerID, "base", base, "height", height, "num_peers", len(pool.peers))
+		pool.logger.Info("added peer", "peerID", peerID, "height", height, "num_peers", len(pool.peers))
 	} else {
 		// Check if peer is lowering its height. This is not allowed.
 		if height < peer.Height {
@@ -90,7 +90,6 @@ func (pool *BlockPool) UpdatePeer(peerID p2p.ID, base int64, height int64) error
 			return errPeerLowersItsHeight
 		}
 		// Update existing peer.
-		peer.Base = base
 		peer.Height = height
 	}
 
@@ -98,18 +97,6 @@ func (pool *BlockPool) UpdatePeer(peerID p2p.ID, base int64, height int64) error
 	pool.updateMaxPeerHeight()
 
 	return nil
-}
-
-// SetNoBlock records that the peer does not have a block for height and
-// schedules a new request for that height from another peer.
-func (pool *BlockPool) SetNoBlock(peerID p2p.ID, height int64) {
-	peer := pool.peers[peerID]
-	if peer == nil {
-		return
-	}
-	peer.SetNoBlock(height)
-
-	pool.rescheduleRequest(peerID, height)
 }
 
 // Cleans and deletes the peer. Recomputes the max peer height.
@@ -226,7 +213,7 @@ func (pool *BlockPool) sendRequest(height int64) bool {
 		if peer.NumPendingBlockRequests >= maxRequestsPerPeer {
 			continue
 		}
-		if peer.Base > height || peer.Height < height || peer.NoBlock(height) {
+		if peer.Height < height {
 			continue
 		}
 

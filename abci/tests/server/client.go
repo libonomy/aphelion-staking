@@ -7,16 +7,16 @@ import (
 
 	abcicli "github.com/evdatsion/tendermint/abci/client"
 	"github.com/evdatsion/tendermint/abci/types"
-	tmrand "github.com/evdatsion/tendermint/libs/rand"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 )
 
 func InitChain(client abcicli.Client) error {
 	total := 10
 	vals := make([]types.ValidatorUpdate, total)
 	for i := 0; i < total; i++ {
-		pubkey := tmrand.Bytes(33)
-		power := tmrand.Int()
-		vals[i] = types.UpdateValidator(pubkey, int64(power), "")
+		pubkey := cmn.RandBytes(33)
+		power := cmn.RandInt()
+		vals[i] = types.Ed25519ValidatorUpdate(pubkey, int64(power))
 	}
 	_, err := client.InitChainSync(types.RequestInitChain{
 		Validators: vals,
@@ -26,6 +26,17 @@ func InitChain(client abcicli.Client) error {
 		return err
 	}
 	fmt.Println("Passed test: InitChain")
+	return nil
+}
+
+func SetOption(client abcicli.Client, key, value string) error {
+	_, err := client.SetOptionSync(types.RequestSetOption{Key: key, Value: value})
+	if err != nil {
+		fmt.Println("Failed test: SetOption")
+		fmt.Printf("error while setting %v=%v: \nerror: %v\n", key, value, err)
+		return err
+	}
+	fmt.Println("Passed test: SetOption")
 	return nil
 }
 
@@ -40,7 +51,7 @@ func Commit(client abcicli.Client, hashExp []byte) error {
 	if !bytes.Equal(data, hashExp) {
 		fmt.Println("Failed test: Commit")
 		fmt.Printf("Commit hash was unexpected. Got %X expected %X\n", data, hashExp)
-		return errors.New("commitTx failed")
+		return errors.New("CommitTx failed")
 	}
 	fmt.Println("Passed test: Commit")
 	return nil
@@ -53,13 +64,13 @@ func DeliverTx(client abcicli.Client, txBytes []byte, codeExp uint32, dataExp []
 		fmt.Println("Failed test: DeliverTx")
 		fmt.Printf("DeliverTx response code was unexpected. Got %v expected %v. Log: %v\n",
 			code, codeExp, log)
-		return errors.New("deliverTx error")
+		return errors.New("DeliverTx error")
 	}
 	if !bytes.Equal(data, dataExp) {
 		fmt.Println("Failed test: DeliverTx")
 		fmt.Printf("DeliverTx response data was unexpected. Got %X expected %X\n",
 			data, dataExp)
-		return errors.New("deliverTx error")
+		return errors.New("DeliverTx error")
 	}
 	fmt.Println("Passed test: DeliverTx")
 	return nil
@@ -72,13 +83,13 @@ func CheckTx(client abcicli.Client, txBytes []byte, codeExp uint32, dataExp []by
 		fmt.Println("Failed test: CheckTx")
 		fmt.Printf("CheckTx response code was unexpected. Got %v expected %v. Log: %v\n",
 			code, codeExp, log)
-		return errors.New("checkTx")
+		return errors.New("CheckTx")
 	}
 	if !bytes.Equal(data, dataExp) {
 		fmt.Println("Failed test: CheckTx")
 		fmt.Printf("CheckTx response data was unexpected. Got %X expected %X\n",
 			data, dataExp)
-		return errors.New("checkTx")
+		return errors.New("CheckTx")
 	}
 	fmt.Println("Passed test: CheckTx")
 	return nil

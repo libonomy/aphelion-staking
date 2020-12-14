@@ -1,12 +1,13 @@
 package privval
 
 import (
-	"errors"
 	"net"
 	"time"
 
+	"github.com/pkg/errors"
 	"github.com/evdatsion/tendermint/crypto"
-	tmnet "github.com/evdatsion/tendermint/libs/net"
+	cmn "github.com/evdatsion/tendermint/libs/common"
+	p2pconn "github.com/evdatsion/tendermint/p2p/conn"
 )
 
 // Socket errors.
@@ -21,13 +22,13 @@ type SocketDialer func() (net.Conn, error)
 // privKey for the authenticated encryption handshake.
 func DialTCPFn(addr string, timeoutReadWrite time.Duration, privKey crypto.PrivKey) SocketDialer {
 	return func() (net.Conn, error) {
-		conn, err := tmnet.Connect(addr)
+		conn, err := cmn.Connect(addr)
 		if err == nil {
 			deadline := time.Now().Add(timeoutReadWrite)
 			err = conn.SetDeadline(deadline)
 		}
 		if err == nil {
-			conn, err = MakeSecretConnection(conn, privKey)
+			conn, err = p2pconn.MakeSecretConnection(conn, privKey)
 		}
 		return conn, err
 	}

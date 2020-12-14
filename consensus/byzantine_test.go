@@ -3,219 +3,30 @@ package consensus
 import (
 	"context"
 	"fmt"
-	"os"
-	"path"
 	"sync"
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-
-	dbm "github.com/evdatsion/tm-db"
-
-	abcicli "github.com/evdatsion/tendermint/abci/client"
-	abci "github.com/evdatsion/tendermint/abci/types"
-	"github.com/evdatsion/tendermint/evidence"
-	"github.com/evdatsion/tendermint/libs/log"
-	"github.com/evdatsion/tendermint/libs/service"
-	tmsync "github.com/evdatsion/tendermint/libs/sync"
-	mempl "github.com/evdatsion/tendermint/mempool"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 	"github.com/evdatsion/tendermint/p2p"
-	tmproto "github.com/evdatsion/tendermint/proto/tendermint/types"
 	sm "github.com/evdatsion/tendermint/state"
-	"github.com/evdatsion/tendermint/store"
 	"github.com/evdatsion/tendermint/types"
 )
 
 //----------------------------------------------
 // byzantine failures
 
-// Byzantine node sends two different prevotes (nil and blockID) to the same validator
-func TestByzantinePrevoteEquivocation(t *testing.T) {
-	const nValidators = 4
-	const byzantineNode = 0
-	const prevoteHeight = int64(2)
-	testName := "consensus_byzantine_test"
-	tickerFunc := newMockTickerFunc(true)
-	appFunc := newCounter
-
-	genDoc, privVals := randGenesisDoc(nValidators, false, 30)
-	css := make([]*State, nValidators)
-
-	for i := 0; i < nValidators; i++ {
-		logger := consensusLogger().With("test", "byzantine", "validator", i)
-		stateDB := dbm.NewMemDB() // each state needs its own db
-		stateStore := sm.NewStore(stateDB)
-		state, _ := stateStore.LoadFromDBOrGenesisDoc(genDoc)
-		thisConfig := ResetConfig(fmt.Sprintf("%s_%d", testName, i))
-		defer os.RemoveAll(thisConfig.RootDir)
-		ensureDir(path.Dir(thisConfig.Consensus.WalFile()), 0700) // dir for wal
-		app := appFunc()
-		vals := types.TM2PB.ValidatorUpdates(state.Validators)
-		app.InitChain(abci.RequestInitChain{Validators: vals})
-
-		blockDB := dbm.NewMemDB()
-		blockStore := store.NewBlockStore(blockDB)
-
-		// one for mempool, one for consensus
-		mtx := new(tmsync.Mutex)
-		proxyAppConnMem := abcicli.NewLocalClient(mtx, app)
-		proxyAppConnCon := abcicli.NewLocalClient(mtx, app)
-
-		// Make Mempool
-		mempool := mempl.NewCListMempool(thisConfig.Mempool, proxyAppConnMem, 0)
-		mempool.SetLogger(log.TestingLogger().With("module", "mempool"))
-		if thisConfig.Consensus.WaitForTxs() {
-			mempool.EnableTxsAvailable()
-		}
-
-		// Make a full instance of the evidence pool
-		evidenceDB := dbm.NewMemDB()
-		evpool, err := evidence.NewPool(evidenceDB, stateStore, blockStore)
-		require.NoError(t, err)
-		evpool.SetLogger(logger.With("module", "evidence"))
-
-		// Make State
-		blockExec := sm.NewBlockExecutor(stateStore, log.TestingLogger(), proxyAppConnCon, mempool, evpool)
-		cs := NewState(thisConfig.Consensus, state, blockExec, blockStore, mempool, evpool)
-		cs.SetLogger(cs.Logger)
-		// set private validator
-		pv := privVals[i]
-		cs.SetPrivValidator(pv)
-
-		eventBus := types.NewEventBus()
-		eventBus.SetLogger(log.TestingLogger().With("module", "events"))
-		err = eventBus.Start()
-		require.NoError(t, err)
-		cs.SetEventBus(eventBus)
-
-		cs.SetTimeoutTicker(tickerFunc())
-		cs.SetLogger(logger)
-
-		css[i] = cs
-	}
-
-	// initialize the reactors for each of the validators
-	reactors := make([]*Reactor, nValidators)
-	blocksSubs := make([]types.Subscription, 0)
-	eventBuses := make([]*types.EventBus, nValidators)
-	for i := 0; i < nValidators; i++ {
-		reactors[i] = NewReactor(css[i], true) // so we dont start the consensus states
-		reactors[i].SetLogger(css[i].Logger)
-
-		// eventBus is already started with the cs
-		eventBuses[i] = css[i].eventBus
-		reactors[i].SetEventBus(eventBuses[i])
-
-		blocksSub, err := eventBuses[i].Subscribe(context.Background(), testSubscriber, types.EventQueryNewBlock)
-		require.NoError(t, err)
-		blocksSubs = append(blocksSubs, blocksSub)
-
-		if css[i].state.LastBlockHeight == 0 { // simulate handle initChain in handshake
-			err = css[i].blockExec.Store().Save(css[i].state)
-			require.NoError(t, err)
-		}
-	}
-	// make connected switches and start all reactors
-	p2p.MakeConnectedSwitches(config.P2P, nValidators, func(i int, s *p2p.Switch) *p2p.Switch {
-		s.AddReactor("CONSENSUS", reactors[i])
-		s.SetLogger(reactors[i].conS.Logger.With("module", "p2p"))
-		return s
-	}, p2p.Connect2Switches)
-
-	// create byzantine validator
-	bcs := css[byzantineNode]
-
-	// alter prevote so that the byzantine node double votes when height is 2
-	bcs.doPrevote = func(height int64, round int32) {
-		// allow first height to happen normally so that byzantine validator is no longer proposer
-		if height == prevoteHeight {
-			bcs.Logger.Info("Sending two votes")
-			prevote1, err := bcs.signVote(tmproto.PrevoteType, bcs.ProposalBlock.Hash(), bcs.ProposalBlockParts.Header())
-			require.NoError(t, err)
-			prevote2, err := bcs.signVote(tmproto.PrevoteType, nil, types.PartSetHeader{})
-			require.NoError(t, err)
-			peerList := reactors[byzantineNode].Switch.Peers().List()
-			bcs.Logger.Info("Getting peer list", "peers", peerList)
-			// send two votes to all peers (1st to one half, 2nd to another half)
-			for i, peer := range peerList {
-				if i < len(peerList)/2 {
-					bcs.Logger.Info("Signed and pushed vote", "vote", prevote1, "peer", peer)
-					peer.Send(VoteChannel, MustEncode(&VoteMessage{prevote1}))
-				} else {
-					bcs.Logger.Info("Signed and pushed vote", "vote", prevote2, "peer", peer)
-					peer.Send(VoteChannel, MustEncode(&VoteMessage{prevote2}))
-				}
-			}
-		} else {
-			bcs.Logger.Info("Behaving normally")
-			bcs.defaultDoPrevote(height, round)
-		}
-	}
-
-	// start the consensus reactors
-	for i := 0; i < nValidators; i++ {
-		s := reactors[i].conS.GetState()
-		reactors[i].SwitchToConsensus(s, false)
-	}
-	defer stopConsensusNet(log.TestingLogger(), reactors, eventBuses)
-
-	// Evidence should be submitted and committed at the third height but
-	// we will check the first six just in case
-	evidenceFromEachValidator := make([]types.Evidence, nValidators)
-
-	wg := new(sync.WaitGroup)
-	wg.Add(4)
-	for height := 1; height < 6; height++ {
-		for i := 0; i < nValidators; i++ {
-			go func(j int) {
-				msg := <-blocksSubs[j].Out()
-				block := msg.Data().(types.EventDataNewBlock).Block
-				if len(block.Evidence.Evidence) != 0 {
-					evidenceFromEachValidator[j] = block.Evidence.Evidence[0]
-					wg.Done()
-				}
-			}(i)
-		}
-	}
-
-	done := make(chan struct{})
-	go func() {
-		wg.Wait()
-		close(done)
-	}()
-
-	pubkey, _ := bcs.privValidator.GetPubKey()
-
-	select {
-	case <-done:
-		for idx, ev := range evidenceFromEachValidator {
-			if assert.NotNil(t, ev, idx) {
-				ev, ok := ev.(*types.DuplicateVoteEvidence)
-				assert.True(t, ok)
-				assert.Equal(t, pubkey.Address(), ev.VoteA.ValidatorAddress)
-				assert.Equal(t, prevoteHeight, ev.Height())
-			}
-		}
-	case <-time.After(10 * time.Second):
-		for i, reactor := range reactors {
-			t.Logf("Consensus Reactor %d\n%v", i, reactor)
-		}
-		t.Fatalf("Timed out waiting for all validators to commit first block")
-	}
-}
-
 // 4 validators. 1 is byzantine. The other three are partitioned into A (1 val) and B (2 vals).
 // byzantine validator sends conflicting proposals into A and B,
 // and prevotes/precommits on both of them.
 // B sees a commit, A doesn't.
+// Byzantine validator refuses to prevote.
 // Heal partition and ensure A sees the commit
-func TestByzantineConflictingProposalsWithPartition(t *testing.T) {
+func TestByzantine(t *testing.T) {
 	N := 4
 	logger := consensusLogger().With("test", "byzantine")
-	app := newCounter
-	css, cleanup := randConsensusNet(N, "consensus_byzantine_test", newMockTickerFunc(false), app)
+	css, cleanup := randConsensusNet(N, "consensus_byzantine_test", newMockTickerFunc(false), newCounter)
 	defer cleanup()
 
 	// give the byzantine validator a normal ticker
@@ -239,22 +50,17 @@ func TestByzantineConflictingProposalsWithPartition(t *testing.T) {
 	blocksSubs := make([]types.Subscription, N)
 	reactors := make([]p2p.Reactor, N)
 	for i := 0; i < N; i++ {
-
-		// enable txs so we can create different proposals
-		assertMempool(css[i].txNotifier).EnableTxsAvailable()
 		// make first val byzantine
 		if i == 0 {
 			// NOTE: Now, test validators are MockPV, which by default doesn't
 			// do any safety checks.
-			css[i].privValidator.(types.MockPV).DisableChecks()
-			css[i].decideProposal = func(j int32) func(int64, int32) {
-				return func(height int64, round int32) {
+			css[i].privValidator.(*types.MockPV).DisableChecks()
+			css[i].decideProposal = func(j int) func(int64, int) {
+				return func(height int64, round int) {
 					byzantineDecideProposalFunc(t, height, round, css[j], switches[j])
 				}
-			}(int32(i))
-			// We are setting the prevote function to do nothing because the prevoting
-			// and precommitting are done alongside the proposal.
-			css[i].doPrevote = func(height int64, round int32) {}
+			}(i)
+			css[i].doPrevote = func(height int64, round int) {}
 		}
 
 		eventBus := css[i].eventBus
@@ -264,7 +70,7 @@ func TestByzantineConflictingProposalsWithPartition(t *testing.T) {
 		blocksSubs[i], err = eventBus.Subscribe(context.Background(), testSubscriber, types.EventQueryNewBlock)
 		require.NoError(t, err)
 
-		conR := NewReactor(css[i], true) // so we don't start the consensus states
+		conR := NewConsensusReactor(css[i], true) // so we don't start the consensus states
 		conR.SetLogger(logger.With("validator", i))
 		conR.SetEventBus(eventBus)
 
@@ -276,18 +82,15 @@ func TestByzantineConflictingProposalsWithPartition(t *testing.T) {
 		}
 
 		reactors[i] = conRI
-		err = css[i].blockExec.Store().Save(css[i].state) // for save height 1's validators info
-		require.NoError(t, err)
+		sm.SaveState(css[i].blockExec.DB(), css[i].state) //for save height 1's validators info
 	}
 
 	defer func() {
 		for _, r := range reactors {
 			if rr, ok := r.(*ByzantineReactor); ok {
-				err := rr.reactor.Switch.Stop()
-				require.NoError(t, err)
+				rr.reactor.Switch.Stop()
 			} else {
-				err := r.(*Reactor).Switch.Stop()
-				require.NoError(t, err)
+				r.(*ConsensusReactor).Switch.Stop()
 			}
 		}
 	}()
@@ -307,14 +110,14 @@ func TestByzantineConflictingProposalsWithPartition(t *testing.T) {
 	// start the non-byz state machines.
 	// note these must be started before the byz
 	for i := 1; i < N; i++ {
-		cr := reactors[i].(*Reactor)
-		cr.SwitchToConsensus(cr.conS.GetState(), false)
+		cr := reactors[i].(*ConsensusReactor)
+		cr.SwitchToConsensus(cr.conS.GetState(), 0)
 	}
 
 	// start the byzantine state machine
 	byzR := reactors[0].(*ByzantineReactor)
 	s := byzR.reactor.conS.GetState()
-	byzR.reactor.SwitchToConsensus(s, false)
+	byzR.reactor.SwitchToConsensus(s, 0)
 
 	// byz proposer sends one block to peers[0]
 	// and the other block to peers[1] and peers[2].
@@ -368,34 +171,25 @@ func TestByzantineConflictingProposalsWithPartition(t *testing.T) {
 //-------------------------------
 // byzantine consensus functions
 
-func byzantineDecideProposalFunc(t *testing.T, height int64, round int32, cs *State, sw *p2p.Switch) {
+func byzantineDecideProposalFunc(t *testing.T, height int64, round int, cs *ConsensusState, sw *p2p.Switch) {
 	// byzantine user should create two proposals and try to split the vote.
 	// Avoid sending on internalMsgQueue and running consensus state.
 
 	// Create a new proposal block from state/txs from the mempool.
 	block1, blockParts1 := cs.createProposalBlock()
-	polRound, propBlockID := cs.ValidRound, types.BlockID{Hash: block1.Hash(), PartSetHeader: blockParts1.Header()}
+	polRound, propBlockID := cs.ValidRound, types.BlockID{Hash: block1.Hash(), PartsHeader: blockParts1.Header()}
 	proposal1 := types.NewProposal(height, round, polRound, propBlockID)
-	p1 := proposal1.ToProto()
-	if err := cs.privValidator.SignProposal(cs.state.ChainID, p1); err != nil {
+	if err := cs.privValidator.SignProposal(cs.state.ChainID, proposal1); err != nil {
 		t.Error(err)
 	}
-
-	proposal1.Signature = p1.Signature
-
-	// some new transactions come in (this ensures that the proposals are different)
-	deliverTxsRange(cs, 0, 1)
 
 	// Create a new proposal block from state/txs from the mempool.
 	block2, blockParts2 := cs.createProposalBlock()
-	polRound, propBlockID = cs.ValidRound, types.BlockID{Hash: block2.Hash(), PartSetHeader: blockParts2.Header()}
+	polRound, propBlockID = cs.ValidRound, types.BlockID{Hash: block2.Hash(), PartsHeader: blockParts2.Header()}
 	proposal2 := types.NewProposal(height, round, polRound, propBlockID)
-	p2 := proposal2.ToProto()
-	if err := cs.privValidator.SignProposal(cs.state.ChainID, p2); err != nil {
+	if err := cs.privValidator.SignProposal(cs.state.ChainID, proposal2); err != nil {
 		t.Error(err)
 	}
-
-	proposal2.Signature = p2.Signature
 
 	block1Hash := block1.Hash()
 	block2Hash := block2.Hash()
@@ -414,47 +208,46 @@ func byzantineDecideProposalFunc(t *testing.T, height int64, round int32, cs *St
 
 func sendProposalAndParts(
 	height int64,
-	round int32,
-	cs *State,
+	round int,
+	cs *ConsensusState,
 	peer p2p.Peer,
 	proposal *types.Proposal,
 	blockHash []byte,
-	parts *types.PartSet,
-) {
+	parts *types.PartSet) {
 	// proposal
 	msg := &ProposalMessage{Proposal: proposal}
-	peer.Send(DataChannel, MustEncode(msg))
+	peer.Send(DataChannel, cdc.MustMarshalBinaryBare(msg))
 
 	// parts
-	for i := 0; i < int(parts.Total()); i++ {
+	for i := 0; i < parts.Total(); i++ {
 		part := parts.GetPart(i)
 		msg := &BlockPartMessage{
 			Height: height, // This tells peer that this part applies to us.
 			Round:  round,  // This tells peer that this part applies to us.
 			Part:   part,
 		}
-		peer.Send(DataChannel, MustEncode(msg))
+		peer.Send(DataChannel, cdc.MustMarshalBinaryBare(msg))
 	}
 
 	// votes
 	cs.mtx.Lock()
-	prevote, _ := cs.signVote(tmproto.PrevoteType, blockHash, parts.Header())
-	precommit, _ := cs.signVote(tmproto.PrecommitType, blockHash, parts.Header())
+	prevote, _ := cs.signVote(types.PrevoteType, blockHash, parts.Header())
+	precommit, _ := cs.signVote(types.PrecommitType, blockHash, parts.Header())
 	cs.mtx.Unlock()
 
-	peer.Send(VoteChannel, MustEncode(&VoteMessage{prevote}))
-	peer.Send(VoteChannel, MustEncode(&VoteMessage{precommit}))
+	peer.Send(VoteChannel, cdc.MustMarshalBinaryBare(&VoteMessage{prevote}))
+	peer.Send(VoteChannel, cdc.MustMarshalBinaryBare(&VoteMessage{precommit}))
 }
 
 //----------------------------------------
 // byzantine consensus reactor
 
 type ByzantineReactor struct {
-	service.Service
-	reactor *Reactor
+	cmn.Service
+	reactor *ConsensusReactor
 }
 
-func NewByzantineReactor(conR *Reactor) *ByzantineReactor {
+func NewByzantineReactor(conR *ConsensusReactor) *ByzantineReactor {
 	return &ByzantineReactor{
 		Service: conR,
 		reactor: conR,
@@ -473,8 +266,8 @@ func (br *ByzantineReactor) AddPeer(peer p2p.Peer) {
 	peer.Set(types.PeerStateKey, peerState)
 
 	// Send our state to peer.
-	// If we're syncing, broadcast a RoundStepMessage later upon SwitchToConsensus().
-	if !br.reactor.waitSync {
+	// If we're fast_syncing, broadcast a RoundStepMessage later upon SwitchToConsensus().
+	if !br.reactor.fastSync {
 		br.reactor.sendNewRoundStepMessage(peer)
 	}
 }

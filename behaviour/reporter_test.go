@@ -20,9 +20,7 @@ func TestMockReporter(t *testing.T) {
 	}
 
 	badMessage := bh.BadMessage(peerID, "bad message")
-	if err := pr.Report(badMessage); err != nil {
-		t.Error(err)
-	}
+	pr.Report(badMessage)
 	behaviours = pr.GetBehaviours(peerID)
 	if len(behaviours) != 1 {
 		t.Error("Expected the peer have one reported behaviour")
@@ -45,11 +43,11 @@ func equalBehaviours(a []bh.PeerBehaviour, b []bh.PeerBehaviour) bool {
 	bHistogram := map[bh.PeerBehaviour]int{}
 
 	for _, behaviour := range a {
-		aHistogram[behaviour]++
+		aHistogram[behaviour] += 1
 	}
 
 	for _, behaviour := range b {
-		bHistogram[behaviour]++
+		bHistogram[behaviour] += 1
 	}
 
 	if len(aHistogram) != len(bHistogram) {
@@ -110,13 +108,13 @@ func TestEqualPeerBehaviours(t *testing.T) {
 
 	for _, test := range equals {
 		if !equalBehaviours(test.left, test.right) {
-			t.Errorf("expected %#v and %#v to be equal", test.left, test.right)
+			t.Errorf("Expected %#v and %#v to be equal", test.left, test.right)
 		}
 	}
 
 	for _, test := range unequals {
 		if equalBehaviours(test.left, test.right) {
-			t.Errorf("expected %#v and %#v to be unequal", test.left, test.right)
+			t.Errorf("Expected %#v and %#v to be unequal", test.left, test.right)
 		}
 	}
 }
@@ -166,9 +164,7 @@ func TestMockPeerBehaviourReporterConcurrency(t *testing.T) {
 			for {
 				select {
 				case pb := <-scriptItems:
-					if err := pr.Report(pb.behaviour); err != nil {
-						t.Error(err)
-					}
+					pr.Report(pb.behaviour)
 				case <-done:
 					return
 				}
@@ -198,7 +194,7 @@ func TestMockPeerBehaviourReporterConcurrency(t *testing.T) {
 	for _, items := range behaviourScript {
 		reported := pr.GetBehaviours(items.peerID)
 		if !equalBehaviours(reported, items.behaviours) {
-			t.Errorf("expected peer %s to have behaved \nExpected: %#v \nGot %#v \n",
+			t.Errorf("Expected peer %s to have behaved \nExpected: %#v \nGot %#v \n",
 				items.peerID, items.behaviours, reported)
 		}
 	}

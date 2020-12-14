@@ -1,9 +1,10 @@
 package flags
 
 import (
-	"errors"
 	"fmt"
 	"strings"
+
+	"github.com/pkg/errors"
 
 	"github.com/evdatsion/tendermint/libs/log"
 )
@@ -20,7 +21,7 @@ const (
 //		ParseLogLevel("consensus:debug,mempool:debug,*:error", log.NewTMLogger(os.Stdout), "info")
 func ParseLogLevel(lvl string, logger log.Logger, defaultLogLevelValue string) (log.Logger, error) {
 	if lvl == "" {
-		return nil, errors.New("empty log level")
+		return nil, errors.New("Empty log level")
 	}
 
 	l := lvl
@@ -41,7 +42,7 @@ func ParseLogLevel(lvl string, logger log.Logger, defaultLogLevelValue string) (
 		moduleAndLevel := strings.Split(item, ":")
 
 		if len(moduleAndLevel) != 2 {
-			return nil, fmt.Errorf("expected list in a form of \"module:level\" pairs, given pair %s, list %s", item, list)
+			return nil, fmt.Errorf("Expected list in a form of \"module:level\" pairs, given pair %s, list %s", item, list)
 		}
 
 		module := moduleAndLevel[0]
@@ -50,7 +51,7 @@ func ParseLogLevel(lvl string, logger log.Logger, defaultLogLevelValue string) (
 		if module == defaultLogLevelKey {
 			option, err = log.AllowLevel(level)
 			if err != nil {
-				return nil, fmt.Errorf("failed to parse default log level (pair %s, list %s): %w", item, l, err)
+				return nil, errors.Wrap(err, fmt.Sprintf("Failed to parse default log level (pair %s, list %s)", item, l))
 			}
 			options = append(options, option)
 			isDefaultLogLevelSet = true
@@ -66,7 +67,7 @@ func ParseLogLevel(lvl string, logger log.Logger, defaultLogLevelValue string) (
 				option = log.AllowNoneWith("module", module)
 			default:
 				return nil,
-					fmt.Errorf("expected either \"info\", \"debug\", \"error\" or \"none\" log level, given %s (pair %s, list %s)",
+					fmt.Errorf("Expected either \"info\", \"debug\", \"error\" or \"none\" log level, given %s (pair %s, list %s)",
 						level,
 						item,
 						list)

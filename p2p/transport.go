@@ -6,12 +6,11 @@ import (
 	"net"
 	"time"
 
+	"github.com/pkg/errors"
 	"golang.org/x/net/netutil"
 
 	"github.com/evdatsion/tendermint/crypto"
-	"github.com/evdatsion/tendermint/libs/protoio"
 	"github.com/evdatsion/tendermint/p2p/conn"
-	tmp2p "github.com/evdatsion/tendermint/proto/tendermint/p2p"
 )
 
 const (
@@ -89,7 +88,7 @@ func ConnDuplicateIPFilter() ConnFilterFunc {
 			if cs.HasIP(ip) {
 				return ErrRejected{
 					conn:        c,
-					err:         fmt.Errorf("ip<%v> already connected", ip),
+					err:         fmt.Errorf("IP<%v> already connected", ip),
 					isDuplicate: true,
 				}
 			}
@@ -289,7 +288,7 @@ func (mt *MultiplexTransport) acceptPeers() {
 				if r := recover(); r != nil {
 					err := ErrRejected{
 						conn:          c,
-						err:           fmt.Errorf("recovered from panic: %v", r),
+						err:           errors.Errorf("recovered from panic: %v", r),
 						isAuthFailure: true,
 					}
 					select {
@@ -526,18 +525,20 @@ func handshake(
 	var (
 		errc = make(chan error, 2)
 
-		pbpeerNodeInfo tmp2p.DefaultNodeInfo
-		peerNodeInfo   DefaultNodeInfo
-		ourNodeInfo    = nodeInfo.(DefaultNodeInfo)
+		peerNodeInfo DefaultNodeInfo
+		ourNodeInfo  = nodeInfo.(DefaultNodeInfo)
 	)
 
 	go func(errc chan<- error, c net.Conn) {
-		_, err := protoio.NewDelimitedWriter(c).WriteMsg(ourNodeInfo.ToProto())
+		_, err := cdc.MarshalBinaryLengthPrefixedWriter(c, ourNodeInfo)
 		errc <- err
 	}(errc, c)
 	go func(errc chan<- error, c net.Conn) {
-		protoReader := protoio.NewDelimitedReader(c, MaxNodeInfoSize())
-		err := protoReader.ReadMsg(&pbpeerNodeInfo)
+		_, err := cdc.UnmarshalBinaryLengthPrefixedReader(
+			c,
+			&peerNodeInfo,
+			int64(MaxNodeInfoSize()),
+		)
 		errc <- err
 	}(errc, c)
 
@@ -546,11 +547,6 @@ func handshake(
 		if err != nil {
 			return nil, err
 		}
-	}
-
-	peerNodeInfo, err := DefaultNodeInfoFromToProto(&pbpeerNodeInfo)
-	if err != nil {
-		return nil, err
 	}
 
 	return peerNodeInfo, c.SetDeadline(time.Time{})

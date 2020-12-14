@@ -23,13 +23,8 @@ const (
 func TestSubscribe(t *testing.T) {
 	s := pubsub.NewServer()
 	s.SetLogger(log.TestingLogger())
-	err := s.Start()
-	require.NoError(t, err)
-	t.Cleanup(func() {
-		if err := s.Stop(); err != nil {
-			t.Error(err)
-		}
-	})
+	s.Start()
+	defer s.Stop()
 
 	ctx := context.Background()
 	subscription, err := s.Subscribe(ctx, clientID, query.Empty{})
@@ -68,22 +63,15 @@ func TestSubscribe(t *testing.T) {
 func TestSubscribeWithCapacity(t *testing.T) {
 	s := pubsub.NewServer()
 	s.SetLogger(log.TestingLogger())
-	err := s.Start()
-	require.NoError(t, err)
-	t.Cleanup(func() {
-		if err := s.Stop(); err != nil {
-			t.Error(err)
-		}
-	})
+	s.Start()
+	defer s.Stop()
 
 	ctx := context.Background()
 	assert.Panics(t, func() {
-		_, err = s.Subscribe(ctx, clientID, query.Empty{}, -1)
-		require.NoError(t, err)
+		s.Subscribe(ctx, clientID, query.Empty{}, -1)
 	})
 	assert.Panics(t, func() {
-		_, err = s.Subscribe(ctx, clientID, query.Empty{}, 0)
-		require.NoError(t, err)
+		s.Subscribe(ctx, clientID, query.Empty{}, 0)
 	})
 	subscription, err := s.Subscribe(ctx, clientID, query.Empty{}, 1)
 	require.NoError(t, err)
@@ -95,13 +83,8 @@ func TestSubscribeWithCapacity(t *testing.T) {
 func TestSubscribeUnbuffered(t *testing.T) {
 	s := pubsub.NewServer()
 	s.SetLogger(log.TestingLogger())
-	err := s.Start()
-	require.NoError(t, err)
-	t.Cleanup(func() {
-		if err := s.Stop(); err != nil {
-			t.Error(err)
-		}
-	})
+	s.Start()
+	defer s.Stop()
 
 	ctx := context.Background()
 	subscription, err := s.SubscribeUnbuffered(ctx, clientID, query.Empty{})
@@ -130,13 +113,8 @@ func TestSubscribeUnbuffered(t *testing.T) {
 func TestSlowClientIsRemovedWithErrOutOfCapacity(t *testing.T) {
 	s := pubsub.NewServer()
 	s.SetLogger(log.TestingLogger())
-	err := s.Start()
-	require.NoError(t, err)
-	t.Cleanup(func() {
-		if err := s.Stop(); err != nil {
-			t.Error(err)
-		}
-	})
+	s.Start()
+	defer s.Stop()
 
 	ctx := context.Background()
 	subscription, err := s.Subscribe(ctx, clientID, query.Empty{})
@@ -152,13 +130,8 @@ func TestSlowClientIsRemovedWithErrOutOfCapacity(t *testing.T) {
 func TestDifferentClients(t *testing.T) {
 	s := pubsub.NewServer()
 	s.SetLogger(log.TestingLogger())
-	err := s.Start()
-	require.NoError(t, err)
-	t.Cleanup(func() {
-		if err := s.Stop(); err != nil {
-			t.Error(err)
-		}
-	})
+	s.Start()
+	defer s.Stop()
 
 	ctx := context.Background()
 	subscription1, err := s.Subscribe(ctx, "client-1", query.MustParse("tm.events.type='NewBlock'"))
@@ -198,11 +171,7 @@ func TestSubscribeDuplicateKeys(t *testing.T) {
 	s := pubsub.NewServer()
 	s.SetLogger(log.TestingLogger())
 	require.NoError(t, s.Start())
-	t.Cleanup(func() {
-		if err := s.Stop(); err != nil {
-			t.Error(err)
-		}
-	})
+	defer s.Stop()
 
 	testCases := []struct {
 		query    string
@@ -251,13 +220,8 @@ func TestSubscribeDuplicateKeys(t *testing.T) {
 func TestClientSubscribesTwice(t *testing.T) {
 	s := pubsub.NewServer()
 	s.SetLogger(log.TestingLogger())
-	err := s.Start()
-	require.NoError(t, err)
-	t.Cleanup(func() {
-		if err := s.Stop(); err != nil {
-			t.Error(err)
-		}
-	})
+	s.Start()
+	defer s.Stop()
 
 	ctx := context.Background()
 	q := query.MustParse("tm.events.type='NewBlock'")
@@ -280,13 +244,8 @@ func TestClientSubscribesTwice(t *testing.T) {
 func TestUnsubscribe(t *testing.T) {
 	s := pubsub.NewServer()
 	s.SetLogger(log.TestingLogger())
-	err := s.Start()
-	require.NoError(t, err)
-	t.Cleanup(func() {
-		if err := s.Stop(); err != nil {
-			t.Error(err)
-		}
-	})
+	s.Start()
+	defer s.Stop()
 
 	ctx := context.Background()
 	subscription, err := s.Subscribe(ctx, clientID, query.MustParse("tm.events.type='NewBlock'"))
@@ -304,16 +263,11 @@ func TestUnsubscribe(t *testing.T) {
 func TestClientUnsubscribesTwice(t *testing.T) {
 	s := pubsub.NewServer()
 	s.SetLogger(log.TestingLogger())
-	err := s.Start()
-	require.NoError(t, err)
-	t.Cleanup(func() {
-		if err := s.Stop(); err != nil {
-			t.Error(err)
-		}
-	})
+	s.Start()
+	defer s.Stop()
 
 	ctx := context.Background()
-	_, err = s.Subscribe(ctx, clientID, query.MustParse("tm.events.type='NewBlock'"))
+	_, err := s.Subscribe(ctx, clientID, query.MustParse("tm.events.type='NewBlock'"))
 	require.NoError(t, err)
 	err = s.Unsubscribe(ctx, clientID, query.MustParse("tm.events.type='NewBlock'"))
 	require.NoError(t, err)
@@ -327,16 +281,11 @@ func TestClientUnsubscribesTwice(t *testing.T) {
 func TestResubscribe(t *testing.T) {
 	s := pubsub.NewServer()
 	s.SetLogger(log.TestingLogger())
-	err := s.Start()
-	require.NoError(t, err)
-	t.Cleanup(func() {
-		if err := s.Stop(); err != nil {
-			t.Error(err)
-		}
-	})
+	s.Start()
+	defer s.Stop()
 
 	ctx := context.Background()
-	_, err = s.Subscribe(ctx, clientID, query.Empty{})
+	_, err := s.Subscribe(ctx, clientID, query.Empty{})
 	require.NoError(t, err)
 	err = s.Unsubscribe(ctx, clientID, query.Empty{})
 	require.NoError(t, err)
@@ -351,13 +300,8 @@ func TestResubscribe(t *testing.T) {
 func TestUnsubscribeAll(t *testing.T) {
 	s := pubsub.NewServer()
 	s.SetLogger(log.TestingLogger())
-	err := s.Start()
-	require.NoError(t, err)
-	t.Cleanup(func() {
-		if err := s.Stop(); err != nil {
-			t.Error(err)
-		}
-	})
+	s.Start()
+	defer s.Stop()
 
 	ctx := context.Background()
 	subscription1, err := s.Subscribe(ctx, clientID, query.MustParse("tm.events.type='NewBlock'"))
@@ -407,14 +351,8 @@ func Benchmark1000ClientsOneQuery(b *testing.B) { benchmarkNClientsOneQuery(1000
 
 func benchmarkNClients(n int, b *testing.B) {
 	s := pubsub.NewServer()
-	err := s.Start()
-	require.NoError(b, err)
-
-	b.Cleanup(func() {
-		if err := s.Stop(); err != nil {
-			b.Error(err)
-		}
-	})
+	s.Start()
+	defer s.Stop()
 
 	ctx := context.Background()
 	for i := 0; i < n; i++ {
@@ -441,24 +379,18 @@ func benchmarkNClients(n int, b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		err = s.PublishWithEvents(
+		s.PublishWithEvents(
 			ctx,
 			"Gamora",
-			map[string][]string{"abci.Account.Owner": {"Ivan"}, "abci.Invoices.Number": {string(rune(i))}},
+			map[string][]string{"abci.Account.Owner": {"Ivan"}, "abci.Invoices.Number": {fmt.Sprint(i)}},
 		)
-		require.NoError(b, err)
 	}
 }
 
 func benchmarkNClientsOneQuery(n int, b *testing.B) {
 	s := pubsub.NewServer()
-	err := s.Start()
-	require.NoError(b, err)
-	b.Cleanup(func() {
-		if err := s.Stop(); err != nil {
-			b.Error(err)
-		}
-	})
+	s.Start()
+	defer s.Stop()
 
 	ctx := context.Background()
 	q := query.MustParse("abci.Account.Owner = 'Ivan' AND abci.Invoices.Number = 1")
@@ -482,20 +414,20 @@ func benchmarkNClientsOneQuery(n int, b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		err = s.PublishWithEvents(ctx, "Gamora", map[string][]string{"abci.Account.Owner": {"Ivan"},
-			"abci.Invoices.Number": {"1"}})
-		require.NoError(b, err)
+		s.PublishWithEvents(ctx, "Gamora", map[string][]string{"abci.Account.Owner": {"Ivan"}, "abci.Invoices.Number": {"1"}})
 	}
 }
 
-// HELPERS
+///////////////////////////////////////////////////////////////////////////////
+/// HELPERS
+///////////////////////////////////////////////////////////////////////////////
 
 func assertReceive(t *testing.T, expected interface{}, ch <-chan pubsub.Message, msgAndArgs ...interface{}) {
 	select {
 	case actual := <-ch:
 		assert.Equal(t, expected, actual.Data(), msgAndArgs...)
 	case <-time.After(1 * time.Second):
-		t.Errorf("expected to receive %v from the channel, got nothing after 1s", expected)
+		t.Errorf("Expected to receive %v from the channel, got nothing after 1s", expected)
 		debug.PrintStack()
 	}
 }

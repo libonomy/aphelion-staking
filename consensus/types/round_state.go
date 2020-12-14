@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/evdatsion/tendermint/libs/bytes"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 	"github.com/evdatsion/tendermint/types"
 )
 
@@ -66,7 +66,7 @@ func (rs RoundStepType) String() string {
 // of the cs.receiveRoutine
 type RoundState struct {
 	Height    int64         `json:"height"` // Height we are working on
-	Round     int32         `json:"round"`
+	Round     int           `json:"round"`
 	Step      RoundStepType `json:"step"`
 	StartTime time.Time     `json:"start_time"`
 
@@ -76,18 +76,18 @@ type RoundState struct {
 	Proposal           *types.Proposal     `json:"proposal"`
 	ProposalBlock      *types.Block        `json:"proposal_block"`
 	ProposalBlockParts *types.PartSet      `json:"proposal_block_parts"`
-	LockedRound        int32               `json:"locked_round"`
+	LockedRound        int                 `json:"locked_round"`
 	LockedBlock        *types.Block        `json:"locked_block"`
 	LockedBlockParts   *types.PartSet      `json:"locked_block_parts"`
 
 	// Last known round with POL for non-nil valid block.
-	ValidRound int32        `json:"valid_round"`
+	ValidRound int          `json:"valid_round"`
 	ValidBlock *types.Block `json:"valid_block"` // Last known block of POL mentioned above.
 
-	// Last known block parts of POL mentioned above.
+	// Last known block parts of POL metnioned above.
 	ValidBlockParts           *types.PartSet      `json:"valid_block_parts"`
 	Votes                     *HeightVoteSet      `json:"votes"`
-	CommitRound               int32               `json:"commit_round"` //
+	CommitRound               int                 `json:"commit_round"` //
 	LastCommit                *types.VoteSet      `json:"last_commit"`  // Last precommits at Height-1
 	LastValidators            *types.ValidatorSet `json:"last_validators"`
 	TriggeredTimeoutPrecommit bool                `json:"triggered_timeout_precommit"`
@@ -95,13 +95,12 @@ type RoundState struct {
 
 // Compressed version of the RoundState for use in RPC
 type RoundStateSimple struct {
-	HeightRoundStep   string              `json:"height/round/step"`
-	StartTime         time.Time           `json:"start_time"`
-	ProposalBlockHash bytes.HexBytes      `json:"proposal_block_hash"`
-	LockedBlockHash   bytes.HexBytes      `json:"locked_block_hash"`
-	ValidBlockHash    bytes.HexBytes      `json:"valid_block_hash"`
-	Votes             json.RawMessage     `json:"height_vote_set"`
-	Proposer          types.ValidatorInfo `json:"proposer"`
+	HeightRoundStep   string          `json:"height/round/step"`
+	StartTime         time.Time       `json:"start_time"`
+	ProposalBlockHash cmn.HexBytes    `json:"proposal_block_hash"`
+	LockedBlockHash   cmn.HexBytes    `json:"locked_block_hash"`
+	ValidBlockHash    cmn.HexBytes    `json:"valid_block_hash"`
+	Votes             json.RawMessage `json:"height_vote_set"`
 }
 
 // Compress the RoundState to RoundStateSimple
@@ -110,10 +109,6 @@ func (rs *RoundState) RoundStateSimple() RoundStateSimple {
 	if err != nil {
 		panic(err)
 	}
-
-	addr := rs.Validators.GetProposer().Address
-	idx, _ := rs.Validators.GetByAddress(addr)
-
 	return RoundStateSimple{
 		HeightRoundStep:   fmt.Sprintf("%d/%d/%d", rs.Height, rs.Round, rs.Step),
 		StartTime:         rs.StartTime,
@@ -121,10 +116,6 @@ func (rs *RoundState) RoundStateSimple() RoundStateSimple {
 		LockedBlockHash:   rs.LockedBlock.Hash(),
 		ValidBlockHash:    rs.ValidBlock.Hash(),
 		Votes:             votesJSON,
-		Proposer: types.ValidatorInfo{
-			Address: addr,
-			Index:   idx,
-		},
 	}
 }
 
@@ -148,16 +139,16 @@ func (rs *RoundState) NewRoundEvent() types.EventDataNewRound {
 func (rs *RoundState) CompleteProposalEvent() types.EventDataCompleteProposal {
 	// We must construct BlockID from ProposalBlock and ProposalBlockParts
 	// cs.Proposal is not guaranteed to be set when this function is called
-	blockID := types.BlockID{
-		Hash:          rs.ProposalBlock.Hash(),
-		PartSetHeader: rs.ProposalBlockParts.Header(),
+	blockId := types.BlockID{
+		Hash:        rs.ProposalBlock.Hash(),
+		PartsHeader: rs.ProposalBlockParts.Header(),
 	}
 
 	return types.EventDataCompleteProposal{
 		Height:  rs.Height,
 		Round:   rs.Round,
 		Step:    rs.Step.String(),
-		BlockID: blockID,
+		BlockID: blockId,
 	}
 }
 
@@ -212,4 +203,32 @@ func (rs *RoundState) StringIndented(indent string) string {
 func (rs *RoundState) StringShort() string {
 	return fmt.Sprintf(`RoundState{H:%v R:%v S:%v ST:%v}`,
 		rs.Height, rs.Round, rs.Step, rs.StartTime)
+}
+
+//-----------------------------------------------------------
+// These methods are for Protobuf Compatibility
+
+// Size returns the size of the amino encoding, in bytes.
+func (rs *RoundStateSimple) Size() int {
+	bs, _ := rs.Marshal()
+	return len(bs)
+}
+
+// Marshal returns the amino encoding.
+func (rs *RoundStateSimple) Marshal() ([]byte, error) {
+	return cdc.MarshalBinaryBare(rs)
+}
+
+// MarshalTo calls Marshal and copies to the given buffer.
+func (rs *RoundStateSimple) MarshalTo(data []byte) (int, error) {
+	bs, err := rs.Marshal()
+	if err != nil {
+		return -1, err
+	}
+	return copy(data, bs), nil
+}
+
+// Unmarshal deserializes from amino encoded form.
+func (rs *RoundStateSimple) Unmarshal(bs []byte) error {
+	return cdc.UnmarshalBinaryBare(bs, rs)
 }

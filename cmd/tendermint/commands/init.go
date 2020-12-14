@@ -4,13 +4,10 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-
 	cfg "github.com/evdatsion/tendermint/config"
-	tmos "github.com/evdatsion/tendermint/libs/os"
-	tmrand "github.com/evdatsion/tendermint/libs/rand"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 	"github.com/evdatsion/tendermint/p2p"
 	"github.com/evdatsion/tendermint/privval"
-	tmproto "github.com/evdatsion/tendermint/proto/tendermint/types"
 	"github.com/evdatsion/tendermint/types"
 	tmtime "github.com/evdatsion/tendermint/types/time"
 )
@@ -22,15 +19,6 @@ var InitFilesCmd = &cobra.Command{
 	RunE:  initFiles,
 }
 
-var (
-	keyType string
-)
-
-func init() {
-	InitFilesCmd.Flags().StringVar(&keyType, "key", types.ABCIPubKeyTypeEd25519,
-		"Key type to generate privval file with. Options: ed25519, secp256k1")
-}
-
 func initFiles(cmd *cobra.Command, args []string) error {
 	return initFilesWithConfig(config)
 }
@@ -39,26 +27,20 @@ func initFilesWithConfig(config *cfg.Config) error {
 	// private validator
 	privValKeyFile := config.PrivValidatorKeyFile()
 	privValStateFile := config.PrivValidatorStateFile()
-	var (
-		pv  *privval.FilePV
-		err error
-	)
-	if tmos.FileExists(privValKeyFile) {
+	var pv *privval.FilePV
+	if cmn.FileExists(privValKeyFile) {
 		pv = privval.LoadFilePV(privValKeyFile, privValStateFile)
 		logger.Info("Found private validator", "keyFile", privValKeyFile,
 			"stateFile", privValStateFile)
 	} else {
-		pv, err = privval.GenFilePV(privValKeyFile, privValStateFile, keyType)
-		if err != nil {
-			return err
-		}
+		pv = privval.GenFilePV(privValKeyFile, privValStateFile)
 		pv.Save()
 		logger.Info("Generated private validator", "keyFile", privValKeyFile,
 			"stateFile", privValStateFile)
 	}
 
 	nodeKeyFile := config.NodeKeyFile()
-	if tmos.FileExists(nodeKeyFile) {
+	if cmn.FileExists(nodeKeyFile) {
 		logger.Info("Found node key", "path", nodeKeyFile)
 	} else {
 		if _, err := p2p.LoadOrGenNodeKey(nodeKeyFile); err != nil {
@@ -69,27 +51,18 @@ func initFilesWithConfig(config *cfg.Config) error {
 
 	// genesis file
 	genFile := config.GenesisFile()
-	if tmos.FileExists(genFile) {
+	if cmn.FileExists(genFile) {
 		logger.Info("Found genesis file", "path", genFile)
 	} else {
-
 		genDoc := types.GenesisDoc{
-			ChainID:         fmt.Sprintf("test-chain-%v", tmrand.Str(6)),
+			ChainID:         fmt.Sprintf("test-chain-%v", cmn.RandStr(6)),
 			GenesisTime:     tmtime.Now(),
 			ConsensusParams: types.DefaultConsensusParams(),
 		}
-		if keyType == "secp256k1" {
-			genDoc.ConsensusParams.Validator = tmproto.ValidatorParams{
-				PubKeyTypes: []string{types.ABCIPubKeyTypeSecp256k1},
-			}
-		}
-		pubKey, err := pv.GetPubKey()
-		if err != nil {
-			return fmt.Errorf("can't get pubkey: %w", err)
-		}
+		key := pv.GetPubKey()
 		genDoc.Validators = []types.GenesisValidator{{
-			Address: pubKey.Address(),
-			PubKey:  pubKey,
+			Address: key.Address(),
+			PubKey:  key,
 			Power:   10,
 		}}
 

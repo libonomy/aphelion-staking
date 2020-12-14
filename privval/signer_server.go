@@ -2,27 +2,26 @@ package privval
 
 import (
 	"io"
+	"sync"
 
-	"github.com/evdatsion/tendermint/libs/service"
-	tmsync "github.com/evdatsion/tendermint/libs/sync"
-	privvalproto "github.com/evdatsion/tendermint/proto/tendermint/privval"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 	"github.com/evdatsion/tendermint/types"
 )
 
 // ValidationRequestHandlerFunc handles different remoteSigner requests
 type ValidationRequestHandlerFunc func(
 	privVal types.PrivValidator,
-	requestMessage privvalproto.Message,
-	chainID string) (privvalproto.Message, error)
+	requestMessage SignerMessage,
+	chainID string) (SignerMessage, error)
 
 type SignerServer struct {
-	service.BaseService
+	cmn.BaseService
 
 	endpoint *SignerDialerEndpoint
 	chainID  string
 	privVal  types.PrivValidator
 
-	handlerMtx               tmsync.Mutex
+	handlerMtx               sync.Mutex
 	validationRequestHandler ValidationRequestHandlerFunc
 }
 
@@ -34,18 +33,18 @@ func NewSignerServer(endpoint *SignerDialerEndpoint, chainID string, privVal typ
 		validationRequestHandler: DefaultValidationRequestHandler,
 	}
 
-	ss.BaseService = *service.NewBaseService(endpoint.Logger, "SignerServer", ss)
+	ss.BaseService = *cmn.NewBaseService(endpoint.Logger, "SignerServer", ss)
 
 	return ss
 }
 
-// OnStart implements service.Service.
+// OnStart implements cmn.Service.
 func (ss *SignerServer) OnStart() error {
 	go ss.serviceLoop()
 	return nil
 }
 
-// OnStop implements service.Service.
+// OnStop implements cmn.Service.
 func (ss *SignerServer) OnStop() {
 	ss.endpoint.Logger.Debug("SignerServer: OnStop calling Close")
 	_ = ss.endpoint.Close()
@@ -71,7 +70,7 @@ func (ss *SignerServer) servicePendingRequest() {
 		return
 	}
 
-	var res privvalproto.Message
+	var res SignerMessage
 	{
 		// limit the scope of the lock
 		ss.handlerMtx.Lock()
@@ -83,9 +82,11 @@ func (ss *SignerServer) servicePendingRequest() {
 		}
 	}
 
-	err = ss.endpoint.WriteMessage(res)
-	if err != nil {
-		ss.Logger.Error("SignerServer: writeMessage", "err", err)
+	if res != nil {
+		err = ss.endpoint.WriteMessage(res)
+		if err != nil {
+			ss.Logger.Error("SignerServer: writeMessage", "err", err)
+		}
 	}
 }
 

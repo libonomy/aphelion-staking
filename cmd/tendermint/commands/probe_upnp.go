@@ -5,7 +5,6 @@ import (
 
 	"github.com/spf13/cobra"
 
-	tmjson "github.com/evdatsion/tendermint/libs/json"
 	"github.com/evdatsion/tendermint/p2p/upnp"
 )
 
@@ -22,7 +21,7 @@ func probeUpnp(cmd *cobra.Command, args []string) error {
 		fmt.Println("Probe failed: ", err)
 	} else {
 		fmt.Println("Probe success!")
-		jsonBytes, err := tmjson.Marshal(capabilities)
+		jsonBytes, err := cdc.MarshalJSON(capabilities)
 		if err != nil {
 			return err
 		}

@@ -18,7 +18,6 @@ func TestMain(m *testing.M) {
 	if err != nil {
 		panic(err)
 	}
-
 	app := kvstore.NewPersistentKVStoreApplication(dir)
 	node = rpctest.StartTendermint(app)
 
@@ -26,6 +25,5 @@ func TestMain(m *testing.M) {
 
 	// and shut down proper at the end
 	rpctest.StopTendermint(node)
-	_ = os.RemoveAll(dir)
 	os.Exit(code)
 }

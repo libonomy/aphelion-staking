@@ -2,26 +2,25 @@ package consensus
 
 import (
 	"encoding/binary"
-	"errors"
 	"fmt"
 	"hash/crc32"
 	"io"
 	"path/filepath"
 	"time"
 
-	"github.com/gogo/protobuf/proto"
+	"github.com/pkg/errors"
 
+	amino "github.com/evdatsion/go-amino"
 	auto "github.com/evdatsion/tendermint/libs/autofile"
-	tmjson "github.com/evdatsion/tendermint/libs/json"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 	"github.com/evdatsion/tendermint/libs/log"
-	tmos "github.com/evdatsion/tendermint/libs/os"
-	"github.com/evdatsion/tendermint/libs/service"
-	tmcons "github.com/evdatsion/tendermint/proto/tendermint/consensus"
+	"github.com/evdatsion/tendermint/types"
 	tmtime "github.com/evdatsion/tendermint/types/time"
 )
 
 const (
-	// time.Time + max consensus msg size
+	// amino overhead + time.Time + max consensus msg size
+	// TODO: Can we clarify better where 24 comes from precisely?
 	maxMsgSizeBytes = maxMsgSize + 24
 
 	// how often the WAL should be sync'd during period sync'ing
@@ -45,10 +44,12 @@ type EndHeightMessage struct {
 
 type WALMessage interface{}
 
-func init() {
-	tmjson.RegisterType(msgInfo{}, "tendermint/wal/MsgInfo")
-	tmjson.RegisterType(timeoutInfo{}, "tendermint/wal/TimeoutInfo")
-	tmjson.RegisterType(EndHeightMessage{}, "tendermint/wal/EndHeightMessage")
+func RegisterWALMessages(cdc *amino.Codec) {
+	cdc.RegisterInterface((*WALMessage)(nil), nil)
+	cdc.RegisterConcrete(types.EventDataRoundState{}, "tendermint/wal/EventDataRoundState", nil)
+	cdc.RegisterConcrete(msgInfo{}, "tendermint/wal/MsgInfo", nil)
+	cdc.RegisterConcrete(timeoutInfo{}, "tendermint/wal/TimeoutInfo", nil)
+	cdc.RegisterConcrete(EndHeightMessage{}, "tendermint/wal/EndHeightMessage", nil)
 }
 
 //--------------------------------------------------------
@@ -73,8 +74,8 @@ type WAL interface {
 // TODO: currently the wal is overwritten during replay catchup, give it a mode
 // so it's either reading or appending - must read to end to start appending
 // again.
-type BaseWAL struct {
-	service.BaseService
+type baseWAL struct {
+	cmn.BaseService
 
 	group *auto.Group
 
@@ -84,51 +85,49 @@ type BaseWAL struct {
 	flushInterval time.Duration
 }
 
-var _ WAL = &BaseWAL{}
+var _ WAL = &baseWAL{}
 
 // NewWAL returns a new write-ahead logger based on `baseWAL`, which implements
 // WAL. It's flushed and synced to disk every 2s and once when stopped.
-func NewWAL(walFile string, groupOptions ...func(*auto.Group)) (*BaseWAL, error) {
-	err := tmos.EnsureDir(filepath.Dir(walFile), 0700)
+func NewWAL(walFile string, groupOptions ...func(*auto.Group)) (*baseWAL, error) {
+	err := cmn.EnsureDir(filepath.Dir(walFile), 0700)
 	if err != nil {
-		return nil, fmt.Errorf("failed to ensure WAL directory is in place: %w", err)
+		return nil, errors.Wrap(err, "failed to ensure WAL directory is in place")
 	}
 
 	group, err := auto.OpenGroup(walFile, groupOptions...)
 	if err != nil {
 		return nil, err
 	}
-	wal := &BaseWAL{
+	wal := &baseWAL{
 		group:         group,
 		enc:           NewWALEncoder(group),
 		flushInterval: walDefaultFlushInterval,
 	}
-	wal.BaseService = *service.NewBaseService(nil, "baseWAL", wal)
+	wal.BaseService = *cmn.NewBaseService(nil, "baseWAL", wal)
 	return wal, nil
 }
 
 // SetFlushInterval allows us to override the periodic flush interval for the WAL.
-func (wal *BaseWAL) SetFlushInterval(i time.Duration) {
+func (wal *baseWAL) SetFlushInterval(i time.Duration) {
 	wal.flushInterval = i
 }
 
-func (wal *BaseWAL) Group() *auto.Group {
+func (wal *baseWAL) Group() *auto.Group {
 	return wal.group
 }
 
-func (wal *BaseWAL) SetLogger(l log.Logger) {
+func (wal *baseWAL) SetLogger(l log.Logger) {
 	wal.BaseService.Logger = l
 	wal.group.SetLogger(l)
 }
 
-func (wal *BaseWAL) OnStart() error {
+func (wal *baseWAL) OnStart() error {
 	size, err := wal.group.Head.Size()
 	if err != nil {
 		return err
 	} else if size == 0 {
-		if err := wal.WriteSync(EndHeightMessage{0}); err != nil {
-			return err
-		}
+		wal.WriteSync(EndHeightMessage{0})
 	}
 	err = wal.group.Start()
 	if err != nil {
@@ -139,7 +138,7 @@ func (wal *BaseWAL) OnStart() error {
 	return nil
 }
 
-func (wal *BaseWAL) processFlushTicks() {
+func (wal *baseWAL) processFlushTicks() {
 	for {
 		select {
 		case <-wal.flushTicker.C:
@@ -154,34 +153,30 @@ func (wal *BaseWAL) processFlushTicks() {
 
 // FlushAndSync flushes and fsync's the underlying group's data to disk.
 // See auto#FlushAndSync
-func (wal *BaseWAL) FlushAndSync() error {
+func (wal *baseWAL) FlushAndSync() error {
 	return wal.group.FlushAndSync()
 }
 
 // Stop the underlying autofile group.
 // Use Wait() to ensure it's finished shutting down
 // before cleaning up files.
-func (wal *BaseWAL) OnStop() {
+func (wal *baseWAL) OnStop() {
 	wal.flushTicker.Stop()
-	if err := wal.FlushAndSync(); err != nil {
-		wal.Logger.Error("error on flush data to disk", "error", err)
-	}
-	if err := wal.group.Stop(); err != nil {
-		wal.Logger.Error("error trying to stop wal", "error", err)
-	}
+	wal.FlushAndSync()
+	wal.group.Stop()
 	wal.group.Close()
 }
 
 // Wait for the underlying autofile group to finish shutting down
 // so it's safe to cleanup files.
-func (wal *BaseWAL) Wait() {
+func (wal *baseWAL) Wait() {
 	wal.group.Wait()
 }
 
 // Write is called in newStep and for each receive on the
 // peerMsgQueue and the timeoutTicker.
 // NOTE: does not call fsync()
-func (wal *BaseWAL) Write(msg WALMessage) error {
+func (wal *baseWAL) Write(msg WALMessage) error {
 	if wal == nil {
 		return nil
 	}
@@ -198,7 +193,7 @@ func (wal *BaseWAL) Write(msg WALMessage) error {
 // WriteSync is called when we receive a msg from ourselves
 // so that we write to disk before sending signed messages.
 // NOTE: calls fsync()
-func (wal *BaseWAL) WriteSync(msg WALMessage) error {
+func (wal *baseWAL) WriteSync(msg WALMessage) error {
 	if wal == nil {
 		return nil
 	}
@@ -208,8 +203,7 @@ func (wal *BaseWAL) WriteSync(msg WALMessage) error {
 	}
 
 	if err := wal.FlushAndSync(); err != nil {
-		wal.Logger.Error(`WriteSync failed to flush consensus wal.
-		WARNING: may result in creating alternative proposals / votes for the current height iff the node restarted`,
+		wal.Logger.Error("WriteSync failed to flush consensus wal. WARNING: may result in creating alternative proposals / votes for the current height iff the node restarted",
 			"err", err)
 		return err
 	}
@@ -228,7 +222,7 @@ type WALSearchOptions struct {
 // Group reader will be nil if found equals false.
 //
 // CONTRACT: caller must close group reader.
-func (wal *BaseWAL) SearchForEndHeight(
+func (wal *baseWAL) SearchForEndHeight(
 	height int64,
 	options *WALSearchOptions) (rd io.ReadCloser, found bool, err error) {
 	var (
@@ -282,9 +276,11 @@ func (wal *BaseWAL) SearchForEndHeight(
 	return nil, false, nil
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 // A WALEncoder writes custom-encoded WAL messages to an output stream.
 //
-// Format: 4 bytes CRC sum + 4 bytes length + arbitrary-length value
+// Format: 4 bytes CRC sum + 4 bytes length + arbitrary-length value (go-amino encoded)
 type WALEncoder struct {
 	wr io.Writer
 }
@@ -295,22 +291,10 @@ func NewWALEncoder(wr io.Writer) *WALEncoder {
 }
 
 // Encode writes the custom encoding of v to the stream. It returns an error if
-// the encoded size of v is greater than 1MB. Any error encountered
+// the amino-encoded size of v is greater than 1MB. Any error encountered
 // during the write is also returned.
 func (enc *WALEncoder) Encode(v *TimedWALMessage) error {
-	pbMsg, err := WALToProto(v.Msg)
-	if err != nil {
-		return err
-	}
-	pv := tmcons.TimedWALMessage{
-		Time: v.Time,
-		Msg:  pbMsg,
-	}
-
-	data, err := proto.Marshal(&pv)
-	if err != nil {
-		panic(fmt.Errorf("encode timed wall message failure: %w", err))
-	}
+	data := cdc.MustMarshalBinaryBare(v)
 
 	crc := crc32.Checksum(data, crc32c)
 	length := uint32(len(data))
@@ -324,9 +308,11 @@ func (enc *WALEncoder) Encode(v *TimedWALMessage) error {
 	binary.BigEndian.PutUint32(msg[4:8], length)
 	copy(msg[8:], data)
 
-	_, err = enc.wr.Write(msg)
+	_, err := enc.wr.Write(msg)
 	return err
 }
+
+///////////////////////////////////////////////////////////////////////////////
 
 // IsDataCorruptionError returns true if data has been corrupted inside WAL.
 func IsDataCorruptionError(err error) bool {
@@ -366,7 +352,7 @@ func (dec *WALDecoder) Decode() (*TimedWALMessage, error) {
 	b := make([]byte, 4)
 
 	_, err := dec.rd.Read(b)
-	if errors.Is(err, io.EOF) {
+	if err == io.EOF {
 		return nil, err
 	}
 	if err != nil {
@@ -400,22 +386,13 @@ func (dec *WALDecoder) Decode() (*TimedWALMessage, error) {
 		return nil, DataCorruptionError{fmt.Errorf("checksums do not match: read: %v, actual: %v", crc, actualCRC)}
 	}
 
-	var res = new(tmcons.TimedWALMessage)
-	err = proto.Unmarshal(data, res)
+	var res = new(TimedWALMessage) // nolint: gosimple
+	err = cdc.UnmarshalBinaryBare(data, res)
 	if err != nil {
 		return nil, DataCorruptionError{fmt.Errorf("failed to decode data: %v", err)}
 	}
 
-	walMsg, err := WALFromProto(res.Msg)
-	if err != nil {
-		return nil, DataCorruptionError{fmt.Errorf("failed to convert from proto: %w", err)}
-	}
-	tMsgWal := &TimedWALMessage{
-		Time: res.Time,
-		Msg:  walMsg,
-	}
-
-	return tMsgWal, err
+	return res, err
 }
 
 type nilWAL struct{}

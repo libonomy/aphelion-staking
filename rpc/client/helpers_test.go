@@ -7,7 +7,6 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-
 	"github.com/evdatsion/tendermint/rpc/client"
 	"github.com/evdatsion/tendermint/rpc/client/mock"
 	ctypes "github.com/evdatsion/tendermint/rpc/core/types"

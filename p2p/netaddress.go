@@ -6,7 +6,6 @@ package p2p
 
 import (
 	"encoding/hex"
-	"errors"
 	"flag"
 	"fmt"
 	"net"
@@ -14,11 +13,8 @@ import (
 	"strings"
 	"time"
 
-	tmp2p "github.com/evdatsion/tendermint/proto/tendermint/p2p"
+	"github.com/pkg/errors"
 )
-
-// EmptyNetAddress defines the string representation of an empty NetAddress
-const EmptyNetAddress = "<nil-NetAddress>"
 
 // NetAddress defines information about a peer on the network
 // including its ID, IP address, and port.
@@ -26,6 +22,12 @@ type NetAddress struct {
 	ID   ID     `json:"id"`
 	IP   net.IP `json:"ip"`
 	Port uint16 `json:"port"`
+
+	// TODO:
+	// Name string `json:"name"` // optional DNS name
+
+	// memoize .String()
+	str string
 }
 
 // IDAddressString returns id@hostPort. It strips the leading
@@ -46,7 +48,7 @@ func NewNetAddress(id ID, addr net.Addr) *NetAddress {
 		if flag.Lookup("test.v") == nil { // normal run
 			panic(fmt.Sprintf("Only TCPAddrs are supported. Got: %v", addr))
 		} else { // in testing
-			netAddr := NewNetAddressIPPort(net.IP("127.0.0.1"), 0)
+			netAddr := NewNetAddressIPPort(net.IP("0.0.0.0"), 0)
 			netAddr.ID = id
 			return netAddr
 		}
@@ -136,55 +138,6 @@ func NewNetAddressIPPort(ip net.IP, port uint16) *NetAddress {
 	}
 }
 
-// NetAddressFromProto converts a Protobuf NetAddress into a native struct.
-func NetAddressFromProto(pb tmp2p.NetAddress) (*NetAddress, error) {
-	ip := net.ParseIP(pb.IP)
-	if ip == nil {
-		return nil, fmt.Errorf("invalid IP address %v", pb.IP)
-	}
-	if pb.Port >= 1<<16 {
-		return nil, fmt.Errorf("invalid port number %v", pb.Port)
-	}
-	return &NetAddress{
-		ID:   ID(pb.ID),
-		IP:   ip,
-		Port: uint16(pb.Port),
-	}, nil
-}
-
-// NetAddressesFromProto converts a slice of Protobuf NetAddresses into a native slice.
-func NetAddressesFromProto(pbs []tmp2p.NetAddress) ([]*NetAddress, error) {
-	nas := make([]*NetAddress, 0, len(pbs))
-	for _, pb := range pbs {
-		na, err := NetAddressFromProto(pb)
-		if err != nil {
-			return nil, err
-		}
-		nas = append(nas, na)
-	}
-	return nas, nil
-}
-
-// NetAddressesToProto converts a slice of NetAddresses into a Protobuf slice.
-func NetAddressesToProto(nas []*NetAddress) []tmp2p.NetAddress {
-	pbs := make([]tmp2p.NetAddress, 0, len(nas))
-	for _, na := range nas {
-		if na != nil {
-			pbs = append(pbs, na.ToProto())
-		}
-	}
-	return pbs
-}
-
-// ToProto converts a NetAddress to Protobuf.
-func (na *NetAddress) ToProto() tmp2p.NetAddress {
-	return tmp2p.NetAddress{
-		ID:   string(na.ID),
-		IP:   na.IP.String(),
-		Port: uint32(na.Port),
-	}
-}
-
 // Equals reports whether na and other are the same addresses,
 // including their ID, IP, and Port.
 func (na *NetAddress) Equals(other interface{}) bool {
@@ -210,15 +163,16 @@ func (na *NetAddress) Same(other interface{}) bool {
 // String representation: <ID>@<IP>:<PORT>
 func (na *NetAddress) String() string {
 	if na == nil {
-		return EmptyNetAddress
+		return "<nil-NetAddress>"
 	}
-
-	addrStr := na.DialString()
-	if na.ID != "" {
-		addrStr = IDAddressString(na.ID, addrStr)
+	if na.str == "" {
+		addrStr := na.DialString()
+		if na.ID != "" {
+			addrStr = IDAddressString(na.ID, addrStr)
+		}
+		na.str = addrStr
 	}
-
-	return addrStr
+	return na.str
 }
 
 func (na *NetAddress) DialString() string {
@@ -263,7 +217,7 @@ func (na *NetAddress) Routable() bool {
 // address or one that matches the RFC3849 documentation address format.
 func (na *NetAddress) Valid() error {
 	if err := validateID(na.ID); err != nil {
-		return fmt.Errorf("invalid ID: %w", err)
+		return errors.Wrap(err, "invalid ID")
 	}
 
 	if na.IP == nil {
@@ -292,9 +246,9 @@ func (na *NetAddress) ReachabilityTo(o *NetAddress) int {
 		Unreachable = 0
 		Default     = iota
 		Teredo
-		Ipv6Weak
+		Ipv6_weak
 		Ipv4
-		Ipv6Strong
+		Ipv6_strong
 	)
 	switch {
 	case !na.Routable():
@@ -308,7 +262,7 @@ func (na *NetAddress) ReachabilityTo(o *NetAddress) int {
 		case o.IP.To4() != nil:
 			return Ipv4
 		default: // ipv6
-			return Ipv6Weak
+			return Ipv6_weak
 		}
 	case na.IP.To4() != nil:
 		if o.Routable() && o.IP.To4() != nil {
@@ -330,9 +284,9 @@ func (na *NetAddress) ReachabilityTo(o *NetAddress) int {
 			return Ipv4
 		case tunnelled:
 			// only prioritise ipv6 if we aren't tunnelling it.
-			return Ipv6Weak
+			return Ipv6_weak
 		}
-		return Ipv6Strong
+		return Ipv6_strong
 	}
 }
 

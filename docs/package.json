@@ -1,20 +1,18 @@
 {
   "name": "docs",
   "version": "1.0.0",
-  "description": "Tendermint Core Documentation",
+  "description": "Welcome to the Tendermint Core documentation!",
   "main": "index.js",
   "dependencies": {
-    "vuepress-theme-cosmos": "^1.0.175"
+    "vuepress-theme-cosmos": "^1.0.54"
   },
-  "devDependencies": {
-    "watchpack": "^2.0.1"
-  },
+  "devDependencies": {},
   "scripts": {
     "preserve": "./pre.sh",
-    "serve": "trap 'exit 0' SIGINT; vuepress dev --no-cache",
+    "serve": "trap 'exit 0' SIGINT; vuepress dev",
     "postserve": "./post.sh",
     "prebuild": "./pre.sh",
-    "build": "trap 'exit 0' SIGINT; vuepress build --no-cache",
+    "build": "trap 'exit 0' SIGINT; vuepress build",
     "postbuild": "./post.sh"
   },
   "author": "",

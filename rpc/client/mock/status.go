@@ -1,8 +1,6 @@
 package mock
 
 import (
-	"context"
-
 	"github.com/evdatsion/tendermint/rpc/client"
 	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
 )
@@ -17,7 +15,7 @@ var (
 	_ client.StatusClient = (*StatusRecorder)(nil)
 )
 
-func (m *StatusMock) Status(ctx context.Context) (*ctypes.ResultStatus, error) {
+func (m *StatusMock) Status() (*ctypes.ResultStatus, error) {
 	res, err := m.GetResponse(nil)
 	if err != nil {
 		return nil, err
@@ -43,8 +41,8 @@ func (r *StatusRecorder) addCall(call Call) {
 	r.Calls = append(r.Calls, call)
 }
 
-func (r *StatusRecorder) Status(ctx context.Context) (*ctypes.ResultStatus, error) {
-	res, err := r.Client.Status(ctx)
+func (r *StatusRecorder) Status() (*ctypes.ResultStatus, error) {
+	res, err := r.Client.Status()
 	r.addCall(Call{
 		Name:     "status",
 		Response: res,

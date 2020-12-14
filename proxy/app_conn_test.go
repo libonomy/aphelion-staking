@@ -9,8 +9,8 @@ import (
 	"github.com/evdatsion/tendermint/abci/example/kvstore"
 	"github.com/evdatsion/tendermint/abci/server"
 	"github.com/evdatsion/tendermint/abci/types"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 	"github.com/evdatsion/tendermint/libs/log"
-	tmrand "github.com/evdatsion/tendermint/libs/rand"
 )
 
 //----------------------------------------
@@ -46,20 +46,16 @@ func (app *appConnTest) InfoSync(req types.RequestInfo) (*types.ResponseInfo, er
 var SOCKET = "socket"
 
 func TestEcho(t *testing.T) {
-	sockPath := fmt.Sprintf("unix:///tmp/echo_%v.sock", tmrand.Str(6))
+	sockPath := fmt.Sprintf("unix:///tmp/echo_%v.sock", cmn.RandStr(6))
 	clientCreator := NewRemoteClientCreator(sockPath, SOCKET, true)
 
 	// Start server
-	s := server.NewSocketServer(sockPath, kvstore.NewApplication())
+	s := server.NewSocketServer(sockPath, kvstore.NewKVStoreApplication())
 	s.SetLogger(log.TestingLogger().With("module", "abci-server"))
 	if err := s.Start(); err != nil {
 		t.Fatalf("Error starting socket server: %v", err.Error())
 	}
-	t.Cleanup(func() {
-		if err := s.Stop(); err != nil {
-			t.Error(err)
-		}
-	})
+	defer s.Stop()
 
 	// Start client
 	cli, err := clientCreator.NewABCIClient()
@@ -84,20 +80,16 @@ func TestEcho(t *testing.T) {
 
 func BenchmarkEcho(b *testing.B) {
 	b.StopTimer() // Initialize
-	sockPath := fmt.Sprintf("unix:///tmp/echo_%v.sock", tmrand.Str(6))
+	sockPath := fmt.Sprintf("unix:///tmp/echo_%v.sock", cmn.RandStr(6))
 	clientCreator := NewRemoteClientCreator(sockPath, SOCKET, true)
 
 	// Start server
-	s := server.NewSocketServer(sockPath, kvstore.NewApplication())
+	s := server.NewSocketServer(sockPath, kvstore.NewKVStoreApplication())
 	s.SetLogger(log.TestingLogger().With("module", "abci-server"))
 	if err := s.Start(); err != nil {
 		b.Fatalf("Error starting socket server: %v", err.Error())
 	}
-	b.Cleanup(func() {
-		if err := s.Stop(); err != nil {
-			b.Error(err)
-		}
-	})
+	defer s.Stop()
 
 	// Start client
 	cli, err := clientCreator.NewABCIClient()
@@ -123,24 +115,20 @@ func BenchmarkEcho(b *testing.B) {
 
 	b.StopTimer()
 	// info := proxy.InfoSync(types.RequestInfo{""})
-	// b.Log("N: ", b.N, info)
+	//b.Log("N: ", b.N, info)
 }
 
 func TestInfo(t *testing.T) {
-	sockPath := fmt.Sprintf("unix:///tmp/echo_%v.sock", tmrand.Str(6))
+	sockPath := fmt.Sprintf("unix:///tmp/echo_%v.sock", cmn.RandStr(6))
 	clientCreator := NewRemoteClientCreator(sockPath, SOCKET, true)
 
 	// Start server
-	s := server.NewSocketServer(sockPath, kvstore.NewApplication())
+	s := server.NewSocketServer(sockPath, kvstore.NewKVStoreApplication())
 	s.SetLogger(log.TestingLogger().With("module", "abci-server"))
 	if err := s.Start(); err != nil {
 		t.Fatalf("Error starting socket server: %v", err.Error())
 	}
-	t.Cleanup(func() {
-		if err := s.Stop(); err != nil {
-			t.Error(err)
-		}
-	})
+	defer s.Stop()
 
 	// Start client
 	cli, err := clientCreator.NewABCIClient()
@@ -157,7 +145,7 @@ func TestInfo(t *testing.T) {
 
 	resInfo, err := proxy.InfoSync(RequestInfo)
 	if err != nil {
-		t.Errorf("unexpected error: %v", err)
+		t.Errorf("Unexpected error: %v", err)
 	}
 	if resInfo.Data != "{\"size\":0}" {
 		t.Error("Expected ResponseInfo with one element '{\"size\":0}' but got something else")

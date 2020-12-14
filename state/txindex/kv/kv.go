@@ -2,17 +2,18 @@ package kv
 
 import (
 	"bytes"
-	"context"
 	"encoding/hex"
 	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
 
-	"github.com/gogo/protobuf/proto"
+	"github.com/pkg/errors"
+
 	dbm "github.com/evdatsion/tm-db"
 
-	abci "github.com/evdatsion/tendermint/abci/types"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 	"github.com/evdatsion/tendermint/libs/pubsub/query"
 	"github.com/evdatsion/tendermint/state/txindex"
 	"github.com/evdatsion/tendermint/types"
@@ -26,35 +27,50 @@ var _ txindex.TxIndexer = (*TxIndex)(nil)
 
 // TxIndex is the simplest possible indexer, backed by key-value storage (levelDB).
 type TxIndex struct {
-	store dbm.DB
+	store        dbm.DB
+	tagsToIndex  []string
+	indexAllTags bool
 }
 
 // NewTxIndex creates new KV indexer.
-func NewTxIndex(store dbm.DB) *TxIndex {
-	return &TxIndex{
-		store: store,
+func NewTxIndex(store dbm.DB, options ...func(*TxIndex)) *TxIndex {
+	txi := &TxIndex{store: store, tagsToIndex: make([]string, 0), indexAllTags: false}
+	for _, o := range options {
+		o(txi)
+	}
+	return txi
+}
+
+// IndexTags is an option for setting which tags to index.
+func IndexTags(tags []string) func(*TxIndex) {
+	return func(txi *TxIndex) {
+		txi.tagsToIndex = tags
+	}
+}
+
+// IndexAllTags is an option for indexing all tags.
+func IndexAllTags() func(*TxIndex) {
+	return func(txi *TxIndex) {
+		txi.indexAllTags = true
 	}
 }
 
 // Get gets transaction from the TxIndex storage and returns it or nil if the
 // transaction is not found.
-func (txi *TxIndex) Get(hash []byte) (*abci.TxResult, error) {
+func (txi *TxIndex) Get(hash []byte) (*types.TxResult, error) {
 	if len(hash) == 0 {
 		return nil, txindex.ErrorEmptyHash
 	}
 
-	rawBytes, err := txi.store.Get(hash)
-	if err != nil {
-		panic(err)
-	}
+	rawBytes := txi.store.Get(hash)
 	if rawBytes == nil {
 		return nil, nil
 	}
 
-	txResult := new(abci.TxResult)
-	err = proto.Unmarshal(rawBytes, txResult)
+	txResult := new(types.TxResult)
+	err := cdc.UnmarshalBinaryBare(rawBytes, &txResult)
 	if err != nil {
-		return nil, fmt.Errorf("error reading TxResult: %v", err)
+		return nil, fmt.Errorf("Error reading TxResult: %v", err)
 	}
 
 	return txResult, nil
@@ -69,70 +85,59 @@ func (txi *TxIndex) AddBatch(b *txindex.Batch) error {
 	defer storeBatch.Close()
 
 	for _, result := range b.Ops {
-		hash := types.Tx(result.Tx).Hash()
+		hash := result.Tx.Hash()
 
 		// index tx by events
-		err := txi.indexEvents(result, hash, storeBatch)
-		if err != nil {
-			return err
+		txi.indexEvents(result, hash, storeBatch)
+
+		// index tx by height
+		if txi.indexAllTags || cmn.StringInSlice(types.TxHeightKey, txi.tagsToIndex) {
+			storeBatch.Set(keyForHeight(result), hash)
 		}
 
-		// index by height (always)
-		err = storeBatch.Set(keyForHeight(result), hash)
+		// index tx by hash
+		rawBytes, err := cdc.MarshalBinaryBare(result)
 		if err != nil {
 			return err
 		}
-
-		rawBytes, err := proto.Marshal(result)
-		if err != nil {
-			return err
-		}
-		// index by hash (always)
-		err = storeBatch.Set(hash, rawBytes)
-		if err != nil {
-			return err
-		}
+		storeBatch.Set(hash, rawBytes)
 	}
 
-	return storeBatch.WriteSync()
+	storeBatch.WriteSync()
+	return nil
 }
 
 // Index indexes a single transaction using the given list of events. Each key
 // that indexed from the tx's events is a composite of the event type and the
 // respective attribute's key delimited by a "." (eg. "account.number").
 // Any event with an empty type is not indexed.
-func (txi *TxIndex) Index(result *abci.TxResult) error {
+func (txi *TxIndex) Index(result *types.TxResult) error {
 	b := txi.store.NewBatch()
 	defer b.Close()
 
-	hash := types.Tx(result.Tx).Hash()
+	hash := result.Tx.Hash()
 
 	// index tx by events
-	err := txi.indexEvents(result, hash, b)
+	txi.indexEvents(result, hash, b)
+
+	// index tx by height
+	if txi.indexAllTags || cmn.StringInSlice(types.TxHeightKey, txi.tagsToIndex) {
+		b.Set(keyForHeight(result), hash)
+	}
+
+	// index tx by hash
+	rawBytes, err := cdc.MarshalBinaryBare(result)
 	if err != nil {
 		return err
 	}
 
-	// index by height (always)
-	err = b.Set(keyForHeight(result), hash)
-	if err != nil {
-		return err
-	}
+	b.Set(hash, rawBytes)
+	b.WriteSync()
 
-	rawBytes, err := proto.Marshal(result)
-	if err != nil {
-		return err
-	}
-	// index by hash (always)
-	err = b.Set(hash, rawBytes)
-	if err != nil {
-		return err
-	}
-
-	return b.WriteSync()
+	return nil
 }
 
-func (txi *TxIndex) indexEvents(result *abci.TxResult, hash []byte, store dbm.Batch) error {
+func (txi *TxIndex) indexEvents(result *types.TxResult, hash []byte, store dbm.SetDeleter) {
 	for _, event := range result.Result.Events {
 		// only index events with a non-empty type
 		if len(event.Type) == 0 {
@@ -144,62 +149,43 @@ func (txi *TxIndex) indexEvents(result *abci.TxResult, hash []byte, store dbm.Ba
 				continue
 			}
 
-			// index if `index: true` is set
 			compositeTag := fmt.Sprintf("%s.%s", event.Type, string(attr.Key))
-			if attr.GetIndex() {
-				err := store.Set(keyForEvent(compositeTag, attr.Value, result), hash)
-				if err != nil {
-					return err
-				}
+			if txi.indexAllTags || cmn.StringInSlice(compositeTag, txi.tagsToIndex) {
+				store.Set(keyForEvent(compositeTag, attr.Value, result), hash)
 			}
 		}
 	}
-
-	return nil
 }
 
-// Search performs a search using the given query.
-//
-// It breaks the query into conditions (like "tx.height > 5"). For each
-// condition, it queries the DB index. One special use cases here: (1) if
-// "tx.hash" is found, it returns tx result for it (2) for range queries it is
-// better for the client to provide both lower and upper bounds, so we are not
-// performing a full scan. Results from querying indexes are then intersected
-// and returned to the caller, in no particular order.
-//
-// Search will exit early and return any result fetched so far,
-// when a message is received on the context chan.
-func (txi *TxIndex) Search(ctx context.Context, q *query.Query) ([]*abci.TxResult, error) {
-	// Potentially exit early.
-	select {
-	case <-ctx.Done():
-		results := make([]*abci.TxResult, 0)
-		return results, nil
-	default:
-	}
-
+// Search performs a search using the given query. It breaks the query into
+// conditions (like "tx.height > 5"). For each condition, it queries the DB
+// index. One special use cases here: (1) if "tx.hash" is found, it returns tx
+// result for it (2) for range queries it is better for the client to provide
+// both lower and upper bounds, so we are not performing a full scan. Results
+// from querying indexes are then intersected and returned to the caller.
+func (txi *TxIndex) Search(q *query.Query) ([]*types.TxResult, error) {
 	var hashesInitialized bool
 	filteredHashes := make(map[string][]byte)
 
 	// get a list of conditions (like "tx.height > 5")
 	conditions, err := q.Conditions()
 	if err != nil {
-		return nil, fmt.Errorf("error during parsing conditions from query: %w", err)
+		return nil, errors.Wrap(err, "error during parsing conditions from query")
 	}
 
 	// if there is a hash condition, return the result immediately
-	hash, ok, err := lookForHash(conditions)
+	hash, err, ok := lookForHash(conditions)
 	if err != nil {
-		return nil, fmt.Errorf("error during searching for a hash in the query: %w", err)
+		return nil, errors.Wrap(err, "error during searching for a hash in the query")
 	} else if ok {
 		res, err := txi.Get(hash)
 		switch {
 		case err != nil:
-			return []*abci.TxResult{}, fmt.Errorf("error while retrieving the result: %w", err)
+			return []*types.TxResult{}, errors.Wrap(err, "error while retrieving the result")
 		case res == nil:
-			return []*abci.TxResult{}, nil
+			return []*types.TxResult{}, nil
 		default:
-			return []*abci.TxResult{res}, nil
+			return []*types.TxResult{res}, nil
 		}
 	}
 
@@ -215,7 +201,7 @@ func (txi *TxIndex) Search(ctx context.Context, q *query.Query) ([]*abci.TxResul
 
 		for _, r := range ranges {
 			if !hashesInitialized {
-				filteredHashes = txi.matchRange(ctx, r, startKey(r.key), filteredHashes, true)
+				filteredHashes = txi.matchRange(r, startKey(r.key), filteredHashes, true)
 				hashesInitialized = true
 
 				// Ignore any remaining conditions if the first condition resulted
@@ -224,7 +210,7 @@ func (txi *TxIndex) Search(ctx context.Context, q *query.Query) ([]*abci.TxResul
 					break
 				}
 			} else {
-				filteredHashes = txi.matchRange(ctx, r, startKey(r.key), filteredHashes, false)
+				filteredHashes = txi.matchRange(r, startKey(r.key), filteredHashes, false)
 			}
 		}
 	}
@@ -234,12 +220,12 @@ func (txi *TxIndex) Search(ctx context.Context, q *query.Query) ([]*abci.TxResul
 
 	// for all other conditions
 	for i, c := range conditions {
-		if intInSlice(i, skipIndexes) {
+		if cmn.IntInSlice(i, skipIndexes) {
 			continue
 		}
 
 		if !hashesInitialized {
-			filteredHashes = txi.match(ctx, c, startKeyForCondition(c, height), filteredHashes, true)
+			filteredHashes = txi.match(c, startKeyForCondition(c, height), filteredHashes, true)
 			hashesInitialized = true
 
 			// Ignore any remaining conditions if the first condition resulted
@@ -248,34 +234,35 @@ func (txi *TxIndex) Search(ctx context.Context, q *query.Query) ([]*abci.TxResul
 				break
 			}
 		} else {
-			filteredHashes = txi.match(ctx, c, startKeyForCondition(c, height), filteredHashes, false)
+			filteredHashes = txi.match(c, startKeyForCondition(c, height), filteredHashes, false)
 		}
 	}
 
-	results := make([]*abci.TxResult, 0, len(filteredHashes))
+	results := make([]*types.TxResult, 0, len(filteredHashes))
 	for _, h := range filteredHashes {
 		res, err := txi.Get(h)
 		if err != nil {
-			return nil, fmt.Errorf("failed to get Tx{%X}: %w", h, err)
+			return nil, errors.Wrapf(err, "failed to get Tx{%X}", h)
 		}
 		results = append(results, res)
-
-		// Potentially exit early.
-		select {
-		case <-ctx.Done():
-			break
-		default:
-		}
 	}
+
+	// sort by height & index by default
+	sort.Slice(results, func(i, j int) bool {
+		if results[i].Height == results[j].Height {
+			return results[i].Index < results[j].Index
+		}
+		return results[i].Height < results[j].Height
+	})
 
 	return results, nil
 }
 
-func lookForHash(conditions []query.Condition) (hash []byte, ok bool, err error) {
+func lookForHash(conditions []query.Condition) (hash []byte, err error, ok bool) {
 	for _, c := range conditions {
-		if c.CompositeKey == types.TxHashKey {
+		if c.Tag == types.TxHashKey {
 			decoded, err := hex.DecodeString(c.Operand.(string))
-			return decoded, true, err
+			return decoded, err, true
 		}
 	}
 	return
@@ -284,7 +271,7 @@ func lookForHash(conditions []query.Condition) (hash []byte, ok bool, err error)
 // lookForHeight returns a height if there is an "height=X" condition.
 func lookForHeight(conditions []query.Condition) (height int64) {
 	for _, c := range conditions {
-		if c.CompositeKey == types.TxHeightKey && c.Op == query.OpEqual {
+		if c.Tag == types.TxHeightKey && c.Op == query.OpEqual {
 			return c.Operand.(int64)
 		}
 	}
@@ -310,24 +297,24 @@ func (r queryRange) lowerBoundValue() interface{} {
 
 	if r.includeLowerBound {
 		return r.lowerBound
-	}
-
-	switch t := r.lowerBound.(type) {
-	case int64:
-		return t + 1
-	case time.Time:
-		return t.Unix() + 1
-	default:
-		panic("not implemented")
+	} else {
+		switch t := r.lowerBound.(type) {
+		case int64:
+			return t + 1
+		case time.Time:
+			return t.Unix() + 1
+		default:
+			panic("not implemented")
+		}
 	}
 }
 
 func (r queryRange) AnyBound() interface{} {
 	if r.lowerBound != nil {
 		return r.lowerBound
+	} else {
+		return r.upperBound
 	}
-
-	return r.upperBound
 }
 
 func (r queryRange) upperBoundValue() interface{} {
@@ -337,15 +324,15 @@ func (r queryRange) upperBoundValue() interface{} {
 
 	if r.includeUpperBound {
 		return r.upperBound
-	}
-
-	switch t := r.upperBound.(type) {
-	case int64:
-		return t - 1
-	case time.Time:
-		return t.Unix() - 1
-	default:
-		panic("not implemented")
+	} else {
+		switch t := r.upperBound.(type) {
+		case int64:
+			return t - 1
+		case time.Time:
+			return t.Unix() - 1
+		default:
+			panic("not implemented")
+		}
 	}
 }
 
@@ -353,9 +340,9 @@ func lookForRanges(conditions []query.Condition) (ranges queryRanges, indexes []
 	ranges = make(queryRanges)
 	for i, c := range conditions {
 		if isRangeOperation(c.Op) {
-			r, ok := ranges[c.CompositeKey]
+			r, ok := ranges[c.Tag]
 			if !ok {
-				r = queryRange{key: c.CompositeKey}
+				r = queryRange{key: c.Tag}
 			}
 			switch c.Op {
 			case query.OpGreater:
@@ -369,7 +356,7 @@ func lookForRanges(conditions []query.Condition) (ranges queryRanges, indexes []
 				r.includeUpperBound = true
 				r.upperBound = c.Operand
 			}
-			ranges[c.CompositeKey] = r
+			ranges[c.Tag] = r
 			indexes = append(indexes, i)
 		}
 	}
@@ -391,7 +378,6 @@ func isRangeOperation(op query.Operator) bool {
 //
 // NOTE: filteredHashes may be empty if no previous condition has matched.
 func (txi *TxIndex) match(
-	ctx context.Context,
 	c query.Condition,
 	startKeyBz []byte,
 	filteredHashes map[string][]byte,
@@ -407,57 +393,18 @@ func (txi *TxIndex) match(
 
 	switch {
 	case c.Op == query.OpEqual:
-		it, err := dbm.IteratePrefix(txi.store, startKeyBz)
-		if err != nil {
-			panic(err)
-		}
+		it := dbm.IteratePrefix(txi.store, startKeyBz)
 		defer it.Close()
 
 		for ; it.Valid(); it.Next() {
 			tmpHashes[string(it.Value())] = it.Value()
-
-			// Potentially exit early.
-			select {
-			case <-ctx.Done():
-				break
-			default:
-			}
-		}
-		if err := it.Error(); err != nil {
-			panic(err)
-		}
-
-	case c.Op == query.OpExists:
-		// XXX: can't use startKeyBz here because c.Operand is nil
-		// (e.g. "account.owner/<nil>/" won't match w/ a single row)
-		it, err := dbm.IteratePrefix(txi.store, startKey(c.CompositeKey))
-		if err != nil {
-			panic(err)
-		}
-		defer it.Close()
-
-		for ; it.Valid(); it.Next() {
-			tmpHashes[string(it.Value())] = it.Value()
-
-			// Potentially exit early.
-			select {
-			case <-ctx.Done():
-				break
-			default:
-			}
-		}
-		if err := it.Error(); err != nil {
-			panic(err)
 		}
 
 	case c.Op == query.OpContains:
 		// XXX: startKey does not apply here.
 		// For example, if startKey = "account.owner/an/" and search query = "account.owner CONTAINS an"
 		// we can't iterate with prefix "account.owner/an/" because we might miss keys like "account.owner/Ulan/"
-		it, err := dbm.IteratePrefix(txi.store, startKey(c.CompositeKey))
-		if err != nil {
-			panic(err)
-		}
+		it := dbm.IteratePrefix(txi.store, startKey(c.Tag))
 		defer it.Close()
 
 		for ; it.Valid(); it.Next() {
@@ -468,16 +415,6 @@ func (txi *TxIndex) match(
 			if strings.Contains(extractValueFromKey(it.Key()), c.Operand.(string)) {
 				tmpHashes[string(it.Value())] = it.Value()
 			}
-
-			// Potentially exit early.
-			select {
-			case <-ctx.Done():
-				break
-			default:
-			}
-		}
-		if err := it.Error(); err != nil {
-			panic(err)
 		}
 	default:
 		panic("other operators should be handled already")
@@ -499,13 +436,6 @@ func (txi *TxIndex) match(
 	for k := range filteredHashes {
 		if tmpHashes[k] == nil {
 			delete(filteredHashes, k)
-
-			// Potentially exit early.
-			select {
-			case <-ctx.Done():
-				break
-			default:
-			}
 		}
 	}
 
@@ -518,7 +448,6 @@ func (txi *TxIndex) match(
 //
 // NOTE: filteredHashes may be empty if no previous condition has matched.
 func (txi *TxIndex) matchRange(
-	ctx context.Context,
 	r queryRange,
 	startKey []byte,
 	filteredHashes map[string][]byte,
@@ -534,10 +463,7 @@ func (txi *TxIndex) matchRange(
 	lowerBound := r.lowerBoundValue()
 	upperBound := r.upperBoundValue()
 
-	it, err := dbm.IteratePrefix(txi.store, startKey)
-	if err != nil {
-		panic(err)
-	}
+	it := dbm.IteratePrefix(txi.store, startKey)
 	defer it.Close()
 
 LOOP:
@@ -565,23 +491,13 @@ LOOP:
 				tmpHashes[string(it.Value())] = it.Value()
 			}
 
-			// XXX: passing time in a ABCI Events is not yet implemented
+			// XXX: passing time in a ABCI Tags is not yet implemented
 			// case time.Time:
 			// 	v := strconv.ParseInt(extractValueFromKey(it.Key()), 10, 64)
 			// 	if v == r.upperBound {
 			// 		break
 			// 	}
 		}
-
-		// Potentially exit early.
-		select {
-		case <-ctx.Done():
-			break
-		default:
-		}
-	}
-	if err := it.Error(); err != nil {
-		panic(err)
 	}
 
 	if len(tmpHashes) == 0 || firstRun {
@@ -600,19 +516,13 @@ LOOP:
 	for k := range filteredHashes {
 		if tmpHashes[k] == nil {
 			delete(filteredHashes, k)
-
-			// Potentially exit early.
-			select {
-			case <-ctx.Done():
-				break
-			default:
-			}
 		}
 	}
 
 	return filteredHashes
 }
 
+///////////////////////////////////////////////////////////////////////////////
 // Keys
 
 func isTagKey(key []byte) bool {
@@ -624,7 +534,7 @@ func extractValueFromKey(key []byte) string {
 	return parts[1]
 }
 
-func keyForEvent(key string, value []byte, result *abci.TxResult) []byte {
+func keyForEvent(key string, value []byte, result *types.TxResult) []byte {
 	return []byte(fmt.Sprintf("%s/%s/%d/%d",
 		key,
 		value,
@@ -633,7 +543,7 @@ func keyForEvent(key string, value []byte, result *abci.TxResult) []byte {
 	))
 }
 
-func keyForHeight(result *abci.TxResult) []byte {
+func keyForHeight(result *types.TxResult) []byte {
 	return []byte(fmt.Sprintf("%s/%d/%d/%d",
 		types.TxHeightKey,
 		result.Height,
@@ -644,9 +554,9 @@ func keyForHeight(result *abci.TxResult) []byte {
 
 func startKeyForCondition(c query.Condition, height int64) []byte {
 	if height > 0 {
-		return startKey(c.CompositeKey, c.Operand, height)
+		return startKey(c.Tag, c.Operand, height)
 	}
-	return startKey(c.CompositeKey, c.Operand)
+	return startKey(c.Tag, c.Operand)
 }
 
 func startKey(fields ...interface{}) []byte {

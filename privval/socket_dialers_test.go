@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -43,6 +44,6 @@ func TestIsConnTimeoutForWrappedConnTimeouts(t *testing.T) {
 	dialer := DialTCPFn(tcpAddr, time.Millisecond, ed25519.GenPrivKey())
 	_, err := dialer()
 	assert.Error(t, err)
-	err = fmt.Errorf("%v: %w", err, ErrConnectionTimeout)
+	err = errors.Wrap(ErrConnectionTimeout, err.Error())
 	assert.True(t, IsConnTimeout(err))
 }

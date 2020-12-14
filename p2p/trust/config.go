@@ -2,8 +2,8 @@ package trust
 
 import "time"
 
-// MetricConfig - Configures the weight functions and time intervals for the metric
-type MetricConfig struct {
+// TrustMetricConfig - Configures the weight functions and time intervals for the metric
+type TrustMetricConfig struct {
 	// Determines the percentage given to current behavior
 	ProportionalWeight float64
 
@@ -21,8 +21,8 @@ type MetricConfig struct {
 }
 
 // DefaultConfig returns a config with values that have been tested and produce desirable results
-func DefaultConfig() MetricConfig {
-	return MetricConfig{
+func DefaultConfig() TrustMetricConfig {
+	return TrustMetricConfig{
 		ProportionalWeight: 0.4,
 		IntegralWeight:     0.6,
 		TrackingWindow:     (time.Minute * 60 * 24) * 14, // 14 days.
@@ -31,7 +31,7 @@ func DefaultConfig() MetricConfig {
 }
 
 // Ensures that all configuration elements have valid values
-func customConfig(tmc MetricConfig) MetricConfig {
+func customConfig(tmc TrustMetricConfig) TrustMetricConfig {
 	config := DefaultConfig()
 
 	// Check the config for set values, and setup appropriately

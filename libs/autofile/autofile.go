@@ -3,12 +3,11 @@ package autofile
 import (
 	"os"
 	"os/signal"
-	"path/filepath"
 	"sync"
 	"syscall"
 	"time"
 
-	tmrand "github.com/evdatsion/tendermint/libs/rand"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 )
 
 /* AutoFile usage
@@ -58,13 +57,8 @@ type AutoFile struct {
 // an error, it will be of type *PathError or *ErrPermissionsChanged (if file's
 // permissions got changed (should be 0600)).
 func OpenAutoFile(path string) (*AutoFile, error) {
-	var err error
-	path, err = filepath.Abs(path)
-	if err != nil {
-		return nil, err
-	}
 	af := &AutoFile{
-		ID:               tmrand.Str(12) + ":" + path,
+		ID:               cmn.RandStr(12) + ":" + path,
 		Path:             path,
 		closeTicker:      time.NewTicker(autoFileClosePeriod),
 		closeTickerStopc: make(chan struct{}),
@@ -79,7 +73,7 @@ func OpenAutoFile(path string) (*AutoFile, error) {
 	signal.Notify(af.hupc, syscall.SIGHUP)
 	go func() {
 		for range af.hupc {
-			_ = af.closeFile()
+			af.closeFile()
 		}
 	}()
 
@@ -103,7 +97,7 @@ func (af *AutoFile) closeFileRoutine() {
 	for {
 		select {
 		case <-af.closeTicker.C:
-			_ = af.closeFile()
+			af.closeFile()
 		case <-af.closeTickerStopc:
 			return
 		}

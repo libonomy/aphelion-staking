@@ -7,12 +7,13 @@ import (
 	"testing"
 	"time"
 
+	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
 	"github.com/evdatsion/tendermint/crypto"
 	"github.com/evdatsion/tendermint/crypto/ed25519"
-	"github.com/evdatsion/tendermint/libs/bytes"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 	"github.com/evdatsion/tendermint/libs/log"
 
 	"github.com/evdatsion/tendermint/config"
@@ -25,18 +26,14 @@ func TestPeerBasic(t *testing.T) {
 	// simulate remote peer
 	rp := &remotePeer{PrivKey: ed25519.GenPrivKey(), Config: cfg}
 	rp.Start()
-	t.Cleanup(rp.Stop)
+	defer rp.Stop()
 
 	p, err := createOutboundPeerAndPerformHandshake(rp.Addr(), cfg, tmconn.DefaultMConnConfig())
 	require.Nil(err)
 
 	err = p.Start()
 	require.Nil(err)
-	t.Cleanup(func() {
-		if err := p.Stop(); err != nil {
-			t.Error(err)
-		}
-	})
+	defer p.Stop()
 
 	assert.True(p.IsRunning())
 	assert.True(p.IsOutbound())
@@ -55,7 +52,7 @@ func TestPeerSend(t *testing.T) {
 	// simulate remote peer
 	rp := &remotePeer{PrivKey: ed25519.GenPrivKey(), Config: config}
 	rp.Start()
-	t.Cleanup(rp.Stop)
+	defer rp.Stop()
 
 	p, err := createOutboundPeerAndPerformHandshake(rp.Addr(), config, tmconn.DefaultMConnConfig())
 	require.Nil(err)
@@ -63,11 +60,7 @@ func TestPeerSend(t *testing.T) {
 	err = p.Start()
 	require.Nil(err)
 
-	t.Cleanup(func() {
-		if err := p.Stop(); err != nil {
-			t.Error(err)
-		}
-	})
+	defer p.Stop()
 
 	assert.True(p.CanSend(testCh))
 	assert.True(p.Send(testCh, []byte("Asylum")))
@@ -121,13 +114,13 @@ func testOutboundPeerConn(
 	var pc peerConn
 	conn, err := testDial(addr, config)
 	if err != nil {
-		return pc, fmt.Errorf("error creating peer: %w", err)
+		return pc, errors.Wrap(err, "Error creating peer")
 	}
 
 	pc, err = testPeerConn(conn, config, true, persistent, ourNodePrivKey, addr)
 	if err != nil {
 		if cerr := conn.Close(); cerr != nil {
-			return pc, fmt.Errorf("%v: %w", cerr.Error(), err)
+			return pc, errors.Wrap(err, cerr.Error())
 		}
 		return pc, err
 	}
@@ -135,7 +128,7 @@ func testOutboundPeerConn(
 	// ensure dialed ID matches connection ID
 	if addr.ID != pc.ID() {
 		if cerr := conn.Close(); cerr != nil {
-			return pc, fmt.Errorf("%v: %w", cerr.Error(), err)
+			return pc, errors.Wrap(err, cerr.Error())
 		}
 		return pc, ErrSwitchAuthenticationFailure{addr, pc.ID()}
 	}
@@ -147,7 +140,7 @@ type remotePeer struct {
 	PrivKey    crypto.PrivKey
 	Config     *config.P2PConfig
 	addr       *NetAddress
-	channels   bytes.HexBytes
+	channels   cmn.HexBytes
 	listenAddr string
 	listener   net.Listener
 }
@@ -227,7 +220,7 @@ func (rp *remotePeer) accept() {
 func (rp *remotePeer) nodeInfo() NodeInfo {
 	return DefaultNodeInfo{
 		ProtocolVersion: defaultProtocolVersion,
-		DefaultNodeID:   rp.Addr().ID,
+		ID_:             rp.Addr().ID,
 		ListenAddr:      rp.listener.Addr().String(),
 		Network:         "testing",
 		Version:         "1.2.3-rc0-deadbeef",

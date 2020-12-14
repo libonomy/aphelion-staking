@@ -12,14 +12,14 @@ import (
 	"github.com/evdatsion/tendermint/libs/log"
 
 	cfg "github.com/evdatsion/tendermint/config"
-	tmnet "github.com/evdatsion/tendermint/libs/net"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 	nm "github.com/evdatsion/tendermint/node"
 	"github.com/evdatsion/tendermint/p2p"
 	"github.com/evdatsion/tendermint/privval"
 	"github.com/evdatsion/tendermint/proxy"
 	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
 	core_grpc "github.com/evdatsion/tendermint/rpc/grpc"
-	rpcclient "github.com/evdatsion/tendermint/rpc/jsonrpc/client"
+	rpcclient "github.com/evdatsion/tendermint/rpc/lib/client"
 )
 
 // Options helps with specifying some parameters for our RPC testing for greater
@@ -37,19 +37,17 @@ var defaultOptions = Options{
 
 func waitForRPC() {
 	laddr := GetConfig().RPC.ListenAddress
-	client, err := rpcclient.New(laddr)
-	if err != nil {
-		panic(err)
-	}
+	client := rpcclient.NewJSONRPCClient(laddr)
+	ctypes.RegisterAmino(client.Codec())
 	result := new(ctypes.ResultStatus)
 	for {
-		_, err := client.Call(context.Background(), "status", map[string]interface{}{}, result)
+		_, err := client.Call("status", map[string]interface{}{}, result)
 		if err == nil {
 			return
+		} else {
+			fmt.Println("error", err)
+			time.Sleep(time.Millisecond)
 		}
-
-		fmt.Println("error", err)
-		time.Sleep(time.Millisecond)
 	}
 }
 
@@ -72,11 +70,11 @@ func makePathname() string {
 	}
 	// fmt.Println(p)
 	sep := string(filepath.Separator)
-	return strings.ReplaceAll(p, sep, "_")
+	return strings.Replace(p, sep, "_", -1)
 }
 
 func randPort() int {
-	port, err := tmnet.GetFreePort()
+	port, err := cmn.GetFreePort()
 	if err != nil {
 		panic(err)
 	}
@@ -84,9 +82,9 @@ func randPort() int {
 }
 
 func makeAddrs() (string, string, string) {
-	return fmt.Sprintf("tcp://127.0.0.1:%d", randPort()),
-		fmt.Sprintf("tcp://127.0.0.1:%d", randPort()),
-		fmt.Sprintf("tcp://127.0.0.1:%d", randPort())
+	return fmt.Sprintf("tcp://0.0.0.0:%d", randPort()),
+		fmt.Sprintf("tcp://0.0.0.0:%d", randPort()),
+		fmt.Sprintf("tcp://0.0.0.0:%d", randPort())
 }
 
 func createConfig() *cfg.Config {
@@ -99,6 +97,7 @@ func createConfig() *cfg.Config {
 	c.RPC.ListenAddress = rpc
 	c.RPC.CORSAllowedOrigins = []string{"https://tendermint.com/"}
 	c.RPC.GRPCListenAddress = grpc
+	c.TxIndex.IndexTags = "app.creator,tx.height" // see kvstore application
 	return c
 }
 
@@ -141,9 +140,7 @@ func StartTendermint(app abci.Application, opts ...func(*Options)) *nm.Node {
 // StopTendermint stops a test tendermint server, waits until it's stopped and
 // cleans up test/config files.
 func StopTendermint(node *nm.Node) {
-	if err := node.Stop(); err != nil {
-		node.Logger.Error("Error when tryint to stop node", "err", err)
-	}
+	node.Stop()
 	node.Wait()
 	os.RemoveAll(node.Config().RootDir)
 }
@@ -161,10 +158,7 @@ func NewTendermint(app abci.Application, opts *Options) *nm.Node {
 	}
 	pvKeyFile := config.PrivValidatorKeyFile()
 	pvKeyStateFile := config.PrivValidatorStateFile()
-	pv, err := privval.LoadOrGenFilePV(pvKeyFile, pvKeyStateFile)
-	if err != nil {
-		panic(err)
-	}
+	pv := privval.LoadOrGenFilePV(pvKeyFile, pvKeyStateFile)
 	papp := proxy.NewLocalClientCreator(app)
 	nodeKey, err := p2p.LoadOrGenNodeKey(config.NodeKeyFile())
 	if err != nil {

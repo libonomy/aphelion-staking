@@ -7,6 +7,7 @@ import (
 	"os/exec"
 	"time"
 
+	"github.com/evdatsion/tendermint/abci/example/code"
 	"github.com/evdatsion/tendermint/abci/types"
 )
 
@@ -40,7 +41,7 @@ func ensureABCIIsUp(typ string, n int) error {
 		if err == nil {
 			break
 		}
-		time.Sleep(500 * time.Millisecond)
+		<-time.After(500 * time.Millisecond)
 	}
 	return err
 }
@@ -52,42 +53,32 @@ func testCounter() {
 	}
 
 	fmt.Printf("Running %s test with abci=%s\n", abciApp, abciType)
-	subCommand := fmt.Sprintf("abci-cli %s", abciApp)
-	cmd := exec.Command("bash", "-c", subCommand)
+	cmd := exec.Command("bash", "-c", fmt.Sprintf("abci-cli %s", abciApp)) //nolint:gosec
 	cmd.Stdout = os.Stdout
 	if err := cmd.Start(); err != nil {
 		log.Fatalf("starting %q err: %v", abciApp, err)
 	}
-	defer func() {
-		if err := cmd.Process.Kill(); err != nil {
-			log.Printf("error on process kill: %v", err)
-		}
-		if err := cmd.Wait(); err != nil {
-			log.Printf("error while waiting for cmd to exit: %v", err)
-		}
-	}()
+	defer cmd.Wait()
+	defer cmd.Process.Kill()
 
 	if err := ensureABCIIsUp(abciType, maxABCIConnectTries); err != nil {
-		log.Fatalf("echo failed: %v", err) //nolint:gocritic
+		log.Fatalf("echo failed: %v", err)
 	}
 
 	client := startClient(abciType)
-	defer func() {
-		if err := client.Stop(); err != nil {
-			log.Printf("error trying client stop: %v", err)
-		}
-	}()
+	defer client.Stop()
 
-	// commit(client, nil)
-	// deliverTx(client, []byte("abc"), code.CodeTypeBadNonce, nil)
+	setOption(client, "serial", "on")
+	commit(client, nil)
+	deliverTx(client, []byte("abc"), code.CodeTypeBadNonce, nil)
 	commit(client, nil)
 	deliverTx(client, []byte{0x00}, types.CodeTypeOK, nil)
 	commit(client, []byte{0, 0, 0, 0, 0, 0, 0, 1})
-	// deliverTx(client, []byte{0x00}, code.CodeTypeBadNonce, nil)
+	deliverTx(client, []byte{0x00}, code.CodeTypeBadNonce, nil)
 	deliverTx(client, []byte{0x01}, types.CodeTypeOK, nil)
 	deliverTx(client, []byte{0x00, 0x02}, types.CodeTypeOK, nil)
 	deliverTx(client, []byte{0x00, 0x03}, types.CodeTypeOK, nil)
 	deliverTx(client, []byte{0x00, 0x00, 0x04}, types.CodeTypeOK, nil)
-	// deliverTx(client, []byte{0x00, 0x00, 0x06}, code.CodeTypeBadNonce, nil)
+	deliverTx(client, []byte{0x00, 0x00, 0x06}, code.CodeTypeBadNonce, nil)
 	commit(client, []byte{0, 0, 0, 0, 0, 0, 0, 5})
 }

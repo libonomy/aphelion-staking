@@ -5,20 +5,17 @@ import (
 	"net"
 	"time"
 
-	"github.com/evdatsion/tendermint/libs/cmap"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 	"github.com/evdatsion/tendermint/libs/log"
-	"github.com/evdatsion/tendermint/libs/service"
 
 	tmconn "github.com/evdatsion/tendermint/p2p/conn"
 )
-
-//go:generate mockery --case underscore --name Peer
 
 const metricsTickerDuration = 10 * time.Second
 
 // Peer is an interface representing a peer connected on a reactor.
 type Peer interface {
-	service.Service
+	cmn.Service
 	FlushStop()
 
 	ID() ID               // peer's cryptographic ID
@@ -100,7 +97,7 @@ func (pc peerConn) RemoteIP() net.IP {
 //
 // Before using a peer, you will need to perform a handshake on connection.
 type peer struct {
-	service.BaseService
+	cmn.BaseService
 
 	// raw peerConn and the multiplex connection
 	peerConn
@@ -113,7 +110,7 @@ type peer struct {
 	channels []byte
 
 	// User data
-	Data *cmap.CMap
+	Data *cmn.CMap
 
 	metrics       *Metrics
 	metricsTicker *time.Ticker
@@ -134,7 +131,7 @@ func newPeer(
 		peerConn:      pc,
 		nodeInfo:      nodeInfo,
 		channels:      nodeInfo.(DefaultNodeInfo).Channels, // TODO
-		Data:          cmap.NewCMap(),
+		Data:          cmn.NewCMap(),
 		metricsTicker: time.NewTicker(metricsTickerDuration),
 		metrics:       NopMetrics(),
 	}
@@ -147,7 +144,7 @@ func newPeer(
 		onPeerError,
 		mConfig,
 	)
-	p.BaseService = *service.NewBaseService(nil, "Peer", p)
+	p.BaseService = *cmn.NewBaseService(nil, "Peer", p)
 	for _, option := range options {
 		option(p)
 	}
@@ -165,7 +162,7 @@ func (p *peer) String() string {
 }
 
 //---------------------------------------------------
-// Implements service.Service
+// Implements cmn.Service
 
 // SetLogger implements BaseService.
 func (p *peer) SetLogger(l log.Logger) {
@@ -200,9 +197,7 @@ func (p *peer) FlushStop() {
 func (p *peer) OnStop() {
 	p.metricsTicker.Stop()
 	p.BaseService.OnStop()
-	if err := p.mconn.Stop(); err != nil { // stop everything and close the conn
-		p.Logger.Debug("Error while stopping peer", "err", err)
-	}
+	p.mconn.Stop() // stop everything and close the conn
 }
 
 //---------------------------------------------------
@@ -322,7 +317,7 @@ func (p *peer) CloseConn() error {
 
 // CloseConn closes the underlying connection
 func (pc *peerConn) CloseConn() {
-	pc.conn.Close()
+	pc.conn.Close() // nolint: errcheck
 }
 
 // RemoteAddr returns peer's remote network address.

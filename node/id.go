@@ -6,18 +6,18 @@ import (
 	"github.com/evdatsion/tendermint/crypto"
 )
 
-type ID struct {
+type NodeID struct {
 	Name   string
 	PubKey crypto.PubKey
 }
 
 type PrivNodeID struct {
-	ID
+	NodeID
 	PrivKey crypto.PrivKey
 }
 
-type Greeting struct {
-	ID
+type NodeGreeting struct {
+	NodeID
 	Version string
 	ChainID string
 	Message string
@@ -25,11 +25,11 @@ type Greeting struct {
 }
 
 type SignedNodeGreeting struct {
-	Greeting
+	NodeGreeting
 	Signature []byte
 }
 
 func (pnid *PrivNodeID) SignGreeting() *SignedNodeGreeting {
-	// greeting := NodeGreeting{}
+	//greeting := NodeGreeting{}
 	return nil
 }

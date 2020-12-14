@@ -57,7 +57,7 @@ What we need to do next is changing the methods of `FilePV`.
 
 ## Status
 
-Accepted and implemented in [#2870](https://github.com/evdatsion/tendermint/pull/2870).
+Draft.
 
 ## Consequences
 

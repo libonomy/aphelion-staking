@@ -5,10 +5,9 @@ import (
 
 	"github.com/spf13/cobra"
 
+	cmn "github.com/evdatsion/tendermint/libs/common"
 	"github.com/evdatsion/tendermint/libs/log"
-	tmos "github.com/evdatsion/tendermint/libs/os"
 	"github.com/evdatsion/tendermint/privval"
-	"github.com/evdatsion/tendermint/types"
 )
 
 // ResetAllCmd removes the database of this Tendermint core
@@ -22,9 +21,7 @@ var ResetAllCmd = &cobra.Command{
 var keepAddrBook bool
 
 func init() {
-	ResetAllCmd.Flags().BoolVar(&keepAddrBook, "keep-addr-book", false, "keep the address book intact")
-	ResetPrivValidatorCmd.Flags().StringVar(&keyType, "key", types.ABCIPubKeyTypeEd25519,
-		"Key type to generate privval file with. Options: ed25519, secp256k1")
+	ResetAllCmd.Flags().BoolVar(&keepAddrBook, "keep-addr-book", false, "Keep the address book intact")
 }
 
 // ResetPrivValidatorCmd resets the private validator files.
@@ -61,9 +58,7 @@ func ResetAll(dbDir, addrBookFile, privValKeyFile, privValStateFile string, logg
 		logger.Error("Error removing all blockchain history", "dir", dbDir, "err", err)
 	}
 	// recreate the dbDir since the privVal state needs to live there
-	if err := tmos.EnsureDir(dbDir, 0700); err != nil {
-		logger.Error("unable to recreate dbDir", "err", err)
-	}
+	cmn.EnsureDir(dbDir, 0700)
 	resetFilePV(privValKeyFile, privValStateFile, logger)
 }
 
@@ -74,10 +69,7 @@ func resetFilePV(privValKeyFile, privValStateFile string, logger log.Logger) {
 		logger.Info("Reset private validator file to genesis state", "keyFile", privValKeyFile,
 			"stateFile", privValStateFile)
 	} else {
-		pv, err := privval.GenFilePV(privValKeyFile, privValStateFile, keyType)
-		if err != nil {
-			panic(err)
-		}
+		pv := privval.GenFilePV(privValKeyFile, privValStateFile)
 		pv.Save()
 		logger.Info("Generated private validator file", "keyFile", privValKeyFile,
 			"stateFile", privValStateFile)

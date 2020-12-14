@@ -37,11 +37,7 @@ func BenchmarkSigning(b *testing.B, priv crypto.PrivKey) {
 	message := []byte("Hello, world!")
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		_, err := priv.Sign(message)
-
-		if err != nil {
-			b.FailNow()
-		}
+		priv.Sign(message)
 	}
 }
 
@@ -57,7 +53,7 @@ func BenchmarkVerification(b *testing.B, priv crypto.PrivKey) {
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		pub.VerifySignature(message, signature)
+		pub.VerifyBytes(message, signature)
 	}
 }
 

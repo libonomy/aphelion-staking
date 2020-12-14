@@ -1,11 +1,10 @@
 package privval
 
 import (
-	"fmt"
+	"errors"
 	"time"
 
 	"github.com/evdatsion/tendermint/crypto"
-	tmproto "github.com/evdatsion/tendermint/proto/tendermint/types"
 	"github.com/evdatsion/tendermint/types"
 )
 
@@ -44,29 +43,20 @@ func (sc *RetrySignerClient) Ping() error {
 	return sc.next.Ping()
 }
 
-func (sc *RetrySignerClient) GetPubKey() (crypto.PubKey, error) {
-	var (
-		pk  crypto.PubKey
-		err error
-	)
+func (sc *RetrySignerClient) GetPubKey() crypto.PubKey {
 	for i := 0; i < sc.retries || sc.retries == 0; i++ {
-		pk, err = sc.next.GetPubKey()
-		if err == nil {
-			return pk, nil
-		}
-		// If remote signer errors, we don't retry.
-		if _, ok := err.(*RemoteSignerError); ok {
-			return nil, err
+		pk := sc.next.GetPubKey()
+		if pk != nil {
+			return pk
 		}
 		time.Sleep(sc.timeout)
 	}
-	return nil, fmt.Errorf("exhausted all attempts to get pubkey: %w", err)
+	return nil
 }
 
-func (sc *RetrySignerClient) SignVote(chainID string, vote *tmproto.Vote) error {
-	var err error
+func (sc *RetrySignerClient) SignVote(chainID string, vote *types.Vote) error {
 	for i := 0; i < sc.retries || sc.retries == 0; i++ {
-		err = sc.next.SignVote(chainID, vote)
+		err := sc.next.SignVote(chainID, vote)
 		if err == nil {
 			return nil
 		}
@@ -76,13 +66,12 @@ func (sc *RetrySignerClient) SignVote(chainID string, vote *tmproto.Vote) error 
 		}
 		time.Sleep(sc.timeout)
 	}
-	return fmt.Errorf("exhausted all attempts to sign vote: %w", err)
+	return errors.New("exhausted all attempts to sign vote")
 }
 
-func (sc *RetrySignerClient) SignProposal(chainID string, proposal *tmproto.Proposal) error {
-	var err error
+func (sc *RetrySignerClient) SignProposal(chainID string, proposal *types.Proposal) error {
 	for i := 0; i < sc.retries || sc.retries == 0; i++ {
-		err = sc.next.SignProposal(chainID, proposal)
+		err := sc.next.SignProposal(chainID, proposal)
 		if err == nil {
 			return nil
 		}
@@ -92,5 +81,5 @@ func (sc *RetrySignerClient) SignProposal(chainID string, proposal *tmproto.Prop
 		}
 		time.Sleep(sc.timeout)
 	}
-	return fmt.Errorf("exhausted all attempts to sign proposal: %w", err)
+	return errors.New("exhausted all attempts to sign proposal")
 }

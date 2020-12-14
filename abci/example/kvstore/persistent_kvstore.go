@@ -7,13 +7,12 @@ import (
 	"strconv"
 	"strings"
 
-	dbm "github.com/evdatsion/tm-db"
-
 	"github.com/evdatsion/tendermint/abci/example/code"
 	"github.com/evdatsion/tendermint/abci/types"
-	cryptoenc "github.com/evdatsion/tendermint/crypto/encoding"
+	"github.com/evdatsion/tendermint/crypto/ed25519"
 	"github.com/evdatsion/tendermint/libs/log"
-	pc "github.com/evdatsion/tendermint/proto/tendermint/crypto"
+	tmtypes "github.com/evdatsion/tendermint/types"
+	dbm "github.com/evdatsion/tm-db"
 )
 
 const (
@@ -25,12 +24,12 @@ const (
 var _ types.Application = (*PersistentKVStoreApplication)(nil)
 
 type PersistentKVStoreApplication struct {
-	app *Application
+	app *KVStoreApplication
 
 	// validator set
 	ValUpdates []types.ValidatorUpdate
 
-	valAddrToPubKeyMap map[string]pc.PublicKey
+	valAddrToPubKeyMap map[string]types.PubKey
 
 	logger log.Logger
 }
@@ -45,8 +44,8 @@ func NewPersistentKVStoreApplication(dbDir string) *PersistentKVStoreApplication
 	state := loadState(db)
 
 	return &PersistentKVStoreApplication{
-		app:                &Application{state: state},
-		valAddrToPubKeyMap: make(map[string]pc.PublicKey),
+		app:                &KVStoreApplication{state: state},
+		valAddrToPubKeyMap: make(map[string]types.PubKey),
 		logger:             log.NewNopLogger(),
 	}
 }
@@ -60,6 +59,10 @@ func (app *PersistentKVStoreApplication) Info(req types.RequestInfo) types.Respo
 	res.LastBlockHeight = app.app.state.Height
 	res.LastBlockAppHash = app.app.state.AppHash
 	return res
+}
+
+func (app *PersistentKVStoreApplication) SetOption(req types.RequestSetOption) types.ResponseSetOption {
+	return app.app.SetOption(req)
 }
 
 // tx is either "val:pubkey!power" or "key=value" or just arbitrary bytes
@@ -91,10 +94,7 @@ func (app *PersistentKVStoreApplication) Query(reqQuery types.RequestQuery) (res
 	switch reqQuery.Path {
 	case "/val":
 		key := []byte("val:" + string(reqQuery.Data))
-		value, err := app.app.state.db.Get(key)
-		if err != nil {
-			panic(err)
-		}
+		value := app.app.state.db.Get(key)
 
 		resQuery.Key = reqQuery.Data
 		resQuery.Value = value
@@ -120,24 +120,18 @@ func (app *PersistentKVStoreApplication) BeginBlock(req types.RequestBeginBlock)
 	// reset valset changes
 	app.ValUpdates = make([]types.ValidatorUpdate, 0)
 
-	// Punish validators who committed equivocation.
 	for _, ev := range req.ByzantineValidators {
-		if ev.Type == types.EvidenceType_DUPLICATE_VOTE {
-			addr := string(ev.Validator.Address)
-			if pubKey, ok := app.valAddrToPubKeyMap[addr]; ok {
-				app.updateValidator(types.ValidatorUpdate{
-					PubKey: pubKey,
-					Power:  ev.Validator.Power - 1,
-				})
-				app.logger.Info("Decreased val power by 1 because of the equivocation",
-					"val", addr)
-			} else {
-				app.logger.Error("Wanted to punish val, but can't find it",
-					"val", addr)
+		if ev.Type == tmtypes.ABCIEvidenceTypeDuplicateVote {
+			// decrease voting power by 1
+			if ev.TotalVotingPower == 0 {
+				continue
 			}
+			app.updateValidator(types.ValidatorUpdate{
+				PubKey: app.valAddrToPubKeyMap[string(ev.Validator.Address)],
+				Power:  ev.TotalVotingPower - 1,
+			})
 		}
 	}
-
 	return types.ResponseBeginBlock{}
 }
 
@@ -146,34 +140,11 @@ func (app *PersistentKVStoreApplication) EndBlock(req types.RequestEndBlock) typ
 	return types.ResponseEndBlock{ValidatorUpdates: app.ValUpdates}
 }
 
-func (app *PersistentKVStoreApplication) ListSnapshots(
-	req types.RequestListSnapshots) types.ResponseListSnapshots {
-	return types.ResponseListSnapshots{}
-}
-
-func (app *PersistentKVStoreApplication) LoadSnapshotChunk(
-	req types.RequestLoadSnapshotChunk) types.ResponseLoadSnapshotChunk {
-	return types.ResponseLoadSnapshotChunk{}
-}
-
-func (app *PersistentKVStoreApplication) OfferSnapshot(
-	req types.RequestOfferSnapshot) types.ResponseOfferSnapshot {
-	return types.ResponseOfferSnapshot{Result: types.ResponseOfferSnapshot_ABORT}
-}
-
-func (app *PersistentKVStoreApplication) ApplySnapshotChunk(
-	req types.RequestApplySnapshotChunk) types.ResponseApplySnapshotChunk {
-	return types.ResponseApplySnapshotChunk{Result: types.ResponseApplySnapshotChunk_ABORT}
-}
-
 //---------------------------------------------
 // update validators
 
 func (app *PersistentKVStoreApplication) Validators() (validators []types.ValidatorUpdate) {
-	itr, err := app.app.state.db.Iterator(nil, nil)
-	if err != nil {
-		panic(err)
-	}
+	itr := app.app.state.db.Iterator(nil, nil)
 	for ; itr.Valid(); itr.Next() {
 		if isValidatorTx(itr.Key()) {
 			validator := new(types.ValidatorUpdate)
@@ -184,18 +155,11 @@ func (app *PersistentKVStoreApplication) Validators() (validators []types.Valida
 			validators = append(validators, *validator)
 		}
 	}
-	if err = itr.Error(); err != nil {
-		panic(err)
-	}
 	return
 }
 
-func MakeValSetChangeTx(pubkey pc.PublicKey, power int64) []byte {
-	pk, err := cryptoenc.PubKeyFromProto(pubkey)
-	if err != nil {
-		panic(err)
-	}
-	pubStr := base64.StdEncoding.EncodeToString(pk.Bytes())
+func MakeValSetChangeTx(pubkey types.PubKey, power int64) []byte {
+	pubStr := base64.StdEncoding.EncodeToString(pubkey.Data)
 	return []byte(fmt.Sprintf("val:%s!%d", pubStr, power))
 }
 
@@ -208,7 +172,7 @@ func isValidatorTx(tx []byte) bool {
 func (app *PersistentKVStoreApplication) execValidatorTx(tx []byte) types.ResponseDeliverTx {
 	tx = tx[len(ValidatorSetChangePrefix):]
 
-	//  get the pubkey and power
+	//get the pubkey and power
 	pubKeyAndPower := strings.Split(string(tx), "!")
 	if len(pubKeyAndPower) != 2 {
 		return types.ResponseDeliverTx{
@@ -234,32 +198,25 @@ func (app *PersistentKVStoreApplication) execValidatorTx(tx []byte) types.Respon
 	}
 
 	// update
-	return app.updateValidator(types.UpdateValidator(pubkey, power, ""))
+	return app.updateValidator(types.Ed25519ValidatorUpdate(pubkey, power))
 }
 
 // add, update, or remove a validator
 func (app *PersistentKVStoreApplication) updateValidator(v types.ValidatorUpdate) types.ResponseDeliverTx {
-	pubkey, err := cryptoenc.PubKeyFromProto(v.PubKey)
-	if err != nil {
-		panic(fmt.Errorf("can't decode public key: %w", err))
-	}
-	key := []byte("val:" + string(pubkey.Bytes()))
+	key := []byte("val:" + string(v.PubKey.Data))
+
+	pubkey := ed25519.PubKeyEd25519{}
+	copy(pubkey[:], v.PubKey.Data)
 
 	if v.Power == 0 {
 		// remove validator
-		hasKey, err := app.app.state.db.Has(key)
-		if err != nil {
-			panic(err)
-		}
-		if !hasKey {
-			pubStr := base64.StdEncoding.EncodeToString(pubkey.Bytes())
+		if !app.app.state.db.Has(key) {
+			pubStr := base64.StdEncoding.EncodeToString(v.PubKey.Data)
 			return types.ResponseDeliverTx{
 				Code: code.CodeTypeUnauthorized,
 				Log:  fmt.Sprintf("Cannot remove non-existent validator %s", pubStr)}
 		}
-		if err = app.app.state.db.Delete(key); err != nil {
-			panic(err)
-		}
+		app.app.state.db.Delete(key)
 		delete(app.valAddrToPubKeyMap, string(pubkey.Address()))
 	} else {
 		// add or update validator
@@ -269,9 +226,7 @@ func (app *PersistentKVStoreApplication) updateValidator(v types.ValidatorUpdate
 				Code: code.CodeTypeEncodingError,
 				Log:  fmt.Sprintf("Error encoding validator: %v", err)}
 		}
-		if err = app.app.state.db.Set(key, value.Bytes()); err != nil {
-			panic(err)
-		}
+		app.app.state.db.Set(key, value.Bytes())
 		app.valAddrToPubKeyMap[string(pubkey.Address())] = v.PubKey
 	}
 

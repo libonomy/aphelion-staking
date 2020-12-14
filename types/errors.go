@@ -10,9 +10,9 @@ type (
 		Actual   int64
 	}
 
-	// ErrInvalidCommitSignatures is returned when we encounter a commit where
-	// the number of signatures doesn't match the number of validators.
-	ErrInvalidCommitSignatures struct {
+	// ErrInvalidCommitPrecommits is returned when we encounter a commit where
+	// the number of precommits doesn't match the number of validators.
+	ErrInvalidCommitPrecommits struct {
 		Expected int
 		Actual   int
 	}
@@ -29,13 +29,13 @@ func (e ErrInvalidCommitHeight) Error() string {
 	return fmt.Sprintf("Invalid commit -- wrong height: %v vs %v", e.Expected, e.Actual)
 }
 
-func NewErrInvalidCommitSignatures(expected, actual int) ErrInvalidCommitSignatures {
-	return ErrInvalidCommitSignatures{
+func NewErrInvalidCommitPrecommits(expected, actual int) ErrInvalidCommitPrecommits {
+	return ErrInvalidCommitPrecommits{
 		Expected: expected,
 		Actual:   actual,
 	}
 }
 
-func (e ErrInvalidCommitSignatures) Error() string {
+func (e ErrInvalidCommitPrecommits) Error() string {
 	return fmt.Sprintf("Invalid commit -- wrong set size: %v vs %v", e.Expected, e.Actual)
 }

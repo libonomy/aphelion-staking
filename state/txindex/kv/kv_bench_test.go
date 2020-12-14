@@ -1,17 +1,16 @@
 package kv
 
 import (
-	"context"
 	"crypto/rand"
 	"fmt"
 	"io/ioutil"
 	"testing"
 
-	dbm "github.com/evdatsion/tm-db"
-
 	abci "github.com/evdatsion/tendermint/abci/types"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 	"github.com/evdatsion/tendermint/libs/pubsub/query"
 	"github.com/evdatsion/tendermint/types"
+	dbm "github.com/evdatsion/tm-db"
 )
 
 func BenchmarkTxSearch(b *testing.B) {
@@ -25,15 +24,16 @@ func BenchmarkTxSearch(b *testing.B) {
 		b.Errorf("failed to create database: %s", err)
 	}
 
-	indexer := NewTxIndex(db)
+	allowedTags := []string{"transfer.address", "transfer.amount"}
+	indexer := NewTxIndex(db, IndexTags(allowedTags))
 
 	for i := 0; i < 35000; i++ {
 		events := []abci.Event{
 			{
 				Type: "transfer",
-				Attributes: []abci.EventAttribute{
-					{Key: []byte("address"), Value: []byte(fmt.Sprintf("address_%d", i%100)), Index: true},
-					{Key: []byte("amount"), Value: []byte("50"), Index: true},
+				Attributes: []cmn.KVPair{
+					{Key: []byte("address"), Value: []byte(fmt.Sprintf("address_%d", i%100))},
+					{Key: []byte("amount"), Value: []byte("50")},
 				},
 			},
 		}
@@ -43,7 +43,7 @@ func BenchmarkTxSearch(b *testing.B) {
 			b.Errorf("failed produce random bytes: %s", err)
 		}
 
-		txResult := &abci.TxResult{
+		txResult := &types.TxResult{
 			Height: int64(i),
 			Index:  0,
 			Tx:     types.Tx(string(txBz)),
@@ -64,10 +64,8 @@ func BenchmarkTxSearch(b *testing.B) {
 
 	b.ResetTimer()
 
-	ctx := context.Background()
-
 	for i := 0; i < b.N; i++ {
-		if _, err := indexer.Search(ctx, txQuery); err != nil {
+		if _, err := indexer.Search(txQuery); err != nil {
 			b.Errorf("failed to query for txs: %s", err)
 		}
 	}

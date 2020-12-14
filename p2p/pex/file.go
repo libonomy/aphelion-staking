@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/evdatsion/tendermint/libs/tempfile"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 )
 
 /* Loading & Saving */
@@ -35,7 +35,7 @@ func (a *addrBook) saveToFile(filePath string) {
 		a.Logger.Error("Failed to save AddrBook to file", "err", err)
 		return
 	}
-	err = tempfile.WriteFileAtomic(filePath, jsonBytes, 0644)
+	err = cmn.WriteFileAtomic(filePath, jsonBytes, 0644)
 	if err != nil {
 		a.Logger.Error("Failed to save AddrBook to file", "file", filePath, "err", err)
 	}
@@ -55,7 +55,7 @@ func (a *addrBook) loadFromFile(filePath string) bool {
 	if err != nil {
 		panic(fmt.Sprintf("Error opening file %s: %v", filePath, err))
 	}
-	defer r.Close()
+	defer r.Close() // nolint: errcheck
 	aJSON := &addrBookJSON{}
 	dec := json.NewDecoder(r)
 	err = dec.Decode(aJSON)

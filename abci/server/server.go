@@ -6,17 +6,18 @@ It contains two server implementation:
  * socket server
 
 */
+
 package server
 
 import (
 	"fmt"
 
 	"github.com/evdatsion/tendermint/abci/types"
-	"github.com/evdatsion/tendermint/libs/service"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 )
 
-func NewServer(protoAddr, transport string, app types.Application) (service.Service, error) {
-	var s service.Service
+func NewServer(protoAddr, transport string, app types.Application) (cmn.Service, error) {
+	var s cmn.Service
 	var err error
 	switch transport {
 	case "socket":
@@ -24,7 +25,7 @@ func NewServer(protoAddr, transport string, app types.Application) (service.Serv
 	case "grpc":
 		s = NewGRPCServer(protoAddr, types.NewGRPCApplication(app))
 	default:
-		err = fmt.Errorf("unknown server type %s", transport)
+		err = fmt.Errorf("Unknown server type %s", transport)
 	}
 	return s, err
 }

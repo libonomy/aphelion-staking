@@ -135,8 +135,8 @@ func extractKey(tmhome, outputPath string) {
 	keyFile := filepath.Join(internal.ExpandPath(tmhome), "config", "priv_validator_key.json")
 	stateFile := filepath.Join(internal.ExpandPath(tmhome), "data", "priv_validator_state.json")
 	fpv := privval.LoadFilePV(keyFile, stateFile)
-	pkb := []byte(fpv.Key.PrivKey.(ed25519.PrivKey))
-	if err := ioutil.WriteFile(internal.ExpandPath(outputPath), pkb[:32], 0600); err != nil {
+	pkb := [64]byte(fpv.Key.PrivKey.(ed25519.PrivKeyEd25519))
+	if err := ioutil.WriteFile(internal.ExpandPath(outputPath), pkb[:32], 0644); err != nil {
 		logger.Info("Failed to write private key", "output", outputPath, "err", err)
 		os.Exit(1)
 	}
@@ -144,10 +144,7 @@ func extractKey(tmhome, outputPath string) {
 }
 
 func main() {
-	if err := rootCmd.Parse(os.Args[1:]); err != nil {
-		fmt.Printf("Error parsing flags: %v\n", err)
-		os.Exit(1)
-	}
+	rootCmd.Parse(os.Args[1:])
 	if rootCmd.NArg() == 0 || (rootCmd.NArg() == 1 && rootCmd.Arg(0) == "help") {
 		rootCmd.Usage()
 		os.Exit(0)
@@ -169,19 +166,13 @@ func main() {
 			os.Exit(1)
 		}
 	case "run":
-		if err := runCmd.Parse(os.Args[2:]); err != nil {
-			fmt.Printf("Error parsing flags: %v\n", err)
-			os.Exit(1)
-		}
+		runCmd.Parse(os.Args[2:])
 		runTestHarness(flagAcceptRetries, flagBindAddr, flagTMHome)
 	case "extract_key":
-		if err := extractKeyCmd.Parse(os.Args[2:]); err != nil {
-			fmt.Printf("Error parsing flags: %v\n", err)
-			os.Exit(1)
-		}
+		extractKeyCmd.Parse(os.Args[2:])
 		extractKey(flagTMHome, flagKeyOutputPath)
 	case "version":
-		fmt.Println(version.TMCoreSemVer)
+		fmt.Println(version.Version)
 	default:
 		fmt.Printf("Unrecognized command: %s\n", flag.Arg(0))
 		os.Exit(1)

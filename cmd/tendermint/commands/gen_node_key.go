@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	tmos "github.com/evdatsion/tendermint/libs/os"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 	"github.com/evdatsion/tendermint/p2p"
 )
 
@@ -19,7 +19,7 @@ var GenNodeKeyCmd = &cobra.Command{
 
 func genNodeKey(cmd *cobra.Command, args []string) error {
 	nodeKeyFile := config.NodeKeyFile()
-	if tmos.FileExists(nodeKeyFile) {
+	if cmn.FileExists(nodeKeyFile) {
 		return fmt.Errorf("node key at %s already exists", nodeKeyFile)
 	}
 

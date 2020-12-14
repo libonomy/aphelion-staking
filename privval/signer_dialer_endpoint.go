@@ -3,8 +3,8 @@ package privval
 import (
 	"time"
 
+	cmn "github.com/evdatsion/tendermint/libs/common"
 	"github.com/evdatsion/tendermint/libs/log"
-	"github.com/evdatsion/tendermint/libs/service"
 )
 
 const (
@@ -50,7 +50,6 @@ type SignerDialerEndpoint struct {
 func NewSignerDialerEndpoint(
 	logger log.Logger,
 	dialer SocketDialer,
-	options ...SignerServiceEndpointOption,
 ) *SignerDialerEndpoint {
 
 	sd := &SignerDialerEndpoint{
@@ -59,12 +58,8 @@ func NewSignerDialerEndpoint(
 		maxConnRetries: defaultMaxDialRetries,
 	}
 
-	sd.BaseService = *service.NewBaseService(logger, "SignerDialerEndpoint", sd)
+	sd.BaseService = *cmn.NewBaseService(logger, "SignerDialerEndpoint", sd)
 	sd.signerEndpoint.timeoutReadWrite = defaultTimeoutReadWriteSeconds * time.Second
-
-	for _, optionFunc := range options {
-		optionFunc(sd)
-	}
 
 	return sd
 }

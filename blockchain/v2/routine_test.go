@@ -12,11 +12,11 @@ type eventA struct {
 	priorityNormal
 }
 
-var errDone = fmt.Errorf("done")
+var done = fmt.Errorf("done")
 
 func simpleHandler(event Event) (Event, error) {
 	if _, ok := event.(eventA); ok {
-		return noOp, errDone
+		return noOp, done
 	}
 	return noOp, nil
 }
@@ -37,7 +37,7 @@ func TestRoutineFinal(t *testing.T) {
 	assert.True(t, routine.send(eventA{}),
 		"expected sending to a ready routine to succeed")
 
-	assert.Equal(t, errDone, <-routine.final(),
+	assert.Equal(t, done, <-routine.final(),
 		"expected the final event to be done")
 
 	assert.False(t, routine.isRunning(),
@@ -77,7 +77,7 @@ func genStatefulHandler(maxCount int) handleFunc {
 	counter := 0
 	return func(event Event) (Event, error) {
 		if _, ok := event.(eventA); ok {
-			counter++
+			counter += 1
 			if counter >= maxCount {
 				return noOp, finalCount{counter}
 			}
@@ -131,7 +131,7 @@ func handleWithPriority(event Event) (Event, error) {
 	case lowPriorityEvent:
 		return noOp, nil
 	case highPriorityEvent:
-		return noOp, errDone
+		return noOp, done
 	}
 	return noOp, nil
 }
@@ -157,7 +157,7 @@ func TestPriority(t *testing.T) {
 	assert.True(t, routine.send(highPriorityEvent{}),
 		"expected send to succeed even when saturated")
 
-	assert.Equal(t, errDone, <-routine.final())
+	assert.Equal(t, done, <-routine.final())
 	assert.False(t, routine.isRunning(),
 		"expected an started routine")
 }

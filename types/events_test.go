@@ -20,8 +20,4 @@ func TestQueryForEvent(t *testing.T) {
 		"tm.event='NewBlock'",
 		QueryForEvent(EventNewBlock).String(),
 	)
-	assert.Equal(t,
-		"tm.event='NewEvidence'",
-		QueryForEvent(EventNewEvidence).String(),
-	)
 }

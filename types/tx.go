@@ -5,10 +5,12 @@ import (
 	"errors"
 	"fmt"
 
+	amino "github.com/evdatsion/go-amino"
+
+	abci "github.com/evdatsion/tendermint/abci/types"
 	"github.com/evdatsion/tendermint/crypto/merkle"
 	"github.com/evdatsion/tendermint/crypto/tmhash"
-	tmbytes "github.com/evdatsion/tendermint/libs/bytes"
-	tmproto "github.com/evdatsion/tendermint/proto/tendermint/types"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 )
 
 // Tx is an arbitrary byte array.
@@ -38,7 +40,7 @@ func (txs Txs) Hash() []byte {
 	for i := 0; i < len(txs); i++ {
 		txBzs[i] = txs[i].Hash()
 	}
-	return merkle.HashFromByteSlices(txBzs)
+	return merkle.SimpleHashFromByteSlices(txBzs)
 }
 
 // Index returns the index of this transaction in the list, or -1 if not found
@@ -70,7 +72,7 @@ func (txs Txs) Proof(i int) TxProof {
 	for i := 0; i < l; i++ {
 		bzs[i] = txs[i].Hash()
 	}
-	root, proofs := merkle.ProofsFromByteSlices(bzs)
+	root, proofs := merkle.SimpleProofsFromByteSlices(bzs)
 
 	return TxProof{
 		RootHash: root,
@@ -81,9 +83,9 @@ func (txs Txs) Proof(i int) TxProof {
 
 // TxProof represents a Merkle proof of the presence of a transaction in the Merkle tree.
 type TxProof struct {
-	RootHash tmbytes.HexBytes `json:"root_hash"`
-	Data     Tx               `json:"data"`
-	Proof    merkle.Proof     `json:"proof"`
+	RootHash cmn.HexBytes       `json:"root_hash"`
+	Data     Tx                 `json:"data"`
+	Proof    merkle.SimpleProof `json:"proof"`
 }
 
 // Leaf returns the hash(tx), which is the leaf in the merkle tree which this proof refers to.
@@ -95,53 +97,42 @@ func (tp TxProof) Leaf() []byte {
 // and if the proof is internally consistent. Otherwise, it returns a sensible error.
 func (tp TxProof) Validate(dataHash []byte) error {
 	if !bytes.Equal(dataHash, tp.RootHash) {
-		return errors.New("proof matches different data hash")
+		return errors.New("Proof matches different data hash")
 	}
 	if tp.Proof.Index < 0 {
-		return errors.New("proof index cannot be negative")
+		return errors.New("Proof index cannot be negative")
 	}
 	if tp.Proof.Total <= 0 {
-		return errors.New("proof total must be positive")
+		return errors.New("Proof total must be positive")
 	}
 	valid := tp.Proof.Verify(tp.RootHash, tp.Leaf())
 	if valid != nil {
-		return errors.New("proof is not internally consistent")
+		return errors.New("Proof is not internally consistent")
 	}
 	return nil
 }
 
-func (tp TxProof) ToProto() tmproto.TxProof {
-
-	pbProof := tp.Proof.ToProto()
-
-	pbtp := tmproto.TxProof{
-		RootHash: tp.RootHash,
-		Data:     tp.Data,
-		Proof:    pbProof,
-	}
-
-	return pbtp
-}
-func TxProofFromProto(pb tmproto.TxProof) (TxProof, error) {
-
-	pbProof, err := merkle.ProofFromProto(pb.Proof)
-	if err != nil {
-		return TxProof{}, err
-	}
-
-	pbtp := TxProof{
-		RootHash: pb.RootHash,
-		Data:     pb.Data,
-		Proof:    *pbProof,
-	}
-
-	return pbtp, nil
+// TxResult contains results of executing the transaction.
+//
+// One usage is indexing transaction results.
+type TxResult struct {
+	Height int64                  `json:"height"`
+	Index  uint32                 `json:"index"`
+	Tx     Tx                     `json:"tx"`
+	Result abci.ResponseDeliverTx `json:"result"`
 }
 
-// ComputeProtoSizeForTxs wraps the transactions in tmproto.Data{} and calculates the size.
-// https://developers.google.com/protocol-buffers/docs/encoding
-func ComputeProtoSizeForTxs(txs []Tx) int64 {
-	data := Data{Txs: txs}
-	pdData := data.ToProto()
-	return int64(pdData.Size())
+// ComputeAminoOverhead calculates the overhead for amino encoding a transaction.
+// The overhead consists of varint encoding the field number and the wire type
+// (= length-delimited = 2), and another varint encoding the length of the
+// transaction.
+// The field number can be the field number of the particular transaction, or
+// the field number of the parenting struct that contains the transactions []Tx
+// as a field (this field number is repeated for each contained Tx).
+// If some []Tx are encoded directly (without a parenting struct), the default
+// fieldNum is also 1 (see BinFieldNum in amino.MarshalBinaryBare).
+func ComputeAminoOverhead(tx Tx, fieldNum int) int64 {
+	fnum := uint64(fieldNum)
+	typ3AndFieldNum := (fnum << 3) | uint64(amino.Typ3_ByteLength)
+	return int64(amino.UvarintSize(typ3AndFieldNum)) + int64(amino.UvarintSize(uint64(len(tx))))
 }

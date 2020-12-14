@@ -6,55 +6,45 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
-
+	"github.com/evdatsion/tendermint/abci/example/kvstore"
 	abci "github.com/evdatsion/tendermint/abci/types"
-	"github.com/evdatsion/tendermint/crypto"
 	"github.com/evdatsion/tendermint/crypto/ed25519"
-	cryptoenc "github.com/evdatsion/tendermint/crypto/encoding"
-	"github.com/evdatsion/tendermint/crypto/tmhash"
+	"github.com/evdatsion/tendermint/crypto/secp256k1"
 	"github.com/evdatsion/tendermint/libs/log"
-	mmock "github.com/evdatsion/tendermint/mempool/mock"
-	tmproto "github.com/evdatsion/tendermint/proto/tendermint/types"
-	tmversion "github.com/evdatsion/tendermint/proto/tendermint/version"
+	"github.com/evdatsion/tendermint/mock"
 	"github.com/evdatsion/tendermint/proxy"
 	sm "github.com/evdatsion/tendermint/state"
-	"github.com/evdatsion/tendermint/state/mocks"
 	"github.com/evdatsion/tendermint/types"
 	tmtime "github.com/evdatsion/tendermint/types/time"
-	"github.com/evdatsion/tendermint/version"
 )
 
 var (
-	chainID             = "execution_chain"
-	testPartSize uint32 = 65536
-	nTxsPerBlock        = 10
+	chainID      = "execution_chain"
+	testPartSize = 65536
+	nTxsPerBlock = 10
 )
 
 func TestApplyBlock(t *testing.T) {
-	app := &testApp{}
-	cc := proxy.NewLocalClientCreator(app)
+	cc := proxy.NewLocalClientCreator(kvstore.NewKVStoreApplication())
 	proxyApp := proxy.NewAppConns(cc)
 	err := proxyApp.Start()
 	require.Nil(t, err)
-	defer proxyApp.Stop() //nolint:errcheck // ignore for tests
+	defer proxyApp.Stop()
 
 	state, stateDB, _ := makeState(1, 1)
-	stateStore := sm.NewStore(stateDB)
 
-	blockExec := sm.NewBlockExecutor(stateStore, log.TestingLogger(), proxyApp.Consensus(),
-		mmock.Mempool{}, sm.EmptyEvidencePool{})
+	blockExec := sm.NewBlockExecutor(stateDB, log.TestingLogger(), proxyApp.Consensus(),
+		mock.Mempool{}, sm.MockEvidencePool{})
 
 	block := makeBlock(state, 1)
-	blockID := types.BlockID{Hash: block.Hash(), PartSetHeader: block.MakePartSet(testPartSize).Header()}
+	blockID := types.BlockID{Hash: block.Hash(), PartsHeader: block.MakePartSet(testPartSize).Header()}
 
-	state, retainHeight, err := blockExec.ApplyBlock(state, blockID, block)
+	//nolint:ineffassign
+	state, err = blockExec.ApplyBlock(state, blockID, block)
 	require.Nil(t, err)
-	assert.EqualValues(t, retainHeight, 1)
 
 	// TODO check state and mempool
-	assert.EqualValues(t, 1, state.Version.Consensus.App, "App version wasn't updated")
 }
 
 // TestBeginBlockValidators ensures we send absent validators list.
@@ -64,45 +54,35 @@ func TestBeginBlockValidators(t *testing.T) {
 	proxyApp := proxy.NewAppConns(cc)
 	err := proxyApp.Start()
 	require.Nil(t, err)
-	defer proxyApp.Stop() //nolint:errcheck // no need to check error again
+	defer proxyApp.Stop()
 
 	state, stateDB, _ := makeState(2, 2)
-	stateStore := sm.NewStore(stateDB)
 
 	prevHash := state.LastBlockID.Hash
 	prevParts := types.PartSetHeader{}
-	prevBlockID := types.BlockID{Hash: prevHash, PartSetHeader: prevParts}
+	prevBlockID := types.BlockID{Hash: prevHash, PartsHeader: prevParts}
 
-	var (
-		now        = tmtime.Now()
-		commitSig0 = types.NewCommitSigForBlock(
-			[]byte("Signature1"),
-			state.Validators.Validators[0].Address,
-			now)
-		commitSig1 = types.NewCommitSigForBlock(
-			[]byte("Signature2"),
-			state.Validators.Validators[1].Address,
-			now)
-		absentSig = types.NewCommitSigAbsent()
-	)
+	now := tmtime.Now()
+	commitSig0 := (&types.Vote{ValidatorIndex: 0, Timestamp: now, Type: types.PrecommitType}).CommitSig()
+	commitSig1 := (&types.Vote{ValidatorIndex: 1, Timestamp: now}).CommitSig()
 
 	testCases := []struct {
 		desc                     string
-		lastCommitSigs           []types.CommitSig
+		lastCommitPrecommits     []*types.CommitSig
 		expectedAbsentValidators []int
 	}{
-		{"none absent", []types.CommitSig{commitSig0, commitSig1}, []int{}},
-		{"one absent", []types.CommitSig{commitSig0, absentSig}, []int{1}},
-		{"multiple absent", []types.CommitSig{absentSig, absentSig}, []int{0, 1}},
+		{"none absent", []*types.CommitSig{commitSig0, commitSig1}, []int{}},
+		{"one absent", []*types.CommitSig{commitSig0, nil}, []int{1}},
+		{"multiple absent", []*types.CommitSig{nil, nil}, []int{0, 1}},
 	}
 
 	for _, tc := range testCases {
-		lastCommit := types.NewCommit(1, 0, prevBlockID, tc.lastCommitSigs)
+		lastCommit := types.NewCommit(prevBlockID, tc.lastCommitPrecommits)
 
 		// block for height 2
 		block, _ := state.MakeBlock(2, makeTxs(2), lastCommit, nil, state.Validators.GetProposer().Address)
 
-		_, err = sm.ExecCommitBlock(proxyApp.Consensus(), block, log.TestingLogger(), stateStore, 1)
+		_, err = sm.ExecCommitBlock(proxyApp.Consensus(), block, log.TestingLogger(), stateDB)
 		require.Nil(t, err, tc.desc)
 
 		// -> app receives a list of validators with a bool indicating if they signed
@@ -127,133 +107,104 @@ func TestBeginBlockByzantineValidators(t *testing.T) {
 	proxyApp := proxy.NewAppConns(cc)
 	err := proxyApp.Start()
 	require.Nil(t, err)
-	defer proxyApp.Stop() //nolint:errcheck // ignore for tests
+	defer proxyApp.Stop()
 
-	state, stateDB, privVals := makeState(1, 1)
-	stateStore := sm.NewStore(stateDB)
+	state, stateDB, _ := makeState(2, 12)
 
-	defaultEvidenceTime := time.Date(2019, 1, 1, 0, 0, 0, 0, time.UTC)
-	privVal := privVals[state.Validators.Validators[0].Address.String()]
-	blockID := makeBlockID([]byte("headerhash"), 1000, []byte("partshash"))
-	header := &types.Header{
-		Version:            tmversion.Consensus{Block: version.BlockProtocol, App: 1},
-		ChainID:            state.ChainID,
-		Height:             10,
-		Time:               defaultEvidenceTime,
-		LastBlockID:        blockID,
-		LastCommitHash:     crypto.CRandBytes(tmhash.Size),
-		DataHash:           crypto.CRandBytes(tmhash.Size),
-		ValidatorsHash:     state.Validators.Hash(),
-		NextValidatorsHash: state.Validators.Hash(),
-		ConsensusHash:      crypto.CRandBytes(tmhash.Size),
-		AppHash:            crypto.CRandBytes(tmhash.Size),
-		LastResultsHash:    crypto.CRandBytes(tmhash.Size),
-		EvidenceHash:       crypto.CRandBytes(tmhash.Size),
-		ProposerAddress:    crypto.CRandBytes(crypto.AddressSize),
+	prevHash := state.LastBlockID.Hash
+	prevParts := types.PartSetHeader{}
+	prevBlockID := types.BlockID{Hash: prevHash, PartsHeader: prevParts}
+
+	height1, idx1, val1 := int64(8), 0, state.Validators.Validators[0].Address
+	height2, idx2, val2 := int64(3), 1, state.Validators.Validators[1].Address
+	ev1 := types.NewMockGoodEvidence(height1, idx1, val1)
+	ev2 := types.NewMockGoodEvidence(height2, idx2, val2)
+
+	now := tmtime.Now()
+	valSet := state.Validators
+	testCases := []struct {
+		desc                        string
+		evidence                    []types.Evidence
+		expectedByzantineValidators []abci.Evidence
+	}{
+		{"none byzantine", []types.Evidence{}, []abci.Evidence{}},
+		{"one byzantine", []types.Evidence{ev1}, []abci.Evidence{types.TM2PB.Evidence(ev1, valSet, now)}},
+		{"multiple byzantine", []types.Evidence{ev1, ev2}, []abci.Evidence{
+			types.TM2PB.Evidence(ev1, valSet, now),
+			types.TM2PB.Evidence(ev2, valSet, now)}},
 	}
 
-	// we don't need to worry about validating the evidence as long as they pass validate basic
-	dve := types.NewMockDuplicateVoteEvidenceWithValidator(3, defaultEvidenceTime, privVal, state.ChainID)
-	dve.ValidatorPower = 1000
-	lcae := &types.LightClientAttackEvidence{
-		ConflictingBlock: &types.LightBlock{
-			SignedHeader: &types.SignedHeader{
-				Header: header,
-				Commit: types.NewCommit(10, 0, makeBlockID(header.Hash(), 100, []byte("partshash")), []types.CommitSig{{
-					BlockIDFlag:      types.BlockIDFlagNil,
-					ValidatorAddress: crypto.AddressHash([]byte("validator_address")),
-					Timestamp:        defaultEvidenceTime,
-					Signature:        crypto.CRandBytes(types.MaxSignatureSize),
-				}}),
-			},
-			ValidatorSet: state.Validators,
-		},
-		CommonHeight:        8,
-		ByzantineValidators: []*types.Validator{state.Validators.Validators[0]},
-		TotalVotingPower:    12,
-		Timestamp:           defaultEvidenceTime,
+	commitSig0 := (&types.Vote{ValidatorIndex: 0, Timestamp: now, Type: types.PrecommitType}).CommitSig()
+	commitSig1 := (&types.Vote{ValidatorIndex: 1, Timestamp: now}).CommitSig()
+	commitSigs := []*types.CommitSig{commitSig0, commitSig1}
+	lastCommit := types.NewCommit(prevBlockID, commitSigs)
+	for _, tc := range testCases {
+
+		block, _ := state.MakeBlock(10, makeTxs(2), lastCommit, nil, state.Validators.GetProposer().Address)
+		block.Time = now
+		block.Evidence.Evidence = tc.evidence
+		_, err = sm.ExecCommitBlock(proxyApp.Consensus(), block, log.TestingLogger(), stateDB)
+		require.Nil(t, err, tc.desc)
+
+		// -> app must receive an index of the byzantine validator
+		assert.Equal(t, tc.expectedByzantineValidators, app.ByzantineValidators, tc.desc)
 	}
-
-	ev := []types.Evidence{dve, lcae}
-
-	abciEv := []abci.Evidence{
-		{
-			Type:             abci.EvidenceType_DUPLICATE_VOTE,
-			Height:           3,
-			Time:             defaultEvidenceTime,
-			Validator:        types.TM2PB.Validator(state.Validators.Validators[0]),
-			TotalVotingPower: 10,
-		},
-		{
-			Type:             abci.EvidenceType_LIGHT_CLIENT_ATTACK,
-			Height:           8,
-			Time:             defaultEvidenceTime,
-			Validator:        types.TM2PB.Validator(state.Validators.Validators[0]),
-			TotalVotingPower: 12,
-		},
-	}
-
-	evpool := &mocks.EvidencePool{}
-	evpool.On("PendingEvidence", mock.AnythingOfType("int64")).Return(ev, int64(100))
-	evpool.On("Update", mock.AnythingOfType("state.State"), mock.AnythingOfType("types.EvidenceList")).Return()
-	evpool.On("CheckEvidence", mock.AnythingOfType("types.EvidenceList")).Return(nil)
-
-	blockExec := sm.NewBlockExecutor(stateStore, log.TestingLogger(), proxyApp.Consensus(),
-		mmock.Mempool{}, evpool)
-
-	block := makeBlock(state, 1)
-	block.Evidence = types.EvidenceData{Evidence: ev}
-	block.Header.EvidenceHash = block.Evidence.Hash()
-	blockID = types.BlockID{Hash: block.Hash(), PartSetHeader: block.MakePartSet(testPartSize).Header()}
-
-	state, retainHeight, err := blockExec.ApplyBlock(state, blockID, block)
-	require.Nil(t, err)
-	assert.EqualValues(t, retainHeight, 1)
-
-	// TODO check state and mempool
-	assert.Equal(t, abciEv, app.ByzantineValidators)
 }
 
 func TestValidateValidatorUpdates(t *testing.T) {
 	pubkey1 := ed25519.GenPrivKey().PubKey()
 	pubkey2 := ed25519.GenPrivKey().PubKey()
-	pk1, err := cryptoenc.PubKeyToProto(pubkey1)
-	assert.NoError(t, err)
-	pk2, err := cryptoenc.PubKeyToProto(pubkey2)
-	assert.NoError(t, err)
 
-	defaultValidatorParams := tmproto.ValidatorParams{PubKeyTypes: []string{types.ABCIPubKeyTypeEd25519}}
+	secpKey := secp256k1.GenPrivKey().PubKey()
+
+	defaultValidatorParams := types.ValidatorParams{PubKeyTypes: []string{types.ABCIPubKeyTypeEd25519}}
 
 	testCases := []struct {
 		name string
 
 		abciUpdates     []abci.ValidatorUpdate
-		validatorParams tmproto.ValidatorParams
+		validatorParams types.ValidatorParams
 
 		shouldErr bool
 	}{
 		{
 			"adding a validator is OK",
-			[]abci.ValidatorUpdate{{PubKey: pk2, Power: 20}},
+
+			[]abci.ValidatorUpdate{{PubKey: types.TM2PB.PubKey(pubkey2), Power: 20}},
 			defaultValidatorParams,
+
 			false,
 		},
 		{
 			"updating a validator is OK",
-			[]abci.ValidatorUpdate{{PubKey: pk1, Power: 20}},
+
+			[]abci.ValidatorUpdate{{PubKey: types.TM2PB.PubKey(pubkey1), Power: 20}},
 			defaultValidatorParams,
+
 			false,
 		},
 		{
 			"removing a validator is OK",
-			[]abci.ValidatorUpdate{{PubKey: pk2, Power: 0}},
+
+			[]abci.ValidatorUpdate{{PubKey: types.TM2PB.PubKey(pubkey2), Power: 0}},
 			defaultValidatorParams,
+
 			false,
 		},
 		{
 			"adding a validator with negative power results in error",
-			[]abci.ValidatorUpdate{{PubKey: pk2, Power: -100}},
+
+			[]abci.ValidatorUpdate{{PubKey: types.TM2PB.PubKey(pubkey2), Power: -100}},
 			defaultValidatorParams,
+
+			true,
+		},
+		{
+			"adding a validator with pubkey thats not in validator params results in error",
+
+			[]abci.ValidatorUpdate{{PubKey: types.TM2PB.PubKey(secpKey), Power: -100}},
+			defaultValidatorParams,
+
 			true,
 		},
 	}
@@ -277,11 +228,6 @@ func TestUpdateValidators(t *testing.T) {
 	pubkey2 := ed25519.GenPrivKey().PubKey()
 	val2 := types.NewValidator(pubkey2, 20)
 
-	pk, err := cryptoenc.PubKeyToProto(pubkey1)
-	require.NoError(t, err)
-	pk2, err := cryptoenc.PubKeyToProto(pubkey2)
-	require.NoError(t, err)
-
 	testCases := []struct {
 		name string
 
@@ -293,29 +239,37 @@ func TestUpdateValidators(t *testing.T) {
 	}{
 		{
 			"adding a validator is OK",
+
 			types.NewValidatorSet([]*types.Validator{val1}),
-			[]abci.ValidatorUpdate{{PubKey: pk2, Power: 20}},
+			[]abci.ValidatorUpdate{{PubKey: types.TM2PB.PubKey(pubkey2), Power: 20}},
+
 			types.NewValidatorSet([]*types.Validator{val1, val2}),
 			false,
 		},
 		{
 			"updating a validator is OK",
+
 			types.NewValidatorSet([]*types.Validator{val1}),
-			[]abci.ValidatorUpdate{{PubKey: pk, Power: 20}},
+			[]abci.ValidatorUpdate{{PubKey: types.TM2PB.PubKey(pubkey1), Power: 20}},
+
 			types.NewValidatorSet([]*types.Validator{types.NewValidator(pubkey1, 20)}),
 			false,
 		},
 		{
 			"removing a validator is OK",
+
 			types.NewValidatorSet([]*types.Validator{val1, val2}),
-			[]abci.ValidatorUpdate{{PubKey: pk2, Power: 0}},
+			[]abci.ValidatorUpdate{{PubKey: types.TM2PB.PubKey(pubkey2), Power: 0}},
+
 			types.NewValidatorSet([]*types.Validator{val1}),
 			false,
 		},
 		{
 			"removing a non-existing validator results in error",
+
 			types.NewValidatorSet([]*types.Validator{val1}),
-			[]abci.ValidatorUpdate{{PubKey: pk2, Power: 0}},
+			[]abci.ValidatorUpdate{{PubKey: types.TM2PB.PubKey(pubkey2), Power: 0}},
+
 			types.NewValidatorSet([]*types.Validator{val1}),
 			true,
 		},
@@ -351,24 +305,22 @@ func TestEndBlockValidatorUpdates(t *testing.T) {
 	proxyApp := proxy.NewAppConns(cc)
 	err := proxyApp.Start()
 	require.Nil(t, err)
-	defer proxyApp.Stop() //nolint:errcheck // ignore for tests
+	defer proxyApp.Stop()
 
 	state, stateDB, _ := makeState(1, 1)
-	stateStore := sm.NewStore(stateDB)
 
 	blockExec := sm.NewBlockExecutor(
-		stateStore,
+		stateDB,
 		log.TestingLogger(),
 		proxyApp.Consensus(),
-		mmock.Mempool{},
-		sm.EmptyEvidencePool{},
+		mock.Mempool{},
+		sm.MockEvidencePool{},
 	)
 
 	eventBus := types.NewEventBus()
 	err = eventBus.Start()
 	require.NoError(t, err)
-	defer eventBus.Stop() //nolint:errcheck // ignore for tests
-
+	defer eventBus.Stop()
 	blockExec.SetEventBus(eventBus)
 
 	updatesSub, err := eventBus.Subscribe(
@@ -379,17 +331,16 @@ func TestEndBlockValidatorUpdates(t *testing.T) {
 	require.NoError(t, err)
 
 	block := makeBlock(state, 1)
-	blockID := types.BlockID{Hash: block.Hash(), PartSetHeader: block.MakePartSet(testPartSize).Header()}
+	blockID := types.BlockID{Hash: block.Hash(), PartsHeader: block.MakePartSet(testPartSize).Header()}
 
 	pubkey := ed25519.GenPrivKey().PubKey()
-	pk, err := cryptoenc.PubKeyToProto(pubkey)
-	require.NoError(t, err)
 	app.ValidatorUpdates = []abci.ValidatorUpdate{
-		{PubKey: pk, Power: 10},
+		{PubKey: types.TM2PB.PubKey(pubkey), Power: 10},
 	}
 
-	state, _, err = blockExec.ApplyBlock(state, blockID, block)
+	state, err = blockExec.ApplyBlock(state, blockID, block)
 	require.Nil(t, err)
+
 	// test new validator was added to NextValidators
 	if assert.Equal(t, state.Validators.Size()+1, state.NextValidators.Size()) {
 		idx, _ := state.NextValidators.GetByAddress(pubkey.Address())
@@ -422,45 +373,27 @@ func TestEndBlockValidatorUpdatesResultingInEmptySet(t *testing.T) {
 	proxyApp := proxy.NewAppConns(cc)
 	err := proxyApp.Start()
 	require.Nil(t, err)
-	defer proxyApp.Stop() //nolint:errcheck // ignore for tests
+	defer proxyApp.Stop()
 
 	state, stateDB, _ := makeState(1, 1)
-	stateStore := sm.NewStore(stateDB)
 	blockExec := sm.NewBlockExecutor(
-		stateStore,
+		stateDB,
 		log.TestingLogger(),
 		proxyApp.Consensus(),
-		mmock.Mempool{},
-		sm.EmptyEvidencePool{},
+		mock.Mempool{},
+		sm.MockEvidencePool{},
 	)
 
 	block := makeBlock(state, 1)
-	blockID := types.BlockID{Hash: block.Hash(), PartSetHeader: block.MakePartSet(testPartSize).Header()}
+	blockID := types.BlockID{Hash: block.Hash(), PartsHeader: block.MakePartSet(testPartSize).Header()}
 
-	vp, err := cryptoenc.PubKeyToProto(state.Validators.Validators[0].PubKey)
-	require.NoError(t, err)
 	// Remove the only validator
 	app.ValidatorUpdates = []abci.ValidatorUpdate{
-		{PubKey: vp, Power: 0},
+		{PubKey: types.TM2PB.PubKey(state.Validators.Validators[0].PubKey), Power: 0},
 	}
 
-	assert.NotPanics(t, func() { state, _, err = blockExec.ApplyBlock(state, blockID, block) })
+	assert.NotPanics(t, func() { state, err = blockExec.ApplyBlock(state, blockID, block) })
 	assert.NotNil(t, err)
 	assert.NotEmpty(t, state.NextValidators.Validators)
-}
 
-func makeBlockID(hash []byte, partSetSize uint32, partSetHash []byte) types.BlockID {
-	var (
-		h   = make([]byte, tmhash.Size)
-		psH = make([]byte, tmhash.Size)
-	)
-	copy(h, hash)
-	copy(psH, partSetHash)
-	return types.BlockID{
-		Hash: h,
-		PartSetHeader: types.PartSetHeader{
-			Total: partSetSize,
-			Hash:  psH,
-		},
-	}
 }

@@ -1,4 +1,4 @@
-package coregrpc_test
+package core_grpc_test
 
 import (
 	"context"
@@ -14,7 +14,7 @@ import (
 
 func TestMain(m *testing.M) {
 	// start a tendermint node in the background to test against
-	app := kvstore.NewApplication()
+	app := kvstore.NewKVStoreApplication()
 	node := rpctest.StartTendermint(app)
 
 	code := m.Run()

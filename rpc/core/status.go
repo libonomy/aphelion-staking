@@ -1,72 +1,59 @@
 package core
 
 import (
+	"bytes"
 	"time"
 
-	tmbytes "github.com/evdatsion/tendermint/libs/bytes"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 	"github.com/evdatsion/tendermint/p2p"
 	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
-	rpctypes "github.com/evdatsion/tendermint/rpc/jsonrpc/types"
+	rpctypes "github.com/evdatsion/tendermint/rpc/lib/types"
+	sm "github.com/evdatsion/tendermint/state"
 	"github.com/evdatsion/tendermint/types"
 )
 
 // Status returns Tendermint status including node info, pubkey, latest block
 // hash, app hash, block height and time.
-// More: https://docs.tendermint.com/master/rpc/#/Info/status
+// More: https://tendermint.com/rpc/#/Info/status
 func Status(ctx *rpctypes.Context) (*ctypes.ResultStatus, error) {
-	var (
-		earliestBlockHeight   int64
-		earliestBlockHash     tmbytes.HexBytes
-		earliestAppHash       tmbytes.HexBytes
-		earliestBlockTimeNano int64
-	)
-
-	if earliestBlockMeta := env.BlockStore.LoadBaseMeta(); earliestBlockMeta != nil {
-		earliestBlockHeight = earliestBlockMeta.Header.Height
-		earliestAppHash = earliestBlockMeta.Header.AppHash
-		earliestBlockHash = earliestBlockMeta.BlockID.Hash
-		earliestBlockTimeNano = earliestBlockMeta.Header.Time.UnixNano()
+	var latestHeight int64
+	if consensusReactor.FastSync() {
+		latestHeight = blockStore.Height()
+	} else {
+		latestHeight = consensusState.GetLastHeight()
 	}
-
 	var (
-		latestBlockHash     tmbytes.HexBytes
-		latestAppHash       tmbytes.HexBytes
+		latestBlockMeta     *types.BlockMeta
+		latestBlockHash     cmn.HexBytes
+		latestAppHash       cmn.HexBytes
 		latestBlockTimeNano int64
-
-		latestHeight = env.BlockStore.Height()
 	)
-
 	if latestHeight != 0 {
-		if latestBlockMeta := env.BlockStore.LoadBlockMeta(latestHeight); latestBlockMeta != nil {
-			latestBlockHash = latestBlockMeta.BlockID.Hash
-			latestAppHash = latestBlockMeta.Header.AppHash
-			latestBlockTimeNano = latestBlockMeta.Header.Time.UnixNano()
-		}
+		latestBlockMeta = blockStore.LoadBlockMeta(latestHeight)
+		latestBlockHash = latestBlockMeta.BlockID.Hash
+		latestAppHash = latestBlockMeta.Header.AppHash
+		latestBlockTimeNano = latestBlockMeta.Header.Time.UnixNano()
 	}
 
-	// Return the very last voting power, not the voting power of this validator
-	// during the last block.
+	latestBlockTime := time.Unix(0, latestBlockTimeNano)
+
 	var votingPower int64
-	if val := validatorAtHeight(latestUncommittedHeight()); val != nil {
+	if val := validatorAtHeight(latestHeight); val != nil {
 		votingPower = val.VotingPower
 	}
 
 	result := &ctypes.ResultStatus{
-		NodeInfo: env.P2PTransport.NodeInfo().(p2p.DefaultNodeInfo),
+		NodeInfo: p2pTransport.NodeInfo().(p2p.DefaultNodeInfo),
 		SyncInfo: ctypes.SyncInfo{
-			LatestBlockHash:     latestBlockHash,
-			LatestAppHash:       latestAppHash,
-			LatestBlockHeight:   latestHeight,
-			LatestBlockTime:     time.Unix(0, latestBlockTimeNano),
-			EarliestBlockHash:   earliestBlockHash,
-			EarliestAppHash:     earliestAppHash,
-			EarliestBlockHeight: earliestBlockHeight,
-			EarliestBlockTime:   time.Unix(0, earliestBlockTimeNano),
-			CatchingUp:          env.ConsensusReactor.WaitSync(),
+			LatestBlockHash:   latestBlockHash,
+			LatestAppHash:     latestAppHash,
+			LatestBlockHeight: latestHeight,
+			LatestBlockTime:   latestBlockTime,
+			CatchingUp:        consensusReactor.FastSync(),
 		},
 		ValidatorInfo: ctypes.ValidatorInfo{
-			Address:     env.PubKey.Address(),
-			PubKey:      env.PubKey,
+			Address:     pubKey.Address(),
+			PubKey:      pubKey,
 			VotingPower: votingPower,
 		},
 	}
@@ -75,11 +62,27 @@ func Status(ctx *rpctypes.Context) (*ctypes.ResultStatus, error) {
 }
 
 func validatorAtHeight(h int64) *types.Validator {
-	vals, err := env.StateStore.LoadValidators(h)
-	if err != nil {
-		return nil
+	privValAddress := pubKey.Address()
+
+	// If we're still at height h, search in the current validator set.
+	lastBlockHeight, vals := consensusState.GetValidators()
+	if lastBlockHeight == h {
+		for _, val := range vals {
+			if bytes.Equal(val.Address, privValAddress) {
+				return val
+			}
+		}
 	}
-	privValAddress := env.PubKey.Address()
-	_, val := vals.GetByAddress(privValAddress)
-	return val
+
+	// If we've moved to the next height, retrieve the validator set from DB.
+	if lastBlockHeight > h {
+		vals, err := sm.LoadValidators(stateDB, h)
+		if err != nil {
+			return nil // should not happen
+		}
+		_, val := vals.GetByAddress(privValAddress)
+		return val
+	}
+
+	return nil
 }

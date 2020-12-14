@@ -8,22 +8,19 @@ import (
 	"testing"
 	"time"
 
+	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
-
-	dbm "github.com/evdatsion/tm-db"
-
 	abci "github.com/evdatsion/tendermint/abci/types"
 	cfg "github.com/evdatsion/tendermint/config"
 	"github.com/evdatsion/tendermint/libs/log"
-	"github.com/evdatsion/tendermint/mempool/mock"
+	"github.com/evdatsion/tendermint/mock"
 	"github.com/evdatsion/tendermint/p2p"
-	tmproto "github.com/evdatsion/tendermint/proto/tendermint/types"
 	"github.com/evdatsion/tendermint/proxy"
 	sm "github.com/evdatsion/tendermint/state"
 	"github.com/evdatsion/tendermint/store"
 	"github.com/evdatsion/tendermint/types"
 	tmtime "github.com/evdatsion/tendermint/types/time"
+	dbm "github.com/evdatsion/tm-db"
 )
 
 var config *cfg.Config
@@ -49,30 +46,23 @@ func randGenesisDoc(numValidators int, randPower bool, minPower int64) (*types.G
 }
 
 func makeVote(
-	t *testing.T,
 	header *types.Header,
 	blockID types.BlockID,
 	valset *types.ValidatorSet,
 	privVal types.PrivValidator) *types.Vote {
-
-	pubKey, err := privVal.GetPubKey()
-	require.NoError(t, err)
-
-	valIdx, _ := valset.GetByAddress(pubKey.Address())
+	addr := privVal.GetPubKey().Address()
+	idx, _ := valset.GetByAddress(addr)
 	vote := &types.Vote{
-		ValidatorAddress: pubKey.Address(),
-		ValidatorIndex:   valIdx,
+		ValidatorAddress: addr,
+		ValidatorIndex:   idx,
 		Height:           header.Height,
 		Round:            1,
 		Timestamp:        tmtime.Now(),
-		Type:             tmproto.PrecommitType,
+		Type:             types.PrecommitType,
 		BlockID:          blockID,
 	}
 
-	vpb := vote.ToProto()
-
-	_ = privVal.SignVote(header.ChainID, vpb)
-	vote.Signature = vpb.Signature
+	_ = privVal.SignVote(header.ChainID, vote)
 
 	return vote
 }
@@ -83,7 +73,6 @@ type BlockchainReactorPair struct {
 }
 
 func newBlockchainReactor(
-	t *testing.T,
 	logger log.Logger,
 	genDoc *types.GenesisDoc,
 	privVals []types.PrivValidator,
@@ -97,17 +86,16 @@ func newBlockchainReactor(
 	proxyApp := proxy.NewAppConns(cc)
 	err := proxyApp.Start()
 	if err != nil {
-		panic(fmt.Errorf("error start app: %w", err))
+		panic(errors.Wrap(err, "error start app"))
 	}
 
 	blockDB := dbm.NewMemDB()
 	stateDB := dbm.NewMemDB()
-	stateStore := sm.NewStore(stateDB)
 	blockStore := store.NewBlockStore(blockDB)
 
-	state, err := stateStore.LoadFromDBOrGenesisDoc(genDoc)
+	state, err := sm.LoadStateFromDBOrGenesisDoc(stateDB, genDoc)
 	if err != nil {
-		panic(fmt.Errorf("error constructing state from genesis file: %w", err))
+		panic(errors.Wrap(err, "error constructing state from genesis file"))
 	}
 
 	// Make the BlockchainReactor itself.
@@ -115,32 +103,29 @@ func newBlockchainReactor(
 	// pool.height is determined from the store.
 	fastSync := true
 	db := dbm.NewMemDB()
-	stateStore = sm.NewStore(db)
-	blockExec := sm.NewBlockExecutor(stateStore, log.TestingLogger(), proxyApp.Consensus(),
-		mock.Mempool{}, sm.EmptyEvidencePool{})
-	if err = stateStore.Save(state); err != nil {
-		panic(err)
-	}
+	blockExec := sm.NewBlockExecutor(db, log.TestingLogger(), proxyApp.Consensus(),
+		mock.Mempool{}, sm.MockEvidencePool{})
+	sm.SaveState(db, state)
 
 	// let's add some blocks in
 	for blockHeight := int64(1); blockHeight <= maxBlockHeight; blockHeight++ {
-		lastCommit := types.NewCommit(blockHeight-1, 1, types.BlockID{}, nil)
+		lastCommit := types.NewCommit(types.BlockID{}, nil)
 		if blockHeight > 1 {
 			lastBlockMeta := blockStore.LoadBlockMeta(blockHeight - 1)
 			lastBlock := blockStore.LoadBlock(blockHeight - 1)
 
-			vote := makeVote(t, &lastBlock.Header, lastBlockMeta.BlockID, state.Validators, privVals[0])
-			lastCommit = types.NewCommit(vote.Height, vote.Round, lastBlockMeta.BlockID, []types.CommitSig{vote.CommitSig()})
+			vote := makeVote(&lastBlock.Header, lastBlockMeta.BlockID, state.Validators, privVals[0]).CommitSig()
+			lastCommit = types.NewCommit(lastBlockMeta.BlockID, []*types.CommitSig{vote})
 		}
 
 		thisBlock := makeBlock(blockHeight, state, lastCommit)
 
 		thisParts := thisBlock.MakePartSet(types.BlockPartSizeBytes)
-		blockID := types.BlockID{Hash: thisBlock.Hash(), PartSetHeader: thisParts.Header()}
+		blockID := types.BlockID{Hash: thisBlock.Hash(), PartsHeader: thisParts.Header()}
 
-		state, _, err = blockExec.ApplyBlock(state, blockID, thisBlock)
+		state, err = blockExec.ApplyBlock(state, blockID, thisBlock)
 		if err != nil {
-			panic(fmt.Errorf("error apply block: %w", err))
+			panic(errors.Wrap(err, "error apply block"))
 		}
 
 		blockStore.SaveBlock(thisBlock, thisParts, lastCommit)
@@ -153,7 +138,6 @@ func newBlockchainReactor(
 }
 
 func newBlockchainReactorPair(
-	t *testing.T,
 	logger log.Logger,
 	genDoc *types.GenesisDoc,
 	privVals []types.PrivValidator,
@@ -163,7 +147,7 @@ func newBlockchainReactorPair(
 	consensusReactor.BaseReactor = *p2p.NewBaseReactor("Consensus reactor", consensusReactor)
 
 	return BlockchainReactorPair{
-		newBlockchainReactor(t, logger, genDoc, privVals, maxBlockHeight),
+		newBlockchainReactor(logger, genDoc, privVals, maxBlockHeight),
 		consensusReactor}
 }
 
@@ -173,7 +157,7 @@ type consensusReactorTest struct {
 	mtx                 sync.Mutex
 }
 
-func (conR *consensusReactorTest) SwitchToConsensus(state sm.State, blocksSynced bool) {
+func (conR *consensusReactorTest) SwitchToConsensus(state sm.State, blocksSynced int) {
 	conR.mtx.Lock()
 	defer conR.mtx.Unlock()
 	conR.switchedToConsensus = true
@@ -190,8 +174,8 @@ func TestFastSyncNoBlockResponse(t *testing.T) {
 	reactorPairs := make([]BlockchainReactorPair, 2)
 
 	logger := log.TestingLogger()
-	reactorPairs[0] = newBlockchainReactorPair(t, logger, genDoc, privVals, maxBlockHeight)
-	reactorPairs[1] = newBlockchainReactorPair(t, logger, genDoc, privVals, 0)
+	reactorPairs[0] = newBlockchainReactorPair(logger, genDoc, privVals, maxBlockHeight)
+	reactorPairs[1] = newBlockchainReactorPair(logger, genDoc, privVals, 0)
 
 	p2p.MakeConnectedSwitches(config.P2P, 2, func(i int, s *p2p.Switch) *p2p.Switch {
 		s.AddReactor("BLOCKCHAIN", reactorPairs[i].bcR)
@@ -255,7 +239,7 @@ func TestFastSyncBadBlockStopsPeer(t *testing.T) {
 	defer os.RemoveAll(config.RootDir)
 	genDoc, privVals := randGenesisDoc(1, false, 30)
 
-	otherChain := newBlockchainReactorPair(t, log.TestingLogger(), genDoc, privVals, maxBlockHeight)
+	otherChain := newBlockchainReactorPair(log.TestingLogger(), genDoc, privVals, maxBlockHeight)
 	defer func() {
 		_ = otherChain.bcR.Stop()
 		_ = otherChain.conR.Stop()
@@ -270,7 +254,7 @@ func TestFastSyncBadBlockStopsPeer(t *testing.T) {
 		if i == 0 {
 			height = maxBlockHeight
 		}
-		reactorPairs[i] = newBlockchainReactorPair(t, logger[i], genDoc, privVals, height)
+		reactorPairs[i] = newBlockchainReactorPair(logger[i], genDoc, privVals, height)
 	}
 
 	switches := p2p.MakeConnectedSwitches(config.P2P, numNodes, func(i int, s *p2p.Switch) *p2p.Switch {
@@ -305,14 +289,14 @@ outerFor:
 		break
 	}
 
-	// at this time, reactors[0-3] is the newest
+	//at this time, reactors[0-3] is the newest
 	assert.Equal(t, numNodes-1, reactorPairs[1].bcR.Switch.Peers().Size())
 
-	// mark last reactorPair as an invalid peer
+	//mark last reactorPair as an invalid peer
 	reactorPairs[numNodes-1].bcR.store = otherChain.bcR.store
 
 	lastLogger := log.TestingLogger()
-	lastReactorPair := newBlockchainReactorPair(t, lastLogger, genDoc, privVals, 0)
+	lastReactorPair := newBlockchainReactorPair(lastLogger, genDoc, privVals, 0)
 	reactorPairs = append(reactorPairs, lastReactorPair)
 
 	switches = append(switches, p2p.MakeConnectedSwitches(config.P2P, 1, func(i int, s *p2p.Switch) *p2p.Switch {
@@ -343,6 +327,86 @@ outerFor:
 	}
 
 	assert.True(t, lastReactorPair.bcR.Switch.Peers().Size() < len(reactorPairs)-1)
+}
+
+func TestBcBlockRequestMessageValidateBasic(t *testing.T) {
+	testCases := []struct {
+		testName      string
+		requestHeight int64
+		expectErr     bool
+	}{
+		{"Valid Request Message", 0, false},
+		{"Valid Request Message", 1, false},
+		{"Invalid Request Message", -1, true},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.testName, func(t *testing.T) {
+			request := bcBlockRequestMessage{Height: tc.requestHeight}
+			assert.Equal(t, tc.expectErr, request.ValidateBasic() != nil, "Validate Basic had an unexpected result")
+		})
+	}
+}
+
+func TestBcNoBlockResponseMessageValidateBasic(t *testing.T) {
+	testCases := []struct {
+		testName          string
+		nonResponseHeight int64
+		expectErr         bool
+	}{
+		{"Valid Non-Response Message", 0, false},
+		{"Valid Non-Response Message", 1, false},
+		{"Invalid Non-Response Message", -1, true},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.testName, func(t *testing.T) {
+			nonResponse := bcNoBlockResponseMessage{Height: tc.nonResponseHeight}
+			assert.Equal(t, tc.expectErr, nonResponse.ValidateBasic() != nil, "Validate Basic had an unexpected result")
+		})
+	}
+}
+
+func TestBcStatusRequestMessageValidateBasic(t *testing.T) {
+	testCases := []struct {
+		testName      string
+		requestHeight int64
+		expectErr     bool
+	}{
+		{"Valid Request Message", 0, false},
+		{"Valid Request Message", 1, false},
+		{"Invalid Request Message", -1, true},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.testName, func(t *testing.T) {
+			request := bcStatusRequestMessage{Height: tc.requestHeight}
+			assert.Equal(t, tc.expectErr, request.ValidateBasic() != nil, "Validate Basic had an unexpected result")
+		})
+	}
+}
+
+func TestBcStatusResponseMessageValidateBasic(t *testing.T) {
+	testCases := []struct {
+		testName       string
+		responseHeight int64
+		expectErr      bool
+	}{
+		{"Valid Response Message", 0, false},
+		{"Valid Response Message", 1, false},
+		{"Invalid Response Message", -1, true},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.testName, func(t *testing.T) {
+			response := bcStatusResponseMessage{Height: tc.responseHeight}
+			assert.Equal(t, tc.expectErr, response.ValidateBasic() != nil, "Validate Basic had an unexpected result")
+		})
+	}
 }
 
 //----------------------------------------------

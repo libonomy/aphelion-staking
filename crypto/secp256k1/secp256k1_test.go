@@ -36,14 +36,15 @@ func TestPubKeySecp256k1Address(t *testing.T) {
 		addrBbz, _, _ := base58.CheckDecode(d.addr)
 		addrB := crypto.Address(addrBbz)
 
-		var priv secp256k1.PrivKey = secp256k1.PrivKey(privB)
+		var priv secp256k1.PrivKeySecp256k1
+		copy(priv[:], privB)
 
 		pubKey := priv.PubKey()
-		pubT, _ := pubKey.(secp256k1.PubKey)
-		pub := pubT
+		pubT, _ := pubKey.(secp256k1.PubKeySecp256k1)
+		pub := pubT[:]
 		addr := pubKey.Address()
 
-		assert.Equal(t, pub, secp256k1.PubKey(pubB), "Expected pub keys to match")
+		assert.Equal(t, pub, pubB, "Expected pub keys to match")
 		assert.Equal(t, addr, addrB, "Expected addresses to match")
 	}
 }
@@ -56,12 +57,12 @@ func TestSignAndValidateSecp256k1(t *testing.T) {
 	sig, err := privKey.Sign(msg)
 	require.Nil(t, err)
 
-	assert.True(t, pubKey.VerifySignature(msg, sig))
+	assert.True(t, pubKey.VerifyBytes(msg, sig))
 
 	// Mutate the signature, just one bit.
 	sig[3] ^= byte(0x01)
 
-	assert.False(t, pubKey.VerifySignature(msg, sig))
+	assert.False(t, pubKey.VerifyBytes(msg, sig))
 }
 
 // This test is intended to justify the removal of calls to the underlying library

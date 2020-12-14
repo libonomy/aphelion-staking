@@ -3,12 +3,12 @@ package privval
 import (
 	"fmt"
 	"net"
+	"sync"
 	"time"
 
-	"github.com/evdatsion/tendermint/libs/protoio"
-	"github.com/evdatsion/tendermint/libs/service"
-	tmsync "github.com/evdatsion/tendermint/libs/sync"
-	privvalproto "github.com/evdatsion/tendermint/proto/tendermint/privval"
+	"github.com/pkg/errors"
+
+	cmn "github.com/evdatsion/tendermint/libs/common"
 )
 
 const (
@@ -16,9 +16,9 @@ const (
 )
 
 type signerEndpoint struct {
-	service.BaseService
+	cmn.BaseService
 
-	connMtx tmsync.Mutex
+	connMtx sync.Mutex
 	conn    net.Conn
 
 	timeoutReadWrite time.Duration
@@ -80,13 +80,14 @@ func (se *signerEndpoint) DropConnection() {
 }
 
 // ReadMessage reads a message from the endpoint
-func (se *signerEndpoint) ReadMessage() (msg privvalproto.Message, err error) {
+func (se *signerEndpoint) ReadMessage() (msg SignerMessage, err error) {
 	se.connMtx.Lock()
 	defer se.connMtx.Unlock()
 
 	if !se.isConnected() {
-		return msg, fmt.Errorf("endpoint is not connected: %w", ErrNoConnection)
+		return nil, fmt.Errorf("endpoint is not connected")
 	}
+
 	// Reset read deadline
 	deadline := time.Now().Add(se.timeoutReadWrite)
 
@@ -94,16 +95,15 @@ func (se *signerEndpoint) ReadMessage() (msg privvalproto.Message, err error) {
 	if err != nil {
 		return
 	}
+
 	const maxRemoteSignerMsgSize = 1024 * 10
-	protoReader := protoio.NewDelimitedReader(se.conn, maxRemoteSignerMsgSize)
-	err = protoReader.ReadMsg(&msg)
+	_, err = cdc.UnmarshalBinaryLengthPrefixedReader(se.conn, &msg, maxRemoteSignerMsgSize)
 	if _, ok := err.(timeoutError); ok {
 		if err != nil {
-			err = fmt.Errorf("%v: %w", err, ErrReadTimeout)
+			err = errors.Wrap(ErrReadTimeout, err.Error())
 		} else {
-			err = fmt.Errorf("empty error: %w", ErrReadTimeout)
+			err = errors.Wrap(ErrReadTimeout, "Empty error")
 		}
-
 		se.Logger.Debug("Dropping [read]", "obj", se)
 		se.dropConnection()
 	}
@@ -112,15 +112,13 @@ func (se *signerEndpoint) ReadMessage() (msg privvalproto.Message, err error) {
 }
 
 // WriteMessage writes a message from the endpoint
-func (se *signerEndpoint) WriteMessage(msg privvalproto.Message) (err error) {
+func (se *signerEndpoint) WriteMessage(msg SignerMessage) (err error) {
 	se.connMtx.Lock()
 	defer se.connMtx.Unlock()
 
 	if !se.isConnected() {
-		return fmt.Errorf("endpoint is not connected: %w", ErrNoConnection)
+		return errors.Wrap(ErrNoConnection, "endpoint is not connected")
 	}
-
-	protoWriter := protoio.NewDelimitedWriter(se.conn)
 
 	// Reset read deadline
 	deadline := time.Now().Add(se.timeoutReadWrite)
@@ -129,12 +127,12 @@ func (se *signerEndpoint) WriteMessage(msg privvalproto.Message) (err error) {
 		return
 	}
 
-	_, err = protoWriter.WriteMsg(&msg)
+	_, err = cdc.MarshalBinaryLengthPrefixedWriter(se.conn, msg)
 	if _, ok := err.(timeoutError); ok {
 		if err != nil {
-			err = fmt.Errorf("%v: %w", err, ErrWriteTimeout)
+			err = errors.Wrap(ErrWriteTimeout, err.Error())
 		} else {
-			err = fmt.Errorf("empty error: %w", ErrWriteTimeout)
+			err = errors.Wrap(ErrWriteTimeout, "Empty error")
 		}
 		se.dropConnection()
 	}

@@ -12,19 +12,18 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gogo/protobuf/proto"
-	gogotypes "github.com/gogo/protobuf/types"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	amino "github.com/evdatsion/go-amino"
 
 	"github.com/evdatsion/tendermint/abci/example/counter"
 	"github.com/evdatsion/tendermint/abci/example/kvstore"
 	abciserver "github.com/evdatsion/tendermint/abci/server"
 	abci "github.com/evdatsion/tendermint/abci/types"
 	cfg "github.com/evdatsion/tendermint/config"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 	"github.com/evdatsion/tendermint/libs/log"
-	tmrand "github.com/evdatsion/tendermint/libs/rand"
-	"github.com/evdatsion/tendermint/libs/service"
 	"github.com/evdatsion/tendermint/proxy"
 	"github.com/evdatsion/tendermint/types"
 )
@@ -91,7 +90,7 @@ func checkTxs(t *testing.T, mempool Mempool, count int, peerID uint16) types.Txs
 }
 
 func TestReapMaxBytesMaxGas(t *testing.T) {
-	app := kvstore.NewApplication()
+	app := kvstore.NewKVStoreApplication()
 	cc := proxy.NewLocalClientCreator(app)
 	mempool, cleanup := newMempoolWithApp(cc)
 	defer cleanup()
@@ -107,7 +106,7 @@ func TestReapMaxBytesMaxGas(t *testing.T) {
 	mempool.Flush()
 
 	// each table driven test creates numTxsToCreate txs with checkTx, and at the end clears all remaining txs.
-	// each tx has 20 bytes
+	// each tx has 20 bytes + amino overhead = 21 bytes, 1 gas
 	tests := []struct {
 		numTxsToCreate int
 		maxBytes       int64
@@ -121,11 +120,11 @@ func TestReapMaxBytesMaxGas(t *testing.T) {
 		{20, 0, -1, 0},
 		{20, 0, 10, 0},
 		{20, 10, 10, 0},
-		{20, 24, 10, 1},
-		{20, 240, 5, 5},
-		{20, 240, -1, 10},
-		{20, 240, 10, 10},
-		{20, 240, 15, 10},
+		{20, 22, 10, 1},
+		{20, 220, -1, 10},
+		{20, 220, 5, 5},
+		{20, 220, 10, 10},
+		{20, 220, 15, 10},
 		{20, 20000, -1, 20},
 		{20, 20000, 5, 5},
 		{20, 20000, 30, 20},
@@ -140,7 +139,7 @@ func TestReapMaxBytesMaxGas(t *testing.T) {
 }
 
 func TestMempoolFilters(t *testing.T) {
-	app := kvstore.NewApplication()
+	app := kvstore.NewKVStoreApplication()
 	cc := proxy.NewLocalClientCreator(app)
 	mempool, cleanup := newMempoolWithApp(cc)
 	defer cleanup()
@@ -150,7 +149,7 @@ func TestMempoolFilters(t *testing.T) {
 	nopPostFilter := func(tx types.Tx, res *abci.ResponseCheckTx) error { return nil }
 
 	// each table driven test creates numTxsToCreate txs with checkTx, and at the end clears all remaining txs.
-	// each tx has 20 bytes
+	// each tx has 20 bytes + amino overhead = 21 bytes, 1 gas
 	tests := []struct {
 		numTxsToCreate int
 		preFilter      PreCheckFunc
@@ -158,20 +157,20 @@ func TestMempoolFilters(t *testing.T) {
 		expectedNumTxs int
 	}{
 		{10, nopPreFilter, nopPostFilter, 10},
-		{10, PreCheckMaxBytes(10), nopPostFilter, 0},
-		{10, PreCheckMaxBytes(22), nopPostFilter, 10},
+		{10, PreCheckAminoMaxBytes(10), nopPostFilter, 0},
+		{10, PreCheckAminoMaxBytes(20), nopPostFilter, 0},
+		{10, PreCheckAminoMaxBytes(22), nopPostFilter, 10},
 		{10, nopPreFilter, PostCheckMaxGas(-1), 10},
 		{10, nopPreFilter, PostCheckMaxGas(0), 0},
 		{10, nopPreFilter, PostCheckMaxGas(1), 10},
 		{10, nopPreFilter, PostCheckMaxGas(3000), 10},
-		{10, PreCheckMaxBytes(10), PostCheckMaxGas(20), 0},
-		{10, PreCheckMaxBytes(30), PostCheckMaxGas(20), 10},
-		{10, PreCheckMaxBytes(22), PostCheckMaxGas(1), 10},
-		{10, PreCheckMaxBytes(22), PostCheckMaxGas(0), 0},
+		{10, PreCheckAminoMaxBytes(10), PostCheckMaxGas(20), 0},
+		{10, PreCheckAminoMaxBytes(30), PostCheckMaxGas(20), 10},
+		{10, PreCheckAminoMaxBytes(22), PostCheckMaxGas(1), 10},
+		{10, PreCheckAminoMaxBytes(22), PostCheckMaxGas(0), 0},
 	}
 	for tcIndex, tt := range tests {
-		err := mempool.Update(1, emptyTxArr, abciResponses(len(emptyTxArr), abci.CodeTypeOK), tt.preFilter, tt.postFilter)
-		require.NoError(t, err)
+		mempool.Update(1, emptyTxArr, abciResponses(len(emptyTxArr), abci.CodeTypeOK), tt.preFilter, tt.postFilter)
 		checkTxs(t, mempool, tt.numTxsToCreate, UnknownPeerID)
 		require.Equal(t, tt.expectedNumTxs, mempool.Size(), "mempool had the incorrect size, on test case %d", tcIndex)
 		mempool.Flush()
@@ -179,16 +178,15 @@ func TestMempoolFilters(t *testing.T) {
 }
 
 func TestMempoolUpdate(t *testing.T) {
-	app := kvstore.NewApplication()
+	app := kvstore.NewKVStoreApplication()
 	cc := proxy.NewLocalClientCreator(app)
 	mempool, cleanup := newMempoolWithApp(cc)
 	defer cleanup()
 
 	// 1. Adds valid txs to the cache
 	{
-		err := mempool.Update(1, []types.Tx{[]byte{0x01}}, abciResponses(1, abci.CodeTypeOK), nil, nil)
-		require.NoError(t, err)
-		err = mempool.CheckTx([]byte{0x01}, nil, TxInfo{})
+		mempool.Update(1, []types.Tx{[]byte{0x01}}, abciResponses(1, abci.CodeTypeOK), nil, nil)
+		err := mempool.CheckTx([]byte{0x01}, nil, TxInfo{})
 		if assert.Error(t, err) {
 			assert.Equal(t, ErrTxInCache, err)
 		}
@@ -198,8 +196,7 @@ func TestMempoolUpdate(t *testing.T) {
 	{
 		err := mempool.CheckTx([]byte{0x02}, nil, TxInfo{})
 		require.NoError(t, err)
-		err = mempool.Update(1, []types.Tx{[]byte{0x02}}, abciResponses(1, abci.CodeTypeOK), nil, nil)
-		require.NoError(t, err)
+		mempool.Update(1, []types.Tx{[]byte{0x02}}, abciResponses(1, abci.CodeTypeOK), nil, nil)
 		assert.Zero(t, mempool.Size())
 	}
 
@@ -207,17 +204,16 @@ func TestMempoolUpdate(t *testing.T) {
 	{
 		err := mempool.CheckTx([]byte{0x03}, nil, TxInfo{})
 		require.NoError(t, err)
-		err = mempool.Update(1, []types.Tx{[]byte{0x03}}, abciResponses(1, 1), nil, nil)
-		require.NoError(t, err)
+		mempool.Update(1, []types.Tx{[]byte{0x03}}, abciResponses(1, 1), nil, nil)
 		assert.Zero(t, mempool.Size())
 
 		err = mempool.CheckTx([]byte{0x03}, nil, TxInfo{})
-		require.NoError(t, err)
+		assert.NoError(t, err)
 	}
 }
 
 func TestTxsAvailable(t *testing.T) {
-	app := kvstore.NewApplication()
+	app := kvstore.NewKVStoreApplication()
 	cc := proxy.NewLocalClientCreator(app)
 	mempool, cleanup := newMempoolWithApp(cc)
 	defer cleanup()
@@ -261,7 +257,8 @@ func TestTxsAvailable(t *testing.T) {
 }
 
 func TestSerialReap(t *testing.T) {
-	app := counter.NewApplication(true)
+	app := counter.NewCounterApplication(true)
+	app.SetOption(abci.RequestSetOption{Key: "serial", Value: "on"})
 	cc := proxy.NewLocalClientCreator(app)
 
 	mempool, cleanup := newMempoolWithApp(cc)
@@ -319,19 +316,19 @@ func TestSerialReap(t *testing.T) {
 			binary.BigEndian.PutUint64(txBytes, uint64(i))
 			res, err := appConnCon.DeliverTxSync(abci.RequestDeliverTx{Tx: txBytes})
 			if err != nil {
-				t.Errorf("client error committing tx: %v", err)
+				t.Errorf("Client error committing tx: %v", err)
 			}
 			if res.IsErr() {
-				t.Errorf("error committing tx. Code:%v result:%X log:%v",
+				t.Errorf("Error committing tx. Code:%v result:%X log:%v",
 					res.Code, res.Data, res.Log)
 			}
 		}
 		res, err := appConnCon.CommitSync()
 		if err != nil {
-			t.Errorf("client error committing: %v", err)
+			t.Errorf("Client error committing: %v", err)
 		}
 		if len(res.Data) != 8 {
-			t.Errorf("error committing. Hash:%X", res.Data)
+			t.Errorf("Error committing. Hash:%X", res.Data)
 		}
 	}
 
@@ -383,13 +380,12 @@ func TestMempoolCloseWAL(t *testing.T) {
 	// 3. Create the mempool
 	wcfg := cfg.DefaultConfig()
 	wcfg.Mempool.RootDir = rootDir
-	app := kvstore.NewApplication()
+	app := kvstore.NewKVStoreApplication()
 	cc := proxy.NewLocalClientCreator(app)
 	mempool, cleanup := newMempoolWithAppAndConfig(cc, wcfg)
 	defer cleanup()
 	mempool.height = 10
-	err = mempool.InitWAL()
-	require.NoError(t, err)
+	mempool.InitWAL()
 
 	// 4. Ensure that the directory contains the WAL file
 	m2, err := filepath.Glob(filepath.Join(rootDir, "*"))
@@ -397,8 +393,7 @@ func TestMempoolCloseWAL(t *testing.T) {
 	require.Equal(t, 1, len(m2), "expecting the wal match in")
 
 	// 5. Write some contents to the WAL
-	err = mempool.CheckTx(types.Tx([]byte("foo")), nil, TxInfo{})
-	require.NoError(t, err)
+	mempool.CheckTx(types.Tx([]byte("foo")), nil, TxInfo{})
 	walFilepath := mempool.wal.Path
 	sum1 := checksumFile(walFilepath, t)
 
@@ -408,8 +403,7 @@ func TestMempoolCloseWAL(t *testing.T) {
 	// 7. Invoke CloseWAL() and ensure it discards the
 	// WAL thus any other write won't go through.
 	mempool.CloseWAL()
-	err = mempool.CheckTx(types.Tx([]byte("bar")), nil, TxInfo{})
-	require.NoError(t, err)
+	mempool.CheckTx(types.Tx([]byte("bar")), nil, TxInfo{})
 	sum2 := checksumFile(walFilepath, t)
 	require.Equal(t, sum1, sum2, "expected no change to the WAL after invoking CloseWAL() since it was discarded")
 
@@ -419,50 +413,66 @@ func TestMempoolCloseWAL(t *testing.T) {
 	require.Equal(t, 1, len(m3), "expecting the wal match in")
 }
 
-func TestMempool_CheckTxChecksTxSize(t *testing.T) {
-	app := kvstore.NewApplication()
+// Size of the amino encoded TxMessage is the length of the
+// encoded byte array, plus 1 for the struct field, plus 4
+// for the amino prefix.
+func txMessageSize(tx types.Tx) int {
+	return amino.ByteSliceSize(tx) + 1 + 4
+}
+
+func TestMempoolMaxMsgSize(t *testing.T) {
+	app := kvstore.NewKVStoreApplication()
 	cc := proxy.NewLocalClientCreator(app)
 	mempl, cleanup := newMempoolWithApp(cc)
 	defer cleanup()
 
 	maxTxSize := mempl.config.MaxTxBytes
+	maxMsgSize := calcMaxMsgSize(maxTxSize)
 
 	testCases := []struct {
 		len int
 		err bool
 	}{
 		// check small txs. no error
-		0: {10, false},
-		1: {1000, false},
-		2: {1000000, false},
+		{10, false},
+		{1000, false},
+		{1000000, false},
 
 		// check around maxTxSize
-		3: {maxTxSize - 1, false},
-		4: {maxTxSize, false},
-		5: {maxTxSize + 1, true},
+		// changes from no error to error
+		{maxTxSize - 2, false},
+		{maxTxSize - 1, false},
+		{maxTxSize, false},
+		{maxTxSize + 1, true},
+		{maxTxSize + 2, true},
+
+		// check around maxMsgSize. all error
+		{maxMsgSize - 1, true},
+		{maxMsgSize, true},
+		{maxMsgSize + 1, true},
 	}
 
 	for i, testCase := range testCases {
 		caseString := fmt.Sprintf("case %d, len %d", i, testCase.len)
 
-		tx := tmrand.Bytes(testCase.len)
-
+		tx := cmn.RandBytes(testCase.len)
 		err := mempl.CheckTx(tx, nil, TxInfo{})
-		bv := gogotypes.BytesValue{Value: tx}
-		bz, err2 := bv.Marshal()
-		require.NoError(t, err2)
-		require.Equal(t, len(bz), proto.Size(&bv), caseString)
-
+		msg := &TxMessage{tx}
+		encoded := cdc.MustMarshalBinaryBare(msg)
+		require.Equal(t, len(encoded), txMessageSize(tx), caseString)
 		if !testCase.err {
+			require.True(t, len(encoded) <= maxMsgSize, caseString)
 			require.NoError(t, err, caseString)
 		} else {
+			require.True(t, len(encoded) > maxMsgSize, caseString)
 			require.Equal(t, err, ErrTxTooLarge{maxTxSize, testCase.len}, caseString)
 		}
 	}
+
 }
 
 func TestMempoolTxsBytes(t *testing.T) {
-	app := kvstore.NewApplication()
+	app := kvstore.NewKVStoreApplication()
 	cc := proxy.NewLocalClientCreator(app)
 	config := cfg.ResetTestRoot("mempool_test")
 	config.Mempool.MaxTxsBytes = 10
@@ -478,8 +488,7 @@ func TestMempoolTxsBytes(t *testing.T) {
 	assert.EqualValues(t, 1, mempool.TxsBytes())
 
 	// 3. zero again after tx is removed by Update
-	err = mempool.Update(1, []types.Tx{[]byte{0x01}}, abciResponses(1, abci.CodeTypeOK), nil, nil)
-	require.NoError(t, err)
+	mempool.Update(1, []types.Tx{[]byte{0x01}}, abciResponses(1, abci.CodeTypeOK), nil, nil)
 	assert.EqualValues(t, 0, mempool.TxsBytes())
 
 	// 4. zero after Flush
@@ -499,7 +508,7 @@ func TestMempoolTxsBytes(t *testing.T) {
 	}
 
 	// 6. zero after tx is rechecked and removed due to not being valid anymore
-	app2 := counter.NewApplication(true)
+	app2 := counter.NewCounterApplication(true)
 	cc = proxy.NewLocalClientCreator(app2)
 	mempool, cleanup = newMempoolWithApp(cc)
 	defer cleanup()
@@ -515,11 +524,7 @@ func TestMempoolTxsBytes(t *testing.T) {
 	appConnCon.SetLogger(log.TestingLogger().With("module", "abci-client", "connection", "consensus"))
 	err = appConnCon.Start()
 	require.Nil(t, err)
-	t.Cleanup(func() {
-		if err := appConnCon.Stop(); err != nil {
-			t.Error(err)
-		}
-	})
+	defer appConnCon.Stop()
 	res, err := appConnCon.DeliverTxSync(abci.RequestDeliverTx{Tx: txBytes})
 	require.NoError(t, err)
 	require.EqualValues(t, 0, res.Code)
@@ -528,19 +533,8 @@ func TestMempoolTxsBytes(t *testing.T) {
 	require.NotEmpty(t, res2.Data)
 
 	// Pretend like we committed nothing so txBytes gets rechecked and removed.
-	err = mempool.Update(1, []types.Tx{}, abciResponses(0, abci.CodeTypeOK), nil, nil)
-	require.NoError(t, err)
+	mempool.Update(1, []types.Tx{}, abciResponses(0, abci.CodeTypeOK), nil, nil)
 	assert.EqualValues(t, 0, mempool.TxsBytes())
-
-	// 7. Test RemoveTxByKey function
-	err = mempool.CheckTx([]byte{0x06}, nil, TxInfo{})
-	require.NoError(t, err)
-	assert.EqualValues(t, 1, mempool.TxsBytes())
-	mempool.RemoveTxByKey(TxKey([]byte{0x07}), true)
-	assert.EqualValues(t, 1, mempool.TxsBytes())
-	mempool.RemoveTxByKey(TxKey([]byte{0x06}), true)
-	assert.EqualValues(t, 0, mempool.TxsBytes())
-
 }
 
 // This will non-deterministically catch some concurrency failures like
@@ -548,14 +542,10 @@ func TestMempoolTxsBytes(t *testing.T) {
 // TODO: all of the tests should probably also run using the remote proxy app
 // since otherwise we're not actually testing the concurrency of the mempool here!
 func TestMempoolRemoteAppConcurrency(t *testing.T) {
-	sockPath := fmt.Sprintf("unix:///tmp/echo_%v.sock", tmrand.Str(6))
-	app := kvstore.NewApplication()
+	sockPath := fmt.Sprintf("unix:///tmp/echo_%v.sock", cmn.RandStr(6))
+	app := kvstore.NewKVStoreApplication()
 	cc, server := newRemoteApp(t, sockPath, app)
-	t.Cleanup(func() {
-		if err := server.Stop(); err != nil {
-			t.Error(err)
-		}
-	})
+	defer server.Stop()
 	config := cfg.ResetTestRoot("mempool_test")
 	mempool, cleanup := newMempoolWithAppAndConfig(cc, config)
 	defer cleanup()
@@ -565,7 +555,7 @@ func TestMempoolRemoteAppConcurrency(t *testing.T) {
 	txLen := 200
 	txs := make([]types.Tx, nTxs)
 	for i := 0; i < nTxs; i++ {
-		txs[i] = tmrand.Bytes(txLen)
+		txs[i] = cmn.RandBytes(txLen)
 	}
 
 	// simulate a group of peers sending them over and over
@@ -577,7 +567,7 @@ func TestMempoolRemoteAppConcurrency(t *testing.T) {
 		tx := txs[txNum]
 
 		// this will err with ErrTxInCache many times ...
-		mempool.CheckTx(tx, nil, TxInfo{SenderID: uint16(peerID)}) //nolint: errcheck // will error
+		mempool.CheckTx(tx, nil, TxInfo{SenderID: uint16(peerID)})
 	}
 	err := mempool.FlushAppConn()
 	require.NoError(t, err)
@@ -590,7 +580,7 @@ func newRemoteApp(
 	app abci.Application,
 ) (
 	clientCreator proxy.ClientCreator,
-	server service.Service,
+	server cmn.Service,
 ) {
 	clientCreator = proxy.NewRemoteClientCreator(addr, "socket", true)
 
@@ -604,7 +594,7 @@ func newRemoteApp(
 }
 func checksumIt(data []byte) string {
 	h := sha256.New()
-	h.Write(data) //nolint: errcheck // ignore errcheck
+	h.Write(data)
 	return fmt.Sprintf("%x", h.Sum(nil))
 }
 

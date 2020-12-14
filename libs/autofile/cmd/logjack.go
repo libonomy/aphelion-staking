@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	auto "github.com/evdatsion/tendermint/libs/autofile"
-	tmos "github.com/evdatsion/tendermint/libs/os"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 )
 
 const Version = "0.0.1"
@@ -23,10 +23,7 @@ func parseFlags() (headPath string, chopSize int64, limitSize int64, version boo
 	flagSet.StringVar(&chopSizeStr, "chop", "100M", "Move file if greater than this")
 	flagSet.StringVar(&limitSizeStr, "limit", "10G", "Only keep this much (for each specified file). Remove old files.")
 	flagSet.BoolVar(&version, "version", false, "Version")
-	if err := flagSet.Parse(os.Args[1:]); err != nil {
-		fmt.Printf("err parsing flag: %v\n", err)
-		os.Exit(1)
-	}
+	flagSet.Parse(os.Args[1:])
 	chopSize = parseBytesize(chopSizeStr)
 	limitSize = parseBytesize(limitSizeStr)
 	return
@@ -44,7 +41,7 @@ func (fmtLogger) Info(msg string, keyvals ...interface{}) {
 
 func main() {
 	// Stop upon receiving SIGTERM or CTRL-C.
-	tmos.TrapSignal(fmtLogger{}, func() {
+	cmn.TrapSignal(fmtLogger{}, func() {
 		fmt.Println("logjack shutting down")
 	})
 
@@ -62,7 +59,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err = group.Start(); err != nil {
+	err = group.Start()
+	if err != nil {
 		fmt.Printf("logjack couldn't start with file %v\n", headPath)
 		os.Exit(1)
 	}
@@ -71,26 +69,16 @@ func main() {
 	buf := make([]byte, readBufferSize)
 	for {
 		n, err := os.Stdin.Read(buf)
+		group.Write(buf[:n])
+		group.FlushAndSync()
 		if err != nil {
-			if err := group.Stop(); err != nil {
-				fmt.Fprintf(os.Stderr, "logjack stopped with error %v\n", headPath)
-				os.Exit(1)
-			}
+			group.Stop()
 			if err == io.EOF {
 				os.Exit(0)
 			} else {
 				fmt.Println("logjack errored")
 				os.Exit(1)
 			}
-		}
-		_, err = group.Write(buf[:n])
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "logjack failed write with error %v\n", headPath)
-			os.Exit(1)
-		}
-		if err := group.FlushAndSync(); err != nil {
-			fmt.Fprintf(os.Stderr, "logjack flushsync fail with error %v\n", headPath)
-			os.Exit(1)
 		}
 	}
 }

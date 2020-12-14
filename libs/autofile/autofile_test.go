@@ -3,37 +3,26 @@ package autofile
 import (
 	"io/ioutil"
 	"os"
-	"path/filepath"
 	"syscall"
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	cmn "github.com/evdatsion/tendermint/libs/common"
 )
 
 func TestSIGHUP(t *testing.T) {
-	origDir, err := os.Getwd()
+	// First, create an AutoFile writing to a tempfile dir
+	file, err := ioutil.TempFile("", "sighup_test")
 	require.NoError(t, err)
-	t.Cleanup(func() {
-		if err := os.Chdir(origDir); err != nil {
-			t.Error(err)
-		}
-	})
-
-	// First, create a temporary directory and move into it
-	dir, err := ioutil.TempDir("", "sighup_test")
+	err = file.Close()
 	require.NoError(t, err)
-	t.Cleanup(func() {
-		_ = os.RemoveAll(dir)
-	})
-	require.NoError(t, os.Chdir(dir))
+	name := file.Name()
 
-	// Create an AutoFile in the temporary directory
-	name := "sighup_test"
+	// Here is the actual AutoFile
 	af, err := OpenAutoFile(name)
 	require.NoError(t, err)
-	require.True(t, filepath.IsAbs(af.Path))
 
 	// Write to the file.
 	_, err = af.Write([]byte("Line 1\n"))
@@ -42,16 +31,11 @@ func TestSIGHUP(t *testing.T) {
 	require.NoError(t, err)
 
 	// Move the file over
-	require.NoError(t, os.Rename(name, name+"_old"))
-
-	// Move into a different temporary directory
-	otherDir, err := ioutil.TempDir("", "sighup_test_other")
+	err = os.Rename(name, name+"_old")
 	require.NoError(t, err)
-	t.Cleanup(func() { os.RemoveAll(otherDir) })
-	require.NoError(t, os.Chdir(otherDir))
 
 	// Send SIGHUP to self.
-	require.NoError(t, syscall.Kill(syscall.Getpid(), syscall.SIGHUP))
+	syscall.Kill(syscall.Getpid(), syscall.SIGHUP)
 
 	// Wait a bit... signals are not handled synchronously.
 	time.Sleep(time.Millisecond * 10)
@@ -61,20 +45,16 @@ func TestSIGHUP(t *testing.T) {
 	require.NoError(t, err)
 	_, err = af.Write([]byte("Line 4\n"))
 	require.NoError(t, err)
-	require.NoError(t, af.Close())
+	err = af.Close()
+	require.NoError(t, err)
 
 	// Both files should exist
-	if body := mustReadFile(t, filepath.Join(dir, name+"_old")); string(body) != "Line 1\nLine 2\n" {
-		t.Errorf("unexpected body %s", body)
+	if body := cmn.MustReadFile(name + "_old"); string(body) != "Line 1\nLine 2\n" {
+		t.Errorf("Unexpected body %s", body)
 	}
-	if body := mustReadFile(t, filepath.Join(dir, name)); string(body) != "Line 3\nLine 4\n" {
-		t.Errorf("unexpected body %s", body)
+	if body := cmn.MustReadFile(name); string(body) != "Line 3\nLine 4\n" {
+		t.Errorf("Unexpected body %s", body)
 	}
-
-	// The current directory should be empty
-	files, err := ioutil.ReadDir(".")
-	require.NoError(t, err)
-	assert.Empty(t, files)
 }
 
 // // Manually modify file permissions, close, and reopen using autofile:
@@ -108,7 +88,8 @@ func TestAutoFileSize(t *testing.T) {
 	// First, create an AutoFile writing to a tempfile dir
 	f, err := ioutil.TempFile("", "sighup_test")
 	require.NoError(t, err)
-	require.NoError(t, f.Close())
+	err = f.Close()
+	require.NoError(t, err)
 
 	// Here is the actual AutoFile.
 	af, err := OpenAutoFile(f.Name())
@@ -128,19 +109,14 @@ func TestAutoFileSize(t *testing.T) {
 	require.NoError(t, err)
 
 	// 3. Not existing file
-	require.NoError(t, af.Close())
-	require.NoError(t, os.Remove(f.Name()))
+	err = af.Close()
+	require.NoError(t, err)
+	err = os.Remove(f.Name())
+	require.NoError(t, err)
 	size, err = af.Size()
 	require.EqualValues(t, 0, size, "Expected a new file to be empty")
 	require.NoError(t, err)
 
 	// Cleanup
-	t.Cleanup(func() { os.Remove(f.Name()) })
-}
-
-func mustReadFile(t *testing.T, filePath string) []byte {
-	fileBytes, err := ioutil.ReadFile(filePath)
-	require.NoError(t, err)
-
-	return fileBytes
+	_ = os.Remove(f.Name())
 }

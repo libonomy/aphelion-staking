@@ -47,10 +47,12 @@ func New(key []byte) (cipher.AEAD, error) {
 	return ret, nil
 }
 
+// nolint
 func (c *xchacha20poly1305) NonceSize() int {
 	return NonceSize
 }
 
+// nolint
 func (c *xchacha20poly1305) Overhead() int {
 	return TagSize
 }

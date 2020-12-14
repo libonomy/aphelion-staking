@@ -187,26 +187,26 @@ func TestConditions(t *testing.T) {
 		{
 			s: "tm.events.type='NewBlock'",
 			conditions: []query.Condition{
-				{CompositeKey: "tm.events.type", Op: query.OpEqual, Operand: "NewBlock"},
+				{Tag: "tm.events.type", Op: query.OpEqual, Operand: "NewBlock"},
 			},
 		},
 		{
 			s: "tx.gas > 7 AND tx.gas < 9",
 			conditions: []query.Condition{
-				{CompositeKey: "tx.gas", Op: query.OpGreater, Operand: int64(7)},
-				{CompositeKey: "tx.gas", Op: query.OpLess, Operand: int64(9)},
+				{Tag: "tx.gas", Op: query.OpGreater, Operand: int64(7)},
+				{Tag: "tx.gas", Op: query.OpLess, Operand: int64(9)},
 			},
 		},
 		{
 			s: "tx.time >= TIME 2013-05-03T14:45:00Z",
 			conditions: []query.Condition{
-				{CompositeKey: "tx.time", Op: query.OpGreaterEqual, Operand: txTime},
+				{Tag: "tx.time", Op: query.OpGreaterEqual, Operand: txTime},
 			},
 		},
 		{
 			s: "slashing EXISTS",
 			conditions: []query.Condition{
-				{CompositeKey: "slashing", Op: query.OpExists},
+				{Tag: "slashing", Op: query.OpExists},
 			},
 		},
 	}

@@ -4,9 +4,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-
 	"github.com/evdatsion/tendermint/p2p"
-	tmState "github.com/evdatsion/tendermint/state"
+	tdState "github.com/evdatsion/tendermint/state"
 	"github.com/evdatsion/tendermint/types"
 )
 
@@ -20,7 +19,7 @@ type pcBlock struct {
 type params struct {
 	height       int64
 	items        []pcBlock
-	blocksSynced int
+	blocksSynced int64
 	verBL        []int64
 	appBL        []int64
 	draining     bool
@@ -34,13 +33,13 @@ func makePcBlock(height int64) *types.Block {
 // makeState takes test parameters and creates a specific processor state.
 func makeState(p *params) *pcState {
 	var (
-		tmState = tmState.State{LastBlockHeight: p.height}
-		context = newMockProcessorContext(tmState, p.verBL, p.appBL)
+		tdState = tdState.State{}
+		context = newMockProcessorContext(p.verBL, p.appBL)
 	)
-	state := newPcState(context)
+	state := newPcState(p.height, tdState, "test", context)
 
 	for _, item := range p.items {
-		state.enqueue(p2p.ID(item.pid), makePcBlock(item.height), item.height)
+		_ = state.enqueue(p2p.ID(item.pid), makePcBlock(item.height), item.height)
 	}
 
 	state.blocksSynced = p.blocksSynced
@@ -48,10 +47,11 @@ func makeState(p *params) *pcState {
 	return state
 }
 
-func mBlockResponse(peerID p2p.ID, height int64) scBlockReceived {
-	return scBlockReceived{
+func mBlockResponse(peerID p2p.ID, height int64) *bcBlockResponse {
+	return &bcBlockResponse{
 		peerID: peerID,
 		block:  makePcBlock(height),
+		height: height,
 	}
 }
 
@@ -102,37 +102,9 @@ func executeProcessorTests(t *testing.T, tests []testFields) {
 	}
 }
 
-func TestRProcessPeerError(t *testing.T) {
-	tests := []testFields{
-		{
-			name: "error for existing peer",
-			steps: []pcFsmMakeStateValues{
-				{
-					currentState:  &params{items: []pcBlock{{"P1", 1}, {"P2", 2}}},
-					event:         scPeerError{peerID: "P2"},
-					wantState:     &params{items: []pcBlock{{"P1", 1}}},
-					wantNextEvent: noOp,
-				},
-			},
-		},
-		{
-			name: "error for unknown peer",
-			steps: []pcFsmMakeStateValues{
-				{
-					currentState:  &params{items: []pcBlock{{"P1", 1}, {"P2", 2}}},
-					event:         scPeerError{peerID: "P3"},
-					wantState:     &params{items: []pcBlock{{"P1", 1}, {"P2", 2}}},
-					wantNextEvent: noOp,
-				},
-			},
-		},
-	}
-
-	executeProcessorTests(t, tests)
-}
-
 func TestPcBlockResponse(t *testing.T) {
 	tests := []testFields{
+
 		{
 			name: "add one block",
 			steps: []pcFsmMakeStateValues{
@@ -142,7 +114,6 @@ func TestPcBlockResponse(t *testing.T) {
 				},
 			},
 		},
-
 		{
 			name: "add two blocks",
 			steps: []pcFsmMakeStateValues{
@@ -156,18 +127,62 @@ func TestPcBlockResponse(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "add duplicate block from same peer",
+			steps: []pcFsmMakeStateValues{
+				{
+					currentState: &params{}, event: mBlockResponse("P1", 3),
+					wantState: &params{items: []pcBlock{{"P1", 3}}}, wantNextEvent: noOp,
+				},
+				{ // use previous wantState as currentState,
+					event:     mBlockResponse("P1", 3),
+					wantState: &params{items: []pcBlock{{"P1", 3}}}, wantNextEvent: pcDuplicateBlock{},
+				},
+			},
+		},
+		{
+			name: "add duplicate block from different peer",
+			steps: []pcFsmMakeStateValues{
+				{
+					currentState: &params{}, event: mBlockResponse("P1", 3),
+					wantState: &params{items: []pcBlock{{"P1", 3}}}, wantNextEvent: noOp,
+				},
+				{ // use previous wantState as currentState,
+					event:     mBlockResponse("P2", 3),
+					wantState: &params{items: []pcBlock{{"P1", 3}}}, wantNextEvent: pcDuplicateBlock{},
+				},
+			},
+		},
+		{
+			name: "attempt to add block with height equal to state.height",
+			steps: []pcFsmMakeStateValues{
+				{
+					currentState: &params{height: 2, items: []pcBlock{{"P1", 3}}}, event: mBlockResponse("P1", 2),
+					wantState: &params{height: 2, items: []pcBlock{{"P1", 3}}}, wantNextEvent: pcShortBlock{},
+				},
+			},
+		},
+		{
+			name: "attempt to add block with height smaller than state.height",
+			steps: []pcFsmMakeStateValues{
+				{
+					currentState: &params{height: 2, items: []pcBlock{{"P1", 3}}}, event: mBlockResponse("P1", 1),
+					wantState: &params{height: 2, items: []pcBlock{{"P1", 3}}}, wantNextEvent: pcShortBlock{},
+				},
+			},
+		},
 	}
 
 	executeProcessorTests(t, tests)
 }
 
-func TestRProcessBlockSuccess(t *testing.T) {
+func TestPcProcessBlockSuccess(t *testing.T) {
 	tests := []testFields{
 		{
 			name: "noop - no blocks over current height",
 			steps: []pcFsmMakeStateValues{
 				{
-					currentState: &params{}, event: rProcessBlock{},
+					currentState: &params{}, event: pcProcessBlock{},
 					wantState: &params{}, wantNextEvent: noOp,
 				},
 			},
@@ -176,7 +191,7 @@ func TestRProcessBlockSuccess(t *testing.T) {
 			name: "noop - high new blocks",
 			steps: []pcFsmMakeStateValues{
 				{
-					currentState: &params{height: 5, items: []pcBlock{{"P1", 30}, {"P2", 31}}}, event: rProcessBlock{},
+					currentState: &params{height: 5, items: []pcBlock{{"P1", 30}, {"P2", 31}}}, event: pcProcessBlock{},
 					wantState: &params{height: 5, items: []pcBlock{{"P1", 30}, {"P2", 31}}}, wantNextEvent: noOp,
 				},
 			},
@@ -185,7 +200,7 @@ func TestRProcessBlockSuccess(t *testing.T) {
 			name: "blocks H+1 and H+2 present",
 			steps: []pcFsmMakeStateValues{
 				{
-					currentState: &params{items: []pcBlock{{"P1", 1}, {"P2", 2}}}, event: rProcessBlock{},
+					currentState: &params{items: []pcBlock{{"P1", 1}, {"P2", 2}}}, event: pcProcessBlock{},
 					wantState:     &params{height: 1, items: []pcBlock{{"P2", 2}}, blocksSynced: 1},
 					wantNextEvent: pcBlockProcessed{height: 1, peerID: "P1"},
 				},
@@ -195,20 +210,20 @@ func TestRProcessBlockSuccess(t *testing.T) {
 			name: "blocks H+1 and H+2 present after draining",
 			steps: []pcFsmMakeStateValues{
 				{ // some contiguous blocks - on stop check draining is set
-					currentState:  &params{items: []pcBlock{{"P1", 1}, {"P2", 2}, {"P1", 4}}},
-					event:         scFinishedEv{},
+					currentState: &params{items: []pcBlock{{"P1", 1}, {"P2", 2}, {"P1", 4}}}, event: pcStop{},
 					wantState:     &params{items: []pcBlock{{"P1", 1}, {"P2", 2}, {"P1", 4}}, draining: true},
 					wantNextEvent: noOp,
 				},
 				{
-					event:         rProcessBlock{},
+					event:         pcProcessBlock{},
 					wantState:     &params{height: 1, items: []pcBlock{{"P2", 2}, {"P1", 4}}, blocksSynced: 1, draining: true},
 					wantNextEvent: pcBlockProcessed{height: 1, peerID: "P1"},
 				},
 				{ // finish when H+1 or/and H+2 are missing
-					event:         rProcessBlock{},
+					event:         pcProcessBlock{},
 					wantState:     &params{height: 1, items: []pcBlock{{"P2", 2}, {"P1", 4}}, blocksSynced: 1, draining: true},
-					wantNextEvent: pcFinished{tmState: tmState.State{LastBlockHeight: 1}, blocksSynced: 1},
+					wantNextEvent: noOp,
+					wantErr:       pcFinished{height: 1},
 				},
 			},
 		},
@@ -217,45 +232,24 @@ func TestRProcessBlockSuccess(t *testing.T) {
 	executeProcessorTests(t, tests)
 }
 
-func TestRProcessBlockFailures(t *testing.T) {
+func TestPcProcessBlockFailures(t *testing.T) {
 	tests := []testFields{
 		{
-			name: "blocks H+1 and H+2 present from different peers - H+1 verification fails ",
+			name: "blocks H+1 and H+2 present - H+1 verification fails ",
 			steps: []pcFsmMakeStateValues{
 				{
-					currentState: &params{items: []pcBlock{{"P1", 1}, {"P2", 2}}, verBL: []int64{1}}, event: rProcessBlock{},
-					wantState:     &params{items: []pcBlock{}, verBL: []int64{1}},
-					wantNextEvent: pcBlockVerificationFailure{height: 1, firstPeerID: "P1", secondPeerID: "P2"},
+					currentState: &params{items: []pcBlock{{"P1", 1}, {"P2", 2}}, verBL: []int64{1}}, event: pcProcessBlock{},
+					wantState:     &params{items: []pcBlock{{"P1", 1}, {"P2", 2}}, verBL: []int64{1}},
+					wantNextEvent: pcBlockVerificationFailure{peerID: "P1", height: 1},
 				},
 			},
 		},
 		{
-			name: "blocks H+1 and H+2 present from same peer - H+1 applyBlock fails ",
+			name: "blocks H+1 and H+2 present - H+1 applyBlock fails ",
 			steps: []pcFsmMakeStateValues{
 				{
-					currentState: &params{items: []pcBlock{{"P1", 1}, {"P2", 2}}, appBL: []int64{1}}, event: rProcessBlock{},
-					wantState: &params{items: []pcBlock{}, appBL: []int64{1}}, wantPanic: true,
-				},
-			},
-		},
-		{
-			name: "blocks H+1 and H+2 present from same peers - H+1 verification fails ",
-			steps: []pcFsmMakeStateValues{
-				{
-					currentState: &params{height: 0, items: []pcBlock{{"P1", 1}, {"P1", 2}, {"P2", 3}},
-						verBL: []int64{1}}, event: rProcessBlock{},
-					wantState:     &params{height: 0, items: []pcBlock{{"P2", 3}}, verBL: []int64{1}},
-					wantNextEvent: pcBlockVerificationFailure{height: 1, firstPeerID: "P1", secondPeerID: "P1"},
-				},
-			},
-		},
-		{
-			name: "blocks H+1 and H+2 present from different peers - H+1 applyBlock fails ",
-			steps: []pcFsmMakeStateValues{
-				{
-					currentState: &params{items: []pcBlock{{"P1", 1}, {"P2", 2}, {"P2", 3}}, appBL: []int64{1}},
-					event:        rProcessBlock{},
-					wantState:    &params{items: []pcBlock{{"P2", 3}}, appBL: []int64{1}}, wantPanic: true,
+					currentState: &params{items: []pcBlock{{"P1", 1}, {"P2", 2}}, appBL: []int64{1}}, event: pcProcessBlock{},
+					wantState: &params{items: []pcBlock{{"P1", 1}, {"P2", 2}}, appBL: []int64{1}}, wantPanic: true,
 				},
 			},
 		},
@@ -264,15 +258,53 @@ func TestRProcessBlockFailures(t *testing.T) {
 	executeProcessorTests(t, tests)
 }
 
-func TestScFinishedEv(t *testing.T) {
+func TestPcPeerError(t *testing.T) {
+	tests := []testFields{
+		{
+			name: "peer not present",
+			steps: []pcFsmMakeStateValues{
+				{
+					currentState: &params{items: []pcBlock{{"P1", 1}, {"P2", 2}}}, event: &peerError{peerID: "P3"},
+					wantState:     &params{items: []pcBlock{{"P1", 1}, {"P2", 2}}},
+					wantNextEvent: noOp,
+				},
+			},
+		},
+		{
+			name: "some blocks are from errored peer",
+			steps: []pcFsmMakeStateValues{
+				{
+					currentState: &params{items: []pcBlock{{"P1", 100}, {"P1", 99}, {"P2", 101}}}, event: &peerError{peerID: "P1"},
+					wantState:     &params{items: []pcBlock{{"P2", 101}}},
+					wantNextEvent: noOp,
+				},
+			},
+		},
+		{
+			name: "all blocks are from errored peer",
+			steps: []pcFsmMakeStateValues{
+				{
+					currentState: &params{items: []pcBlock{{"P1", 100}, {"P1", 99}}}, event: &peerError{peerID: "P1"},
+					wantState:     &params{},
+					wantNextEvent: noOp,
+				},
+			},
+		},
+	}
+
+	executeProcessorTests(t, tests)
+}
+
+func TestStop(t *testing.T) {
 	tests := []testFields{
 		{
 			name: "no blocks",
 			steps: []pcFsmMakeStateValues{
 				{
-					currentState: &params{height: 100, items: []pcBlock{}, blocksSynced: 100}, event: scFinishedEv{},
+					currentState: &params{height: 100, items: []pcBlock{}, blocksSynced: 100}, event: pcStop{},
 					wantState:     &params{height: 100, items: []pcBlock{}, blocksSynced: 100},
-					wantNextEvent: pcFinished{tmState: tmState.State{LastBlockHeight: 100}, blocksSynced: 100},
+					wantNextEvent: noOp,
+					wantErr:       pcFinished{height: 100, blocksSynced: 100},
 				},
 			},
 		},
@@ -280,10 +312,10 @@ func TestScFinishedEv(t *testing.T) {
 			name: "maxHeight+1 block present",
 			steps: []pcFsmMakeStateValues{
 				{
-					currentState: &params{height: 100, items: []pcBlock{
-						{"P1", 101}}, blocksSynced: 100}, event: scFinishedEv{},
+					currentState: &params{height: 100, items: []pcBlock{{"P1", 101}}, blocksSynced: 100}, event: pcStop{},
 					wantState:     &params{height: 100, items: []pcBlock{{"P1", 101}}, blocksSynced: 100},
-					wantNextEvent: pcFinished{tmState: tmState.State{LastBlockHeight: 100}, blocksSynced: 100},
+					wantNextEvent: noOp,
+					wantErr:       pcFinished{height: 100, blocksSynced: 100},
 				},
 			},
 		},
@@ -291,10 +323,8 @@ func TestScFinishedEv(t *testing.T) {
 			name: "more blocks present",
 			steps: []pcFsmMakeStateValues{
 				{
-					currentState: &params{height: 100, items: []pcBlock{
-						{"P1", 101}, {"P1", 102}}, blocksSynced: 100}, event: scFinishedEv{},
-					wantState: &params{height: 100, items: []pcBlock{
-						{"P1", 101}, {"P1", 102}}, blocksSynced: 100, draining: true},
+					currentState: &params{height: 100, items: []pcBlock{{"P1", 101}, {"P1", 102}}, blocksSynced: 100}, event: pcStop{},
+					wantState:     &params{height: 100, items: []pcBlock{{"P1", 101}, {"P1", 102}}, blocksSynced: 100, draining: true},
 					wantNextEvent: noOp,
 					wantErr:       nil,
 				},
