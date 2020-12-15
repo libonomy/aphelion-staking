@@ -1,6 +1,6 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: gaia
-Source: https://github.com/evdatsion/gaia
+Source: https://github.com/cosmos/gaia
 
 Files: *
 Copyright: 2017 All In Bits, Inc.

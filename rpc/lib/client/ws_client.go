@@ -28,12 +28,18 @@ const (
 // WSClient is a WebSocket client. The methods of WSClient are safe for use by
 // multiple goroutines.
 type WSClient struct {
+	cmn.BaseService
+
 	conn *websocket.Conn
 	cdc  *amino.Codec
 
 	Address  string // IP:PORT or /path/to/socket
 	Endpoint string // /websocket/url/endpoint
 	Dialer   func(string, string) (net.Conn, error)
+
+	// Time between sending a ping and receiving a pong. See
+	// https://godoc.org/github.com/rcrowley/go-metrics#Timer.
+	PingPongLatencyTimer metrics.Timer
 
 	// Single user facing channel to read RPCResponses from, closed only when the client is being stopped.
 	ResponsesCh chan types.RPCResponse
@@ -47,17 +53,14 @@ type WSClient struct {
 	reconnectAfter  chan error            // reconnect requests
 	readRoutineQuit chan struct{}         // a way for readRoutine to close writeRoutine
 
-	// Maximum reconnect attempts (0 or greater; default: 25).
-	maxReconnectAttempts int
-
-	// Support both ws and wss protocols
-	protocol string
-
 	wg sync.WaitGroup
 
 	mtx            sync.RWMutex
 	sentLastPingAt time.Time
 	reconnecting   bool
+
+	// Maximum reconnect attempts (0 or greater; default: 25).
+	maxReconnectAttempts int
 
 	// Time allowed to write a message to the server. 0 means block until operation succeeds.
 	writeWait time.Duration
@@ -68,31 +71,24 @@ type WSClient struct {
 	// Send pings to server with this period. Must be less than readWait. If 0, no pings will be sent.
 	pingPeriod time.Duration
 
-	cmn.BaseService
-
-	// Time between sending a ping and receiving a pong. See
-	// https://godoc.org/github.com/rcrowley/go-metrics#Timer.
-	PingPongLatencyTimer metrics.Timer
+	// Support both ws and wss protocols
+	protocol string
 }
 
 // NewWSClient returns a new client. See the commentary on the func(*WSClient)
 // functions for a detailed description of how to configure ping period and
 // pong wait time. The endpoint argument must begin with a `/`.
-// The function panics if the provided address is invalid.
 func NewWSClient(remoteAddr, endpoint string, options ...func(*WSClient)) *WSClient {
-	parsedURL, err := newParsedURL(remoteAddr)
-	if err != nil {
-		panic(fmt.Sprintf("invalid remote %s: %s", remoteAddr, err))
-	}
+	protocol, addr, dialer := makeHTTPDialer(remoteAddr)
 	// default to ws protocol, unless wss is explicitly specified
-	if parsedURL.Scheme != protoWSS {
-		parsedURL.Scheme = protoWS
+	if protocol != "wss" {
+		protocol = "ws"
 	}
 
 	c := &WSClient{
 		cdc:                  amino.NewCodec(),
-		Address:              parsedURL.GetTrimmedHostWithPath(),
-		Dialer:               makeHTTPDialer(remoteAddr),
+		Address:              addr,
+		Dialer:               dialer,
 		Endpoint:             endpoint,
 		PingPongLatencyTimer: metrics.NewTimer(),
 
@@ -100,7 +96,7 @@ func NewWSClient(remoteAddr, endpoint string, options ...func(*WSClient)) *WSCli
 		readWait:             defaultReadWait,
 		writeWait:            defaultWriteWait,
 		pingPeriod:           defaultPingPeriod,
-		protocol:             parsedURL.Scheme,
+		protocol:             protocol,
 	}
 	c.BaseService = *cmn.NewBaseService(nil, "WSClient", c)
 	for _, option := range options {
@@ -252,7 +248,7 @@ func (c *WSClient) dial() error {
 		Proxy:   http.ProxyFromEnvironment,
 	}
 	rHeader := http.Header{}
-	conn, _, err := dialer.Dial(c.protocol+"://"+c.Address+c.Endpoint, rHeader) // nolint:bodyclose
+	conn, _, err := dialer.Dial(c.protocol+"://"+c.Address+c.Endpoint, rHeader)
 	if err != nil {
 		return err
 	}
@@ -373,11 +369,10 @@ func (c *WSClient) writeRoutine() {
 
 	defer func() {
 		ticker.Stop()
-		c.conn.Close()
-		// err != nil {
-		// ignore error; it will trigger in tests
-		// likely because it's closing an already closed connection
-		// }
+		if err := c.conn.Close(); err != nil {
+			// ignore error; it will trigger in tests
+			// likely because it's closing an already closed connection
+		}
 		c.wg.Done()
 	}()
 
@@ -414,10 +409,7 @@ func (c *WSClient) writeRoutine() {
 		case <-c.readRoutineQuit:
 			return
 		case <-c.Quit():
-			if err := c.conn.WriteMessage(
-				websocket.CloseMessage,
-				websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""),
-			); err != nil {
+			if err := c.conn.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, "")); err != nil {
 				c.Logger.Error("failed to write message", "err", err)
 			}
 			return
@@ -429,11 +421,10 @@ func (c *WSClient) writeRoutine() {
 // executing all reads from this goroutine.
 func (c *WSClient) readRoutine() {
 	defer func() {
-		c.conn.Close()
-		// err != nil {
-		// ignore error; it will trigger in tests
-		// likely because it's closing an already closed connection
-		// }
+		if err := c.conn.Close(); err != nil {
+			// ignore error; it will trigger in tests
+			// likely because it's closing an already closed connection
+		}
 		c.wg.Done()
 	}()
 

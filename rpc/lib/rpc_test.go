@@ -33,8 +33,6 @@ const (
 	unixAddr   = "unix://" + unixSocket
 
 	websocketEndpoint = "/websocket/endpoint"
-
-	testVal = "acbd"
 )
 
 type ResultEcho struct {
@@ -146,7 +144,7 @@ func setup() {
 	time.Sleep(time.Second * 2)
 }
 
-func echoViaHTTP(cl client.JSONRPCCaller, val string) (string, error) {
+func echoViaHTTP(cl client.HTTPClient, val string) (string, error) {
 	params := map[string]interface{}{
 		"arg": val,
 	}
@@ -157,7 +155,7 @@ func echoViaHTTP(cl client.JSONRPCCaller, val string) (string, error) {
 	return result.Value, nil
 }
 
-func echoIntViaHTTP(cl client.JSONRPCCaller, val int) (int, error) {
+func echoIntViaHTTP(cl client.HTTPClient, val int) (int, error) {
 	params := map[string]interface{}{
 		"arg": val,
 	}
@@ -168,7 +166,7 @@ func echoIntViaHTTP(cl client.JSONRPCCaller, val int) (int, error) {
 	return result.Value, nil
 }
 
-func echoBytesViaHTTP(cl client.JSONRPCCaller, bytes []byte) ([]byte, error) {
+func echoBytesViaHTTP(cl client.HTTPClient, bytes []byte) ([]byte, error) {
 	params := map[string]interface{}{
 		"arg": bytes,
 	}
@@ -179,7 +177,7 @@ func echoBytesViaHTTP(cl client.JSONRPCCaller, bytes []byte) ([]byte, error) {
 	return result.Value, nil
 }
 
-func echoDataBytesViaHTTP(cl client.JSONRPCCaller, bytes cmn.HexBytes) (cmn.HexBytes, error) {
+func echoDataBytesViaHTTP(cl client.HTTPClient, bytes cmn.HexBytes) (cmn.HexBytes, error) {
 	params := map[string]interface{}{
 		"arg": bytes,
 	}
@@ -191,7 +189,7 @@ func echoDataBytesViaHTTP(cl client.JSONRPCCaller, bytes cmn.HexBytes) (cmn.HexB
 }
 
 func testWithHTTPClient(t *testing.T, cl client.HTTPClient) {
-	val := testVal
+	val := "acbd"
 	got, err := echoViaHTTP(cl, val)
 	require.Nil(t, err)
 	assert.Equal(t, got, val)
@@ -257,7 +255,7 @@ func echoBytesViaWS(cl *client.WSClient, bytes []byte) ([]byte, error) {
 }
 
 func testWithWSClient(t *testing.T, cl *client.WSClient) {
-	val := testVal
+	val := "acbd"
 	got, err := echoViaWS(cl, val)
 	require.Nil(t, err)
 	assert.Equal(t, got, val)
@@ -316,7 +314,7 @@ func TestWSNewWSRPCFunc(t *testing.T) {
 	require.Nil(t, err)
 	defer cl.Stop()
 
-	val := testVal
+	val := "acbd"
 	params := map[string]interface{}{
 		"arg": val,
 	}
@@ -341,7 +339,7 @@ func TestWSHandlesArrayParams(t *testing.T) {
 	require.Nil(t, err)
 	defer cl.Stop()
 
-	val := testVal
+	val := "acbd"
 	params := []interface{}{val}
 	err = cl.CallWithArrayParams(context.Background(), "echo_ws", params)
 	require.Nil(t, err)

@@ -1,7 +1,3 @@
----
-order: 2
----
-
 # Using ABCI-CLI
 
 To facilitate testing and debugging of ABCI servers and simple apps, we
@@ -19,7 +15,7 @@ mkdir -p $GOPATH/src/github.com/tendermint
 cd $GOPATH/src/github.com/tendermint
 git clone https://github.com/evdatsion/tendermint.git
 cd tendermint
-make tools
+make get_tools
 make install_abci
 ```
 

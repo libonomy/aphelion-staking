@@ -8,9 +8,9 @@ import (
 	"github.com/stretchr/testify/require"
 
 	cmn "github.com/evdatsion/tendermint/libs/common"
+	dbm "github.com/evdatsion/tendermint/libs/db"
 	sm "github.com/evdatsion/tendermint/state"
 	"github.com/evdatsion/tendermint/types"
-	dbm "github.com/evdatsion/tm-db"
 )
 
 func TestTxFilter(t *testing.T) {

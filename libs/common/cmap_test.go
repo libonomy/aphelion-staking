@@ -35,12 +35,7 @@ func TestIterateKeysWithValues(t *testing.T) {
 	// Delete 1 Key
 	cmap.Delete("key1")
 
-	assert.NotEqual(
-		t,
-		len(keys),
-		len(cmap.Keys()),
-		"[]keys and []Keys() should not be equal, they are copies, one item was removed",
-	)
+	assert.NotEqual(t, len(keys), len(cmap.Keys()), "[]keys and []Keys() should not be equal, they are copies, one item was removed")
 }
 
 func TestContains(t *testing.T) {
@@ -60,10 +55,10 @@ func TestContains(t *testing.T) {
 func BenchmarkCMapHas(b *testing.B) {
 	m := NewCMap()
 	for i := 0; i < 1000; i++ {
-		m.Set(fmt.Sprint(i), i)
+		m.Set(string(i), i)
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		m.Has(fmt.Sprint(i))
+		m.Has(string(i))
 	}
 }

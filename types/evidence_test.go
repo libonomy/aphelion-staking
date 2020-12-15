@@ -146,7 +146,6 @@ func TestDuplicateVoteEvidenceValidation(t *testing.T) {
 		}, true},
 	}
 	for _, tc := range testCases {
-		tc := tc
 		t.Run(tc.testName, func(t *testing.T) {
 			ev := &DuplicateVoteEvidence{
 				PubKey: secp256k1.GenPrivKey().PubKey(),
@@ -157,14 +156,4 @@ func TestDuplicateVoteEvidenceValidation(t *testing.T) {
 			assert.Equal(t, tc.expectErr, ev.ValidateBasic() != nil, "Validate Basic had an unexpected result")
 		})
 	}
-}
-
-func TestMockGoodEvidenceValidateBasic(t *testing.T) {
-	goodEvidence := NewMockGoodEvidence(int64(1), 1, []byte{1})
-	assert.Nil(t, goodEvidence.ValidateBasic())
-}
-
-func TestMockBadEvidenceValidateBasic(t *testing.T) {
-	badEvidence := MockBadEvidence{MockGoodEvidence: NewMockGoodEvidence(int64(1), 1, []byte{1})}
-	assert.Nil(t, badEvidence.ValidateBasic())
 }

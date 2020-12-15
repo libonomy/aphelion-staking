@@ -18,11 +18,6 @@ import (
 	"github.com/evdatsion/tendermint/abci/types"
 )
 
-const (
-	testKey   = "abc"
-	testValue = "def"
-)
-
 func testKVStore(t *testing.T, app types.Application, tx []byte, key, value string) {
 	req := types.RequestDeliverTx{Tx: tx}
 	ar := app.DeliverTx(req)
@@ -51,12 +46,12 @@ func testKVStore(t *testing.T, app types.Application, tx []byte, key, value stri
 
 func TestKVStoreKV(t *testing.T) {
 	kvstore := NewKVStoreApplication()
-	key := testKey
+	key := "abc"
 	value := key
 	tx := []byte(key)
 	testKVStore(t, kvstore, tx, key, value)
 
-	value = testValue
+	value = "def"
 	tx = []byte(key + "=" + value)
 	testKVStore(t, kvstore, tx, key, value)
 }
@@ -67,12 +62,12 @@ func TestPersistentKVStoreKV(t *testing.T) {
 		t.Fatal(err)
 	}
 	kvstore := NewPersistentKVStoreApplication(dir)
-	key := testKey
+	key := "abc"
 	value := key
 	tx := []byte(key)
 	testKVStore(t, kvstore, tx, key, value)
 
-	value = testValue
+	value = "def"
 	tx = []byte(key + "=" + value)
 	testKVStore(t, kvstore, tx, key, value)
 }
@@ -95,7 +90,7 @@ func TestPersistentKVStoreInfo(t *testing.T) {
 	height = int64(1)
 	hash := []byte("foo")
 	header := types.Header{
-		Height: height,
+		Height: int64(height),
 	}
 	kvstore.BeginBlock(types.RequestBeginBlock{Hash: hash, Header: header})
 	kvstore.EndBlock(types.RequestEndBlock{Height: header.Height})
@@ -153,7 +148,7 @@ func TestValUpdates(t *testing.T) {
 
 	makeApplyBlock(t, kvstore, 2, diff, tx1, tx2, tx3)
 
-	vals1 = append(vals[:nInit-2], vals[nInit+1]) // nolint: gocritic
+	vals1 = append(vals[:nInit-2], vals[nInit+1])
 	vals2 = kvstore.Validators()
 	valsEqual(t, vals1, vals2)
 
@@ -175,12 +170,7 @@ func TestValUpdates(t *testing.T) {
 
 }
 
-func makeApplyBlock(
-	t *testing.T,
-	kvstore types.Application,
-	heightInt int,
-	diff []types.ValidatorUpdate,
-	txs ...[]byte) {
+func makeApplyBlock(t *testing.T, kvstore types.Application, heightInt int, diff []types.ValidatorUpdate, txs ...[]byte) {
 	// make and apply block
 	height := int64(heightInt)
 	hash := []byte("foo")
@@ -282,12 +272,12 @@ func TestClientServer(t *testing.T) {
 
 func runClientTests(t *testing.T, client abcicli.Client) {
 	// run some tests....
-	key := testKey
+	key := "abc"
 	value := key
 	tx := []byte(key)
 	testClient(t, client, tx, key, value)
 
-	value = testValue
+	value = "def"
 	tx = []byte(key + "=" + value)
 	testClient(t, client, tx, key, value)
 }

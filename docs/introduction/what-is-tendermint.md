@@ -1,7 +1,3 @@
----
-order: 4
----
-
 # What is Tendermint?
 
 Tendermint is software for securely and consistently replicating an
@@ -90,7 +86,7 @@ it can be used as a plug-and-play replacement for the consensus engines
 of other blockchain software. So one can take the current Ethereum code
 base, whether in Rust, or Go, or Haskell, and run it as a ABCI
 application using Tendermint consensus. Indeed, [we did that with
-Ethereum](https://github.com/evdatsion/ethermint). And we plan to do
+Ethereum](https://github.com/cosmos/ethermint). And we plan to do
 the same for Bitcoin, ZCash, and various other deterministic
 applications as well.
 

@@ -8,12 +8,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
+	dbm "github.com/evdatsion/tendermint/libs/db"
 	log "github.com/evdatsion/tendermint/libs/log"
 	"github.com/evdatsion/tendermint/types"
-	dbm "github.com/evdatsion/tm-db"
 )
-
-const testChainID = "inquiry-test"
 
 func TestInquirerValidPath(t *testing.T) {
 	assert, require := assert.New(t), require.New(t)
@@ -26,7 +24,7 @@ func TestInquirerValidPath(t *testing.T) {
 	nkeys := keys.Extend(1)
 
 	// Construct a bunch of commits, each with one more height than the last.
-	chainID := testChainID
+	chainID := "inquiry-test"
 	consHash := []byte("params")
 	resHash := []byte("results")
 	count := 50
@@ -148,7 +146,7 @@ func TestInquirerVerifyHistorical(t *testing.T) {
 	nkeys := keys.Extend(1)
 
 	// Construct a bunch of commits, each with one more height than the last.
-	chainID := testChainID
+	chainID := "inquiry-test"
 	count := 10
 	consHash := []byte("special-params")
 	fcz := make([]FullCommit, count)
@@ -231,7 +229,7 @@ func TestConcurrencyInquirerVerify(t *testing.T) {
 	nkeys := keys.Extend(1)
 
 	// Construct a bunch of commits, each with one more height than the last.
-	chainID := testChainID
+	chainID := "inquiry-test"
 	count := 10
 	consHash := []byte("special-params")
 	fcz := make([]FullCommit, count)

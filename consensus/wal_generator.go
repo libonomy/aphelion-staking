@@ -12,23 +12,22 @@ import (
 	"github.com/pkg/errors"
 
 	"github.com/evdatsion/tendermint/abci/example/kvstore"
+	bc "github.com/evdatsion/tendermint/blockchain"
 	cfg "github.com/evdatsion/tendermint/config"
 	cmn "github.com/evdatsion/tendermint/libs/common"
+	"github.com/evdatsion/tendermint/libs/db"
 	"github.com/evdatsion/tendermint/libs/log"
 	"github.com/evdatsion/tendermint/mock"
 	"github.com/evdatsion/tendermint/privval"
 	"github.com/evdatsion/tendermint/proxy"
 	sm "github.com/evdatsion/tendermint/state"
-	"github.com/evdatsion/tendermint/store"
 	"github.com/evdatsion/tendermint/types"
-	db "github.com/evdatsion/tm-db"
 )
 
 // WALGenerateNBlocks generates a consensus WAL. It does this by spinning up a
 // stripped down version of node (proxy app, event bus, consensus state) with a
 // persistent kvstore application and special consensus wal instance
-// (byteBufferWAL) and waits until numBlocks are created.
-// If the node fails to produce given numBlocks, it returns an error.
+// (byteBufferWAL) and waits until numBlocks are created. If the node fails to produce given numBlocks, it returns an error.
 func WALGenerateNBlocks(t *testing.T, wr io.Writer, numBlocks int) (err error) {
 	config := getConfig(t)
 
@@ -56,8 +55,7 @@ func WALGenerateNBlocks(t *testing.T, wr io.Writer, numBlocks int) (err error) {
 	}
 	state.Version.Consensus.App = kvstore.ProtocolVersion
 	sm.SaveState(stateDB, state)
-	blockStore := store.NewBlockStore(blockStoreDB)
-
+	blockStore := bc.NewBlockStore(blockStoreDB)
 	proxyApp := proxy.NewAppConns(proxy.NewLocalClientCreator(app))
 	proxyApp.SetLogger(logger.With("module", "proxy"))
 	if err := proxyApp.Start(); err != nil {
@@ -169,10 +167,10 @@ func newByteBufferWAL(logger log.Logger, enc *WALEncoder, nBlocks int64, signalS
 // Save writes message to the internal buffer except when heightToStop is
 // reached, in which case it will signal the caller via signalWhenStopsTo and
 // skip writing.
-func (w *byteBufferWAL) Write(m WALMessage) error {
+func (w *byteBufferWAL) Write(m WALMessage) {
 	if w.stopped {
 		w.logger.Debug("WAL already stopped. Not writing message", "msg", m)
-		return nil
+		return
 	}
 
 	if endMsg, ok := m.(EndHeightMessage); ok {
@@ -181,7 +179,7 @@ func (w *byteBufferWAL) Write(m WALMessage) error {
 			w.logger.Debug("Stopping WAL at height", "height", endMsg.Height)
 			w.signalWhenStopsTo <- struct{}{}
 			w.stopped = true
-			return nil
+			return
 		}
 	}
 
@@ -190,19 +188,15 @@ func (w *byteBufferWAL) Write(m WALMessage) error {
 	if err != nil {
 		panic(fmt.Sprintf("failed to encode the msg %v", m))
 	}
-
-	return nil
 }
 
-func (w *byteBufferWAL) WriteSync(m WALMessage) error {
-	return w.Write(m)
+func (w *byteBufferWAL) WriteSync(m WALMessage) {
+	w.Write(m)
 }
 
 func (w *byteBufferWAL) FlushAndSync() error { return nil }
 
-func (w *byteBufferWAL) SearchForEndHeight(
-	height int64,
-	options *WALSearchOptions) (rd io.ReadCloser, found bool, err error) {
+func (w *byteBufferWAL) SearchForEndHeight(height int64, options *WALSearchOptions) (rd io.ReadCloser, found bool, err error) {
 	return nil, false, nil
 }
 

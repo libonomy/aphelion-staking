@@ -11,18 +11,18 @@ import (
 
 	"github.com/spf13/cobra"
 
-	cmn "github.com/tendermint/tendermint/libs/common"
-	"github.com/tendermint/tendermint/libs/log"
+	cmn "github.com/evdatsion/tendermint/libs/common"
+	"github.com/evdatsion/tendermint/libs/log"
 
-	abcicli "github.com/tendermint/tendermint/abci/client"
-	"github.com/tendermint/tendermint/abci/example/code"
-	"github.com/tendermint/tendermint/abci/example/counter"
-	"github.com/tendermint/tendermint/abci/example/kvstore"
-	"github.com/tendermint/tendermint/abci/server"
-	servertest "github.com/tendermint/tendermint/abci/tests/server"
-	"github.com/tendermint/tendermint/abci/types"
-	"github.com/tendermint/tendermint/abci/version"
-	"github.com/tendermint/tendermint/crypto/merkle"
+	abcicli "github.com/evdatsion/tendermint/abci/client"
+	"github.com/evdatsion/tendermint/abci/example/code"
+	"github.com/evdatsion/tendermint/abci/example/counter"
+	"github.com/evdatsion/tendermint/abci/example/kvstore"
+	"github.com/evdatsion/tendermint/abci/server"
+	servertest "github.com/evdatsion/tendermint/abci/tests/server"
+	"github.com/evdatsion/tendermint/abci/types"
+	"github.com/evdatsion/tendermint/abci/version"
+	"github.com/evdatsion/tendermint/crypto/merkle"
 )
 
 // client is a global variable so it can be reused by the console
@@ -111,28 +111,16 @@ func Execute() error {
 }
 
 func addGlobalFlags() {
-	RootCmd.PersistentFlags().StringVarP(&flagAddress,
-		"address",
-		"",
-		"tcp://0.0.0.0:26658",
-		"address of application socket")
+	RootCmd.PersistentFlags().StringVarP(&flagAddress, "address", "", "tcp://0.0.0.0:26658", "address of application socket")
 	RootCmd.PersistentFlags().StringVarP(&flagAbci, "abci", "", "socket", "either socket or grpc")
-	RootCmd.PersistentFlags().BoolVarP(&flagVerbose,
-		"verbose",
-		"v",
-		false,
-		"print the command and results as if it were a console session")
+	RootCmd.PersistentFlags().BoolVarP(&flagVerbose, "verbose", "v", false, "print the command and results as if it were a console session")
 	RootCmd.PersistentFlags().StringVarP(&flagLogLevel, "log_level", "", "debug", "set the logger level")
 }
 
 func addQueryFlags() {
 	queryCmd.PersistentFlags().StringVarP(&flagPath, "path", "", "/store", "path to prefix query with")
 	queryCmd.PersistentFlags().IntVarP(&flagHeight, "height", "", 0, "height to query the blockchain at")
-	queryCmd.PersistentFlags().BoolVarP(&flagProve,
-		"prove",
-		"",
-		false,
-		"whether or not to return a merkle proof of the query result")
+	queryCmd.PersistentFlags().BoolVarP(&flagProve, "prove", "", false, "whether or not to return a merkle proof of the query result")
 }
 
 func addCounterFlags() {
@@ -186,7 +174,9 @@ where example.file looks something like:
     info
 `,
 	Args: cobra.ExactArgs(0),
-	RunE: cmdBatch,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return cmdBatch(cmd, args)
+	},
 }
 
 var consoleCmd = &cobra.Command{
@@ -199,7 +189,9 @@ without opening a new connection each time
 `,
 	Args:      cobra.ExactArgs(0),
 	ValidArgs: []string{"echo", "info", "set_option", "deliver_tx", "check_tx", "commit", "query"},
-	RunE:      cmdConsole,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return cmdConsole(cmd, args)
+	},
 }
 
 var echoCmd = &cobra.Command{
@@ -207,21 +199,27 @@ var echoCmd = &cobra.Command{
 	Short: "have the application echo a message",
 	Long:  "have the application echo a message",
 	Args:  cobra.ExactArgs(1),
-	RunE:  cmdEcho,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return cmdEcho(cmd, args)
+	},
 }
 var infoCmd = &cobra.Command{
 	Use:   "info",
 	Short: "get some info about the application",
 	Long:  "get some info about the application",
 	Args:  cobra.ExactArgs(0),
-	RunE:  cmdInfo,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return cmdInfo(cmd, args)
+	},
 }
 var setOptionCmd = &cobra.Command{
 	Use:   "set_option",
 	Short: "set an option on the application",
 	Long:  "set an option on the application",
 	Args:  cobra.ExactArgs(2),
-	RunE:  cmdSetOption,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return cmdSetOption(cmd, args)
+	},
 }
 
 var deliverTxCmd = &cobra.Command{
@@ -229,7 +227,9 @@ var deliverTxCmd = &cobra.Command{
 	Short: "deliver a new transaction to the application",
 	Long:  "deliver a new transaction to the application",
 	Args:  cobra.ExactArgs(1),
-	RunE:  cmdDeliverTx,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return cmdDeliverTx(cmd, args)
+	},
 }
 
 var checkTxCmd = &cobra.Command{
@@ -237,7 +237,9 @@ var checkTxCmd = &cobra.Command{
 	Short: "validate a transaction",
 	Long:  "validate a transaction",
 	Args:  cobra.ExactArgs(1),
-	RunE:  cmdCheckTx,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return cmdCheckTx(cmd, args)
+	},
 }
 
 var commitCmd = &cobra.Command{
@@ -245,7 +247,9 @@ var commitCmd = &cobra.Command{
 	Short: "commit the application state and return the Merkle root hash",
 	Long:  "commit the application state and return the Merkle root hash",
 	Args:  cobra.ExactArgs(0),
-	RunE:  cmdCommit,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return cmdCommit(cmd, args)
+	},
 }
 
 var versionCmd = &cobra.Command{
@@ -264,7 +268,9 @@ var queryCmd = &cobra.Command{
 	Short: "query the application state",
 	Long:  "query the application state",
 	Args:  cobra.ExactArgs(1),
-	RunE:  cmdQuery,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return cmdQuery(cmd, args)
+	},
 }
 
 var counterCmd = &cobra.Command{
@@ -272,7 +278,9 @@ var counterCmd = &cobra.Command{
 	Short: "ABCI demo example",
 	Long:  "ABCI demo example",
 	Args:  cobra.ExactArgs(0),
-	RunE:  cmdCounter,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return cmdCounter(cmd, args)
+	},
 }
 
 var kvstoreCmd = &cobra.Command{
@@ -280,7 +288,9 @@ var kvstoreCmd = &cobra.Command{
 	Short: "ABCI demo example",
 	Long:  "ABCI demo example",
 	Args:  cobra.ExactArgs(0),
-	RunE:  cmdKVStore,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return cmdKVStore(cmd, args)
+	},
 }
 
 var testCmd = &cobra.Command{
@@ -288,7 +298,9 @@ var testCmd = &cobra.Command{
 	Short: "run integration tests",
 	Long:  "run integration tests",
 	Args:  cobra.ExactArgs(0),
-	RunE:  cmdTest,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return cmdTest(cmd, args)
+	},
 }
 
 // Generates new Args array based off of previous call args to maintain flag persistence
@@ -344,18 +356,16 @@ func cmdTest(cmd *cobra.Command, args []string) error {
 
 func cmdBatch(cmd *cobra.Command, args []string) error {
 	bufReader := bufio.NewReader(os.Stdin)
-LOOP:
 	for {
 
 		line, more, err := bufReader.ReadLine()
-		switch {
-		case more:
+		if more {
 			return errors.New("Input line is too long")
-		case err == io.EOF:
-			break LOOP
-		case len(line) == 0:
+		} else if err == io.EOF {
+			break
+		} else if len(line) == 0 {
 			continue
-		case err != nil:
+		} else if err != nil {
 			return err
 		}
 
@@ -409,7 +419,7 @@ func muxOnCommands(cmd *cobra.Command, pArgs []string) error {
 			}
 
 			// otherwise, we need to skip the next one too
-			i++
+			i += 1
 			continue
 		}
 

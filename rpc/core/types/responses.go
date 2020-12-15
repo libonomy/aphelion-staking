@@ -194,11 +194,6 @@ type ResultABCIQuery struct {
 	Response abci.ResponseQuery `json:"response"`
 }
 
-// Result of broadcasting evidence
-type ResultBroadcastEvidence struct {
-	Hash []byte `json:"hash"`
-}
-
 // empty results
 type (
 	ResultUnsafeFlushMempool struct{}

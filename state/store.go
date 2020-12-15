@@ -5,8 +5,8 @@ import (
 
 	abci "github.com/evdatsion/tendermint/abci/types"
 	cmn "github.com/evdatsion/tendermint/libs/common"
+	dbm "github.com/evdatsion/tendermint/libs/db"
 	"github.com/evdatsion/tendermint/types"
-	dbm "github.com/evdatsion/tm-db"
 )
 
 const (

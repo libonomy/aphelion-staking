@@ -79,6 +79,11 @@ var _ AddrBook = (*addrBook)(nil)
 type addrBook struct {
 	cmn.BaseService
 
+	// immutable after creation
+	filePath          string
+	routabilityStrict bool
+	key               string // random prefix for bucket placement
+
 	// accessed concurrently
 	mtx        sync.Mutex
 	rand       *cmn.Rand
@@ -89,11 +94,6 @@ type addrBook struct {
 	bucketsNew []map[string]*knownAddress
 	nOld       int
 	nNew       int
-
-	// immutable after creation
-	filePath          string
-	key               string // random prefix for bucket placement
-	routabilityStrict bool
 
 	wg sync.WaitGroup
 }
@@ -178,11 +178,11 @@ func (a *addrBook) OurAddress(addr *p2p.NetAddress) bool {
 	return ok
 }
 
-func (a *addrBook) AddPrivateIDs(ids []string) {
+func (a *addrBook) AddPrivateIDs(IDs []string) {
 	a.mtx.Lock()
 	defer a.mtx.Unlock()
 
-	for _, id := range ids {
+	for _, id := range IDs {
 		a.privateIDs[p2p.ID(id)] = struct{}{}
 	}
 }
@@ -643,7 +643,7 @@ func (a *addrBook) randomPickAddresses(bucketType byte, num int) []*p2p.NetAddre
 	}
 	total := 0
 	for _, bucket := range buckets {
-		total += len(bucket)
+		total = total + len(bucket)
 	}
 	addresses := make([]*knownAddress, 0, total)
 	for _, bucket := range buckets {
@@ -768,36 +768,31 @@ func (a *addrBook) calcOldBucket(addr *p2p.NetAddress) int {
 }
 
 // Return a string representing the network group of this address.
-// This is the /16 for IPv4 (e.g. 1.2.0.0), the /32 (/36 for he.net) for IPv6, the string
+// This is the /16 for IPv4, the /32 (/36 for he.net) for IPv6, the string
 // "local" for a local address and the string "unroutable" for an unroutable
 // address.
 func (a *addrBook) groupKey(na *p2p.NetAddress) string {
-	return groupKeyFor(na, a.routabilityStrict)
-}
-
-func groupKeyFor(na *p2p.NetAddress, routabilityStrict bool) string {
-	if routabilityStrict && na.Local() {
+	if a.routabilityStrict && na.Local() {
 		return "local"
 	}
-	if routabilityStrict && !na.Routable() {
+	if a.routabilityStrict && !na.Routable() {
 		return "unroutable"
 	}
 
 	if ipv4 := na.IP.To4(); ipv4 != nil {
-		return na.IP.Mask(net.CIDRMask(16, 32)).String()
+		return (&net.IPNet{IP: na.IP, Mask: net.CIDRMask(16, 32)}).String()
 	}
-
 	if na.RFC6145() || na.RFC6052() {
 		// last four bytes are the ip address
-		ip := na.IP[12:16]
-		return ip.Mask(net.CIDRMask(16, 32)).String()
+		ip := net.IP(na.IP[12:16])
+		return (&net.IPNet{IP: ip, Mask: net.CIDRMask(16, 32)}).String()
 	}
 
 	if na.RFC3964() {
-		ip := na.IP[2:6]
-		return ip.Mask(net.CIDRMask(16, 32)).String()
-	}
+		ip := net.IP(na.IP[2:7])
+		return (&net.IPNet{IP: ip, Mask: net.CIDRMask(16, 32)}).String()
 
+	}
 	if na.RFC4380() {
 		// teredo tunnels have the last 4 bytes as the v4 address XOR
 		// 0xff.
@@ -805,32 +800,28 @@ func groupKeyFor(na *p2p.NetAddress, routabilityStrict bool) string {
 		for i, byte := range na.IP[12:16] {
 			ip[i] = byte ^ 0xff
 		}
-		return ip.Mask(net.CIDRMask(16, 32)).String()
-	}
-
-	if na.OnionCatTor() {
-		// group is keyed off the first 4 bits of the actual onion key.
-		return fmt.Sprintf("tor:%d", na.IP[6]&((1<<4)-1))
+		return (&net.IPNet{IP: ip, Mask: net.CIDRMask(16, 32)}).String()
 	}
 
 	// OK, so now we know ourselves to be a IPv6 address.
 	// bitcoind uses /32 for everything, except for Hurricane Electric's
 	// (he.net) IP range, which it uses /36 for.
 	bits := 32
-	heNet := &net.IPNet{IP: net.ParseIP("2001:470::"), Mask: net.CIDRMask(32, 128)}
+	heNet := &net.IPNet{IP: net.ParseIP("2001:470::"),
+		Mask: net.CIDRMask(32, 128)}
 	if heNet.Contains(na.IP) {
 		bits = 36
 	}
-	ipv6Mask := net.CIDRMask(bits, 128)
-	return na.IP.Mask(ipv6Mask).String()
+
+	return (&net.IPNet{IP: na.IP, Mask: net.CIDRMask(bits, 128)}).String()
 }
 
 // doubleSha256 calculates sha256(sha256(b)) and returns the resulting bytes.
 func doubleSha256(b []byte) []byte {
 	hasher := sha256.New()
-	hasher.Write(b) // nolint:errcheck
+	hasher.Write(b) // nolint: errcheck, gas
 	sum := hasher.Sum(nil)
 	hasher.Reset()
-	hasher.Write(sum) // nolint:errcheck
+	hasher.Write(sum) // nolint: errcheck, gas
 	return hasher.Sum(nil)
 }

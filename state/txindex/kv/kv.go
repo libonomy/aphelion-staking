@@ -11,9 +11,8 @@ import (
 
 	"github.com/pkg/errors"
 
-	dbm "github.com/evdatsion/tm-db"
-
 	cmn "github.com/evdatsion/tendermint/libs/common"
+	dbm "github.com/evdatsion/tendermint/libs/db"
 	"github.com/evdatsion/tendermint/libs/pubsub/query"
 	"github.com/evdatsion/tendermint/state/txindex"
 	"github.com/evdatsion/tendermint/types"
@@ -103,7 +102,7 @@ func (txi *TxIndex) AddBatch(b *txindex.Batch) error {
 		storeBatch.Set(hash, rawBytes)
 	}
 
-	storeBatch.WriteSync()
+	storeBatch.Write()
 	return nil
 }
 
@@ -132,7 +131,7 @@ func (txi *TxIndex) Index(result *types.TxResult) error {
 	}
 
 	b.Set(hash, rawBytes)
-	b.WriteSync()
+	b.Write()
 
 	return nil
 }
@@ -164,14 +163,11 @@ func (txi *TxIndex) indexEvents(result *types.TxResult, hash []byte, store dbm.S
 // both lower and upper bounds, so we are not performing a full scan. Results
 // from querying indexes are then intersected and returned to the caller.
 func (txi *TxIndex) Search(q *query.Query) ([]*types.TxResult, error) {
+	var hashes [][]byte
 	var hashesInitialized bool
-	filteredHashes := make(map[string][]byte)
 
 	// get a list of conditions (like "tx.height > 5")
-	conditions, err := q.Conditions()
-	if err != nil {
-		return nil, errors.Wrap(err, "error during parsing conditions from query")
-	}
+	conditions := q.Conditions()
 
 	// if there is a hash condition, return the result immediately
 	hash, err, ok := lookForHash(conditions)
@@ -179,14 +175,10 @@ func (txi *TxIndex) Search(q *query.Query) ([]*types.TxResult, error) {
 		return nil, errors.Wrap(err, "error during searching for a hash in the query")
 	} else if ok {
 		res, err := txi.Get(hash)
-		switch {
-		case err != nil:
-			return []*types.TxResult{}, errors.Wrap(err, "error while retrieving the result")
-		case res == nil:
+		if res == nil {
 			return []*types.TxResult{}, nil
-		default:
-			return []*types.TxResult{res}, nil
 		}
+		return []*types.TxResult{res}, errors.Wrap(err, "error while retrieving the result")
 	}
 
 	// conditions to skip because they're handled before "everything else"
@@ -201,16 +193,10 @@ func (txi *TxIndex) Search(q *query.Query) ([]*types.TxResult, error) {
 
 		for _, r := range ranges {
 			if !hashesInitialized {
-				filteredHashes = txi.matchRange(r, startKey(r.key), filteredHashes, true)
+				hashes = txi.matchRange(r, startKey(r.key))
 				hashesInitialized = true
-
-				// Ignore any remaining conditions if the first condition resulted
-				// in no matches (assuming implicit AND operand).
-				if len(filteredHashes) == 0 {
-					break
-				}
 			} else {
-				filteredHashes = txi.matchRange(r, startKey(r.key), filteredHashes, false)
+				hashes = intersect(hashes, txi.matchRange(r, startKey(r.key)))
 			}
 		}
 	}
@@ -225,26 +211,21 @@ func (txi *TxIndex) Search(q *query.Query) ([]*types.TxResult, error) {
 		}
 
 		if !hashesInitialized {
-			filteredHashes = txi.match(c, startKeyForCondition(c, height), filteredHashes, true)
+			hashes = txi.match(c, startKeyForCondition(c, height))
 			hashesInitialized = true
-
-			// Ignore any remaining conditions if the first condition resulted
-			// in no matches (assuming implicit AND operand).
-			if len(filteredHashes) == 0 {
-				break
-			}
 		} else {
-			filteredHashes = txi.match(c, startKeyForCondition(c, height), filteredHashes, false)
+			hashes = intersect(hashes, txi.match(c, startKeyForCondition(c, height)))
 		}
 	}
 
-	results := make([]*types.TxResult, 0, len(filteredHashes))
-	for _, h := range filteredHashes {
-		res, err := txi.Get(h)
+	results := make([]*types.TxResult, len(hashes))
+	i := 0
+	for _, h := range hashes {
+		results[i], err = txi.Get(h)
 		if err != nil {
 			return nil, errors.Wrapf(err, "failed to get Tx{%X}", h)
 		}
-		results = append(results, res)
+		i++
 	}
 
 	// sort by height & index by default
@@ -283,10 +264,10 @@ func lookForHeight(conditions []query.Condition) (height int64) {
 type queryRanges map[string]queryRange
 
 type queryRange struct {
-	lowerBound        interface{} // int || time.Time
-	upperBound        interface{} // int || time.Time
 	key               string
+	lowerBound        interface{} // int || time.Time
 	includeLowerBound bool
+	upperBound        interface{} // int || time.Time
 	includeUpperBound bool
 }
 
@@ -372,125 +353,63 @@ func isRangeOperation(op query.Operator) bool {
 	}
 }
 
-// match returns all matching txs by hash that meet a given condition and start
-// key. An already filtered result (filteredHashes) is provided such that any
-// non-intersecting matches are removed.
-//
-// NOTE: filteredHashes may be empty if no previous condition has matched.
-func (txi *TxIndex) match(
-	c query.Condition,
-	startKeyBz []byte,
-	filteredHashes map[string][]byte,
-	firstRun bool,
-) map[string][]byte {
-	// A previous match was attempted but resulted in no matches, so we return
-	// no matches (assuming AND operand).
-	if !firstRun && len(filteredHashes) == 0 {
-		return filteredHashes
-	}
-
-	tmpHashes := make(map[string][]byte)
-
-	switch {
-	case c.Op == query.OpEqual:
+func (txi *TxIndex) match(c query.Condition, startKeyBz []byte) (hashes [][]byte) {
+	if c.Op == query.OpEqual {
 		it := dbm.IteratePrefix(txi.store, startKeyBz)
 		defer it.Close()
-
 		for ; it.Valid(); it.Next() {
-			tmpHashes[string(it.Value())] = it.Value()
+			hashes = append(hashes, it.Value())
 		}
-
-	case c.Op == query.OpContains:
+	} else if c.Op == query.OpContains {
 		// XXX: startKey does not apply here.
 		// For example, if startKey = "account.owner/an/" and search query = "account.owner CONTAINS an"
 		// we can't iterate with prefix "account.owner/an/" because we might miss keys like "account.owner/Ulan/"
 		it := dbm.IteratePrefix(txi.store, startKey(c.Tag))
 		defer it.Close()
-
 		for ; it.Valid(); it.Next() {
 			if !isTagKey(it.Key()) {
 				continue
 			}
-
 			if strings.Contains(extractValueFromKey(it.Key()), c.Operand.(string)) {
-				tmpHashes[string(it.Value())] = it.Value()
+				hashes = append(hashes, it.Value())
 			}
 		}
-	default:
+	} else {
 		panic("other operators should be handled already")
 	}
-
-	if len(tmpHashes) == 0 || firstRun {
-		// Either:
-		//
-		// 1. Regardless if a previous match was attempted, which may have had
-		// results, but no match was found for the current condition, then we
-		// return no matches (assuming AND operand).
-		//
-		// 2. A previous match was not attempted, so we return all results.
-		return tmpHashes
-	}
-
-	// Remove/reduce matches in filteredHashes that were not found in this
-	// match (tmpHashes).
-	for k := range filteredHashes {
-		if tmpHashes[k] == nil {
-			delete(filteredHashes, k)
-		}
-	}
-
-	return filteredHashes
+	return
 }
 
-// matchRange returns all matching txs by hash that meet a given queryRange and
-// start key. An already filtered result (filteredHashes) is provided such that
-// any non-intersecting matches are removed.
-//
-// NOTE: filteredHashes may be empty if no previous condition has matched.
-func (txi *TxIndex) matchRange(
-	r queryRange,
-	startKey []byte,
-	filteredHashes map[string][]byte,
-	firstRun bool,
-) map[string][]byte {
-	// A previous match was attempted but resulted in no matches, so we return
-	// no matches (assuming AND operand).
-	if !firstRun && len(filteredHashes) == 0 {
-		return filteredHashes
-	}
+func (txi *TxIndex) matchRange(r queryRange, startKey []byte) (hashes [][]byte) {
+	// create a map to prevent duplicates
+	hashesMap := make(map[string][]byte)
 
-	tmpHashes := make(map[string][]byte)
 	lowerBound := r.lowerBoundValue()
 	upperBound := r.upperBoundValue()
 
 	it := dbm.IteratePrefix(txi.store, startKey)
 	defer it.Close()
-
 LOOP:
 	for ; it.Valid(); it.Next() {
 		if !isTagKey(it.Key()) {
 			continue
 		}
-
-		if _, ok := r.AnyBound().(int64); ok {
+		switch r.AnyBound().(type) {
+		case int64:
 			v, err := strconv.ParseInt(extractValueFromKey(it.Key()), 10, 64)
 			if err != nil {
 				continue LOOP
 			}
-
 			include := true
 			if lowerBound != nil && v < lowerBound.(int64) {
 				include = false
 			}
-
 			if upperBound != nil && v > upperBound.(int64) {
 				include = false
 			}
-
 			if include {
-				tmpHashes[string(it.Value())] = it.Value()
+				hashesMap[fmt.Sprintf("%X", it.Value())] = it.Value()
 			}
-
 			// XXX: passing time in a ABCI Tags is not yet implemented
 			// case time.Time:
 			// 	v := strconv.ParseInt(extractValueFromKey(it.Key()), 10, 64)
@@ -499,27 +418,13 @@ LOOP:
 			// 	}
 		}
 	}
-
-	if len(tmpHashes) == 0 || firstRun {
-		// Either:
-		//
-		// 1. Regardless if a previous match was attempted, which may have had
-		// results, but no match was found for the current condition, then we
-		// return no matches (assuming AND operand).
-		//
-		// 2. A previous match was not attempted, so we return all results.
-		return tmpHashes
+	hashes = make([][]byte, len(hashesMap))
+	i := 0
+	for _, h := range hashesMap {
+		hashes[i] = h
+		i++
 	}
-
-	// Remove/reduce matches in filteredHashes that were not found in this
-	// match (tmpHashes).
-	for k := range filteredHashes {
-		if tmpHashes[k] == nil {
-			delete(filteredHashes, k)
-		}
-	}
-
-	return filteredHashes
+	return
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -565,4 +470,19 @@ func startKey(fields ...interface{}) []byte {
 		b.Write([]byte(fmt.Sprintf("%v", f) + tagKeySeparator))
 	}
 	return b.Bytes()
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Utils
+
+func intersect(as, bs [][]byte) [][]byte {
+	i := make([][]byte, 0, cmn.MinInt(len(as), len(bs)))
+	for _, a := range as {
+		for _, b := range bs {
+			if bytes.Equal(a, b) {
+				i = append(i, a)
+			}
+		}
+	}
+	return i
 }

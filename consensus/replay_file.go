@@ -10,15 +10,15 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	dbm "github.com/evdatsion/tm-db"
 
+	bc "github.com/evdatsion/tendermint/blockchain"
 	cfg "github.com/evdatsion/tendermint/config"
 	cmn "github.com/evdatsion/tendermint/libs/common"
+	dbm "github.com/evdatsion/tendermint/libs/db"
 	"github.com/evdatsion/tendermint/libs/log"
 	"github.com/evdatsion/tendermint/mock"
 	"github.com/evdatsion/tendermint/proxy"
 	sm "github.com/evdatsion/tendermint/state"
-	"github.com/evdatsion/tendermint/store"
 	"github.com/evdatsion/tendermint/types"
 )
 
@@ -231,8 +231,10 @@ func (pb *playback) replayConsoleLoop() int {
 					fmt.Println("back takes an integer argument")
 				} else if i > pb.count {
 					fmt.Printf("argument to back must not be larger than the current count (%d)\n", pb.count)
-				} else if err := pb.replayReset(i, newStepSub); err != nil {
-					pb.cs.Logger.Error("Replay reset error", "err", err)
+				} else {
+					if err := pb.replayReset(i, newStepSub); err != nil {
+						pb.cs.Logger.Error("Replay reset error", "err", err)
+					}
 				}
 			}
 
@@ -278,7 +280,7 @@ func newConsensusStateForReplay(config cfg.BaseConfig, csConfig *cfg.ConsensusCo
 	dbType := dbm.DBBackendType(config.DBBackend)
 	// Get BlockStore
 	blockStoreDB := dbm.NewDB("blockstore", dbType, config.DBDir())
-	blockStore := store.NewBlockStore(blockStoreDB)
+	blockStore := bc.NewBlockStore(blockStoreDB)
 
 	// Get State
 	stateDB := dbm.NewDB("state", dbType, config.DBDir())

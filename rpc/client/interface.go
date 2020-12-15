@@ -28,25 +28,9 @@ import (
 	"github.com/evdatsion/tendermint/types"
 )
 
-// Client wraps most important rpc calls a client would make if you want to
-// listen for events, test if it also implements events.EventSwitch.
-type Client interface {
-	cmn.Service
-	ABCIClient
-	EventsClient
-	HistoryClient
-	NetworkClient
-	SignClient
-	StatusClient
-	EvidenceClient
-	MempoolClient
-}
-
-// ABCIClient groups together the functionality that principally affects the
-// ABCI app.
-//
-// In many cases this will be all we want, so we can accept an interface which
-// is easier to mock.
+// ABCIClient groups together the functionality that principally
+// affects the ABCI app. In many cases this will be all we want,
+// so we can accept an interface which is easier to mock
 type ABCIClient interface {
 	// Reading from abci app
 	ABCIInfo() (*ctypes.ResultABCIInfo, error)
@@ -60,8 +44,8 @@ type ABCIClient interface {
 	BroadcastTxSync(tx types.Tx) (*ctypes.ResultBroadcastTx, error)
 }
 
-// SignClient groups together the functionality needed to get valid signatures
-// and prove anything about the chain.
+// SignClient groups together the interfaces need to get valid
+// signatures and prove anything about the chain
 type SignClient interface {
 	Block(height *int64) (*ctypes.ResultBlock, error)
 	BlockResults(height *int64) (*ctypes.ResultBlockResults, error)
@@ -71,19 +55,32 @@ type SignClient interface {
 	TxSearch(query string, prove bool, page, perPage int) (*ctypes.ResultTxSearch, error)
 }
 
-// HistoryClient provides access to data from genesis to now in large chunks.
+// HistoryClient shows us data from genesis to now in large chunks.
 type HistoryClient interface {
 	Genesis() (*ctypes.ResultGenesis, error)
 	BlockchainInfo(minHeight, maxHeight int64) (*ctypes.ResultBlockchainInfo, error)
 }
 
-// StatusClient provides access to general chain info.
 type StatusClient interface {
+	// General chain info
 	Status() (*ctypes.ResultStatus, error)
 }
 
-// NetworkClient is general info about the network state. May not be needed
-// usually.
+// Client wraps most important rpc calls a client would make
+// if you want to listen for events, test if it also
+// implements events.EventSwitch
+type Client interface {
+	cmn.Service
+	ABCIClient
+	EventsClient
+	HistoryClient
+	NetworkClient
+	SignClient
+	StatusClient
+}
+
+// NetworkClient is general info about the network state.  May not
+// be needed usually.
 type NetworkClient interface {
 	NetInfo() (*ctypes.ResultNetInfo, error)
 	DumpConsensusState() (*ctypes.ResultDumpConsensusState, error)
@@ -112,10 +109,4 @@ type EventsClient interface {
 type MempoolClient interface {
 	UnconfirmedTxs(limit int) (*ctypes.ResultUnconfirmedTxs, error)
 	NumUnconfirmedTxs() (*ctypes.ResultUnconfirmedTxs, error)
-}
-
-// EvidenceClient is used for submitting an evidence of the malicious
-// behaviour.
-type EvidenceClient interface {
-	BroadcastEvidence(ev types.Evidence) (*ctypes.ResultBroadcastEvidence, error)
 }

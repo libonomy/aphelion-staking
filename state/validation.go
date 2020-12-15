@@ -6,8 +6,8 @@ import (
 	"fmt"
 
 	"github.com/evdatsion/tendermint/crypto"
+	dbm "github.com/evdatsion/tendermint/libs/db"
 	"github.com/evdatsion/tendermint/types"
-	dbm "github.com/evdatsion/tm-db"
 )
 
 //-----------------------------------------------------

@@ -10,7 +10,7 @@ import (
 	"time"
 
 	cmn "github.com/evdatsion/tendermint/libs/common"
-	dbm "github.com/evdatsion/tm-db"
+	dbm "github.com/evdatsion/tendermint/libs/db"
 )
 
 const defaultStorePeriodicSaveInterval = 1 * time.Minute

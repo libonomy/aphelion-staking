@@ -49,7 +49,7 @@ var _ error = (*TestHarnessError)(nil)
 // with this version of Tendermint.
 type TestHarness struct {
 	addr             string
-	signerClient     *privval.SignerClient
+	spv              *privval.SignerValidatorEndpoint
 	fpv              *privval.FilePV
 	chainID          string
 	acceptRetries    int
@@ -101,19 +101,14 @@ func NewTestHarness(logger log.Logger, cfg TestHarnessConfig) (*TestHarness, err
 	}
 	logger.Info("Loaded genesis file", "chainID", st.ChainID)
 
-	spv, err := newTestHarnessListener(logger, cfg)
-	if err != nil {
-		return nil, newTestHarnessError(ErrFailedToCreateListener, err, "")
-	}
-
-	signerClient, err := privval.NewSignerClient(spv)
+	spv, err := newTestHarnessSocketVal(logger, cfg)
 	if err != nil {
 		return nil, newTestHarnessError(ErrFailedToCreateListener, err, "")
 	}
 
 	return &TestHarness{
 		addr:             cfg.BindAddr,
-		signerClient:     signerClient,
+		spv:              spv,
 		fpv:              fpv,
 		chainID:          st.ChainID,
 		acceptRetries:    cfg.AcceptRetries,
@@ -140,11 +135,9 @@ func (th *TestHarness) Run() {
 	th.logger.Info("Starting test harness")
 	accepted := false
 	var startErr error
-
 	for acceptRetries := th.acceptRetries; acceptRetries > 0; acceptRetries-- {
 		th.logger.Info("Attempting to accept incoming connection", "acceptRetries", acceptRetries)
-
-		if err := th.signerClient.WaitForConnection(10 * time.Millisecond); err != nil {
+		if err := th.spv.Start(); err != nil {
 			// if it wasn't a timeout error
 			if _, ok := err.(timeoutError); !ok {
 				th.logger.Error("Failed to start listener", "err", err)
@@ -156,7 +149,6 @@ func (th *TestHarness) Run() {
 			}
 			startErr = err
 		} else {
-			th.logger.Info("Accepted external connection")
 			accepted = true
 			break
 		}
@@ -190,8 +182,8 @@ func (th *TestHarness) Run() {
 func (th *TestHarness) TestPublicKey() error {
 	th.logger.Info("TEST: Public key of remote signer")
 	th.logger.Info("Local", "pubKey", th.fpv.GetPubKey())
-	th.logger.Info("Remote", "pubKey", th.signerClient.GetPubKey())
-	if th.fpv.GetPubKey() != th.signerClient.GetPubKey() {
+	th.logger.Info("Remote", "pubKey", th.spv.GetPubKey())
+	if th.fpv.GetPubKey() != th.spv.GetPubKey() {
 		th.logger.Error("FAILED: Local and remote public keys do not match")
 		return newTestHarnessError(ErrTestPublicKeyFailed, nil, "")
 	}
@@ -219,7 +211,7 @@ func (th *TestHarness) TestSignProposal() error {
 		Timestamp: time.Now(),
 	}
 	propBytes := prop.SignBytes(th.chainID)
-	if err := th.signerClient.SignProposal(th.chainID, prop); err != nil {
+	if err := th.spv.SignProposal(th.chainID, prop); err != nil {
 		th.logger.Error("FAILED: Signing of proposal", "err", err)
 		return newTestHarnessError(ErrTestSignProposalFailed, err, "")
 	}
@@ -230,7 +222,7 @@ func (th *TestHarness) TestSignProposal() error {
 		return newTestHarnessError(ErrTestSignProposalFailed, err, "")
 	}
 	// now validate the signature on the proposal
-	if th.signerClient.GetPubKey().VerifyBytes(propBytes, prop.Signature) {
+	if th.spv.GetPubKey().VerifyBytes(propBytes, prop.Signature) {
 		th.logger.Info("Successfully validated proposal signature")
 	} else {
 		th.logger.Error("FAILED: Proposal signature validation failed")
@@ -263,7 +255,7 @@ func (th *TestHarness) TestSignVote() error {
 		}
 		voteBytes := vote.SignBytes(th.chainID)
 		// sign the vote
-		if err := th.signerClient.SignVote(th.chainID, vote); err != nil {
+		if err := th.spv.SignVote(th.chainID, vote); err != nil {
 			th.logger.Error("FAILED: Signing of vote", "err", err)
 			return newTestHarnessError(ErrTestSignVoteFailed, err, fmt.Sprintf("voteType=%d", voteType))
 		}
@@ -274,7 +266,7 @@ func (th *TestHarness) TestSignVote() error {
 			return newTestHarnessError(ErrTestSignVoteFailed, err, fmt.Sprintf("voteType=%d", voteType))
 		}
 		// now validate the signature on the proposal
-		if th.signerClient.GetPubKey().VerifyBytes(voteBytes, vote.Signature) {
+		if th.spv.GetPubKey().VerifyBytes(voteBytes, vote.Signature) {
 			th.logger.Info("Successfully validated vote signature", "type", voteType)
 		} else {
 			th.logger.Error("FAILED: Vote signature validation failed", "type", voteType)
@@ -309,9 +301,10 @@ func (th *TestHarness) Shutdown(err error) {
 		}()
 	}
 
-	err = th.signerClient.Close()
-	if err != nil {
-		th.logger.Error("Failed to cleanly stop listener: %s", err.Error())
+	if th.spv.IsRunning() {
+		if err := th.spv.Stop(); err != nil {
+			th.logger.Error("Failed to cleanly stop listener: %s", err.Error())
+		}
 	}
 
 	if th.exitWhenComplete {
@@ -319,8 +312,9 @@ func (th *TestHarness) Shutdown(err error) {
 	}
 }
 
-// newTestHarnessListener creates our client instance which we will use for testing.
-func newTestHarnessListener(logger log.Logger, cfg TestHarnessConfig) (*privval.SignerListenerEndpoint, error) {
+// newTestHarnessSocketVal creates our client instance which we will use for
+// testing.
+func newTestHarnessSocketVal(logger log.Logger, cfg TestHarnessConfig) (*privval.SignerValidatorEndpoint, error) {
 	proto, addr := cmn.ProtocolAndAddress(cfg.BindAddr)
 	if proto == "unix" {
 		// make sure the socket doesn't exist - if so, try to delete it
@@ -335,7 +329,7 @@ func newTestHarnessListener(logger log.Logger, cfg TestHarnessConfig) (*privval.
 	if err != nil {
 		return nil, err
 	}
-	logger.Info("Listening", "proto", proto, "addr", addr)
+	logger.Info("Listening at", "proto", proto, "addr", addr)
 	var svln net.Listener
 	switch proto {
 	case "unix":
@@ -353,7 +347,7 @@ func newTestHarnessListener(logger log.Logger, cfg TestHarnessConfig) (*privval.
 		logger.Error("Unsupported protocol (must be unix:// or tcp://)", "proto", proto)
 		return nil, newTestHarnessError(ErrInvalidParameters, nil, fmt.Sprintf("Unsupported protocol: %s", proto))
 	}
-	return privval.NewSignerListenerEndpoint(logger, svln), nil
+	return privval.NewSignerValidatorEndpoint(logger, svln), nil
 }
 
 func newTestHarnessError(code int, err error, info string) *TestHarnessError {

@@ -11,15 +11,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
-
 	"github.com/evdatsion/tendermint/consensus/types"
-	"github.com/evdatsion/tendermint/crypto/merkle"
 	"github.com/evdatsion/tendermint/libs/autofile"
 	"github.com/evdatsion/tendermint/libs/log"
 	tmtypes "github.com/evdatsion/tendermint/types"
 	tmtime "github.com/evdatsion/tendermint/types/time"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 const (
@@ -87,8 +86,6 @@ func TestWALEncoderDecoder(t *testing.T) {
 	b := new(bytes.Buffer)
 
 	for _, msg := range msgs {
-		msg := msg
-
 		b.Reset()
 
 		enc := NewWALEncoder(b)
@@ -104,7 +101,7 @@ func TestWALEncoderDecoder(t *testing.T) {
 	}
 }
 
-func TestWALWrite(t *testing.T) {
+func TestWALWritePanicsIfMsgIsTooBig(t *testing.T) {
 	walDir, err := ioutil.TempDir("", "wal")
 	require.NoError(t, err)
 	defer os.RemoveAll(walDir)
@@ -121,24 +118,7 @@ func TestWALWrite(t *testing.T) {
 		wal.Wait()
 	}()
 
-	// 1) Write returns an error if msg is too big
-	msg := &BlockPartMessage{
-		Height: 1,
-		Round:  1,
-		Part: &tmtypes.Part{
-			Index: 1,
-			Bytes: make([]byte, 1),
-			Proof: merkle.SimpleProof{
-				Total:    1,
-				Index:    1,
-				LeafHash: make([]byte, maxMsgSizeBytes-30),
-			},
-		},
-	}
-	err = wal.Write(msg)
-	if assert.Error(t, err) {
-		assert.Contains(t, err.Error(), "msg is too big")
-	}
+	assert.Panics(t, func() { wal.Write(make([]byte, maxMsgSizeBytes+1)) })
 }
 
 func TestWALSearchForEndHeight(t *testing.T) {

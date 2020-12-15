@@ -15,8 +15,9 @@ import (
 func TestMarshalJSON(t *testing.T) {
 	b, err := json.Marshal(&ResponseDeliverTx{})
 	assert.Nil(t, err)
-	// include empty fields.
-	assert.True(t, strings.Contains(string(b), "code"))
+	// Do not include empty fields.
+	assert.False(t, strings.Contains(string(b), "code"))
+
 	r1 := ResponseCheckTx{
 		Code:      1,
 		Data:      []byte("hello"),

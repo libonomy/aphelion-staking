@@ -42,12 +42,14 @@ func (r ResponseQuery) IsErr() bool {
 }
 
 //---------------------------------------------------------------------------
-// override JSON marshalling so we emit defaults (ie. disable omitempty)
+// override JSON marshalling so we dont emit defaults (ie. disable omitempty)
+// note we need Unmarshal functions too because protobuf had the bright idea
+// to marshal int64->string. cool. cool, cool, cool: https://developers.google.com/protocol-buffers/docs/proto3#json
 
 var (
 	jsonpbMarshaller = jsonpb.Marshaler{
 		EnumsAsInts:  true,
-		EmitDefaults: true,
+		EmitDefaults: false,
 	}
 	jsonpbUnmarshaller = jsonpb.Unmarshaler{}
 )

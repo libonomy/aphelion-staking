@@ -48,17 +48,15 @@ func main() {
 		os.Exit(1)
 	}
 
-	sd := privval.NewSignerDialerEndpoint(logger, dialer)
-	ss := privval.NewSignerServer(sd, *chainID, pv)
-
-	err := ss.Start()
+	rs := privval.NewSignerServiceEndpoint(logger, *chainID, pv, dialer)
+	err := rs.Start()
 	if err != nil {
 		panic(err)
 	}
 
 	// Stop upon receiving SIGTERM or CTRL-C.
 	cmn.TrapSignal(logger, func() {
-		err := ss.Stop()
+		err := rs.Stop()
 		if err != nil {
 			panic(err)
 		}

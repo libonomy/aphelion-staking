@@ -7,10 +7,10 @@ import (
 
 	amino "github.com/evdatsion/go-amino"
 	cryptoAmino "github.com/evdatsion/tendermint/crypto/encoding/amino"
+	dbm "github.com/evdatsion/tendermint/libs/db"
 	log "github.com/evdatsion/tendermint/libs/log"
 	lerr "github.com/evdatsion/tendermint/lite/errors"
 	"github.com/evdatsion/tendermint/types"
-	dbm "github.com/evdatsion/tm-db"
 )
 
 var _ PersistentProvider = (*DBProvider)(nil)

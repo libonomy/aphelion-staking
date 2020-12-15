@@ -127,12 +127,11 @@ func (s *SocketServer) acceptConnectionsRoutine() {
 
 func (s *SocketServer) waitForClose(closeConn chan error, connID int) {
 	err := <-closeConn
-	switch {
-	case err == io.EOF:
+	if err == io.EOF {
 		s.Logger.Error("Connection was closed by client")
-	case err != nil:
+	} else if err != nil {
 		s.Logger.Error("Connection error", "error", err)
-	default:
+	} else {
 		// never happens
 		s.Logger.Error("Connection was closed.")
 	}
@@ -144,19 +143,9 @@ func (s *SocketServer) waitForClose(closeConn chan error, connID int) {
 }
 
 // Read requests from conn and deal with them
-func (s *SocketServer) handleRequests(closeConn chan error, conn io.Reader, responses chan<- *types.Response) {
+func (s *SocketServer) handleRequests(closeConn chan error, conn net.Conn, responses chan<- *types.Response) {
 	var count int
 	var bufReader = bufio.NewReader(conn)
-
-	defer func() {
-		// make sure to recover from any app-related panics to allow proper socket cleanup
-		r := recover()
-		if r != nil {
-			closeConn <- fmt.Errorf("recovered from panic: %v", r)
-			s.appMtx.Unlock()
-		}
-	}()
-
 	for {
 
 		var req = &types.Request{}
@@ -165,7 +154,7 @@ func (s *SocketServer) handleRequests(closeConn chan error, conn io.Reader, resp
 			if err == io.EOF {
 				closeConn <- err
 			} else {
-				closeConn <- fmt.Errorf("error reading message: %v", err)
+				closeConn <- fmt.Errorf("Error reading message: %v", err.Error())
 			}
 			return
 		}
@@ -215,7 +204,7 @@ func (s *SocketServer) handleRequest(req *types.Request, responses chan<- *types
 }
 
 // Pull responses from 'responses' and write them to conn.
-func (s *SocketServer) handleResponses(closeConn chan error, conn io.Writer, responses <-chan *types.Response) {
+func (s *SocketServer) handleResponses(closeConn chan error, conn net.Conn, responses <-chan *types.Response) {
 	var count int
 	var bufWriter = bufio.NewWriter(conn)
 	for {

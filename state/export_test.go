@@ -2,8 +2,8 @@ package state
 
 import (
 	abci "github.com/evdatsion/tendermint/abci/types"
+	dbm "github.com/evdatsion/tendermint/libs/db"
 	"github.com/evdatsion/tendermint/types"
-	dbm "github.com/evdatsion/tm-db"
 )
 
 //

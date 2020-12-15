@@ -78,7 +78,7 @@ func testHairpin(listener net.Listener, extAddr string, logger log.Logger) (supp
 
 	// Wait for data receipt
 	time.Sleep(1 * time.Second)
-	return supportsHairpin
+	return
 }
 
 func Probe(logger log.Logger) (caps UPNPCapabilities, err error) {

@@ -1,8 +1,4 @@
-# tm-bench (Deprecated)
-
-> ## **Deprecation Warning**
-
-### This tool will be depreacted in favor of [tm-load-test](https://github.com/interchainio/tm-load-test).
+# tm-bench
 
 Tendermint blockchain benchmarking tool:
 

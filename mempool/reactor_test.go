@@ -42,10 +42,10 @@ func mempoolLogger() log.Logger {
 }
 
 // connect N mempool reactors through N switches
-func makeAndConnectReactors(config *cfg.Config, n int) []*Reactor {
-	reactors := make([]*Reactor, n)
+func makeAndConnectReactors(config *cfg.Config, N int) []*Reactor {
+	reactors := make([]*Reactor, N)
 	logger := mempoolLogger()
-	for i := 0; i < n; i++ {
+	for i := 0; i < N; i++ {
 		app := kvstore.NewKVStoreApplication()
 		cc := proxy.NewLocalClientCreator(app)
 		mempool, cleanup := newMempoolWithApp(cc)
@@ -55,7 +55,7 @@ func makeAndConnectReactors(config *cfg.Config, n int) []*Reactor {
 		reactors[i].SetLogger(logger.With("validator", i))
 	}
 
-	p2p.MakeConnectedSwitches(config.P2P, n, func(i int, s *p2p.Switch) *p2p.Switch {
+	p2p.MakeConnectedSwitches(config.P2P, N, func(i int, s *p2p.Switch) *p2p.Switch {
 		s.AddReactor("MEMPOOL", reactors[i])
 		return s
 
@@ -222,22 +222,4 @@ func TestMempoolIDsPanicsIfNodeRequestsOvermaxActiveIDs(t *testing.T) {
 		peer := mock.NewPeer(net.IP{127, 0, 0, 1})
 		ids.ReserveForPeer(peer)
 	})
-}
-
-func TestDontExhaustMaxActiveIDs(t *testing.T) {
-	config := cfg.TestConfig()
-	const N = 1
-	reactors := makeAndConnectReactors(config, N)
-	defer func() {
-		for _, r := range reactors {
-			r.Stop()
-		}
-	}()
-	reactor := reactors[0]
-
-	for i := 0; i < maxActiveIDs+1; i++ {
-		peer := mock.NewPeer(nil)
-		reactor.Receive(MempoolChannel, peer, []byte{0x1, 0x2, 0x3})
-		reactor.AddPeer(peer)
-	}
 }

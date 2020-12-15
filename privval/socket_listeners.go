@@ -9,7 +9,8 @@ import (
 )
 
 const (
-	defaultTimeoutAcceptSeconds = 3
+	defaultTimeoutAcceptSeconds    = 3
+	defaultTimeoutReadWriteSeconds = 3
 )
 
 // timeoutError can be used to check if an error returned from the netp package

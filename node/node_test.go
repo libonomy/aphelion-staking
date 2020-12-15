@@ -17,6 +17,7 @@ import (
 	"github.com/evdatsion/tendermint/crypto/ed25519"
 	"github.com/evdatsion/tendermint/evidence"
 	cmn "github.com/evdatsion/tendermint/libs/common"
+	dbm "github.com/evdatsion/tendermint/libs/db"
 	"github.com/evdatsion/tendermint/libs/log"
 	mempl "github.com/evdatsion/tendermint/mempool"
 	"github.com/evdatsion/tendermint/p2p"
@@ -27,7 +28,6 @@ import (
 	"github.com/evdatsion/tendermint/types"
 	tmtime "github.com/evdatsion/tendermint/types/time"
 	"github.com/evdatsion/tendermint/version"
-	dbm "github.com/evdatsion/tm-db"
 )
 
 func TestNodeStartStop(t *testing.T) {
@@ -136,29 +136,25 @@ func TestNodeSetPrivValTCP(t *testing.T) {
 	config.BaseConfig.PrivValidatorListenAddr = addr
 
 	dialer := privval.DialTCPFn(addr, 100*time.Millisecond, ed25519.GenPrivKey())
-	dialerEndpoint := privval.NewSignerDialerEndpoint(
+	pvsc := privval.NewSignerServiceEndpoint(
 		log.TestingLogger(),
-		dialer,
-	)
-	privval.SignerDialerEndpointTimeoutReadWrite(100 * time.Millisecond)(dialerEndpoint)
-
-	signerServer := privval.NewSignerServer(
-		dialerEndpoint,
 		config.ChainID(),
 		types.NewMockPV(),
+		dialer,
 	)
+	privval.SignerServiceEndpointTimeoutReadWrite(100 * time.Millisecond)(pvsc)
 
 	go func() {
-		err := signerServer.Start()
+		err := pvsc.Start()
 		if err != nil {
 			panic(err)
 		}
 	}()
-	defer signerServer.Stop()
+	defer pvsc.Stop()
 
 	n, err := DefaultNewNode(config, log.TestingLogger())
 	require.NoError(t, err)
-	assert.IsType(t, &privval.RetrySignerClient{}, n.PrivValidator())
+	assert.IsType(t, &privval.SignerValidatorEndpoint{}, n.PrivValidator())
 }
 
 // address without a protocol must result in error
@@ -182,17 +178,13 @@ func TestNodeSetPrivValIPC(t *testing.T) {
 	config.BaseConfig.PrivValidatorListenAddr = "unix://" + tmpfile
 
 	dialer := privval.DialUnixFn(tmpfile)
-	dialerEndpoint := privval.NewSignerDialerEndpoint(
+	pvsc := privval.NewSignerServiceEndpoint(
 		log.TestingLogger(),
-		dialer,
-	)
-	privval.SignerDialerEndpointTimeoutReadWrite(100 * time.Millisecond)(dialerEndpoint)
-
-	pvsc := privval.NewSignerServer(
-		dialerEndpoint,
 		config.ChainID(),
 		types.NewMockPV(),
+		dialer,
 	)
+	privval.SignerServiceEndpointTimeoutReadWrite(100 * time.Millisecond)(pvsc)
 
 	go func() {
 		err := pvsc.Start()
@@ -202,7 +194,8 @@ func TestNodeSetPrivValIPC(t *testing.T) {
 
 	n, err := DefaultNewNode(config, log.TestingLogger())
 	require.NoError(t, err)
-	assert.IsType(t, &privval.RetrySignerClient{}, n.PrivValidator())
+	assert.IsType(t, &privval.SignerValidatorEndpoint{}, n.PrivValidator())
+
 }
 
 // testFreeAddr claims a free port so we don't block on listener being ready.
@@ -267,7 +260,7 @@ func TestCreateProposalBlock(t *testing.T) {
 	txLength := 1000
 	for i := 0; i < maxBytes/txLength; i++ {
 		tx := cmn.RandBytes(txLength)
-		err := mempool.CheckTx(tx, nil, mempl.TxInfo{})
+		err := mempool.CheckTx(tx, nil)
 		assert.NoError(t, err)
 	}
 
@@ -295,7 +288,6 @@ func TestNodeNewNodeCustomReactors(t *testing.T) {
 	defer os.RemoveAll(config.RootDir)
 
 	cr := p2pmock.NewReactor()
-	customBlockchainReactor := p2pmock.NewReactor()
 
 	nodeKey, err := p2p.LoadOrGenNodeKey(config.NodeKeyFile())
 	require.NoError(t, err)
@@ -308,7 +300,7 @@ func TestNodeNewNodeCustomReactors(t *testing.T) {
 		DefaultDBProvider,
 		DefaultMetricsProvider(config.Instrumentation),
 		log.TestingLogger(),
-		CustomReactors(map[string]p2p.Reactor{"FOO": cr, "BLOCKCHAIN": customBlockchainReactor}),
+		CustomReactors(map[string]p2p.Reactor{"FOO": cr}),
 	)
 	require.NoError(t, err)
 
@@ -317,10 +309,6 @@ func TestNodeNewNodeCustomReactors(t *testing.T) {
 	defer n.Stop()
 
 	assert.True(t, cr.IsRunning())
-	assert.Equal(t, cr, n.Switch().Reactor("FOO"))
-
-	assert.True(t, customBlockchainReactor.IsRunning())
-	assert.Equal(t, customBlockchainReactor, n.Switch().Reactor("BLOCKCHAIN"))
 }
 
 func state(nVals int, height int64) (sm.State, dbm.DB) {

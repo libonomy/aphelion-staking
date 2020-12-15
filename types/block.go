@@ -41,6 +41,25 @@ type Block struct {
 	LastCommit *Commit      `json:"last_commit"`
 }
 
+// MakeBlock returns a new block with an empty header, except what can be
+// computed from itself.
+// It populates the same set of fields validated by ValidateBasic.
+func MakeBlock(height int64, txs []Tx, lastCommit *Commit, evidence []Evidence) *Block {
+	block := &Block{
+		Header: Header{
+			Height: height,
+			NumTxs: int64(len(txs)),
+		},
+		Data: Data{
+			Txs: txs,
+		},
+		Evidence:   EvidenceData{Evidence: evidence},
+		LastCommit: lastCommit,
+	}
+	block.fillHeader()
+	return block
+}
+
 // ValidateBasic performs basic validation that doesn't involve state data.
 // It checks the internal consistency of the block.
 // Further validation is done using state#ValidateBlock.
@@ -355,8 +374,7 @@ type Header struct {
 	NextValidatorsHash cmn.HexBytes `json:"next_validators_hash"` // validators for the next block
 	ConsensusHash      cmn.HexBytes `json:"consensus_hash"`       // consensus params for current block
 	AppHash            cmn.HexBytes `json:"app_hash"`             // state after txs from the previous block
-	// root hash of all results from the txs from the previous block
-	LastResultsHash cmn.HexBytes `json:"last_results_hash"`
+	LastResultsHash    cmn.HexBytes `json:"last_results_hash"`    // root hash of all results from the txs from the previous block
 
 	// consensus info
 	EvidenceHash    cmn.HexBytes `json:"evidence_hash"`    // evidence included in the block
@@ -433,7 +451,7 @@ func (h *Header) StringIndented(indent string) string {
 %s  Validators:     %v
 %s  NextValidators: %v
 %s  App:            %v
-%s  Consensus:      %v
+%s  Consensus:       %v
 %s  Results:        %v
 %s  Evidence:       %v
 %s  Proposer:       %v
@@ -749,7 +767,7 @@ func (sh SignedHeader) ValidateBasic(chainID string) error {
 	// ValidateBasic on the Commit.
 	err := sh.Commit.ValidateBasic()
 	if err != nil {
-		return errors.Wrap(err, "commit.ValidateBasic failed during SignedHeader.ValidateBasic")
+		return cmn.ErrorWrap(err, "commit.ValidateBasic failed during SignedHeader.ValidateBasic")
 	}
 	return nil
 }

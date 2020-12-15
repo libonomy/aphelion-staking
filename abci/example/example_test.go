@@ -107,11 +107,11 @@ func testStream(t *testing.T, app types.Application) {
 //-------------------------
 // test grpc
 
-func dialerFunc(ctx context.Context, addr string) (net.Conn, error) {
+func dialerFunc(addr string, timeout time.Duration) (net.Conn, error) {
 	return cmn.Connect(addr)
 }
 
-func testGRPCSync(t *testing.T, app types.ABCIApplicationServer) {
+func testGRPCSync(t *testing.T, app *types.GRPCApplication) {
 	numDeliverTxs := 2000
 
 	// Start the listener
@@ -123,7 +123,7 @@ func testGRPCSync(t *testing.T, app types.ABCIApplicationServer) {
 	defer server.Stop()
 
 	// Connect to the socket
-	conn, err := grpc.Dial("unix://test.sock", grpc.WithInsecure(), grpc.WithContextDialer(dialerFunc))
+	conn, err := grpc.Dial("unix://test.sock", grpc.WithInsecure(), grpc.WithDialer(dialerFunc))
 	if err != nil {
 		t.Fatalf("Error dialing GRPC server: %v", err.Error())
 	}

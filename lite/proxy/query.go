@@ -4,10 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/pkg/errors"
+	cmn "github.com/evdatsion/tendermint/libs/common"
 
 	"github.com/evdatsion/tendermint/crypto/merkle"
-	cmn "github.com/evdatsion/tendermint/libs/common"
 	"github.com/evdatsion/tendermint/lite"
 	lerr "github.com/evdatsion/tendermint/lite/errors"
 	rpcclient "github.com/evdatsion/tendermint/rpc/client"
@@ -29,7 +28,7 @@ func GetWithProof(prt *merkle.ProofRuntime, key []byte, reqHeight int64, node rp
 	}
 
 	res, err := GetWithProofOptions(prt, "/key", key,
-		rpcclient.ABCIQueryOptions{Height: reqHeight, Prove: true},
+		rpcclient.ABCIQueryOptions{Height: int64(reqHeight), Prove: true},
 		node, cert)
 	if err != nil {
 		return
@@ -84,7 +83,7 @@ func GetWithProofOptions(prt *merkle.ProofRuntime, path string, key []byte, opts
 		kp = kp.AppendKey(resp.Key, merkle.KeyEncodingURL)
 		err = prt.VerifyValue(resp.Proof, signedHeader.AppHash, kp.String(), resp.Value)
 		if err != nil {
-			return nil, errors.Wrap(err, "Couldn't verify value proof")
+			return nil, cmn.ErrorWrap(err, "Couldn't verify value proof")
 		}
 		return &ctypes.ResultABCIQuery{Response: resp}, nil
 	} else {
@@ -93,7 +92,7 @@ func GetWithProofOptions(prt *merkle.ProofRuntime, path string, key []byte, opts
 		// XXX How do we encode the key into a string...
 		err = prt.VerifyAbsence(resp.Proof, signedHeader.AppHash, string(resp.Key))
 		if err != nil {
-			return nil, errors.Wrap(err, "Couldn't verify absence proof")
+			return nil, cmn.ErrorWrap(err, "Couldn't verify absence proof")
 		}
 		return &ctypes.ResultABCIQuery{Response: resp}, nil
 	}

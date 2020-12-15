@@ -28,55 +28,6 @@ const (
 	protoTCP   = "tcp"
 )
 
-// Parsed URL structure
-type parsedURL struct {
-	url.URL
-}
-
-// Parse URL and set defaults
-func newParsedURL(remoteAddr string) (*parsedURL, error) {
-	u, err := url.Parse(remoteAddr)
-	if err != nil {
-		return nil, err
-	}
-
-	// default to tcp if nothing specified
-	if u.Scheme == "" {
-		u.Scheme = protoTCP
-	}
-
-	return &parsedURL{*u}, nil
-}
-
-// Change protocol to HTTP for unknown protocols and TCP protocol - useful for RPC connections
-func (u *parsedURL) SetDefaultSchemeHTTP() {
-	// protocol to use for http operations, to support both http and https
-	switch u.Scheme {
-	case protoHTTP, protoHTTPS, protoWS, protoWSS:
-		// known protocols not changed
-	default:
-		// default to http for unknown protocols (ex. tcp)
-		u.Scheme = protoHTTP
-	}
-}
-
-// Get full address without the protocol - useful for Dialer connections
-func (u parsedURL) GetHostWithPath() string {
-	// Remove protocol, userinfo and # fragment, assume opaque is empty
-	return u.Host + u.EscapedPath()
-}
-
-// Get a trimmed address - useful for WS connections
-func (u parsedURL) GetTrimmedHostWithPath() string {
-	// replace / with . for http requests (kvstore domain)
-	return strings.Replace(u.GetHostWithPath(), "/", ".", -1)
-}
-
-// Get a trimmed address with protocol - useful as address in RPC connections
-func (u parsedURL) GetTrimmedURL() string {
-	return u.Scheme + "://" + u.GetTrimmedHostWithPath()
-}
-
 // HTTPClient is a common interface for JSONRPCClient and URIClient.
 type HTTPClient interface {
 	Call(method string, params map[string]interface{}, result interface{}) (interface{}, error)
@@ -84,40 +35,51 @@ type HTTPClient interface {
 	SetCodec(*amino.Codec)
 }
 
-func makeErrorDialer(err error) func(string, string) (net.Conn, error) {
-	return func(_ string, _ string) (net.Conn, error) {
-		return nil, err
+// TODO: Deprecate support for IP:PORT or /path/to/socket
+func makeHTTPDialer(remoteAddr string) (string, string, func(string, string) (net.Conn, error)) {
+	// protocol to use for http operations, to support both http and https
+	clientProtocol := protoHTTP
+
+	parts := strings.SplitN(remoteAddr, "://", 2)
+	var protocol, address string
+	if len(parts) == 1 {
+		// default to tcp if nothing specified
+		protocol, address = protoTCP, remoteAddr
+	} else if len(parts) == 2 {
+		protocol, address = parts[0], parts[1]
+	} else {
+		// return a invalid message
+		msg := fmt.Sprintf("Invalid addr: %s", remoteAddr)
+		return clientProtocol, msg, func(_ string, _ string) (net.Conn, error) {
+			return nil, errors.New(msg)
+		}
 	}
-}
 
-func makeHTTPDialer(remoteAddr string) func(string, string) (net.Conn, error) {
-	u, err := newParsedURL(remoteAddr)
-	if err != nil {
-		return makeErrorDialer(err)
-	}
-
-	protocol := u.Scheme
-
-	// accept http(s) as an alias for tcp
+	// accept http as an alias for tcp and set the client protocol
 	switch protocol {
 	case protoHTTP, protoHTTPS:
+		clientProtocol = protocol
 		protocol = protoTCP
+	case protoWS, protoWSS:
+		clientProtocol = protocol
 	}
 
-	return func(proto, addr string) (net.Conn, error) {
-		return net.Dial(protocol, u.GetHostWithPath())
+	// replace / with . for http requests (kvstore domain)
+	trimmedAddress := strings.Replace(address, "/", ".", -1)
+	return clientProtocol, trimmedAddress, func(proto, addr string) (net.Conn, error) {
+		return net.Dial(protocol, address)
 	}
 }
 
-// DefaultHTTPClient is used to create an http client with some default parameters.
 // We overwrite the http.Client.Dial so we can do http over tcp or unix.
 // remoteAddr should be fully featured (eg. with tcp:// or unix://)
-func DefaultHTTPClient(remoteAddr string) *http.Client {
-	return &http.Client{
+func makeHTTPClient(remoteAddr string) (string, *http.Client) {
+	protocol, address, dialer := makeHTTPDialer(remoteAddr)
+	return protocol + "://" + address, &http.Client{
 		Transport: &http.Transport{
 			// Set to true to prevent GZIP-bomb DoS attacks
 			DisableCompression: true,
-			Dial:               makeHTTPDialer(remoteAddr),
+			Dial:               dialer,
 		},
 	}
 }
@@ -143,12 +105,10 @@ type JSONRPCRequestBatch struct {
 
 // JSONRPCClient takes params as a slice
 type JSONRPCClient struct {
-	address  string
-	username string
-	password string
-	client   *http.Client
-	id       types.JSONRPCStringID
-	cdc      *amino.Codec
+	address string
+	client  *http.Client
+	id      types.JSONRPCStringID
+	cdc     *amino.Codec
 }
 
 // JSONRPCCaller implementers can facilitate calling the JSON RPC endpoint.
@@ -163,34 +123,12 @@ var _ JSONRPCCaller = (*JSONRPCRequestBatch)(nil)
 
 // NewJSONRPCClient returns a JSONRPCClient pointed at the given address.
 func NewJSONRPCClient(remote string) *JSONRPCClient {
-	return NewJSONRPCClientWithHTTPClient(remote, DefaultHTTPClient(remote))
-}
-
-// NewJSONRPCClientWithHTTPClient returns a JSONRPCClient pointed at the given address using a custom http client
-// The function panics if the provided client is nil or remote is invalid.
-func NewJSONRPCClientWithHTTPClient(remote string, client *http.Client) *JSONRPCClient {
-	if client == nil {
-		panic("nil http.Client provided")
-	}
-
-	parsedURL, err := newParsedURL(remote)
-	if err != nil {
-		panic(fmt.Sprintf("invalid remote %s: %s", remote, err))
-	}
-
-	parsedURL.SetDefaultSchemeHTTP()
-
-	address := parsedURL.GetTrimmedURL()
-	username := parsedURL.User.Username()
-	password, _ := parsedURL.User.Password()
-
+	address, client := makeHTTPClient(remote)
 	return &JSONRPCClient{
-		address:  address,
-		username: username,
-		password: password,
-		client:   client,
-		id:       types.JSONRPCStringID("jsonrpc-client-" + cmn.RandStr(8)),
-		cdc:      amino.NewCodec(),
+		address: address,
+		client:  client,
+		id:      types.JSONRPCStringID("jsonrpc-client-" + cmn.RandStr(8)),
+		cdc:     amino.NewCodec(),
 	}
 }
 
@@ -206,15 +144,7 @@ func (c *JSONRPCClient) Call(method string, params map[string]interface{}, resul
 		return nil, err
 	}
 	requestBuf := bytes.NewBuffer(requestBytes)
-	httpRequest, err := http.NewRequest(http.MethodPost, c.address, requestBuf)
-	if err != nil {
-		return nil, err
-	}
-	httpRequest.Header.Set("Content-Type", "text/json")
-	if c.username != "" || c.password != "" {
-		httpRequest.SetBasicAuth(c.username, c.password)
-	}
-	httpResponse, err := c.client.Do(httpRequest)
+	httpResponse, err := c.client.Post(c.address, "text/json", requestBuf)
 	if err != nil {
 		return nil, err
 	}
@@ -247,15 +177,7 @@ func (c *JSONRPCClient) sendBatch(requests []*jsonRPCBufferedRequest) ([]interfa
 	if err != nil {
 		return nil, err
 	}
-	httpRequest, err := http.NewRequest(http.MethodPost, c.address, bytes.NewBuffer(requestBytes))
-	if err != nil {
-		return nil, err
-	}
-	httpRequest.Header.Set("Content-Type", "text/json")
-	if c.username != "" || c.password != "" {
-		httpRequest.SetBasicAuth(c.username, c.password)
-	}
-	httpResponse, err := c.client.Do(httpRequest)
+	httpResponse, err := c.client.Post(c.address, "text/json", bytes.NewBuffer(requestBytes))
 	if err != nil {
 		return nil, err
 	}
@@ -318,11 +240,7 @@ func (b *JSONRPCRequestBatch) Send() ([]interface{}, error) {
 
 // Call enqueues a request to call the given RPC method with the specified
 // parameters, in the same way that the `JSONRPCClient.Call` function would.
-func (b *JSONRPCRequestBatch) Call(
-	method string,
-	params map[string]interface{},
-	result interface{},
-) (interface{}, error) {
+func (b *JSONRPCRequestBatch) Call(method string, params map[string]interface{}, result interface{}) (interface{}, error) {
 	request, err := types.MapToRequest(b.client.cdc, b.client.id, method, params)
 	if err != nil {
 		return nil, err
@@ -340,18 +258,11 @@ type URIClient struct {
 	cdc     *amino.Codec
 }
 
-// The function panics if the provided remote is invalid.
 func NewURIClient(remote string) *URIClient {
-	parsedURL, err := newParsedURL(remote)
-	if err != nil {
-		panic(fmt.Sprintf("invalid remote %s: %s", remote, err))
-	}
-
-	parsedURL.SetDefaultSchemeHTTP()
-
+	address, client := makeHTTPClient(remote)
 	return &URIClient{
-		address: parsedURL.GetTrimmedURL(),
-		client:  DefaultHTTPClient(remote),
+		address: address,
+		client:  client,
 		cdc:     amino.NewCodec(),
 	}
 }
@@ -385,12 +296,7 @@ func (c *URIClient) SetCodec(cdc *amino.Codec) {
 
 //------------------------------------------------
 
-func unmarshalResponseBytes(
-	cdc *amino.Codec,
-	responseBytes []byte,
-	expectedID types.JSONRPCStringID,
-	result interface{},
-) (interface{}, error) {
+func unmarshalResponseBytes(cdc *amino.Codec, responseBytes []byte, expectedID types.JSONRPCStringID, result interface{}) (interface{}, error) {
 	// Read response.  If rpc/core/types is imported, the result will unmarshal
 	// into the correct type.
 	// log.Notice("response", "response", string(responseBytes))
@@ -416,12 +322,7 @@ func unmarshalResponseBytes(
 	return result, nil
 }
 
-func unmarshalResponseBytesArray(
-	cdc *amino.Codec,
-	responseBytes []byte,
-	expectedID types.JSONRPCStringID,
-	results []interface{},
-) ([]interface{}, error) {
+func unmarshalResponseBytesArray(cdc *amino.Codec, responseBytes []byte, expectedID types.JSONRPCStringID, results []interface{}) ([]interface{}, error) {
 	var (
 		err       error
 		responses []types.RPCResponse
@@ -434,15 +335,10 @@ func unmarshalResponseBytesArray(
 	// and unsuccessful responses.
 
 	if len(results) != len(responses) {
-		return nil, errors.Errorf(
-			"expected %d result objects into which to inject responses, but got %d",
-			len(responses),
-			len(results),
-		)
+		return nil, errors.Errorf("expected %d result objects into which to inject responses, but got %d", len(responses), len(results))
 	}
 
 	for i, response := range responses {
-		response := response
 		// From the JSON-RPC 2.0 spec:
 		//  id: It MUST be the same as the value of the id member in the Request Object.
 		if err := validateResponseID(&response, expectedID); err != nil {

@@ -19,7 +19,8 @@ import (
 const (
 	MempoolChannel = byte(0x30)
 
-	aminoOverheadForTxMessage = 8
+	maxMsgSize = 1048576        // 1MB TODO make it configurable
+	maxTxSize  = maxMsgSize - 8 // account for amino overhead of TxMessage
 
 	peerCatchupSleepIntervalMS = 100 // If peer is behind, sleep this amount
 
@@ -47,7 +48,7 @@ type mempoolIDs struct {
 	activeIDs map[uint16]struct{} // used to check if a given peerID key is used, the value doesn't matter
 }
 
-// Reserve searches for the next unused ID and assigns it to the
+// Reserve searches for the next unused ID and assignes it to the
 // peer.
 func (ids *mempoolIDs) ReserveForPeer(peer p2p.Peer) {
 	ids.mtx.Lock()
@@ -110,14 +111,8 @@ func NewReactor(config *cfg.MempoolConfig, mempool *CListMempool) *Reactor {
 		mempool: mempool,
 		ids:     newMempoolIDs(),
 	}
-	memR.BaseReactor = *p2p.NewBaseReactor("Mempool", memR)
+	memR.BaseReactor = *p2p.NewBaseReactor("Reactor", memR)
 	return memR
-}
-
-// InitPeer implements Reactor by creating a state for the peer.
-func (memR *Reactor) InitPeer(peer p2p.Peer) p2p.Peer {
-	memR.ids.ReserveForPeer(peer)
-	return peer
 }
 
 // SetLogger sets the Logger on the reactor and the underlying mempool.
@@ -148,6 +143,7 @@ func (memR *Reactor) GetChannels() []*p2p.ChannelDescriptor {
 // AddPeer implements Reactor.
 // It starts a broadcast routine ensuring all txs are forwarded to the given peer.
 func (memR *Reactor) AddPeer(peer p2p.Peer) {
+	memR.ids.ReserveForPeer(peer)
 	go memR.broadcastTxRoutine(peer)
 }
 
@@ -160,7 +156,7 @@ func (memR *Reactor) RemovePeer(peer p2p.Peer, reason interface{}) {
 // Receive implements Reactor.
 // It adds any received transactions to the mempool.
 func (memR *Reactor) Receive(chID byte, src p2p.Peer, msgBytes []byte) {
-	msg, err := memR.decodeMsg(msgBytes)
+	msg, err := decodeMsg(msgBytes)
 	if err != nil {
 		memR.Logger.Error("Error decoding message", "src", src, "chId", chID, "msg", msg, "err", err, "bytes", msgBytes)
 		memR.Switch.StopPeerForError(src, err)
@@ -170,11 +166,8 @@ func (memR *Reactor) Receive(chID byte, src p2p.Peer, msgBytes []byte) {
 
 	switch msg := msg.(type) {
 	case *TxMessage:
-		txInfo := TxInfo{SenderID: memR.ids.GetForPeer(src)}
-		if src != nil {
-			txInfo.SenderP2PID = src.ID()
-		}
-		err := memR.mempool.CheckTx(msg.Tx, nil, txInfo)
+		peerID := memR.ids.GetForPeer(src)
+		err := memR.mempool.CheckTxWithInfo(msg.Tx, nil, TxInfo{SenderID: peerID})
 		if err != nil {
 			memR.Logger.Info("Could not check tx", "tx", txID(msg.Tx), "err", err)
 		}
@@ -270,10 +263,9 @@ func RegisterMempoolMessages(cdc *amino.Codec) {
 	cdc.RegisterConcrete(&TxMessage{}, "tendermint/mempool/TxMessage", nil)
 }
 
-func (memR *Reactor) decodeMsg(bz []byte) (msg MempoolMessage, err error) {
-	maxMsgSize := calcMaxMsgSize(memR.config.MaxTxBytes)
-	if l := len(bz); l > maxMsgSize {
-		return msg, ErrTxTooLarge{maxMsgSize, l}
+func decodeMsg(bz []byte) (msg MempoolMessage, err error) {
+	if len(bz) > maxMsgSize {
+		return msg, fmt.Errorf("Msg exceeds max size (%d > %d)", len(bz), maxMsgSize)
 	}
 	err = cdc.UnmarshalBinaryBare(bz, &msg)
 	return
@@ -289,10 +281,4 @@ type TxMessage struct {
 // String returns a string representation of the TxMessage.
 func (m *TxMessage) String() string {
 	return fmt.Sprintf("[TxMessage %v]", m.Tx)
-}
-
-// calcMaxMsgSize returns the max size of TxMessage
-// account for amino overhead of TxMessage
-func calcMaxMsgSize(maxTxSize int) int {
-	return maxTxSize + aminoOverheadForTxMessage
 }

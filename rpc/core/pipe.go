@@ -1,12 +1,12 @@
 package core
 
 import (
-	"fmt"
 	"time"
 
 	cfg "github.com/evdatsion/tendermint/config"
 	"github.com/evdatsion/tendermint/consensus"
 	"github.com/evdatsion/tendermint/crypto"
+	dbm "github.com/evdatsion/tendermint/libs/db"
 	"github.com/evdatsion/tendermint/libs/log"
 	mempl "github.com/evdatsion/tendermint/mempool"
 	"github.com/evdatsion/tendermint/p2p"
@@ -14,7 +14,6 @@ import (
 	sm "github.com/evdatsion/tendermint/state"
 	"github.com/evdatsion/tendermint/state/txindex"
 	"github.com/evdatsion/tendermint/types"
-	dbm "github.com/evdatsion/tm-db"
 )
 
 const (
@@ -70,6 +69,7 @@ var (
 	// objects
 	pubKey           crypto.PubKey
 	genDoc           *types.GenesisDoc // cache the genesis structure
+	addrBook         p2p.AddrBook
 	txIndexer        txindex.TxIndexer
 	consensusReactor *consensus.ConsensusReactor
 	eventBus         *types.EventBus // thread safe
@@ -116,6 +116,10 @@ func SetGenesisDoc(doc *types.GenesisDoc) {
 	genDoc = doc
 }
 
+func SetAddrBook(book p2p.AddrBook) {
+	addrBook = book
+}
+
 func SetProxyAppQuery(appConn proxy.AppConnQuery) {
 	proxyAppQuery = appConn
 }
@@ -141,24 +145,19 @@ func SetConfig(c cfg.RPCConfig) {
 	config = c
 }
 
-func validatePage(page, perPage, totalCount int) (int, error) {
+func validatePage(page, perPage, totalCount int) int {
 	if perPage < 1 {
-		panic(fmt.Sprintf("zero or negative perPage: %d", perPage))
-	}
-
-	if page == 0 {
-		return 1, nil // default
+		return 1
 	}
 
 	pages := ((totalCount - 1) / perPage) + 1
-	if pages == 0 {
-		pages = 1 // one page (even if it's empty)
-	}
-	if page < 0 || page > pages {
-		return 1, fmt.Errorf("page should be within [0, %d] range, given %d", pages, page)
+	if page < 1 {
+		page = 1
+	} else if page > pages {
+		page = pages
 	}
 
-	return page, nil
+	return page
 }
 
 func validatePerPage(perPage int) int {

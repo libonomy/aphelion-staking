@@ -1,7 +1,3 @@
----
-order: 3
----
-
 # Install Tendermint
 
 The fastest and easiest way to install the `tendermint` binary
@@ -18,12 +14,7 @@ To download pre-built binaries, see the [releases page](https://github.com/evdat
 ## From Source
 
 You'll need `go` [installed](https://golang.org/doc/install) and the required
-environment variables set, which can be done with the following commands:
-```bash
-echo export GOPATH=\"\$HOME/go\" >> ~/.bash_profile
-echo export PATH=\"\$PATH:\$GOPATH/bin\" >> ~/.bash_profile
-echo export GO111MODULE=on >> ~/.bash_profile
-```
+[environment variables set](https://github.com/evdatsion/tendermint/wiki/Setting-GOPATH)
 
 ### Get Source Code
 
@@ -37,7 +28,7 @@ cd tendermint
 ### Get Tools & Dependencies
 
 ```
-make tools
+make get_tools
 ```
 
 ### Compile

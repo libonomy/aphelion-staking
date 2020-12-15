@@ -27,12 +27,7 @@ type upnpNAT struct {
 // protocol is either "udp" or "tcp"
 type NAT interface {
 	GetExternalAddress() (addr net.IP, err error)
-	AddPortMapping(
-		protocol string,
-		externalPort,
-		internalPort int,
-		description string,
-		timeout int) (mappedExternalPort int, err error)
+	AddPortMapping(protocol string, externalPort, internalPort int, description string, timeout int) (mappedExternalPort int, err error)
 	DeletePortMapping(protocol string, externalPort, internalPort int) (err error)
 }
 
@@ -110,7 +105,7 @@ func Discover() (nat NAT, err error) {
 		}
 	}
 	err = errors.New("UPnP port discovery failed")
-	return nat, err
+	return
 }
 
 type Envelope struct {
@@ -209,7 +204,7 @@ func getServiceURL(rootURL string) (url, urnDomain string, err error) {
 	defer r.Body.Close() // nolint: errcheck
 
 	if r.StatusCode >= 400 {
-		err = errors.New(fmt.Sprint(r.StatusCode))
+		err = errors.New(string(r.StatusCode))
 		return
 	}
 	var root Root
@@ -246,7 +241,7 @@ func getServiceURL(rootURL string) (url, urnDomain string, err error) {
 	// Extract the domain name, which isn't always 'schemas-upnp-org'
 	urnDomain = strings.Split(d.ServiceType, ":")[1]
 	url = combineURL(rootURL, d.ControlURL)
-	return url, urnDomain, err
+	return
 }
 
 func combineURL(rootURL, subURL string) string {
@@ -259,8 +254,7 @@ func combineURL(rootURL, subURL string) string {
 
 func soapRequest(url, function, message, domain string) (r *http.Response, err error) {
 	fullMessage := "<?xml version=\"1.0\" ?>" +
-		"<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" " +
-		"s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">\r\n" +
+		"<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">\r\n" +
 		"<s:Body>" + message + "</s:Body></s:Envelope>"
 
 	req, err := http.NewRequest("POST", url, strings.NewReader(fullMessage))
@@ -291,7 +285,7 @@ func soapRequest(url, function, message, domain string) (r *http.Response, err e
 		r = nil
 		return
 	}
-	return r, err
+	return
 }
 
 type statusInfo struct {
@@ -328,7 +322,7 @@ func (n *upnpNAT) getExternalIPAddress() (info statusInfo, err error) {
 		return
 	}
 
-	return info, err
+	return
 }
 
 // GetExternalAddress returns an external IP. If GetExternalIPAddress action
@@ -345,12 +339,7 @@ func (n *upnpNAT) GetExternalAddress() (addr net.IP, err error) {
 	return
 }
 
-func (n *upnpNAT) AddPortMapping(
-	protocol string,
-	externalPort,
-	internalPort int,
-	description string,
-	timeout int) (mappedExternalPort int, err error) {
+func (n *upnpNAT) AddPortMapping(protocol string, externalPort, internalPort int, description string, timeout int) (mappedExternalPort int, err error) {
 	// A single concatenation would break ARM compilation.
 	message := "<u:AddPortMapping xmlns:u=\"urn:" + n.urnDomain + ":service:WANIPConnection:1\">\r\n" +
 		"<NewRemoteHost></NewRemoteHost><NewExternalPort>" + strconv.Itoa(externalPort)
