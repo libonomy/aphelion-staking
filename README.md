@@ -149,8 +149,8 @@ Additional documentation is found [here](/docs/tools).
 
 ### Applications
 
-- [Cosmos SDK](http://github.com/evdatsion/cosmos-sdk); a cryptocurrency application framework
-- [Ethermint](http://github.com/evdatsion/ethermint); Ethereum on Tendermint
+- [Cosmos SDK](http://github.com/cosmos/cosmos-sdk); a cryptocurrency application framework
+- [Ethermint](http://github.com/cosmos/ethermint); Ethereum on Tendermint
 - [Many more](https://tendermint.com/ecosystem)
 
 ### Research

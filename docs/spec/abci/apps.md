@@ -386,7 +386,7 @@ The expectation is for there to be some number of high level paths
 differentiating concerns, like `/p2p`, `/store`, and `/app`. Currently,
 Tendermint only uses `/p2p`, for filtering peers. For more advanced use, see the
 implementation of
-[Query in the Cosmos-SDK](https://github.com/evdatsion/cosmos-sdk/blob/v0.23.1/baseapp/baseapp.go#L333).
+[Query in the Cosmos-SDK](https://github.com/cosmos/cosmos-sdk/blob/v0.23.1/baseapp/baseapp.go#L333).
 
 ## Crash Recovery
 

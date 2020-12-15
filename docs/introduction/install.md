@@ -28,8 +28,8 @@ echo export GO111MODULE=on >> ~/.bash_profile
 ### Get Source Code
 
 ```
-mkdir -p $GOPATH/src/github.com/tendermint
-cd $GOPATH/src/github.com/tendermint
+mkdir -p $GOPATH/src/github.com/evdatsion
+cd $GOPATH/src/github.com/evdatsion
 git clone https://github.com/evdatsion/tendermint.git
 cd tendermint
 ```

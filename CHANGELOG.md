@@ -909,17 +909,17 @@ This release fixes a CLevelDB memory leak. It was happening because we were not
 closing the WriteBatch object after use. See [levigo's
 godoc](https://godoc.org/github.com/jmhodges/levigo#WriteBatch.Close) for the
 Close method. Special thanks goes to @Stumble who both reported an issue in
-[cosmos-sdk](https://github.com/evdatsion/cosmos-sdk/issues/3842) and provided a
+[cosmos-sdk](https://github.com/cosmos/cosmos-sdk/issues/3842) and provided a
 fix here.
 
 ### BREAKING CHANGES:
 
 - Go API
-  - [libs/db] [\#3842](https://github.com/evdatsion/cosmos-sdk/issues/3842) Add Close() method to Batch interface (@Stumble)
+  - [libs/db] [\#3842](https://github.com/cosmos/cosmos-sdk/issues/3842) Add Close() method to Batch interface (@Stumble)
 
 ### BUG FIXES:
 
-- [libs/db] [\#3842](https://github.com/evdatsion/cosmos-sdk/issues/3842) Fix CLevelDB memory leak (@Stumble)
+- [libs/db] [\#3842](https://github.com/cosmos/cosmos-sdk/issues/3842) Fix CLevelDB memory leak (@Stumble)
 
 ## v0.30.1
 
@@ -1607,8 +1607,8 @@ increasing attention to backwards compatibility. Thanks for bearing with us!
 ### IMPROVEMENTS:
 
 - Additional Metrics
-  - [consensus] [\#2169](https://github.com/evdatsion/cosmos-sdk/issues/2169)
-  - [p2p] [\#2169](https://github.com/evdatsion/cosmos-sdk/issues/2169)
+  - [consensus] [\#2169](https://github.com/cosmos/cosmos-sdk/issues/2169)
+  - [p2p] [\#2169](https://github.com/cosmos/cosmos-sdk/issues/2169)
 - [config] [\#2232](https://github.com/evdatsion/tendermint/issues/2232) Added ValidateBasic method, which performs basic checks
 - [crypto/ed25519] [\#2558](https://github.com/evdatsion/tendermint/issues/2558) Switch to use latest `golang.org/x/crypto` through our fork at
   github.com/evdatsion/crypto

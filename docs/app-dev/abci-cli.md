@@ -15,8 +15,8 @@ Make sure you [have Go installed](https://golang.org/doc/install).
 Next, install the `abci-cli` tool and example applications:
 
 ```
-mkdir -p $GOPATH/src/github.com/tendermint
-cd $GOPATH/src/github.com/tendermint
+mkdir -p $GOPATH/src/github.com/evdatsion
+cd $GOPATH/src/github.com/evdatsion
 git clone https://github.com/evdatsion/tendermint.git
 cd tendermint
 make tools

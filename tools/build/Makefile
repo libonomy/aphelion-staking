@@ -78,17 +78,17 @@ build-ethermint: git-branch gopath-setup
 
 build-gaia: git-branch gopath-setup
 	@echo "*** Building gaia"
-	go get -d -u go github.com/evdatsion/gaia || echo "Workaround for go downloads."
-	cd $(GOPATH)/src/github.com/evdatsion/gaia && git checkout "$(GIT_BRANCH)" && git pull
-	export PATH=$(GOPATH)/bin:$(PATH) && $(MAKE) -C $(GOPATH)/src/github.com/evdatsion/gaia install
+	go get -d -u go github.com/cosmos/gaia || echo "Workaround for go downloads."
+	cd $(GOPATH)/src/github.com/cosmos/gaia && git checkout "$(GIT_BRANCH)" && git pull
+	export PATH=$(GOPATH)/bin:$(PATH) && $(MAKE) -C $(GOPATH)/src/github.com/cosmos/gaia install
 	@echo "*** Built gaia"
 
 build-basecoind: git-branch gopath-setup
 	@echo "*** Building basecoind from cosmos-sdk"
-	go get -d -u github.com/evdatsion/cosmos-sdk/examples/basecoin/cmd/basecoind
-	cd $(GOPATH)/src/github.com/evdatsion/cosmos-sdk && git checkout "$(GIT_BRANCH)" && git pull
-	export PATH=$(GOPATH)/bin:$(PATH) && $(MAKE) -C $(GOPATH)/src/github.com/evdatsion/cosmos-sdk tools build
-	cp $(GOPATH)/src/github.com/evdatsion/cosmos-sdk/build/basecoind $(GOPATH)/bin/basecoind
+	go get -d -u github.com/cosmos/cosmos-sdk/examples/basecoin/cmd/basecoind
+	cd $(GOPATH)/src/github.com/cosmos/cosmos-sdk && git checkout "$(GIT_BRANCH)" && git pull
+	export PATH=$(GOPATH)/bin:$(PATH) && $(MAKE) -C $(GOPATH)/src/github.com/cosmos/cosmos-sdk tools build
+	cp $(GOPATH)/src/github.com/cosmos/cosmos-sdk/build/basecoind $(GOPATH)/bin/basecoind
 	@echo "*** Built basecoind from cosmos-sdk"
 
 ###
@@ -278,7 +278,7 @@ clean: mostlyclean
 
 distclean: clean
 	rm -rf $(GOPATH)/src/github.com/evdatsion/tendermint
-	rm -rf $(GOPATH)/src/github.com/evdatsion/cosmos-sdk
+	rm -rf $(GOPATH)/src/github.com/cosmos/cosmos-sdk
 	rm -rf $(GOPATH)/src/github.com/evdatsion/ethermint 
 	rm -rf $(GOPATH)/bin/tendermint
 	rm -rf $(GOPATH)/bin/basecoind

@@ -26,7 +26,7 @@ called kvstore, a (very) simple distributed BFT key-value store.
 ## Built-in app vs external app
 
 To get maximum performance it is better to run your application alongside
-Tendermint Core. [Cosmos SDK](https://github.com/evdatsion/cosmos-sdk) is written
+Tendermint Core. [Cosmos SDK](https://github.com/cosmos/cosmos-sdk) is written
 this way. Please refer to [Writing a built-in Tendermint Core application in
 Go](./go-built-in.md) guide for details.
 

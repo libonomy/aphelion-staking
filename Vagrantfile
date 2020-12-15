@@ -49,7 +49,7 @@ Vagrant.configure("2") do |config|
     echo 'cd go/src/github.com/evdatsion/tendermint' >> /home/vagrant/.bash_profile
 
     mkdir -p /home/vagrant/go/bin
-    mkdir -p /home/vagrant/go/src/github.com/tendermint
+    mkdir -p /home/vagrant/go/src/github.com/evdatsion
     ln -s /vagrant /home/vagrant/go/src/github.com/evdatsion/tendermint
 
     chown -R vagrant:vagrant /home/vagrant/go
