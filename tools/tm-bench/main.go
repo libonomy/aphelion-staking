@@ -41,7 +41,7 @@ func main() {
 	flagSet.BoolVar(&verbose, "v", false, "Verbose output")
 
 	flagSet.Usage = func() {
-		fmt.Println(`Tendermint blockchain benchmarking tool.
+		fmt.Println(`Aphelion blockchain benchmarking tool.
 
 Usage:
 	` + usage + `

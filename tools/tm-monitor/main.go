@@ -21,7 +21,7 @@ func main() {
 	flag.BoolVar(&noton, "no-ton", false, "Do not show ton (table of nodes)")
 
 	flag.Usage = func() {
-		fmt.Println(`Tendermint monitor watches over one or more Tendermint core
+		fmt.Println(`Aphelion monitor watches over one or more Aphelion core
 applications, collecting and providing various statistics to the user.
 
 Usage:

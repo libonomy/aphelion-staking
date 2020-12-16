@@ -6,13 +6,13 @@ relatively recent (< unbonding period) known validator set, one can get
 indisputable proof that data is in the chain (current state) or detect if the
 node is lying to the client.
 
-Tendermint RPC exposes a lot of info, but a malicious node could return any
+Aphelion RPC exposes a lot of info, but a malicious node could return any
 data it wants to queries, or even to block headers, even making up fake
 signatures from non-existent validators to justify it. This is a lot of logic
 to get right, to be contained in a small, easy to use library, that does this
 for you, so you can just build nice applications.
 
-We design for clients who have no strong trust relationship with any Tendermint
+We design for clients who have no strong trust relationship with any Aphelion
 node, just the blockchain and validator set as a whole.
 
 SignedHeader
@@ -66,7 +66,7 @@ A Provider allows us to store and retrieve the FullCommits.
         LatestFullCommit(chainID string, minHeight, maxHeight int64) (FullCommit, error)
     }
 
-* client.NewHTTPProvider - query Tendermint rpc.
+* client.NewHTTPProvider - query Aphelion rpc.
 
 A PersistentProvider is a Provider that also allows for saving state.  This is
 used by the DynamicVerifier for persistence.

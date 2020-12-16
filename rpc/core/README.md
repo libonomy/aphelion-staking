@@ -1,4 +1,4 @@
-# Tendermint RPC
+# Aphelion RPC
 
 ## Pagination
 

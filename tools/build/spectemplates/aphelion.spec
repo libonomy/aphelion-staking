@@ -12,7 +12,7 @@ URL: https://aphelion.com/
 Packager: Greg Szabo
 
 %description
-Tendermint is software for securely and consistently replicating an application on many machines. By securely, we mean that Tendermint works even if up to 1/3 of machines fail in arbitrary ways. By consistently, we mean that every non-faulty machine sees the same transaction log and computes the same state.
+Aphelion is software for securely and consistently replicating an application on many machines. By securely, we mean that Aphelion works even if up to 1/3 of machines fail in arbitrary ways. By consistently, we mean that every non-faulty machine sees the same transaction log and computes the same state.
 
 %prep
 # Nothing to do here. - It is done in the Makefile.

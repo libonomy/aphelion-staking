@@ -338,7 +338,7 @@ func TestLoadBlockPart(t *testing.T) {
 	require.Nil(t, res, "a non-existent block part should return nil")
 
 	// 2. Next save a corrupted block then try to load it
-	db.Set(calcBlockPartKey(height, index), []byte("Tendermint"))
+	db.Set(calcBlockPartKey(height, index), []byte("Aphelion"))
 	res, _, panicErr = doFn(loadPart)
 	require.NotNil(t, panicErr, "expecting a non-nil panic")
 	require.Contains(t, panicErr.Error(), "unmarshal to types.Part failed")
@@ -367,7 +367,7 @@ func TestLoadBlockMeta(t *testing.T) {
 	require.Nil(t, res, "a non-existent blockMeta should return nil")
 
 	// 2. Next save a corrupted blockMeta then try to load it
-	db.Set(calcBlockMetaKey(height), []byte("Tendermint-Meta"))
+	db.Set(calcBlockMetaKey(height), []byte("Aphelion-Meta"))
 	res, _, panicErr = doFn(loadMeta)
 	require.NotNil(t, panicErr, "expecting a non-nil panic")
 	require.Contains(t, panicErr.Error(), "unmarshal to types.BlockMeta")

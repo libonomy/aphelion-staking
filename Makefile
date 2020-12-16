@@ -19,7 +19,7 @@ include tools.mk
 include tests.mk
 
 ########################################
-### Build Tendermint
+### Build Aphelion
 
 build:
 	CGO_ENABLED=0 go build $(BUILD_FLAGS) -tags $(BUILD_TAGS) -o $(OUTPUT) ./cmd/aphelion/

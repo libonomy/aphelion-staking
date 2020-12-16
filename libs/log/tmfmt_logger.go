@@ -35,7 +35,7 @@ type tmfmtLogger struct {
 }
 
 // NewTMFmtLogger returns a logger that encodes keyvals to the Writer in
-// Tendermint custom format. Note complex types (structs, maps, slices)
+// Aphelion custom format. Note complex types (structs, maps, slices)
 // formatted as "%+v".
 //
 // Each log event produces no more than one call to w.Write.
@@ -82,7 +82,7 @@ func (l tmfmtLogger) Log(keyvals ...interface{}) error {
 		}
 	}
 
-	// Form a custom Tendermint line
+	// Form a custom Aphelion line
 	//
 	// Example:
 	//     D[2016-05-02|11:06:44.322]   Stopping AddrBook (ignoring: already stopped)

@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   version: "Master"
-  title: RPC client for Tendermint
+  title: RPC client for Aphelion
   description: A REST interface for state queries, transaction generation and broadcasting.
   license:
     name: Apache 2.0
@@ -19,7 +19,7 @@ tags:
     description: Evidence APIs
 schemes:
   - https
-host: stargate.cosmos.network:26657
+host: api.aphelion.ai:26657
 securityDefinitions:
   kms:
     type: basic
@@ -166,7 +166,7 @@ paths:
               tm.event = 'Tx' AND tx.height = 5   # all txs of the fifth block
               tx.height = 5                       # all txs of the fifth block
 
-        Tendermint provides a few predefined keys: tm.event, tx.hash and tx.height.
+        Aphelion provides a few predefined keys: tm.event, tx.hash and tx.height.
         Note for transactions, you can define additional keys by providing events with
         DeliverTx response.
 
@@ -378,7 +378,7 @@ paths:
       tags:
         - Info
       description: |
-        Get Tendermint status including node info, pubkey, latest block hash, app hash, block height and time.
+        Get Aphelion status including node info, pubkey, latest block hash, app hash, block height and time.
       produces:
         - application/json
       responses:
@@ -961,7 +961,7 @@ definitions:
         x-example: "tcp:0.0.0.0:26656"
       network:
         type: string
-        x-example: "cosmoshub-2"
+        x-example: "libonomycluster-1"
       version:
         type: string
         x-example: "0.32.1"
@@ -1195,7 +1195,7 @@ definitions:
         type: object
       chain_id:
         type: string
-        x-example: "cosmoshub-2"
+        x-example: "libonomycluster-1"
       height:
         type: string
         x-example: "12"
@@ -1510,7 +1510,7 @@ definitions:
                     type: "object"
                   chain_id:
                     type: "string"
-                    example: "cosmoshub-2"
+                    example: "libonomycluster-1"
                   height:
                     type: "string"
                     example: "12"
@@ -1729,7 +1729,7 @@ definitions:
                 example: "2019-04-22T17:00:00Z"
               chain_id:
                 type: "string"
-                example: "cosmoshub-2"
+                example: "libonomycluster-1"
               consensus_params:
                 required:
                   - "block"

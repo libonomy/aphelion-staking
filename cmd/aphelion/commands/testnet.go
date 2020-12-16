@@ -72,10 +72,10 @@ func init() {
 		"Randomize the moniker for each generated node")
 }
 
-// TestnetFilesCmd allows initialisation of files for a Tendermint testnet.
+// TestnetFilesCmd allows initialisation of files for a Aphelion testnet.
 var TestnetFilesCmd = &cobra.Command{
 	Use:   "testnet",
-	Short: "Initialize files for a Tendermint testnet",
+	Short: "Initialize files for a Aphelion testnet",
 	Long: `testnet will create "v" + "n" number of directories and populate each with
 necessary files (private validator, genesis, config, etc.).
 

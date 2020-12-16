@@ -1,10 +1,10 @@
-# Tendermint P2P Tests
+# Aphelion P2P Tests
 
 These scripts facilitate setting up and testing a local testnet using docker containers.
 
 Setup your own local testnet as follows.
 
-For consistency, we assume all commands are run from the Tendermint repository root (ie. $GOPATH/src/github.com/evdatsion/aphelion-dpos-bft).
+For consistency, we assume all commands are run from the Aphelion repository root (ie. $GOPATH/src/github.com/evdatsion/aphelion-dpos-bft).
 
 First, build the docker image:
 
@@ -21,7 +21,7 @@ docker network create --driver bridge --subnet 172.57.0.0/16 my_testnet
 This gives us a new network with IP addresses in the rage `172.57.0.0 - 172.57.255.255`.
 Peers on the network can have any IP address in this range.
 For our four node network, let's pick `172.57.0.101 - 172.57.0.104`.
-Since we use Tendermint's default listening port of 26656, our list of seed nodes will look like:
+Since we use Aphelion's default listening port of 26656, our list of seed nodes will look like:
 
 ```
 172.57.0.101:26656,172.57.0.102:26656,172.57.0.103:26656,172.57.0.104:26656

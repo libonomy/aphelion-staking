@@ -32,7 +32,7 @@ var ABCIPubKeyTypesToAminoNames = map[string]string{
 
 //-------------------------------------------------------
 
-// TM2PB is used for converting Tendermint ABCI to protobuf ABCI.
+// TM2PB is used for converting Aphelion ABCI to protobuf ABCI.
 // UNSTABLE
 var TM2PB = tm2pb{}
 
@@ -180,7 +180,7 @@ func (tm2pb) NewValidatorUpdate(pubkey crypto.PubKey, power int64) abci.Validato
 
 //----------------------------------------------------------------------------
 
-// PB2TM is used for converting protobuf ABCI to Tendermint ABCI.
+// PB2TM is used for converting protobuf ABCI to Aphelion ABCI.
 // UNSTABLE
 var PB2TM = pb2tm{}
 

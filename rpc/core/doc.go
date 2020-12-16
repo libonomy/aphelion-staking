@@ -1,13 +1,13 @@
 /*
 # Introduction
 
-Tendermint supports the following RPC protocols:
+Aphelion supports the following RPC protocols:
 
 * URI over HTTP
 * JSONRPC over HTTP
 * JSONRPC over websockets
 
-Tendermint RPC is built using our own RPC library which contains its own set of documentation and tests.
+Aphelion RPC is built using our own RPC library which contains its own set of documentation and tests.
 See it here: https://github.com/evdatsion/aphelion-dpos-bft/tree/master/rpc/lib
 
 ## Configuration

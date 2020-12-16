@@ -1,4 +1,4 @@
-# Tendermint Tests
+# Aphelion Tests
 
 The unit tests (ie. the `go test` s) can be run with `make test`.
 The integration tests can be run with `make test_integrations`.

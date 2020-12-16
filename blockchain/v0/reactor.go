@@ -155,7 +155,7 @@ func (bcR *BlockchainReactor) RemovePeer(peer p2p.Peer, reason interface{}) {
 
 // respondToPeer loads a block and sends it to the requesting peer,
 // if we have it. Otherwise, we'll respond saying we don't have it.
-// According to the Tendermint spec, if all nodes are honest,
+// According to the Aphelion spec, if all nodes are honest,
 // no node should be requesting for a block that's non-existent.
 func (bcR *BlockchainReactor) respondToPeer(msg *bcBlockRequestMessage,
 	src p2p.Peer) (queued bool) {

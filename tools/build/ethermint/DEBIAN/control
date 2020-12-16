@@ -10,6 +10,6 @@ Package: ethermint
 Architecture: amd64
 Version: @VERSION@
 Installed-Size: @INSTALLEDSIZE@
-Description: ethermint enables ethereum as an ABCI application on aphelion and the COSMOS hub
- Ethermint enables ethereum to run as an ABCI application on aphelion and the COSMOS hub. This application allows you to get all the benefits of ethereum without having to run your own miners.
+Description: ethermint enables ethereum as an ABCI application on aphelion and the Libonomy cluster
+ Ethermint enables ethereum to run as an ABCI application on aphelion and the Libonomy cluster. This application allows you to get all the benefits of ethereum without having to run your own miners.
 

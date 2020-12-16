@@ -15,7 +15,7 @@ import (
 )
 
 //-----------------------------------------------------------------------------
-// NOTE: tx should be signed, but this is only checked at the app level (not by Tendermint!)
+// NOTE: tx should be signed, but this is only checked at the app level (not by Aphelion!)
 
 // BroadcastTxAsync returns right away, with no response. Does not wait for
 // CheckTx nor DeliverTx results.
@@ -105,7 +105,7 @@ func BroadcastTxCommit(ctx *rpctypes.Context, tx types.Tx) (*ctypes.ResultBroadc
 	case <-deliverTxSub.Cancelled():
 		var reason string
 		if deliverTxSub.Err() == nil {
-			reason = "Tendermint exited"
+			reason = "Aphelion exited"
 		} else {
 			reason = deliverTxSub.Err().Error()
 		}

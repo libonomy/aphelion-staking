@@ -71,7 +71,7 @@ func NewProtocolVersion(p2p, block, app version.Protocol) ProtocolVersion {
 var _ NodeInfo = DefaultNodeInfo{}
 
 // DefaultNodeInfo is the basic node information exchanged
-// between two peers during the Tendermint P2P handshake.
+// between two peers during the Aphelion P2P handshake.
 type DefaultNodeInfo struct {
 	ProtocolVersion ProtocolVersion `json:"protocol_version"`
 

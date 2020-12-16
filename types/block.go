@@ -32,7 +32,7 @@ const (
 	MaxAminoOverheadForBlock int64 = 11
 )
 
-// Block defines the atomic unit of a Tendermint blockchain.
+// Block defines the atomic unit of a Aphelion blockchain.
 type Block struct {
 	mtx        sync.Mutex
 	Header     `json:"header"`
@@ -329,7 +329,7 @@ func MaxDataBytesUnknownEvidence(maxBytes int64, valsCount int) int64 {
 
 //-----------------------------------------------------------------------------
 
-// Header defines the structure of a Tendermint block header.
+// Header defines the structure of a Aphelion block header.
 // NOTE: changes to the Header should be duplicated in:
 // - header.Hash()
 // - abci.Header

@@ -12,7 +12,7 @@ import (
 	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
-// Status returns Tendermint status including node info, pubkey, latest block
+// Status returns Aphelion status including node info, pubkey, latest block
 // hash, app hash, block height and time.
 // More: https://aphelion.com/rpc/#/Info/status
 func Status(ctx *rpctypes.Context) (*ctypes.ResultStatus, error) {

@@ -9,7 +9,7 @@ import (
 	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
 )
 
-// PrivValidator defines the functionality of a local Tendermint validator
+// PrivValidator defines the functionality of a local Aphelion validator
 // that signs votes and proposals, and never double signs.
 type PrivValidator interface {
 	// TODO: Extend the interface to return errors too. Issue: https://github.com/evdatsion/aphelion-dpos-bft/issues/3602

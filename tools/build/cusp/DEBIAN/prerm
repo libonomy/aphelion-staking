@@ -1,5 +1,5 @@
 #!/bin/sh
-# prerm script for gaia
+# prerm script for cusp
 #
 
 set -e
@@ -18,7 +18,7 @@ set -e
 
 case "$1" in
     remove|upgrade|deconfigure)
-    systemctl stop gaia 2> /dev/null || :
+    systemctl stop cusp 2> /dev/null || :
     ;;
 
     failed-upgrade)

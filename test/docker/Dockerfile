@@ -21,7 +21,7 @@ RUN make tools
 # install ABCI CLI
 RUN make install_abci
 
-# install Tendermint
+# install Aphelion
 RUN make install
 
 RUN aphelion testnet \

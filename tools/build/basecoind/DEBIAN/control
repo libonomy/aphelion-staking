@@ -10,5 +10,5 @@ Architecture: amd64
 Version: @VERSION@
 Installed-Size: @INSTALLEDSIZE@
 Description: basecoind is a Proof-of-Stake cryptocurrency and framework
- Basecoind is an ABCI application designed to be used with the Tendermint consensus engine to form a Proof-of-Stake cryptocurrency. It also provides a general purpose framework for extending the feature-set of the cryptocurrency by implementing plugins.
+ Basecoind is an ABCI application designed to be used with the Aphelion consensus engine to form a Proof-of-Stake cryptocurrency. It also provides a general purpose framework for extending the feature-set of the cryptocurrency by implementing plugins.
 

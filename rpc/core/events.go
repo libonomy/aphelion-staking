@@ -53,7 +53,7 @@ func Subscribe(ctx *rpctypes.Context, query string) (*ctypes.ResultSubscribe, er
 				if sub.Err() != tmpubsub.ErrUnsubscribed {
 					var reason string
 					if sub.Err() == nil {
-						reason = "Tendermint exited"
+						reason = "Aphelion exited"
 					} else {
 						reason = sub.Err().Error()
 					}

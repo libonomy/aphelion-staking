@@ -35,12 +35,12 @@ endif
 # Here comes the real deal
 ###
 
-binaries = aphelion basecoind ethermint gaia
-build-binaries = build-aphelion build-basecoind build-ethermint build-gaia
-package-rpm = package-rpm-aphelion package-rpm-basecoind package-rpm-ethermint package-rpm-gaia
-install-rpm = install-rpm-aphelion install-rpm-basecoind install-rpm-ethermint install-rpm-gaia
-package-deb = package-deb-aphelion package-deb-basecoind package-deb-ethermint package-deb-gaia
-install-deb = install-deb-aphelion install-deb-basecoind install-deb-ethermint install-deb-gaia
+binaries = aphelion basecoind ethermint cusp
+build-binaries = build-aphelion build-basecoind build-ethermint build-cusp
+package-rpm = package-rpm-aphelion package-rpm-basecoind package-rpm-ethermint package-rpm-cusp
+install-rpm = install-rpm-aphelion install-rpm-basecoind install-rpm-ethermint install-rpm-cusp
+package-deb = package-deb-aphelion package-deb-basecoind package-deb-ethermint package-deb-cusp
+install-deb = install-deb-aphelion install-deb-basecoind install-deb-ethermint install-deb-cusp
 
 all: $(binaries)
 build: $(build-binaries)
@@ -76,20 +76,20 @@ build-ethermint: git-branch gopath-setup
 	cp $(GOPATH)/src/github.com/evdatsion/ethermint/build/ethermint $(GOPATH)/bin
 	@echo "*** Built ethermint"
 
-build-gaia: git-branch gopath-setup
-	@echo "*** Building gaia"
-	go get -d -u go github.com/cosmos/gaia || echo "Workaround for go downloads."
-	cd $(GOPATH)/src/github.com/cosmos/gaia && git checkout "$(GIT_BRANCH)" && git pull
-	export PATH=$(GOPATH)/bin:$(PATH) && $(MAKE) -C $(GOPATH)/src/github.com/cosmos/gaia install
-	@echo "*** Built gaia"
+build-cusp: git-branch gopath-setup
+	@echo "*** Building cusp"
+	go get -d -u go github.com/evdatsion/cusp || echo "Workaround for go downloads."
+	cd $(GOPATH)/src/github.com/evdatsion/cusp && git checkout "$(GIT_BRANCH)" && git pull
+	export PATH=$(GOPATH)/bin:$(PATH) && $(MAKE) -C $(GOPATH)/src/github.com/evdatsion/cusp install
+	@echo "*** Built cusp"
 
 build-basecoind: git-branch gopath-setup
-	@echo "*** Building basecoind from cosmos-sdk"
-	go get -d -u github.com/cosmos/cosmos-sdk/examples/basecoin/cmd/basecoind
-	cd $(GOPATH)/src/github.com/cosmos/cosmos-sdk && git checkout "$(GIT_BRANCH)" && git pull
-	export PATH=$(GOPATH)/bin:$(PATH) && $(MAKE) -C $(GOPATH)/src/github.com/cosmos/cosmos-sdk tools build
-	cp $(GOPATH)/src/github.com/cosmos/cosmos-sdk/build/basecoind $(GOPATH)/bin/basecoind
-	@echo "*** Built basecoind from cosmos-sdk"
+	@echo "*** Building basecoind from cusp-sdk"
+	go get -d -u github.com/evdatsion/cusp-sdk/examples/basecoin/cmd/basecoind
+	cd $(GOPATH)/src/github.com/evdatsion/cusp-sdk && git checkout "$(GIT_BRANCH)" && git pull
+	export PATH=$(GOPATH)/bin:$(PATH) && $(MAKE) -C $(GOPATH)/src/github.com/evdatsion/cusp-sdk tools build
+	cp $(GOPATH)/src/github.com/evdatsion/cusp-sdk/build/basecoind $(GOPATH)/bin/basecoind
+	@echo "*** Built basecoind from cusp-sdk"
 
 ###
 # Prepare package files
@@ -118,7 +118,7 @@ prepare-aphelion =
 prepare-ethermint = mkdir -p $(build_folder)/etc/ethermint && \
 	cp $(GOPATH)/src/github.com/evdatsion/ethermint/setup/genesis.json $(build_folder)/etc/ethermint/genesis.json && \
 	cp -r $(GOPATH)/src/github.com/evdatsion/ethermint/setup/keystore $(build_folder)/etc/ethermint
-prepare-gaia =
+prepare-cusp =
 prepare-basecoind = cp $(GOPATH)/bin/basecoind $(build_folder)/usr/bin
 
 ###
@@ -196,10 +196,10 @@ install-rpm-%: version-%
 	aws s3 sync s3://aphelion-packages/$(DEVOPS_PATH)centos/ tmp/s3/ --delete
 	mkdir -p tmp/s3/7/os/x86_64/Packages
 	cp RPMS/x86_64/$*-$($*_version)-$(BUILD_NUMBER).x86_64.rpm tmp/s3/7/os/x86_64/Packages
-	cp ./RPM-GPG-KEY-Tendermint tmp/s3/7/os/x86_64/
+	cp ./RPM-GPG-KEY-Aphelion tmp/s3/7/os/x86_64/
 	cp ./aphelion.repo tmp/s3/7/os/x86_64/
 	rm -f tmp/s3/7/os/x86_64/repodata/*.bz2 tmp/s3/7/os/x86_64/repodata/*.gz tmp/s3/7/os/x86_64/repodata/repomd.xml.asc
-	createrepo tmp/s3/7/os/x86_64/Packages -u https://aphelion-packages.interblock.io/$(DEVOPS_PATH)centos/7/os/x86_64/Packages -o tmp/s3/7/os/x86_64 --update -S --repo Tendermint --content aphelion --content basecoind --content ethermint
+	createrepo tmp/s3/7/os/x86_64/Packages -u https://aphelion-packages.interblock.io/$(DEVOPS_PATH)centos/7/os/x86_64/Packages -o tmp/s3/7/os/x86_64 --update -S --repo Aphelion --content aphelion --content basecoind --content ethermint
 	gpg --batch --passphrase "$(GPG_PASSPHRASE)" --detach-sign -a tmp/s3/7/os/x86_64/repodata/repomd.xml
 	aws s3 sync tmp/s3/ s3://aphelion-packages/$(DEVOPS_PATH)centos/ --delete --acl public-read
 	@echo "*** Uploaded $* to AWS $(DEVOPS_PATH)CentOS repository"
@@ -278,12 +278,12 @@ clean: mostlyclean
 
 distclean: clean
 	rm -rf $(GOPATH)/src/github.com/evdatsion/aphelion-dpos-bft
-	rm -rf $(GOPATH)/src/github.com/cosmos/cosmos-sdk
+	rm -rf $(GOPATH)/src/github.com/evdatsion/cusp-sdk
 	rm -rf $(GOPATH)/src/github.com/evdatsion/ethermint 
 	rm -rf $(GOPATH)/bin/aphelion
 	rm -rf $(GOPATH)/bin/basecoind
 	rm -rf $(GOPATH)/bin/ethermint
-	rm -rf $(GOPATH)/bin/gaia
+	rm -rf $(GOPATH)/bin/cusp
 
 .PHONY : clean
 

@@ -15,7 +15,7 @@ GO_TARBALL_URL="https://dl.google.com/go/${GO_TARBALL}"
 # Defaults
 
 DEFAULT_SIGN_COMMAND='gpg --detach-sign'
-DEFAULT_TENDERMINT_SIGS=${TENDERMINT_SIGS:-'aphelion.sigs'}
+DEFAULT_APHELION_SIGS=${APHELION_SIGS:-'aphelion.sigs'}
 DEFAULT_GITIAN_REPO='https://github.com/evdatsion/gitian-builder'
 DEFAULT_GBUILD_FLAGS=''
 DEFAULT_SIGS_REPO='https://github.com/evdatsion/aphelion-dpos-bft.sigs'
@@ -54,8 +54,8 @@ The following platforms are supported:
    -s IDENTITY      sign build as IDENTITY
 
 If a GPG identity is supplied via the -s flag, the build will be signed and verified.
-The signature will be saved in '${DEFAULT_TENDERMINT_SIGS}/'. An alternative output directory
-for signatures can be supplied via the environment variable \$TENDERMINT_SIGS.
+The signature will be saved in '${DEFAULT_APHELION_SIGS}/'. An alternative output directory
+for signatures can be supplied via the environment variable \$APHELION_SIGS.
 
 The default signing command used to sign the build is '$DEFAULT_SIGN_COMMAND'.
 An alternative signing command can be supplied via the environment
@@ -171,7 +171,7 @@ shift "$((OPTIND-1))"
 g_platforms=$(f_demangle_platforms "${1}")
 g_workdir="$(pwd)"
 g_commit="$(git rev-parse HEAD)"
-g_sigs_dir=${TENDERMINT_SIGS:-"${g_workdir}/${DEFAULT_TENDERMINT_SIGS}"}
+g_sigs_dir=${APHELION_SIGS:-"${g_workdir}/${DEFAULT_APHELION_SIGS}"}
 
 f_ensure_cache
 

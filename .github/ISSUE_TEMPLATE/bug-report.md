@@ -10,7 +10,7 @@ Be ready for followup questions, and please respond in a timely
 manner. We might ask you to provide additional logs and data (aphelion & app).
 -->
 
-**Tendermint version** (use `aphelion version` or `git rev-parse --verify HEAD` if installed from source):
+**Aphelion version** (use `aphelion version` or `git rev-parse --verify HEAD` if installed from source):
 
 
 **ABCI app** (name for built-in, URL for self-written if it's publicly available):

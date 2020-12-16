@@ -1,5 +1,5 @@
 #!/bin/sh
-# postrm script for gaia
+# postrm script for cusp
 #
 
 set -e

@@ -28,11 +28,11 @@ var waitForEventTimeout = 5 * time.Second
 
 func TestMain(m *testing.M) {
 	app := kvstore.NewKVStoreApplication()
-	node = rpctest.StartTendermint(app)
+	node = rpctest.StartAphelion(app)
 
 	code := m.Run()
 
-	rpctest.StopTendermint(node)
+	rpctest.StopAphelion(node)
 	os.Exit(code)
 }
 

@@ -19,7 +19,7 @@ def semver(ver):
 
 
 def get_aphelion_version():
-  """Extracts the current Tendermint version from version/version.go"""
+  """Extracts the current Aphelion version from version/version.go"""
   pattern = re.compile(r"TMCoreSemVer = \"(?P<version>([0-9.]+)+)\"")
   with open("version/version.go", "rt") as version_file:
     for line in version_file:
@@ -52,7 +52,7 @@ if __name__ == "__main__":
   if expected_version != "v0.0.0":
     cur_version = get_aphelion_version()
     if not cur_version:
-      print("Failed to obtain Tendermint version from version/version.go")
+      print("Failed to obtain Aphelion version from version/version.go")
       sys.exit(1)
     expected_version_noprefix = expected_version.lstrip("v")
     if expected_version_noprefix != "0.0.0" and expected_version_noprefix != cur_version:

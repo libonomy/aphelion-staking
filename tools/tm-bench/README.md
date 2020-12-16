@@ -4,7 +4,7 @@
 
 ### This tool will be depreacted in favor of [tm-load-test](https://github.com/interchainio/tm-load-test).
 
-Tendermint blockchain benchmarking tool:
+Aphelion blockchain benchmarking tool:
 
 - [https://github.com/evdatsion/aphelion-dpos-bft/tree/master/tools/tm-bench](https://github.com/evdatsion/aphelion-dpos-bft/tree/master/tools/tm-bench)
 
@@ -36,7 +36,7 @@ docker run -it --rm --link=tm aphelion/bench tm:26657
 
 ### Using binaries
 
-[Install Tendermint](https://github.com/evdatsion/aphelion-dpos-bft#install)
+[Install Aphelion](https://github.com/evdatsion/aphelion-dpos-bft#install)
 
 then run:
 
@@ -52,7 +52,7 @@ with the last command being in a separate window.
 ## Usage
 
 ```
-Tendermint blockchain benchmarking tool.
+Aphelion blockchain benchmarking tool.
 
 Usage:
         tm-bench [-c 1] [-T 10] [-r 1000] [-s 250] [endpoints] [-output-format <plain|json> [-broadcast-tx-method <async|sync|commit>]]

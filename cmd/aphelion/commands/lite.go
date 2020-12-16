@@ -37,8 +37,8 @@ var (
 
 func init() {
 	LiteCmd.Flags().StringVar(&listenAddr, "laddr", "tcp://localhost:8888", "Serve the proxy on the given address")
-	LiteCmd.Flags().StringVar(&nodeAddr, "node", "tcp://localhost:26657", "Connect to a Tendermint node at this address")
-	LiteCmd.Flags().StringVar(&chainID, "chain-id", "aphelion", "Specify the Tendermint chain ID")
+	LiteCmd.Flags().StringVar(&nodeAddr, "node", "tcp://localhost:26657", "Connect to a Aphelion node at this address")
+	LiteCmd.Flags().StringVar(&chainID, "chain-id", "aphelion", "Specify the Aphelion chain ID")
 	LiteCmd.Flags().StringVar(&home, "home-dir", ".aphelion-lite", "Specify the home directory")
 	LiteCmd.Flags().IntVar(
 		&maxOpenConnections,

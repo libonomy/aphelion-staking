@@ -13,7 +13,7 @@ In order to get this working, we need to know a few pieces of info,
 the chain id of aphelion, the chain id of basecoin, and an account
 with a bit of cash....
 
-### Tendermint Chain ID
+### Aphelion Chain ID
 
 `kubectl exec -c tm tm-0 -- curl -s http://tm-1.basecoin:26657/status | json_pp | grep network`
 

@@ -12,10 +12,10 @@ import (
 	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
 )
 
-// InitFilesCmd initialises a fresh Tendermint Core instance.
+// InitFilesCmd initialises a fresh Aphelion Core instance.
 var InitFilesCmd = &cobra.Command{
 	Use:   "init",
-	Short: "Initialize Tendermint",
+	Short: "Initialize Aphelion",
 	RunE:  initFiles,
 }
 

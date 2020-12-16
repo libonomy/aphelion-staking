@@ -10,7 +10,7 @@ import (
 	"github.com/evdatsion/aphelion-dpos-bft/privval"
 )
 
-// ResetAllCmd removes the database of this Tendermint core
+// ResetAllCmd removes the database of this Aphelion core
 // instance.
 var ResetAllCmd = &cobra.Command{
 	Use:   "unsafe_reset_all",

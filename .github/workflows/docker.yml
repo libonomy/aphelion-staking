@@ -46,7 +46,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build Tendermint
+      - name: Build Aphelion
         run: |
           make build-linux && cp build/aphelion DOCKER/aphelion
 

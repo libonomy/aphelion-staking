@@ -92,7 +92,7 @@ func RPCUnmonitor(m *monitor.Monitor) func(*rpctypes.Context, string) (bool, err
 	}
 }
 
-// func (tn *TendermintNetwork) StartMeter(chainID, valID, eventID string) error {
+// func (tn *AphelionNetwork) StartMeter(chainID, valID, eventID string) error {
 // 	tn.mtx.Lock()
 // 	defer tn.mtx.Unlock()
 // 	val, err := tn.getChainVal(chainID, valID)
@@ -102,7 +102,7 @@ func RPCUnmonitor(m *monitor.Monitor) func(*rpctypes.Context, string) (bool, err
 // 	return val.EventMeter().Subscribe(eventID, nil)
 // }
 
-// func (tn *TendermintNetwork) StopMeter(chainID, valID, eventID string) error {
+// func (tn *AphelionNetwork) StopMeter(chainID, valID, eventID string) error {
 // 	tn.mtx.Lock()
 // 	defer tn.mtx.Unlock()
 // 	val, err := tn.getChainVal(chainID, valID)
@@ -112,7 +112,7 @@ func RPCUnmonitor(m *monitor.Monitor) func(*rpctypes.Context, string) (bool, err
 // 	return val.EventMeter().Unsubscribe(eventID)
 // }
 
-// func (tn *TendermintNetwork) GetMeter(chainID, valID, eventID string) (*eventmeter.EventMetric, error) {
+// func (tn *AphelionNetwork) GetMeter(chainID, valID, eventID string) (*eventmeter.EventMetric, error) {
 // 	tn.mtx.Lock()
 // 	defer tn.mtx.Unlock()
 // 	val, err := tn.getChainVal(chainID, valID)

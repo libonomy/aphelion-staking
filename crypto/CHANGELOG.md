@@ -104,7 +104,7 @@ IMPROVEMENTS:
 
 BREAKING CHANGES:
 
-- Remove `cmd` and `keys/tx` packages altogether: move it to the cosmos-sdk
+- Remove `cmd` and `keys/tx` packages altogether: move it to the cusp-sdk
 - `cryptostore.Generator` takes a secret 
 - Remove `String()` from `Signature` interface
 

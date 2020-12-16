@@ -1,7 +1,7 @@
 /*
 Package client defines a provider that uses a rpcclient
 to get information, which is used to get new headers
-and validators directly from a Tendermint client.
+and validators directly from a Aphelion client.
 */
 package client
 

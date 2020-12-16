@@ -1,7 +1,7 @@
 FROM alpine:3.9
 LABEL maintainer="hello@aphelion.com"
 
-# Tendermint will be looking for the genesis file in /aphelion/config/genesis.json
+# Aphelion will be looking for the genesis file in /aphelion/config/genesis.json
 # (unless you change `genesis_file` in config.toml). You can put your config.toml and
 # private validator file into /aphelion/config.
 #

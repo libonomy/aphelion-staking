@@ -33,7 +33,7 @@ function start_procs(){
 		else
             $TM_CMD &> "aphelion_${name}.log" &
 		fi
-        PID_TENDERMINT=$!
+        PID_APHELION=$!
     else
         # run in foreground, fail
 		if [[ "$CIRCLECI" == true ]]; then
@@ -41,14 +41,14 @@ function start_procs(){
 		else
             FAIL_TEST_INDEX=$indexToFail $TM_CMD &> "aphelion_${name}.log"
 		fi
-        PID_TENDERMINT=$!
+        PID_APHELION=$!
     fi
 }
 
 function kill_procs(){
-    kill -9 "$PID_DUMMY" "$PID_TENDERMINT"
+    kill -9 "$PID_DUMMY" "$PID_APHELION"
     wait "$PID_DUMMY"
-    wait "$PID_TENDERMINT"
+    wait "$PID_APHELION"
 }
 
 # wait for port to be available

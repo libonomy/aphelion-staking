@@ -1,6 +1,6 @@
 # tm-monitor
 
-Tendermint blockchain monitoring tool; watches over one or more nodes,
+Aphelion blockchain monitoring tool; watches over one or more nodes,
 collecting and providing various statistics to the user:
 
 - [https://github.com/evdatsion/aphelion-dpos-bft/tree/master/tools/tm-monitor](https://github.com/evdatsion/aphelion-dpos-bft/tree/master/tools/tm-monitor)
@@ -31,7 +31,7 @@ docker run -it --rm -p "26670:26670" --link=tm aphelion/monitor tm:26657
 
 ### Using Binaries
 
-[Install Tendermint](https://github.com/evdatsion/aphelion-dpos-bft#install)
+[Install Aphelion](https://github.com/evdatsion/aphelion-dpos-bft#install)
 
 then run:
 
@@ -47,7 +47,7 @@ with the last command being in a separate window.
 ## Usage
 
 ```
-Tendermint monitor watches over one or more Tendermint core
+Aphelion monitor watches over one or more Aphelion core
 applications, collecting and providing various statistics to the user.
 
 Usage:

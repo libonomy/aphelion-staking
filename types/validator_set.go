@@ -643,7 +643,7 @@ func (vals *ValidatorSet) VerifyCommit(chainID string, blockID BlockID, height i
 // vals is the old validator set that we know.  Over 2/3 of the power in old
 // signed this block.
 //
-// In Tendermint, 1/3 of the voting power can halt or fork the chain, but 1/3
+// In Aphelion, 1/3 of the voting power can halt or fork the chain, but 1/3
 // can't make arbitrary state transitions.  You still need > 2/3 Byzantine to
 // make arbitrary state transitions.
 //

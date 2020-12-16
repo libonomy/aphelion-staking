@@ -12,12 +12,12 @@ function start_procs(){
     abci-cli kvstore --persist $TMHOME/kvstore &> "kvstore_${name}.log" &
     PID_DUMMY=$!
     aphelion node &> aphelion_${name}.log &
-    PID_TENDERMINT=$!
+    PID_APHELION=$!
     sleep 5
 }
 
 function kill_procs(){
-    kill -9 $PID_DUMMY $PID_TENDERMINT
+    kill -9 $PID_DUMMY $PID_APHELION
 }
 
 

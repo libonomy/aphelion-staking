@@ -816,7 +816,7 @@ func TestHandshakePanicsIfAppReturnsWrongAppHash(t *testing.T) {
 	blocks := makeBlocks(3, &state, privVal)
 	store.chain = blocks
 
-	// 2. Tendermint must panic if app returns wrong hash for the first block
+	// 2. Aphelion must panic if app returns wrong hash for the first block
 	//		- RANDOM HASH
 	//		- 0x02
 	//		- 0x03
@@ -834,7 +834,7 @@ func TestHandshakePanicsIfAppReturnsWrongAppHash(t *testing.T) {
 		})
 	}
 
-	// 3. Tendermint must panic if app returns wrong hash for the last block
+	// 3. Aphelion must panic if app returns wrong hash for the last block
 	//		- 0x01
 	//		- 0x02
 	//		- RANDOM HASH
