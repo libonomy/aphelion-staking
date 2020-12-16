@@ -7,8 +7,8 @@ require (
 	github.com/Workiva/go-datastructures v1.0.50
 	github.com/btcsuite/btcd v0.0.0-20190115013929-ed77733ec07d
 	github.com/btcsuite/btcutil v0.0.0-20180706230648-ab6388e0c60a
-	github.com/evdatsion/go-amino v0.14.1
-	github.com/evdatsion/tm-db v0.2.0-rf1
+	github.com/evdatsion/go-amino v0.1.1-t0141
+	github.com/evdatsion/tm-db v0.1.1-e
 	github.com/fortytw2/leaktest v1.3.0
 	github.com/go-kit/kit v0.9.0
 	github.com/go-logfmt/logfmt v0.4.0

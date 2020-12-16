@@ -964,7 +964,7 @@ definitions:
         x-example: "libonomycluster-1"
       version:
         type: string
-        x-example: "0.32.1"
+        x-example: "0.1.2"
       channels:
         type: string
         x-example: "4020212223303800"
