@@ -15,7 +15,7 @@ import (
 // Tx allows you to query the transaction results. `nil` could mean the
 // transaction is in the mempool, invalidated, or was not sent in the first
 // place.
-// More: https://tendermint.com/rpc/#/Info/tx
+// More: https://aphelion.com/rpc/#/Info/tx
 func Tx(ctx *rpctypes.Context, hash []byte, prove bool) (*ctypes.ResultTx, error) {
 
 	// if index is disabled, return error
@@ -53,7 +53,7 @@ func Tx(ctx *rpctypes.Context, hash []byte, prove bool) (*ctypes.ResultTx, error
 
 // TxSearch allows you to query for multiple transactions results. It returns a
 // list of transactions (maximum ?per_page entries) and the total count.
-// More: https://tendermint.com/rpc/#/Info/tx_search
+// More: https://aphelion.com/rpc/#/Info/tx_search
 func TxSearch(ctx *rpctypes.Context, query string, prove bool, page, perPage int) (*ctypes.ResultTxSearch, error) {
 	// if index is disabled, return error
 	if _, ok := txIndexer.(*null.TxIndex); ok {

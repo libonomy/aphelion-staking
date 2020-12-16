@@ -13,20 +13,20 @@ Assuming your application is running in another container with the name
 `app`:
 
 ```
-docker run -it --rm -v "/tmp:/tendermint" tendermint/tendermint init
-docker run -it --rm -v "/tmp:/tendermint" -p "26657:26657" --name=tm --link=app tendermint/tendermint node --proxy_app=tcp://app:26658
+docker run -it --rm -v "/tmp:/aphelion" aphelion/aphelion init
+docker run -it --rm -v "/tmp:/aphelion" -p "26657:26657" --name=tm --link=app aphelion/aphelion node --proxy_app=tcp://app:26658
 
-docker run -it --rm -p "26670:26670" --link=tm tendermint/monitor tm:26657
+docker run -it --rm -p "26670:26670" --link=tm aphelion/monitor tm:26657
 ```
 
 If you don't have an application yet, but still want to try monitor out,
 use `kvstore`:
 
 ```
-docker run -it --rm -v "/tmp:/tendermint" tendermint/tendermint init
-docker run -it --rm -v "/tmp:/tendermint" -p "26657:26657" --name=tm tendermint/tendermint node --proxy_app=kvstore
+docker run -it --rm -v "/tmp:/aphelion" aphelion/aphelion init
+docker run -it --rm -v "/tmp:/aphelion" -p "26657:26657" --name=tm aphelion/aphelion node --proxy_app=kvstore
 
-docker run -it --rm -p "26670:26670" --link=tm tendermint/monitor tm:26657
+docker run -it --rm -p "26670:26670" --link=tm aphelion/monitor tm:26657
 ```
 
 ### Using Binaries
@@ -36,8 +36,8 @@ docker run -it --rm -p "26670:26670" --link=tm tendermint/monitor tm:26657
 then run:
 
 ```
-tendermint init
-tendermint node --proxy_app=kvstore
+aphelion init
+aphelion node --proxy_app=kvstore
 
 tm-monitor localhost:26657
 ```

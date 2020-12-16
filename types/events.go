@@ -48,15 +48,15 @@ type TMEventData interface {
 
 func RegisterEventDatas(cdc *amino.Codec) {
 	cdc.RegisterInterface((*TMEventData)(nil), nil)
-	cdc.RegisterConcrete(EventDataNewBlock{}, "tendermint/event/NewBlock", nil)
-	cdc.RegisterConcrete(EventDataNewBlockHeader{}, "tendermint/event/NewBlockHeader", nil)
-	cdc.RegisterConcrete(EventDataTx{}, "tendermint/event/Tx", nil)
-	cdc.RegisterConcrete(EventDataRoundState{}, "tendermint/event/RoundState", nil)
-	cdc.RegisterConcrete(EventDataNewRound{}, "tendermint/event/NewRound", nil)
-	cdc.RegisterConcrete(EventDataCompleteProposal{}, "tendermint/event/CompleteProposal", nil)
-	cdc.RegisterConcrete(EventDataVote{}, "tendermint/event/Vote", nil)
-	cdc.RegisterConcrete(EventDataValidatorSetUpdates{}, "tendermint/event/ValidatorSetUpdates", nil)
-	cdc.RegisterConcrete(EventDataString(""), "tendermint/event/ProposalString", nil)
+	cdc.RegisterConcrete(EventDataNewBlock{}, "aphelion/event/NewBlock", nil)
+	cdc.RegisterConcrete(EventDataNewBlockHeader{}, "aphelion/event/NewBlockHeader", nil)
+	cdc.RegisterConcrete(EventDataTx{}, "aphelion/event/Tx", nil)
+	cdc.RegisterConcrete(EventDataRoundState{}, "aphelion/event/RoundState", nil)
+	cdc.RegisterConcrete(EventDataNewRound{}, "aphelion/event/NewRound", nil)
+	cdc.RegisterConcrete(EventDataCompleteProposal{}, "aphelion/event/CompleteProposal", nil)
+	cdc.RegisterConcrete(EventDataVote{}, "aphelion/event/Vote", nil)
+	cdc.RegisterConcrete(EventDataValidatorSetUpdates{}, "aphelion/event/ValidatorSetUpdates", nil)
+	cdc.RegisterConcrete(EventDataString(""), "aphelion/event/ProposalString", nil)
 }
 
 // Most event messages are basic types (a block, a transaction)

@@ -2,7 +2,7 @@
 
 # XXX: this script is intended to be run from
 # a fresh Digital Ocean droplet with FreeBSD
-# Just run tcsh install_tendermint_bsd.sh
+# Just run tcsh install_aphelion_bsd.sh
 
 # upon its completion, you must either reset
 # your terminal or run `source ~/.tcshrc`

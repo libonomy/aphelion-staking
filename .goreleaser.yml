@@ -6,9 +6,9 @@ env:
 
 builds:
   - id: "Tendermint"
-    main: ./cmd/tendermint/main.go
+    main: ./cmd/aphelion/main.go
     ldflags:
-     - -s -w -X github.com/evdatsion/tendermint/version.TMCoreSemVer={{ .Version }}
+     - -s -w -X github.com/evdatsion/aphelion-dpos-bft/version.TMCoreSemVer={{ .Version }}
     env:
       - CGO_ENABLED=0
     goos:

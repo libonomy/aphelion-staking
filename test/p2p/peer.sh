@@ -10,19 +10,19 @@ set +u
 NODE_FLAGS=$5
 set -u
 
-echo "starting tendermint peer ID=$ID"
-# start tendermint container on the network
+echo "starting aphelion peer ID=$ID"
+# start aphelion container on the network
 # NOTE: $NODE_FLAGS should be unescaped (no quotes). otherwise it will be
 # treated as one flag.
 
 # test/p2p/data/mach$((ID-1)) data is generated in test/docker/Dockerfile using
-# the tendermint testnet command.
+# the aphelion testnet command.
 if [[ "$ID" == "x" ]]; then # Set "x" to "1" to print to console.
 	docker run \
 		--net="$NETWORK_NAME" \
 		--ip=$(test/p2p/ip.sh "$ID") \
 		--name "local_testnet_$ID" \
-		--entrypoint tendermint \
+		--entrypoint aphelion \
 		-e TMHOME="/go/src/github.com/evdatsion/aphelion-dpos-bft/test/p2p/data/mach$((ID-1))" \
 		-e GOMAXPROCS=1 \
 		--log-driver=syslog \
@@ -35,7 +35,7 @@ else
 		--net="$NETWORK_NAME" \
 		--ip=$(test/p2p/ip.sh "$ID") \
 		--name "local_testnet_$ID" \
-		--entrypoint tendermint \
+		--entrypoint aphelion \
 		-e TMHOME="/go/src/github.com/evdatsion/aphelion-dpos-bft/test/p2p/data/mach$((ID-1))" \
 		-e GOMAXPROCS=1 \
 		--log-driver=syslog \

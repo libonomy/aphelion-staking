@@ -12,7 +12,7 @@ import (
 // If no height is provided, it will fetch the current validator set.
 // Note the validators are sorted by their address - this is the canonical
 // order for the validators in the set as used in computing their Merkle root.
-// More: https://tendermint.com/rpc/#/Info/validators
+// More: https://aphelion.com/rpc/#/Info/validators
 func Validators(ctx *rpctypes.Context, heightPtr *int64) (*ctypes.ResultValidators, error) {
 	// The latest validator that we know is the
 	// NextValidator of the last block.
@@ -33,7 +33,7 @@ func Validators(ctx *rpctypes.Context, heightPtr *int64) (*ctypes.ResultValidato
 
 // DumpConsensusState dumps consensus state.
 // UNSTABLE
-// More: https://tendermint.com/rpc/#/Info/dump_consensus_state
+// More: https://aphelion.com/rpc/#/Info/dump_consensus_state
 func DumpConsensusState(ctx *rpctypes.Context) (*ctypes.ResultDumpConsensusState, error) {
 	// Get Peer consensus states.
 	peers := p2pPeers.Peers().List()
@@ -66,7 +66,7 @@ func DumpConsensusState(ctx *rpctypes.Context) (*ctypes.ResultDumpConsensusState
 
 // ConsensusState returns a concise summary of the consensus state.
 // UNSTABLE
-// More: https://tendermint.com/rpc/#/Info/consensus_state
+// More: https://aphelion.com/rpc/#/Info/consensus_state
 func ConsensusState(ctx *rpctypes.Context) (*ctypes.ResultConsensusState, error) {
 	// Get self round state.
 	bz, err := consensusState.GetRoundStateSimpleJSON()
@@ -75,7 +75,7 @@ func ConsensusState(ctx *rpctypes.Context) (*ctypes.ResultConsensusState, error)
 
 // ConsensusParams gets the consensus parameters  at the given block height.
 // If no height is provided, it will fetch the current consensus params.
-// More: https://tendermint.com/rpc/#/Info/consensus_params
+// More: https://aphelion.com/rpc/#/Info/consensus_params
 func ConsensusParams(ctx *rpctypes.Context, heightPtr *int64) (*ctypes.ResultConsensusParams, error) {
 	height := consensusState.GetState().LastBlockHeight + 1
 	height, err := getHeight(height, heightPtr)

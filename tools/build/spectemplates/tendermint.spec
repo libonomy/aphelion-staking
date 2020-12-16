@@ -5,10 +5,10 @@ Release: @BUILD_NUMBER@
 %define debug_package       %{nil}
 %define __os_install_post   %{nil}
 
-Name: tendermint
+Name: aphelion
 Summary: securely and consistently replicate an application on many machines
 License: Apache 2.0
-URL: https://tendermint.com/
+URL: https://aphelion.com/
 Packager: Greg Szabo
 
 %description
@@ -25,7 +25,7 @@ cd %{name}-%{version}-%{release}
 %{__cp} -a * %{buildroot}
 
 %files
-%{_bindir}/tendermint
+%{_bindir}/aphelion
 %dir %{_defaultlicensedir}/%{name}
 %doc %{_defaultlicensedir}/%{name}/LICENSE
 

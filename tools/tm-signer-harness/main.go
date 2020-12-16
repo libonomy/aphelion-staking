@@ -18,7 +18,7 @@ import (
 const (
 	defaultAcceptRetries    = 100
 	defaultBindAddr         = "tcp://127.0.0.1:0"
-	defaultTMHome           = "~/.tendermint"
+	defaultTMHome           = "~/.aphelion"
 	defaultAcceptDeadline   = 1
 	defaultConnDeadline     = 3
 	defaultExtractKeyOutput = "./signing.key"

@@ -1,3 +1,3 @@
-killall tendermint
+killall aphelion
 killall abci-cli
-rm -rf ~/.tendermint_app
+rm -rf ~/.aphelion_app

@@ -29,7 +29,7 @@ const (
 // config/toml.go
 // NOTE: libs/cli must know to look in the config dir!
 var (
-	DefaultTendermintDir = ".tendermint"
+	DefaultTendermintDir = ".aphelion"
 	defaultConfigDir     = "config"
 	defaultDataDir       = "data"
 
@@ -233,7 +233,7 @@ func DefaultBaseConfig() BaseConfig {
 // TestBaseConfig returns a base configuration for testing a Tendermint node
 func TestBaseConfig() BaseConfig {
 	cfg := DefaultBaseConfig()
-	cfg.chainID = "tendermint_test"
+	cfg.chainID = "aphelion_test"
 	cfg.ProxyApp = "kvstore"
 	cfg.FastSyncMode = false
 	cfg.DBBackend = "memdb"
@@ -365,7 +365,7 @@ type RPCConfig struct {
 	MaxHeaderBytes int `mapstructure:"max_header_bytes"`
 
 	// The path to a file containing certificate that is used to create the HTTPS server.
-	// Migth be either absolute path or path related to tendermint's config directory.
+	// Migth be either absolute path or path related to aphelion's config directory.
 	//
 	// If the certificate is signed by a certificate authority,
 	// the certFile should be the concatenation of the server's certificate, any intermediates,
@@ -376,7 +376,7 @@ type RPCConfig struct {
 	TLSCertFile string `mapstructure:"tls_cert_file"`
 
 	// The path to a file containing matching private key that is used to create the HTTPS server.
-	// Migth be either absolute path or path related to tendermint's config directory.
+	// Migth be either absolute path or path related to aphelion's config directory.
 	//
 	// NOTE: both tls_cert_file and tls_key_file must be present for Tendermint to create HTTPS server.
 	// Otherwise, HTTP server is run.
@@ -947,7 +947,7 @@ func DefaultInstrumentationConfig() *InstrumentationConfig {
 		Prometheus:           false,
 		PrometheusListenAddr: ":26660",
 		MaxOpenConnections:   3,
-		Namespace:            "tendermint",
+		Namespace:            "aphelion",
 	}
 }
 

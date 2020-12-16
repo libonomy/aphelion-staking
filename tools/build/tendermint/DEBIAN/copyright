@@ -1,5 +1,5 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: tendermint
+Upstream-Name: aphelion
 Source: https://github.com/evdatsion/aphelion-dpos-bft
 
 Files: *

@@ -46,10 +46,10 @@ type WALMessage interface{}
 
 func RegisterWALMessages(cdc *amino.Codec) {
 	cdc.RegisterInterface((*WALMessage)(nil), nil)
-	cdc.RegisterConcrete(types.EventDataRoundState{}, "tendermint/wal/EventDataRoundState", nil)
-	cdc.RegisterConcrete(msgInfo{}, "tendermint/wal/MsgInfo", nil)
-	cdc.RegisterConcrete(timeoutInfo{}, "tendermint/wal/TimeoutInfo", nil)
-	cdc.RegisterConcrete(EndHeightMessage{}, "tendermint/wal/EndHeightMessage", nil)
+	cdc.RegisterConcrete(types.EventDataRoundState{}, "aphelion/wal/EventDataRoundState", nil)
+	cdc.RegisterConcrete(msgInfo{}, "aphelion/wal/MsgInfo", nil)
+	cdc.RegisterConcrete(timeoutInfo{}, "aphelion/wal/TimeoutInfo", nil)
+	cdc.RegisterConcrete(EndHeightMessage{}, "aphelion/wal/EndHeightMessage", nil)
 }
 
 //--------------------------------------------------------

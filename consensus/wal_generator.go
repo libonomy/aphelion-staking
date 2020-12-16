@@ -100,7 +100,7 @@ func WALGenerateNBlocks(t *testing.T, wr io.Writer, numBlocks int) (err error) {
 		return nil
 	case <-time.After(1 * time.Minute):
 		consensusState.Stop()
-		return fmt.Errorf("waited too long for tendermint to produce %d blocks (grep logs for `wal_generator`)", numBlocks)
+		return fmt.Errorf("waited too long for aphelion to produce %d blocks (grep logs for `wal_generator`)", numBlocks)
 	}
 }
 

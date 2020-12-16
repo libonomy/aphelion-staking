@@ -19,7 +19,7 @@ func (e ErrListenerWasRemoved) Error() string {
 }
 
 // EventData is a generic event data can be typed and registered with
-// tendermint/go-amino via concrete implementation of this interface.
+// aphelion/go-amino via concrete implementation of this interface.
 type EventData interface{}
 
 // Eventable is the interface reactors and other modules must export to become

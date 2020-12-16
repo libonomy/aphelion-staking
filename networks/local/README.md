@@ -2,17 +2,17 @@
 
 DEPRECATED!
 
-See the [docs](https://tendermint.com/docs/networks/docker-compose.html).
+See the [docs](https://aphelion.com/docs/networks/docker-compose.html).
 
 ## Requirements
 
-- [Install tendermint](/docs/install.md)
+- [Install aphelion](/docs/install.md)
 - [Install docker](https://docs.docker.com/engine/installation/)
 - [Install docker-compose](https://docs.docker.com/compose/install/)
 
 ## Build
 
-Build the `tendermint` binary and the `tendermint/localnode` docker image.
+Build the `aphelion` binary and the `aphelion/localnode` docker image.
 
 Note the binary will be mounted into the container so it can be updated without
 rebuilding the image.
@@ -23,7 +23,7 @@ cd $GOPATH/src/github.com/evdatsion/aphelion-dpos-bft
 # Build the linux binary in ./build
 make build-linux
 
-# Build tendermint/localnode image
+# Build aphelion/localnode image
 make build-docker-localnode
 ```
 
@@ -50,9 +50,9 @@ make localnet-start
 
 ## Configuration
 
-The `make localnet-start` creates files for a 4-node testnet in `./build` by calling the `tendermint testnet` command.
+The `make localnet-start` creates files for a 4-node testnet in `./build` by calling the `aphelion testnet` command.
 
-The `./build` directory is mounted to the `/tendermint` mount point to attach the binary and config files to the container.
+The `./build` directory is mounted to the `/aphelion` mount point to attach the binary and config files to the container.
 
 For instance, to create a single node testnet:
 
@@ -66,16 +66,16 @@ rm -rf ./build
 make build-linux
 
 # Create configuration
-docker run -e LOG="stdout" -v `pwd`/build:/tendermint tendermint/localnode testnet --o . --v 1
+docker run -e LOG="stdout" -v `pwd`/build:/aphelion aphelion/localnode testnet --o . --v 1
 
 #Run the node
-docker run -v `pwd`/build:/tendermint tendermint/localnode
+docker run -v `pwd`/build:/aphelion aphelion/localnode
 
 ```
 
 ## Logging
 
-Log is saved under the attached volume, in the `tendermint.log` file. If the `LOG` environment variable is set to `stdout` at start, the log is not saved, but printed on the screen.
+Log is saved under the attached volume, in the `aphelion.log` file. If the `LOG` environment variable is set to `stdout` at start, the log is not saved, but printed on the screen.
 
 ## Special binaries
 

@@ -114,23 +114,23 @@ spec:
       annotations:
         pod.beta.kubernetes.io/init-containers: '[{
           "name": "tm-gen-validator",
-          "image": "tendermint/tendermint:0.10.0",
+          "image": "aphelion/aphelion:0.10.0",
           "imagePullPolicy": "IfNotPresent",
           "command": ["bash", "-c", "
             set -ex\n
-            if [ ! -f /tendermint/priv_validator.json ]; then\n
-              tendermint gen_validator > /tendermint/priv_validator.json\n
+            if [ ! -f /aphelion/priv_validator.json ]; then\n
+              aphelion gen_validator > /aphelion/priv_validator.json\n
               # pub_key.json will be served by pub-key container\n
-              cat /tendermint/priv_validator.json | jq \".pub_key\" > /tendermint/pub_key.json\n
+              cat /aphelion/priv_validator.json | jq \".pub_key\" > /aphelion/pub_key.json\n
             fi\n
           "],
           "volumeMounts": [
-            {"name": "tmdir", "mountPath": "/tendermint"}
+            {"name": "tmdir", "mountPath": "/aphelion"}
           ]
         },
         {
           "name": "app-gen-key",
-          "image": "tendermint/basecoin:0.5.1",
+          "image": "aphelion/basecoin:0.5.1",
           "imagePullPolicy": "IfNotPresent",
           "command": ["bash", "-c", "
             set -ex\n
@@ -148,7 +148,7 @@ spec:
       containers:
       - name: tm
         imagePullPolicy: IfNotPresent
-        image: tendermint/tendermint:0.10.0
+        image: aphelion/aphelion:0.10.0
         ports:
         - containerPort: 26656
           name: p2p
@@ -171,7 +171,7 @@ spec:
               name: tm-config
               key: validators
         - name: TMHOME
-          value: /tendermint
+          value: /aphelion
         command:
         - bash
         - "-c"
@@ -179,7 +179,7 @@ spec:
           set -ex
 
           # copy template
-          cp /etc/tendermint/genesis.json /tendermint/genesis.json
+          cp /etc/aphelion/genesis.json /aphelion/genesis.json
 
           # fill genesis file with validators
           IFS=',' read -ra VALS_ARR <<< "$VALIDATORS"
@@ -199,7 +199,7 @@ spec:
 
             # add validator to genesis file along with its pub_key
             curl -s "http://$v.$fqdn_suffix/pub_key.json" | jq ". as \$k | {pub_key: \$k, amount: $VALIDATOR_POWER, name: \"$v\"}" > pub_validator.json
-            cat /tendermint/genesis.json | jq ".validators |= .+ [$(cat pub_validator.json)]" > tmpgenesis && mv tmpgenesis /tendermint/genesis.json
+            cat /aphelion/genesis.json | jq ".validators |= .+ [$(cat pub_validator.json)]" > tmpgenesis && mv tmpgenesis /aphelion/genesis.json
             rm pub_validator.json
           done
 
@@ -211,11 +211,11 @@ spec:
           done
           seeds=$(IFS=','; echo "${seeds[*]}")
 
-          tendermint node --p2p.seeds="$seeds" --moniker="`hostname`" --proxy_app="unix:///socks/app.sock"
+          aphelion node --p2p.seeds="$seeds" --moniker="`hostname`" --proxy_app="unix:///socks/app.sock"
         volumeMounts:
         - name: tmdir
-          mountPath: /tendermint
-        - mountPath: /etc/tendermint/genesis.json
+          mountPath: /aphelion
+        - mountPath: /etc/aphelion/genesis.json
           name: tmconfigdir
           subPath: genesis.json
         - name: socksdir
@@ -223,7 +223,7 @@ spec:
 
       - name: app
         imagePullPolicy: IfNotPresent
-        image: tendermint/basecoin:0.5.1
+        image: aphelion/basecoin:0.5.1
         env:
         - name: BCHOME
           value: /app
@@ -268,7 +268,7 @@ spec:
 
           rm -f /socks/app.sock # remove old socket
 
-          basecoin start --address="unix:///socks/app.sock" --without-tendermint
+          basecoin start --address="unix:///socks/app.sock" --without-aphelion
         volumeMounts:
         - name: appdir
           mountPath: /app
@@ -288,15 +288,15 @@ spec:
         - "-c"
         - |
           set -ex
-          # fixes 403 Permission Denied (open() "/tendermint/pub_key.json" failed (13: Permission denied))
-          # => we cannot serve from /tendermint, so we copy the file
+          # fixes 403 Permission Denied (open() "/aphelion/pub_key.json" failed (13: Permission denied))
+          # => we cannot serve from /aphelion, so we copy the file
           mkdir -p /usr/share/nginx
-          cp /tendermint/pub_key.json /usr/share/nginx/pub_key.json
+          cp /aphelion/pub_key.json /usr/share/nginx/pub_key.json
           cp /app/pub_key.json /usr/share/nginx/app_pub_key.json
           nginx -g "daemon off;"
         volumeMounts:
         - name: tmdir
-          mountPath: /tendermint
+          mountPath: /aphelion
         - name: appdir
           mountPath: /app
         - mountPath: /etc/nginx/conf.d/pub_key.conf

@@ -12,7 +12,7 @@ import (
 
 // BlockchainInfo gets block headers for minHeight <= height <= maxHeight.
 // Block headers are returned in descending order (highest first).
-// More: https://tendermint.com/rpc/#/Info/blockchain
+// More: https://aphelion.com/rpc/#/Info/blockchain
 func BlockchainInfo(ctx *rpctypes.Context, minHeight, maxHeight int64) (*ctypes.ResultBlockchainInfo, error) {
 
 	// maximum 20 block metas
@@ -68,7 +68,7 @@ func filterMinMax(height, min, max, limit int64) (int64, int64, error) {
 
 // Block gets block at a given height.
 // If no height is provided, it will fetch the latest block.
-// More: https://tendermint.com/rpc/#/Info/block
+// More: https://aphelion.com/rpc/#/Info/block
 func Block(ctx *rpctypes.Context, heightPtr *int64) (*ctypes.ResultBlock, error) {
 	storeHeight := blockStore.Height()
 	height, err := getHeight(storeHeight, heightPtr)
@@ -83,7 +83,7 @@ func Block(ctx *rpctypes.Context, heightPtr *int64) (*ctypes.ResultBlock, error)
 
 // Commit gets block commit at a given height.
 // If no height is provided, it will fetch the commit for the latest block.
-// More: https://tendermint.com/rpc/#/Info/commit
+// More: https://aphelion.com/rpc/#/Info/commit
 func Commit(ctx *rpctypes.Context, heightPtr *int64) (*ctypes.ResultCommit, error) {
 	storeHeight := blockStore.Height()
 	height, err := getHeight(storeHeight, heightPtr)
@@ -111,7 +111,7 @@ func Commit(ctx *rpctypes.Context, heightPtr *int64) (*ctypes.ResultCommit, erro
 // Results are for the height of the block containing the txs.
 // Thus response.results.deliver_tx[5] is the results of executing
 // getBlock(h).Txs[5]
-// More: https://tendermint.com/rpc/#/Info/block_results
+// More: https://aphelion.com/rpc/#/Info/block_results
 func BlockResults(ctx *rpctypes.Context, heightPtr *int64) (*ctypes.ResultBlockResults, error) {
 	storeHeight := blockStore.Height()
 	height, err := getHeight(storeHeight, heightPtr)

@@ -15,7 +15,7 @@ GO_TARBALL_URL="https://dl.google.com/go/${GO_TARBALL}"
 # Defaults
 
 DEFAULT_SIGN_COMMAND='gpg --detach-sign'
-DEFAULT_TENDERMINT_SIGS=${TENDERMINT_SIGS:-'tendermint.sigs'}
+DEFAULT_TENDERMINT_SIGS=${TENDERMINT_SIGS:-'aphelion.sigs'}
 DEFAULT_GITIAN_REPO='https://github.com/evdatsion/gitian-builder'
 DEFAULT_GBUILD_FLAGS=''
 DEFAULT_SIGS_REPO='https://github.com/evdatsion/aphelion-dpos-bft.sigs'
@@ -94,7 +94,7 @@ f_build() {
 
   l_descriptor=$1
 
-  bin/gbuild --commit tendermint="$g_commit" ${GBUILD_FLAGS} "$l_descriptor"
+  bin/gbuild --commit aphelion="$g_commit" ${GBUILD_FLAGS} "$l_descriptor"
   libexec/stop-target || f_echo_stderr "warning: couldn't stop target"
 }
 

@@ -9,7 +9,7 @@ For consistency, we assume all commands are run from the Tendermint repository r
 First, build the docker image:
 
 ```
-docker build -t tendermint_tester -f ./test/docker/Dockerfile .
+docker build -t aphelion_tester -f ./test/docker/Dockerfile .
 ```
 
 Now create the docker network:
@@ -36,9 +36,9 @@ for i in $(seq 1 4); do
 	  --net=my_testnet\
 	  --ip="172.57.0.$((100 + $i))" \
 	  --name local_testnet_$i \
-	  --entrypoint tendermint \
+	  --entrypoint aphelion \
 	  -e TMHOME=/go/src/github.com/evdatsion/aphelion-dpos-bft/test/p2p/data/mach$((i-1)) \
-	  tendermint_tester node --p2p.persistent_peers 172.57.0.101:26656,172.57.0.102:26656,172.57.0.103:26656,172.57.0.104:26656 --proxy_app=kvstore
+	  aphelion_tester node --p2p.persistent_peers 172.57.0.101:26656,172.57.0.102:26656,172.57.0.103:26656,172.57.0.104:26656 --proxy_app=kvstore
 done
 ```
 

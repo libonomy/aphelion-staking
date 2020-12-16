@@ -378,11 +378,11 @@ type BlockchainMessage interface {
 // RegisterBlockchainMessages registers the fast sync messages for amino encoding.
 func RegisterBlockchainMessages(cdc *amino.Codec) {
 	cdc.RegisterInterface((*BlockchainMessage)(nil), nil)
-	cdc.RegisterConcrete(&bcBlockRequestMessage{}, "tendermint/blockchain/BlockRequest", nil)
-	cdc.RegisterConcrete(&bcBlockResponseMessage{}, "tendermint/blockchain/BlockResponse", nil)
-	cdc.RegisterConcrete(&bcNoBlockResponseMessage{}, "tendermint/blockchain/NoBlockResponse", nil)
-	cdc.RegisterConcrete(&bcStatusResponseMessage{}, "tendermint/blockchain/StatusResponse", nil)
-	cdc.RegisterConcrete(&bcStatusRequestMessage{}, "tendermint/blockchain/StatusRequest", nil)
+	cdc.RegisterConcrete(&bcBlockRequestMessage{}, "aphelion/blockchain/BlockRequest", nil)
+	cdc.RegisterConcrete(&bcBlockResponseMessage{}, "aphelion/blockchain/BlockResponse", nil)
+	cdc.RegisterConcrete(&bcNoBlockResponseMessage{}, "aphelion/blockchain/NoBlockResponse", nil)
+	cdc.RegisterConcrete(&bcStatusResponseMessage{}, "aphelion/blockchain/StatusResponse", nil)
+	cdc.RegisterConcrete(&bcStatusRequestMessage{}, "aphelion/blockchain/StatusRequest", nil)
 }
 
 func decodeMsg(bz []byte) (msg BlockchainMessage, err error) {

@@ -18,11 +18,11 @@ fi
 git checkout "${BRANCH}"
 
 # Add entry to public repository
-git remote add tendermint-origin git@github.com:tendermint/tendermint.git
+git remote add aphelion-origin git@github.com:aphelion/aphelion.git
 
 # Push branch and tag to public repository
-git push tendermint-origin
-git push tendermint-origin --tags
+git push aphelion-origin
+git push aphelion-origin --tags
 
 # Create a PR from the public branch to the assumed release branch in public (release branch has to exist)
 python -u scripts/release_management/github-openpr.py --head "${BRANCH}" --base "${BRANCH:%.*}"

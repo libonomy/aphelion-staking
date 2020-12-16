@@ -646,7 +646,7 @@ func testHandshakeReplay(t *testing.T, config *cfg.Config, nBlocks int, mode uin
 	store.commits = commits
 
 	state := genisisState.Copy()
-	// run the chain through state.ApplyBlock to build up the tendermint state
+	// run the chain through state.ApplyBlock to build up the aphelion state
 	state = buildTMStateFromChain(config, stateDB, state, chain, nBlocks, mode)
 	latestAppHash := state.AppHash
 
@@ -657,7 +657,7 @@ func testHandshakeReplay(t *testing.T, config *cfg.Config, nBlocks int, mode uin
 	clientCreator2 := proxy.NewLocalClientCreator(kvstoreApp)
 	if nBlocks > 0 {
 		// run nBlocks against a new client to build up the app state.
-		// use a throwaway tendermint state
+		// use a throwaway aphelion state
 		proxyApp := proxy.NewAppConns(clientCreator2)
 		stateDB1 := dbm.NewMemDB()
 		sm.SaveState(stateDB1, genisisState)
@@ -759,7 +759,7 @@ func buildTMStateFromChain(
 	chain []*types.Block,
 	nBlocks int,
 	mode uint) sm.State {
-	// run the whole chain against this client to build up the tendermint state
+	// run the whole chain against this client to build up the aphelion state
 	clientCreator := proxy.NewLocalClientCreator(
 		kvstore.NewPersistentKVStoreApplication(
 			filepath.Join(config.DBDir(), fmt.Sprintf("replay_test_%d_%d_t", nBlocks, mode))))
@@ -801,7 +801,7 @@ func buildTMStateFromChain(
 }
 
 func TestHandshakePanicsIfAppReturnsWrongAppHash(t *testing.T) {
-	// 1. Initialize tendermint and commit 3 blocks with the following app hashes:
+	// 1. Initialize aphelion and commit 3 blocks with the following app hashes:
 	//		- 0x01
 	//		- 0x02
 	//		- 0x03

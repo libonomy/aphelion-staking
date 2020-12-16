@@ -1,17 +1,17 @@
 #! /bin/bash
 
 
-export TMHOME=$HOME/.tendermint_persist
+export TMHOME=$HOME/.aphelion_persist
 
 rm -rf $TMHOME
-tendermint init
+aphelion init
 
 function start_procs(){
     name=$1
-    echo "Starting persistent kvstore and tendermint"
+    echo "Starting persistent kvstore and aphelion"
     abci-cli kvstore --persist $TMHOME/kvstore &> "kvstore_${name}.log" &
     PID_DUMMY=$!
-    tendermint node &> tendermint_${name}.log &
+    aphelion node &> aphelion_${name}.log &
     PID_TENDERMINT=$!
     sleep 5
 }
@@ -51,7 +51,7 @@ while [ "$ERR" != 0 ]; do
     ERR=$?
     i=$(($i + 1))
     if [[ $i == 10 ]]; then
-        echo "Timed out waiting for tendermint to start"
+        echo "Timed out waiting for aphelion to start"
         exit 1
     fi
 done

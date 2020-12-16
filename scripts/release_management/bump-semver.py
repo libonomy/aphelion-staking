@@ -18,7 +18,7 @@ def semver(ver):
   return ver
 
 
-def get_tendermint_version():
+def get_aphelion_version():
   """Extracts the current Tendermint version from version/version.go"""
   pattern = re.compile(r"TMCoreSemVer = \"(?P<version>([0-9.]+)+)\"")
   with open("version/version.go", "rt") as version_file:
@@ -50,7 +50,7 @@ if __name__ == "__main__":
   expected_version = "{0}.{1}".format(majorminorprefix, patch)
   # if we're doing a release
   if expected_version != "v0.0.0":
-    cur_version = get_tendermint_version()
+    cur_version = get_aphelion_version()
     if not cur_version:
       print("Failed to obtain Tendermint version from version/version.go")
       sys.exit(1)

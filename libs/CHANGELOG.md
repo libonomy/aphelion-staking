@@ -240,7 +240,7 @@ BUG FIXES:
 
 FEATURES:
 
-- [cli] Log level parsing moved here from tendermint repo
+- [cli] Log level parsing moved here from aphelion repo
 
 ## 0.2.0 (May 18, 2017)
 

@@ -20,7 +20,7 @@ import (
 )
 
 var node *nm.Node
-var chainID = "tendermint_test" // TODO use from config.
+var chainID = "aphelion_test" // TODO use from config.
 //nolint:unused
 var waitForEventTimeout = 5 * time.Second
 

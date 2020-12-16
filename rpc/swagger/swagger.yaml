@@ -33,7 +33,7 @@ paths:
       description: |
         If you want to be sure that the transaction is included in a block, you can
         subscribe for the result using JSONRPC via a websocket. See
-        https://tendermint.com/docs/app-dev/subscribing-to-events-via-websocket.html
+        https://aphelion.com/docs/app-dev/subscribing-to-events-via-websocket.html
         If you haven't received anything after a couple of blocks, resend it. If the
         same happens again, send it to some other node. A few reasons why it could
         happen:
@@ -45,7 +45,7 @@ paths:
 
 
         Please refer to
-        https://tendermint.com/docs/tendermint-core/using-tendermint.html#formatting
+        https://aphelion.com/docs/aphelion-core/using-aphelion.html#formatting
         for formatting/encoding rules.
       parameters:
         - in: query
@@ -74,7 +74,7 @@ paths:
       description: |
         If you want to be sure that the transaction is included in a block, you can
         subscribe for the result using JSONRPC via a websocket. See
-        https://tendermint.com/docs/app-dev/subscribing-to-events-via-websocket.html
+        https://aphelion.com/docs/app-dev/subscribing-to-events-via-websocket.html
         If you haven't received anything after a couple of blocks, resend it. If the
         same happens again, send it to some other node. A few reasons why it could
         happen:
@@ -86,7 +86,7 @@ paths:
         3. node can be offline
 
         Please refer to
-        https://tendermint.com/docs/tendermint-core/using-tendermint.html#formatting
+        https://aphelion.com/docs/aphelion-core/using-aphelion.html#formatting
         for formatting/encoding rules.
       parameters:
         - in: query
@@ -116,7 +116,7 @@ paths:
         IMPORTANT: use only for testing and development. In production, use
         BroadcastTxSync or BroadcastTxAsync. You can subscribe for the transaction
         result using JSONRPC via a websocket. See
-        https://tendermint.com/docs/app-dev/subscribing-to-events-via-websocket.html
+        https://aphelion.com/docs/app-dev/subscribing-to-events-via-websocket.html
 
         CONTRACT: only returns error if mempool.CheckTx() errs or if we timeout
         waiting for tx to commit.
@@ -125,7 +125,7 @@ paths:
         will contain a non-OK ABCI code.
 
         Please refer to
-        https://tendermint.com/docs/tendermint-core/using-tendermint.html#formatting
+        https://aphelion.com/docs/aphelion-core/using-aphelion.html#formatting
         for formatting/encoding rules.
       parameters:
         - in: query
@@ -944,7 +944,7 @@ definitions:
     properties:
       type:
         type: string
-        x-example: "tendermint/PubKeyEd25519"
+        x-example: "aphelion/PubKeyEd25519"
       value:
         type: string
         x-example: "A6DoBUypNtUAyEHWtQ9bFjfNg8Bo9CrnkUGl6k6OHN4="
@@ -1687,7 +1687,7 @@ definitions:
                   properties:
                     type:
                       type: "string"
-                      example: "tendermint/PubKeyEd25519"
+                      example: "aphelion/PubKeyEd25519"
                     value:
                       type: "string"
                       example: "9tK9IT+FPdf2qm+5c2qaxi10sWP+3erWTKgftn2PaQM="
@@ -1787,7 +1787,7 @@ definitions:
                       properties:
                         type:
                           type: "string"
-                          example: "tendermint/PubKeyEd25519"
+                          example: "aphelion/PubKeyEd25519"
                         value:
                           type: "string"
                           example: "cOQZvh/h9ZioSeUMZB/1Vy1Xo5x2sjrVjlE/qHnYifM="
@@ -1882,7 +1882,7 @@ definitions:
                           properties:
                             type:
                               type: "string"
-                              example: "tendermint/PubKeyEd25519"
+                              example: "aphelion/PubKeyEd25519"
                             value:
                               type: "string"
                               example: "9tK9IT+FPdf2qm+5c2qaxi10sWP+3erWTKgftn2PaQM="
@@ -1910,7 +1910,7 @@ definitions:
                         properties:
                           type:
                             type: "string"
-                            example: "tendermint/PubKeyEd25519"
+                            example: "aphelion/PubKeyEd25519"
                           value:
                             type: "string"
                             example: "VNMNfw7mrQBSpEvCtA9ykOe6BoR00RM9b/a9v3vXZhY="
@@ -2001,7 +2001,7 @@ definitions:
                           properties:
                             type:
                               type: "string"
-                              example: "tendermint/PubKeyEd25519"
+                              example: "aphelion/PubKeyEd25519"
                             value:
                               type: "string"
                               example: "9tK9IT+FPdf2qm+5c2qaxi10sWP+3erWTKgftn2PaQM="
@@ -2029,7 +2029,7 @@ definitions:
                         properties:
                           type:
                             type: "string"
-                            example: "tendermint/PubKeyEd25519"
+                            example: "aphelion/PubKeyEd25519"
                           value:
                             type: "string"
                             example: "cOQZvh/h9ZioSeUMZB/1Vy1Xo5x2sjrVjlE/qHnYifM="

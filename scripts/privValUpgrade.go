@@ -17,9 +17,9 @@ func main() {
 	if len(args) != 3 {
 		fmt.Println("Expected three args: <old path> <new key path> <new state path>")
 		fmt.Println(
-			"Eg. ~/.tendermint/config/priv_validator.json" +
-				" ~/.tendermint/config/priv_validator_key.json" +
-				" ~/.tendermint/data/priv_validator_state.json",
+			"Eg. ~/.aphelion/config/priv_validator.json" +
+				" ~/.aphelion/config/priv_validator_key.json" +
+				" ~/.aphelion/data/priv_validator_state.json",
 		)
 		os.Exit(1)
 	}

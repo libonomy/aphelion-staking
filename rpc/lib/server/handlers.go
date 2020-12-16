@@ -328,7 +328,7 @@ func makeHTTPHandler(rpcFunc *RPCFunc, cdc *amino.Codec, logger log.Logger) func
 }
 
 // Covert an http query to a list of properly typed values.
-// To be properly decoded the arg must be a concrete type from tendermint (if its an interface).
+// To be properly decoded the arg must be a concrete type from aphelion (if its an interface).
 func httpParamsToArgs(rpcFunc *RPCFunc, cdc *amino.Codec, r *http.Request) ([]reflect.Value, error) {
 	// skip types.Context
 	const argsOffset = 1

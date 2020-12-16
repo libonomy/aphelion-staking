@@ -1,7 +1,7 @@
 .PHONY: build install docker-image
 
 TENDERMINT_VERSION?=latest
-BUILD_TAGS?='tendermint'
+BUILD_TAGS?='aphelion'
 BUILD_FLAGS = -ldflags "-X github.com/evdatsion/aphelion-dpos-bft/version.GitCommit=`git rev-parse --short=8 HEAD`"
 
 .DEFAULT_GOAL := build
@@ -16,5 +16,5 @@ docker-image:
 	GOOS=linux GOARCH=amd64 go build $(BUILD_FLAGS) -tags $(BUILD_TAGS) -o tm-signer-harness main.go
 	docker build \
 		--build-arg TENDERMINT_VERSION=$(TENDERMINT_VERSION) \
-		-t tendermint/tm-signer-harness:$(TENDERMINT_VERSION) .
+		-t aphelion/tm-signer-harness:$(TENDERMINT_VERSION) .
 	rm -rf tm-signer-harness

@@ -27,7 +27,7 @@ func TestGenesisBad(t *testing.T) {
 		[]byte(
 			`{"validators":[` +
 				`{"pub_key":{` +
-				`"type":"tendermint/PubKeyEd25519","value":"AT/+aaL1eB0477Mud9JMm8Sh8BIvOYlPGC9KkIUmFaE="` +
+				`"type":"aphelion/PubKeyEd25519","value":"AT/+aaL1eB0477Mud9JMm8Sh8BIvOYlPGC9KkIUmFaE="` +
 				`},"power":"10","name":""}` +
 				`]}`,
 		),
@@ -35,7 +35,7 @@ func TestGenesisBad(t *testing.T) {
 		[]byte(
 			`{"chain_id": "Lorem ipsum dolor sit amet, consectetuer adipiscing", "validators": [` +
 				`{"pub_key":{` +
-				`"type":"tendermint/PubKeyEd25519","value":"AT/+aaL1eB0477Mud9JMm8Sh8BIvOYlPGC9KkIUmFaE="` +
+				`"type":"aphelion/PubKeyEd25519","value":"AT/+aaL1eB0477Mud9JMm8Sh8BIvOYlPGC9KkIUmFaE="` +
 				`},"power":"10","name":""}` +
 				`]}`,
 		),
@@ -43,7 +43,7 @@ func TestGenesisBad(t *testing.T) {
 		[]byte(
 			`{"chain_id":"mychain", "validators":[` +
 				`{"address": "A", "pub_key":{` +
-				`"type":"tendermint/PubKeyEd25519","value":"AT/+aaL1eB0477Mud9JMm8Sh8BIvOYlPGC9KkIUmFaE="` +
+				`"type":"aphelion/PubKeyEd25519","value":"AT/+aaL1eB0477Mud9JMm8Sh8BIvOYlPGC9KkIUmFaE="` +
 				`},"power":"10","name":""}` +
 				`]}`,
 		),
@@ -60,7 +60,7 @@ func TestGenesisGood(t *testing.T) {
 	genDocBytes := []byte(
 		`{"genesis_time":"0001-01-01T00:00:00Z","chain_id":"test-chain-QDKdJr","consensus_params":null,"validators":[` +
 			`{"pub_key":{` +
-			`"type":"tendermint/PubKeyEd25519","value":"AT/+aaL1eB0477Mud9JMm8Sh8BIvOYlPGC9KkIUmFaE="` +
+			`"type":"aphelion/PubKeyEd25519","value":"AT/+aaL1eB0477Mud9JMm8Sh8BIvOYlPGC9KkIUmFaE="` +
 			`},"power":"10","name":""}` +
 			`],"app_hash":"","app_state":{"account_owner": "Bob"}}`,
 	)

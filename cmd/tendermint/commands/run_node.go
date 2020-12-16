@@ -10,7 +10,7 @@ import (
 )
 
 // AddNodeFlags exposes some common configuration options on the command-line
-// These are exposed for convenience of commands embedding a tendermint node
+// These are exposed for convenience of commands embedding a aphelion node
 func AddNodeFlags(cmd *cobra.Command) {
 	// bind flags
 	cmd.Flags().String("moniker", config.Moniker, "Node Name")
@@ -66,7 +66,7 @@ func AddNodeFlags(cmd *cobra.Command) {
 func NewRunNodeCmd(nodeProvider nm.NodeProvider) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "node",
-		Short: "Run the tendermint node",
+		Short: "Run the aphelion node",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			n, err := nodeProvider(config, logger)
 			if err != nil {

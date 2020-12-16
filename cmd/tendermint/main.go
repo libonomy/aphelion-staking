@@ -6,7 +6,7 @@ import (
 
 	"github.com/evdatsion/aphelion-dpos-bft/libs/cli"
 
-	cmd "github.com/evdatsion/aphelion-dpos-bft/cmd/tendermint/commands"
+	cmd "github.com/evdatsion/aphelion-dpos-bft/cmd/aphelion/commands"
 	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
 	nm "github.com/evdatsion/aphelion-dpos-bft/node"
 )

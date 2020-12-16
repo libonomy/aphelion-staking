@@ -14,7 +14,7 @@ import (
 
 // Status returns Tendermint status including node info, pubkey, latest block
 // hash, app hash, block height and time.
-// More: https://tendermint.com/rpc/#/Info/status
+// More: https://aphelion.com/rpc/#/Info/status
 func Status(ctx *rpctypes.Context) (*ctypes.ResultStatus, error) {
 	var latestHeight int64
 	if consensusReactor.FastSync() {

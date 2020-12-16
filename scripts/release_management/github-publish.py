@@ -32,8 +32,8 @@ def request(org, repo, id, data):
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser()
-  parser.add_argument("--org", default="tendermint", help="GitHub organization")
-  parser.add_argument("--repo", default="tendermint", help="GitHub repository")
+  parser.add_argument("--org", default="aphelion", help="GitHub organization")
+  parser.add_argument("--repo", default="aphelion", help="GitHub repository")
   parser.add_argument("--id", help="GitHub release ID", required=True, type=int)
   parser.add_argument("--version", default=os.environ.get('CIRCLE_TAG'), help="Version number for the release, e.g.: v1.0.0")
   args = parser.parse_args()

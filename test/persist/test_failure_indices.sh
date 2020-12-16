@@ -1,22 +1,22 @@
 #! /bin/bash
 
 export PATH="$GOBIN:$PATH"
-export TMHOME=$HOME/.tendermint_persist
+export TMHOME=$HOME/.aphelion_persist
 
 rm -rf "$TMHOME"
-tendermint init
+aphelion init
 
 # use a unix socket so we can remove it
 RPC_ADDR="$(pwd)/rpc.sock"
 
-TM_CMD="tendermint node --log_level=debug --rpc.laddr=unix://$RPC_ADDR" # &> tendermint_${name}.log"
+TM_CMD="aphelion node --log_level=debug --rpc.laddr=unix://$RPC_ADDR" # &> aphelion_${name}.log"
 DUMMY_CMD="abci-cli kvstore --persist $TMHOME/kvstore" # &> kvstore_${name}.log"
 
 
 function start_procs(){
     name=$1
     indexToFail=$2
-    echo "Starting persistent kvstore and tendermint"
+    echo "Starting persistent kvstore and aphelion"
     if [[ "$CIRCLECI" == true ]]; then
         $DUMMY_CMD &
     else
@@ -24,14 +24,14 @@ function start_procs(){
     fi
     PID_DUMMY=$!
 
-    # before starting tendermint, remove the rpc socket
+    # before starting aphelion, remove the rpc socket
     rm -f $RPC_ADDR
     if [[ "$indexToFail" == "" ]]; then
         # run in background, dont fail
 		if [[ "$CIRCLECI" == true ]]; then
 			$TM_CMD &
 		else
-            $TM_CMD &> "tendermint_${name}.log" &
+            $TM_CMD &> "aphelion_${name}.log" &
 		fi
         PID_TENDERMINT=$!
     else
@@ -39,7 +39,7 @@ function start_procs(){
 		if [[ "$CIRCLECI" == true ]]; then
 			FAIL_TEST_INDEX=$indexToFail $TM_CMD
 		else
-            FAIL_TEST_INDEX=$indexToFail $TM_CMD &> "tendermint_${name}.log"
+            FAIL_TEST_INDEX=$indexToFail $TM_CMD &> "aphelion_${name}.log"
 		fi
         PID_TENDERMINT=$!
     fi
@@ -85,7 +85,7 @@ for failIndex in $(seq $failsStart $failsEnd); do
     bash $(dirname $0)/txs.sh "localhost:26657" &
     start_procs 1 "$failIndex"
 
-    # tendermint should already have exited when it hits the fail index
+    # aphelion should already have exited when it hits the fail index
     # but kill -9 for good measure
     kill_procs
 
@@ -102,7 +102,7 @@ for failIndex in $(seq $failsStart $failsEnd); do
         ERR=$?
         i=$((i + 1))
         if [[ $i == 20 ]]; then
-            echo "Timed out waiting for tendermint to start"
+            echo "Timed out waiting for aphelion to start"
             exit 1
         fi
     done

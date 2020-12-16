@@ -122,7 +122,7 @@ func parseQueryStorePath(path string) (storeName string, err error) {
 func GetCertifiedCommit(h int64, client rpcclient.Client, cert lite.Verifier) (types.SignedHeader, error) {
 
 	// FIXME: cannot use cert.GetByHeight for now, as it also requires
-	// Validators and will fail on querying tendermint for non-current height.
+	// Validators and will fail on querying aphelion for non-current height.
 	// When this is supported, we should use it instead...
 	rpcclient.WaitForHeight(client, h, nil)
 	cresp, err := client.Commit(&h)

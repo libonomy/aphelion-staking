@@ -32,8 +32,8 @@ def request(org, repo, data):
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser()
-  parser.add_argument("--org", default="tendermint", help="GitHub organization. Defaults to tendermint.")
-  parser.add_argument("--repo", default="tendermint", help="GitHub repository. Defaults to tendermint.")
+  parser.add_argument("--org", default="aphelion", help="GitHub organization. Defaults to aphelion.")
+  parser.add_argument("--repo", default="aphelion", help="GitHub repository. Defaults to aphelion.")
   parser.add_argument("--head", help="The name of the branch where your changes are implemented.", required=True)
   parser.add_argument("--base", help="The name of the branch you want the changes pulled into.", required=True)
   parser.add_argument("--title", default="Security release {0}".format(os.environ.get('CIRCLE_TAG')), help="The title of the pull request.")

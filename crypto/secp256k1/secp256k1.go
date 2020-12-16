@@ -19,8 +19,8 @@ import (
 
 //-------------------------------------
 const (
-	PrivKeyAminoName = "tendermint/PrivKeySecp256k1"
-	PubKeyAminoName  = "tendermint/PubKeySecp256k1"
+	PrivKeyAminoName = "aphelion/PrivKeySecp256k1"
+	PubKeyAminoName  = "aphelion/PubKeySecp256k1"
 )
 
 var cdc = amino.NewCodec()

@@ -11,15 +11,15 @@ type SignerMessage interface{}
 
 func RegisterRemoteSignerMsg(cdc *amino.Codec) {
 	cdc.RegisterInterface((*SignerMessage)(nil), nil)
-	cdc.RegisterConcrete(&PubKeyRequest{}, "tendermint/remotesigner/PubKeyRequest", nil)
-	cdc.RegisterConcrete(&PubKeyResponse{}, "tendermint/remotesigner/PubKeyResponse", nil)
-	cdc.RegisterConcrete(&SignVoteRequest{}, "tendermint/remotesigner/SignVoteRequest", nil)
-	cdc.RegisterConcrete(&SignedVoteResponse{}, "tendermint/remotesigner/SignedVoteResponse", nil)
-	cdc.RegisterConcrete(&SignProposalRequest{}, "tendermint/remotesigner/SignProposalRequest", nil)
-	cdc.RegisterConcrete(&SignedProposalResponse{}, "tendermint/remotesigner/SignedProposalResponse", nil)
+	cdc.RegisterConcrete(&PubKeyRequest{}, "aphelion/remotesigner/PubKeyRequest", nil)
+	cdc.RegisterConcrete(&PubKeyResponse{}, "aphelion/remotesigner/PubKeyResponse", nil)
+	cdc.RegisterConcrete(&SignVoteRequest{}, "aphelion/remotesigner/SignVoteRequest", nil)
+	cdc.RegisterConcrete(&SignedVoteResponse{}, "aphelion/remotesigner/SignedVoteResponse", nil)
+	cdc.RegisterConcrete(&SignProposalRequest{}, "aphelion/remotesigner/SignProposalRequest", nil)
+	cdc.RegisterConcrete(&SignedProposalResponse{}, "aphelion/remotesigner/SignedProposalResponse", nil)
 
-	cdc.RegisterConcrete(&PingRequest{}, "tendermint/remotesigner/PingRequest", nil)
-	cdc.RegisterConcrete(&PingResponse{}, "tendermint/remotesigner/PingResponse", nil)
+	cdc.RegisterConcrete(&PingRequest{}, "aphelion/remotesigner/PingRequest", nil)
+	cdc.RegisterConcrete(&PingResponse{}, "aphelion/remotesigner/PingResponse", nil)
 }
 
 // TODO: Add ChainIDRequest

@@ -63,7 +63,7 @@ func (e ErrAppBlockHeightTooHigh) Error() string {
 }
 func (e ErrLastStateMismatch) Error() string {
 	return fmt.Sprintf(
-		"Latest tendermint block (%d) LastAppHash (%X) does not match app's AppHash (%X)",
+		"Latest aphelion block (%d) LastAppHash (%X) does not match app's AppHash (%X)",
 		e.Height,
 		e.Core,
 		e.App,

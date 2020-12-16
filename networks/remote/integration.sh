@@ -83,10 +83,10 @@ ip3=$(strip $ip3)
 cd $GOPATH/src/github.com/evdatsion/aphelion-dpos-bft/networks/remote/ansible
 
 # create config dirs
-tendermint testnet
+aphelion testnet
 
 ansible-playbook -i inventory/digital_ocean.py -l sentrynet install.yml
-ansible-playbook -i inventory/digital_ocean.py -l sentrynet config.yml -e BINARY=$GOPATH/src/github.com/evdatsion/aphelion-dpos-bft/build/tendermint -e CONFIGDIR=$GOPATH/src/github.com/evdatsion/aphelion-dpos-bft/networks/remote/ansible/mytestnet
+ansible-playbook -i inventory/digital_ocean.py -l sentrynet config.yml -e BINARY=$GOPATH/src/github.com/evdatsion/aphelion-dpos-bft/build/aphelion -e CONFIGDIR=$GOPATH/src/github.com/evdatsion/aphelion-dpos-bft/networks/remote/ansible/mytestnet
 
 sleep 10
 
@@ -116,7 +116,7 @@ Restart=on-failure
 User={{service}}
 Group={{service}}
 PermissionsStartOnly=true
-ExecStart=/usr/bin/tendermint node --proxy_app=kvstore --p2p.persistent_peers=$id0@$ip0:26656,$id1@$ip1:26656,$id2@$ip2:26656,$id3@$ip3:26656
+ExecStart=/usr/bin/aphelion node --proxy_app=kvstore --p2p.persistent_peers=$id0@$ip0:26656,$id1@$ip1:26656,$id2@$ip2:26656,$id3@$ip3:26656
 ExecReload=/bin/kill -HUP \$MAINPID
 KillSignal=SIGTERM
 

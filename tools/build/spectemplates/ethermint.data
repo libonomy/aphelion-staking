@@ -1,5 +1,5 @@
-PACKAGE_SUMMARY="ethermint enables ethereum as an ABCI application on tendermint and the COSMOS hub"
-PACKAGE_URL="https://tendermint.com/"
+PACKAGE_SUMMARY="ethermint enables ethereum as an ABCI application on aphelion and the COSMOS hub"
+PACKAGE_URL="https://aphelion.com/"
 PACKAGE_ADDITIONAL_HEADER="Provides: ethermint"
-PACKAGE_DESCRIPTION="Ethermint enables ethereum to run as an ABCI application on tendermint and the COSMOS hub. This application allows you to get all the benefits of ethereum without having to run your own miners."
+PACKAGE_DESCRIPTION="Ethermint enables ethereum to run as an ABCI application on aphelion and the COSMOS hub. This application allows you to get all the benefits of ethereum without having to run your own miners."
 
