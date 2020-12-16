@@ -11,18 +11,18 @@ import (
 
 	"github.com/spf13/cobra"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/libs/log"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
 
-	abcicli "github.com/evdatsion/tendermint/abci/client"
-	"github.com/evdatsion/tendermint/abci/example/code"
-	"github.com/evdatsion/tendermint/abci/example/counter"
-	"github.com/evdatsion/tendermint/abci/example/kvstore"
-	"github.com/evdatsion/tendermint/abci/server"
-	servertest "github.com/evdatsion/tendermint/abci/tests/server"
-	"github.com/evdatsion/tendermint/abci/types"
-	"github.com/evdatsion/tendermint/abci/version"
-	"github.com/evdatsion/tendermint/crypto/merkle"
+	abcicli "github.com/evdatsion/aphelion-dpos-bft/abci/client"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/example/code"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/example/counter"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/example/kvstore"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/server"
+	servertest "github.com/evdatsion/aphelion-dpos-bft/abci/tests/server"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/version"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/merkle"
 )
 
 // client is a global variable so it can be reused by the console
