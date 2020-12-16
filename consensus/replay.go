@@ -344,11 +344,11 @@ func (h *Handshaker) ReplayBlocks(
 		return appHash, sm.ErrAppBlockHeightTooHigh{CoreHeight: storeBlockHeight, AppHeight: appBlockHeight}
 
 	} else if storeBlockHeight < stateBlockHeight {
-		// the state should never be ahead of the store (this is under libonomy's control)
+		// the state should never be ahead of the store (this is under aphelion's control)
 		panic(fmt.Sprintf("StateBlockHeight (%d) > StoreBlockHeight (%d)", stateBlockHeight, storeBlockHeight))
 
 	} else if storeBlockHeight > stateBlockHeight+1 {
-		// store should be at most one ahead of the state (this is under libonomy's control)
+		// store should be at most one ahead of the state (this is under aphelion's control)
 		panic(fmt.Sprintf("StoreBlockHeight (%d) > StateBlockHeight + 1 (%d)", storeBlockHeight, stateBlockHeight+1))
 	}
 

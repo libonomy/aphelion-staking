@@ -16,7 +16,7 @@ read -p "==> Push 3 docker images with the following tags (latest, $TAG, $TAG_NO
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-	docker push "libonomy/libonomy:latest"
-	docker push "libonomy/libonomy:$TAG"
-	docker push "libonomy/libonomy:$TAG_NO_PATCH"
+	docker push "aphelion/aphelion:latest"
+	docker push "aphelion/aphelion:$TAG"
+	docker push "aphelion/aphelion:$TAG_NO_PATCH"
 fi

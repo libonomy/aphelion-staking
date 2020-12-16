@@ -1,3 +1,3 @@
-killall libonomy
+killall aphelion
 killall abci-cli
-rm -rf ~/.libonomy_app
+rm -rf ~/.aphelion_app

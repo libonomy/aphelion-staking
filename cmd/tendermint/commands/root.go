@@ -44,7 +44,7 @@ func ParseConfig() (*cfg.Config, error) {
 
 // RootCmd is the root command for Aphelion core.
 var RootCmd = &cobra.Command{
-	Use:   "libonomy",
+	Use:   "aphelion",
 	Short: "Aphelion Core (BFT Consensus) in Go",
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) (err error) {
 		if cmd.Name() == VersionCmd.Name() {

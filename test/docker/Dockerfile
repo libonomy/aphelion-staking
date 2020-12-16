@@ -8,7 +8,7 @@ RUN apt-get update && \
   apt-get install -y --no-install-recommends \
   jq bsdmainutils vim-common psmisc netcat curl
 
-# Setup libonomy repo
+# Setup aphelion repo
 ENV REPO $GOPATH/src/github.com/evdatsion/aphelion-dpos-bft
 ENV GOBIN $GOPATH/bin
 WORKDIR $REPO
@@ -27,7 +27,7 @@ RUN make install_abci
 # install Aphelion
 RUN make install
 
-RUN libonomy testnet \
+RUN aphelion testnet \
         --config $REPO/test/docker/config-template.toml \
         --node-dir-prefix="mach" \
         --v=4 \

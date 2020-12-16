@@ -15,6 +15,6 @@ fi
 echo "==> Copying ${DIST_DIR} to S3..."
 
 # copy to s3
-aws s3 cp --recursive ${DIST_DIR} s3://libonomy/binaries/libonomy/v${VERSION} --acl public-read 
+aws s3 cp --recursive ${DIST_DIR} s3://aphelion/binaries/aphelion/v${VERSION} --acl public-read 
 
 exit 0

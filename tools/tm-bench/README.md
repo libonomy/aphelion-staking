@@ -24,10 +24,10 @@ In the future, we plan to support scriptable transactions (see
 ### Docker
 
 ```
-docker run -it --rm -v "/tmp:/libonomy" libonomy/libonomy init
-docker run -it --rm -v "/tmp:/libonomy" -p "26657:26657" --name=tm libonomy/libonomy node --proxy_app=kvstore
+docker run -it --rm -v "/tmp:/aphelion" aphelion/aphelion init
+docker run -it --rm -v "/tmp:/aphelion" -p "26657:26657" --name=tm aphelion/aphelion node --proxy_app=kvstore
 
-docker run -it --rm --link=tm libonomy/bench tm:26657
+docker run -it --rm --link=tm aphelion/bench tm:26657
 ```
 
 ### Using binaries
@@ -37,8 +37,8 @@ docker run -it --rm --link=tm libonomy/bench tm:26657
 then run:
 
 ```
-libonomy init
-libonomy node --proxy_app=kvstore
+aphelion init
+aphelion node --proxy_app=kvstore
 
 tm-bench localhost:26657
 ```
@@ -89,10 +89,10 @@ block.
 
 Note that there will be edge effects on the number of transactions in the first
 and last blocks.
-This is because transactions may start sending midway through when libonomy
+This is because transactions may start sending midway through when aphelion
 starts building the next block, so it only has half as much time to gather txs
 that tm-bench sends.
-Similarly the end of the duration will likely end mid-way through libonomy
+Similarly the end of the duration will likely end mid-way through aphelion
 trying to build the next block.
 
 Each of the connections is handled via two separate goroutines.

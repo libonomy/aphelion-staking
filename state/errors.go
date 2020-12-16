@@ -57,7 +57,7 @@ func (e ErrAppBlockHeightTooHigh) Error() string {
 	return fmt.Sprintf("App block height (%d) is higher than core (%d)", e.AppHeight, e.CoreHeight)
 }
 func (e ErrLastStateMismatch) Error() string {
-	return fmt.Sprintf("Latest libonomy block (%d) LastAppHash (%X) does not match app's AppHash (%X)", e.Height, e.Core, e.App)
+	return fmt.Sprintf("Latest aphelion block (%d) LastAppHash (%X) does not match app's AppHash (%X)", e.Height, e.Core, e.App)
 }
 
 func (e ErrStateMismatch) Error() string {

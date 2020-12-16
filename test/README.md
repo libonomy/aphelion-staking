@@ -3,7 +3,7 @@
 The unit tests (ie. the `go test` s) can be run with `make test`.
 The integration tests can be run with `make test_integrations`.
 
-Running the integrations test will build a docker container with local version of libonomy
+Running the integrations test will build a docker container with local version of aphelion
 and run the following tests in docker containers:
 
 - go tests, with --race
@@ -13,7 +13,7 @@ and run the following tests in docker containers:
 	- counter app over socket
 	- counter app over grpc
 - persistence tests
-	- crash libonomy at each of many predefined points, restart, and ensure it syncs properly with the app
+	- crash aphelion at each of many predefined points, restart, and ensure it syncs properly with the app
 - p2p tests
 	- start a local kvstore app testnet on a docker network (requires docker version 1.10+)
 	- send a tx on each node and ensure the state root is updated on all of them

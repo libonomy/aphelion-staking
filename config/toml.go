@@ -45,7 +45,7 @@ func EnsureRoot(rootDir string) {
 	}
 }
 
-// XXX: this func should probably be called by cmd/libonomy/commands/init.go
+// XXX: this func should probably be called by cmd/aphelion/commands/init.go
 // alongside the writing of the genesis.json and priv_validator.json
 func writeDefaultConfigFile(configFilePath string) {
 	WriteConfigFile(configFilePath, DefaultConfig())
@@ -193,7 +193,7 @@ max_subscriptions_per_client = {{ .RPC.MaxSubscriptionsPerClient }}
 timeout_broadcast_tx_commit = "{{ .RPC.TimeoutBroadcastTxCommit }}"
 
 # The path to a file containing certificate that is used to create the HTTPS server.
-# Migth be either absolute path or path related to libonomy's config directory.
+# Migth be either absolute path or path related to aphelion's config directory.
 # If the certificate is signed by a certificate authority,
 # the certFile should be the concatenation of the server's certificate, any intermediates,
 # and the CA's certificate.
@@ -201,7 +201,7 @@ timeout_broadcast_tx_commit = "{{ .RPC.TimeoutBroadcastTxCommit }}"
 tls_cert_file = "{{ .RPC.TLSCertFile }}"
 
 # The path to a file containing matching private key that is used to create the HTTPS server.
-# Migth be either absolute path or path related to libonomy's config directory.
+# Migth be either absolute path or path related to aphelion's config directory.
 # NOTE: both tls_cert_file and tls_key_file must be present for Aphelion to create HTTPS server. Otherwise, HTTP server is run.
 tls_key_file = "{{ .RPC.TLSKeyFile }}"
 
@@ -392,7 +392,7 @@ func ResetTestRootWithChainID(testName string, chainID string) *Config {
 	}
 	if !cmn.FileExists(genesisFilePath) {
 		if chainID == "" {
-			chainID = "libonomy_test"
+			chainID = "aphelion_test"
 		}
 		testGenesis := fmt.Sprintf(testGenesisFmt, chainID)
 		cmn.MustWriteFile(genesisFilePath, []byte(testGenesis), 0644)
@@ -411,7 +411,7 @@ var testGenesisFmt = `{
   "validators": [
     {
       "pub_key": {
-        "type": "libonomy/PubKeyEd25519",
+        "type": "aphelion/PubKeyEd25519",
         "value":"AT/+aaL1eB0477Mud9JMm8Sh8BIvOYlPGC9KkIUmFaE="
       },
       "power": "10",
@@ -424,11 +424,11 @@ var testGenesisFmt = `{
 var testPrivValidatorKey = `{
   "address": "A3258DCBF45DCA0DF052981870F2D1441A36D145",
   "pub_key": {
-    "type": "libonomy/PubKeyEd25519",
+    "type": "aphelion/PubKeyEd25519",
     "value": "AT/+aaL1eB0477Mud9JMm8Sh8BIvOYlPGC9KkIUmFaE="
   },
   "priv_key": {
-    "type": "libonomy/PrivKeyEd25519",
+    "type": "aphelion/PrivKeyEd25519",
     "value": "EVkqJO/jIXp3rkASXfh9YnyToYXRXhBr6g9cQVxPFnQBP/5povV4HTjvsy530kybxKHwEi85iU8YL0qQhSYVoQ=="
   }
 }`

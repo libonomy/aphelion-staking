@@ -56,7 +56,7 @@ BREAKING CHANGES
 
 BREAKING CHANGES
 
-- Update Amino names from "com.libonomy/..." to "libonomy/"
+- Update Amino names from "com.aphelion/..." to "aphelion/"
 
 ## 0.5.0 (March 2, 2018)
 

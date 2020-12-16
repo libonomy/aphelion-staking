@@ -547,7 +547,7 @@ func NewNode(config *cfg.Config,
 	}
 
 	// Create the handshaker, which calls RequestInfo, sets the AppVersion on the state,
-	// and replays any blocks as necessary to sync libonomy with the app.
+	// and replays any blocks as necessary to sync aphelion with the app.
 	consensusLogger := logger.With("module", "consensus")
 	if err := doHandshake(stateDB, state, blockStore, genDoc, eventBus, proxyApp, consensusLogger); err != nil {
 		return nil, err

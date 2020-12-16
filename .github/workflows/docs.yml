@@ -10,7 +10,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     container:
-      image: libonomydev/docker-website-deployment
+      image: apheliondev/docker-website-deployment
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2.3.1

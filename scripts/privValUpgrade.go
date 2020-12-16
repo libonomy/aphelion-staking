@@ -16,7 +16,7 @@ func main() {
 	args := os.Args[1:]
 	if len(args) != 3 {
 		fmt.Println("Expected three args: <old path> <new key path> <new state path>")
-		fmt.Println("Eg. ~/.libonomy/config/priv_validator.json ~/.libonomy/config/priv_validator_key.json ~/.libonomy/data/priv_validator_state.json")
+		fmt.Println("Eg. ~/.aphelion/config/priv_validator.json ~/.aphelion/config/priv_validator_key.json ~/.aphelion/data/priv_validator_state.json")
 		os.Exit(1)
 	}
 	err := loadAndUpgrade(args[0], args[1], args[2])

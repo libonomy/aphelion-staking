@@ -3,15 +3,15 @@
 ##
 ## Input parameters
 ##
-BINARY=/libonomy/${BINARY:-libonomy}
+BINARY=/aphelion/${BINARY:-aphelion}
 ID=${ID:-0}
-LOG=${LOG:-libonomy.log}
+LOG=${LOG:-aphelion.log}
 
 ##
 ## Assert linux binary
 ##
 if ! [ -f "${BINARY}" ]; then
-	echo "The binary $(basename "${BINARY}") cannot be found. Please add the binary to the shared folder. Please use the BINARY environment variable if the name of the binary is not 'libonomy' E.g.: -e BINARY=libonomy_my_test_version"
+	echo "The binary $(basename "${BINARY}") cannot be found. Please add the binary to the shared folder. Please use the BINARY environment variable if the name of the binary is not 'aphelion' E.g.: -e BINARY=aphelion_my_test_version"
 	exit 1
 fi
 BINARY_CHECK="$(file "$BINARY" | grep 'ELF 64-bit LSB executable, x86-64')"
@@ -23,7 +23,7 @@ fi
 ##
 ## Run binary with all parameters
 ##
-export TMHOME="/libonomy/node${ID}"
+export TMHOME="/aphelion/node${ID}"
 
 if [ -d "`dirname ${TMHOME}/${LOG}`" ]; then
   "$BINARY" "$@" | tee "${TMHOME}/${LOG}"
@@ -31,5 +31,5 @@ else
   "$BINARY" "$@"
 fi
 
-chmod 777 -R /libonomy
+chmod 777 -R /aphelion
 

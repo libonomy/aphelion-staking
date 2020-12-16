@@ -1,23 +1,23 @@
 #! /bin/bash
 
 
-export TMHOME=$HOME/.libonomy_persist
+export TMHOME=$HOME/.aphelion_persist
 
 rm -rf $TMHOME
-libonomy init
+aphelion init
 
 function start_procs(){
     name=$1
-    echo "Starting persistent kvstore and libonomy"
+    echo "Starting persistent kvstore and aphelion"
     abci-cli kvstore --persist $TMHOME/kvstore &> "kvstore_${name}.log" &
     PID_DUMMY=$!
-    libonomy node &> libonomy_${name}.log &
-    PID_LIBONOMY=$!
+    aphelion node &> aphelion_${name}.log &
+    PID_APHELION=$!
     sleep 5
 }
 
 function kill_procs(){
-    kill -9 $PID_DUMMY $PID_LIBONOMY
+    kill -9 $PID_DUMMY $PID_APHELION
 }
 
 
@@ -51,7 +51,7 @@ while [ "$ERR" != 0 ]; do
     ERR=$?
     i=$(($i + 1))
     if [[ $i == 10 ]]; then
-        echo "Timed out waiting for libonomy to start"
+        echo "Timed out waiting for aphelion to start"
         exit 1
     fi
 done

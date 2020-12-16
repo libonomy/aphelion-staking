@@ -314,7 +314,7 @@ func (cs *ConsensusState) OnStart() error {
 				fmt.Println(`You can attempt to repair the WAL as follows:
 
 ----
-WALFILE=~/.libonomy/data/cs.wal/wal
+WALFILE=~/.aphelion/data/cs.wal/wal
 cp $WALFILE ${WALFILE}.bak # backup the file
 go run scripts/wal2json/main.go $WALFILE > wal.json # this will panic, but can be ignored
 rm $WALFILE # remove the corrupt file
@@ -1325,7 +1325,7 @@ func (cs *ConsensusState) finalizeCommit(height int64) {
 	var err error
 	stateCopy, err = cs.blockExec.ApplyBlock(stateCopy, types.BlockID{Hash: block.Hash(), PartsHeader: blockParts.Header()}, block)
 	if err != nil {
-		cs.Logger.Error("Error on ApplyBlock. Did the application crash? Please restart libonomy", "err", err)
+		cs.Logger.Error("Error on ApplyBlock. Did the application crash? Please restart aphelion", "err", err)
 		err := cmn.Kill()
 		if err != nil {
 			cs.Logger.Error("Failed to kill this process - please do so manually", "err", err)
@@ -1702,7 +1702,7 @@ func (cs *ConsensusState) voteTime() time.Time {
 	// even if cs.LockedBlock != nil. See https://github.com/evdatsion/spec.
 	timeIotaMs := time.Duration(cs.state.ConsensusParams.Block.TimeIotaMs) * time.Millisecond
 	if cs.LockedBlock != nil {
-		// See the BFT time spec https://libonomy.com/docs/spec/consensus/bft-time.html
+		// See the BFT time spec https://aphelion.com/docs/spec/consensus/bft-time.html
 		minVoteTime = cs.LockedBlock.Time.Add(timeIotaMs)
 	} else if cs.ProposalBlock != nil {
 		minVoteTime = cs.ProposalBlock.Time.Add(timeIotaMs)

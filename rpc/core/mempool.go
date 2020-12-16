@@ -21,7 +21,7 @@ import (
 //
 // If you want to be sure that the transaction is included in a block, you can
 // subscribe for the result using JSONRPC via a websocket. See
-// https://libonomy.com/docs/app-dev/subscribing-to-events-via-websocket.html
+// https://aphelion.com/docs/app-dev/subscribing-to-events-via-websocket.html
 // If you haven't received anything after a couple of blocks, resend it. If the
 // same happens again, send it to some other node. A few reasons why it could
 // happen:
@@ -33,7 +33,7 @@ import (
 // 3. node can be offline
 //
 // Please refer to
-// https://libonomy.com/docs/libonomy-core/using-libonomy.html#formatting
+// https://aphelion.com/docs/aphelion-core/using-aphelion.html#formatting
 // for formatting/encoding rules.
 //
 //
@@ -84,7 +84,7 @@ func BroadcastTxAsync(ctx *rpctypes.Context, tx types.Tx) (*ctypes.ResultBroadca
 //
 // If you want to be sure that the transaction is included in a block, you can
 // subscribe for the result using JSONRPC via a websocket. See
-// https://libonomy.com/docs/app-dev/subscribing-to-events-via-websocket.html
+// https://aphelion.com/docs/app-dev/subscribing-to-events-via-websocket.html
 // If you haven't received anything after a couple of blocks, resend it. If the
 // same happens again, send it to some other node. A few reasons why it could
 // happen:
@@ -95,7 +95,7 @@ func BroadcastTxAsync(ctx *rpctypes.Context, tx types.Tx) (*ctypes.ResultBroadca
 // (https://github.com/evdatsion/aphelion-dpos-bft/issues/3322)
 //
 // Please refer to
-// https://libonomy.com/docs/libonomy-core/using-libonomy.html#formatting
+// https://aphelion.com/docs/aphelion-core/using-aphelion.html#formatting
 // for formatting/encoding rules.
 //
 // ```shell
@@ -156,7 +156,7 @@ func BroadcastTxSync(ctx *rpctypes.Context, tx types.Tx) (*ctypes.ResultBroadcas
 // IMPORTANT: use only for testing and development. In production, use
 // BroadcastTxSync or BroadcastTxAsync. You can subscribe for the transaction
 // result using JSONRPC via a websocket. See
-// https://libonomy.com/docs/app-dev/subscribing-to-events-via-websocket.html
+// https://aphelion.com/docs/app-dev/subscribing-to-events-via-websocket.html
 //
 // CONTRACT: only returns error if mempool.CheckTx() errs or if we timeout
 // waiting for tx to commit.
@@ -165,7 +165,7 @@ func BroadcastTxSync(ctx *rpctypes.Context, tx types.Tx) (*ctypes.ResultBroadcas
 // will contain a non-OK ABCI code.
 //
 // Please refer to
-// https://libonomy.com/docs/libonomy-core/using-libonomy.html#formatting
+// https://aphelion.com/docs/aphelion-core/using-aphelion.html#formatting
 // for formatting/encoding rules.
 //
 //

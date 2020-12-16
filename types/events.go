@@ -48,15 +48,15 @@ type TMEventData interface {
 
 func RegisterEventDatas(cdc *amino.Codec) {
 	cdc.RegisterInterface((*TMEventData)(nil), nil)
-	cdc.RegisterConcrete(EventDataNewBlock{}, "libonomy/event/NewBlock", nil)
-	cdc.RegisterConcrete(EventDataNewBlockHeader{}, "libonomy/event/NewBlockHeader", nil)
-	cdc.RegisterConcrete(EventDataTx{}, "libonomy/event/Tx", nil)
-	cdc.RegisterConcrete(EventDataRoundState{}, "libonomy/event/RoundState", nil)
-	cdc.RegisterConcrete(EventDataNewRound{}, "libonomy/event/NewRound", nil)
-	cdc.RegisterConcrete(EventDataCompleteProposal{}, "libonomy/event/CompleteProposal", nil)
-	cdc.RegisterConcrete(EventDataVote{}, "libonomy/event/Vote", nil)
-	cdc.RegisterConcrete(EventDataValidatorSetUpdates{}, "libonomy/event/ValidatorSetUpdates", nil)
-	cdc.RegisterConcrete(EventDataString(""), "libonomy/event/ProposalString", nil)
+	cdc.RegisterConcrete(EventDataNewBlock{}, "aphelion/event/NewBlock", nil)
+	cdc.RegisterConcrete(EventDataNewBlockHeader{}, "aphelion/event/NewBlockHeader", nil)
+	cdc.RegisterConcrete(EventDataTx{}, "aphelion/event/Tx", nil)
+	cdc.RegisterConcrete(EventDataRoundState{}, "aphelion/event/RoundState", nil)
+	cdc.RegisterConcrete(EventDataNewRound{}, "aphelion/event/NewRound", nil)
+	cdc.RegisterConcrete(EventDataCompleteProposal{}, "aphelion/event/CompleteProposal", nil)
+	cdc.RegisterConcrete(EventDataVote{}, "aphelion/event/Vote", nil)
+	cdc.RegisterConcrete(EventDataValidatorSetUpdates{}, "aphelion/event/ValidatorSetUpdates", nil)
+	cdc.RegisterConcrete(EventDataString(""), "aphelion/event/ProposalString", nil)
 }
 
 // Most event messages are basic types (a block, a transaction)

@@ -1,11 +1,11 @@
-Source: libonomy
+Source: aphelion
 Section: net
 Priority: optional
 Maintainer: Greg Szabo <greg@philosobear.com>
 Build-Depends: debhelper (>=9)
 Standards-Version: 3.9.6
-Homepage: https://libonomy.com
-Package: libonomy
+Homepage: https://aphelion.com
+Package: aphelion
 Architecture: amd64
 Version: @VERSION@
 Installed-Size: @INSTALLEDSIZE@

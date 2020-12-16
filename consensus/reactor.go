@@ -1371,15 +1371,15 @@ type ConsensusMessage interface {
 
 func RegisterConsensusMessages(cdc *amino.Codec) {
 	cdc.RegisterInterface((*ConsensusMessage)(nil), nil)
-	cdc.RegisterConcrete(&NewRoundStepMessage{}, "libonomy/NewRoundStepMessage", nil)
-	cdc.RegisterConcrete(&NewValidBlockMessage{}, "libonomy/NewValidBlockMessage", nil)
-	cdc.RegisterConcrete(&ProposalMessage{}, "libonomy/Proposal", nil)
-	cdc.RegisterConcrete(&ProposalPOLMessage{}, "libonomy/ProposalPOL", nil)
-	cdc.RegisterConcrete(&BlockPartMessage{}, "libonomy/BlockPart", nil)
-	cdc.RegisterConcrete(&VoteMessage{}, "libonomy/Vote", nil)
-	cdc.RegisterConcrete(&HasVoteMessage{}, "libonomy/HasVote", nil)
-	cdc.RegisterConcrete(&VoteSetMaj23Message{}, "libonomy/VoteSetMaj23", nil)
-	cdc.RegisterConcrete(&VoteSetBitsMessage{}, "libonomy/VoteSetBits", nil)
+	cdc.RegisterConcrete(&NewRoundStepMessage{}, "aphelion/NewRoundStepMessage", nil)
+	cdc.RegisterConcrete(&NewValidBlockMessage{}, "aphelion/NewValidBlockMessage", nil)
+	cdc.RegisterConcrete(&ProposalMessage{}, "aphelion/Proposal", nil)
+	cdc.RegisterConcrete(&ProposalPOLMessage{}, "aphelion/ProposalPOL", nil)
+	cdc.RegisterConcrete(&BlockPartMessage{}, "aphelion/BlockPart", nil)
+	cdc.RegisterConcrete(&VoteMessage{}, "aphelion/Vote", nil)
+	cdc.RegisterConcrete(&HasVoteMessage{}, "aphelion/HasVote", nil)
+	cdc.RegisterConcrete(&VoteSetMaj23Message{}, "aphelion/VoteSetMaj23", nil)
+	cdc.RegisterConcrete(&VoteSetBitsMessage{}, "aphelion/VoteSetBits", nil)
 }
 
 func decodeMsg(bz []byte) (msg ConsensusMessage, err error) {

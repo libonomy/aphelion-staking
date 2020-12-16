@@ -45,7 +45,7 @@ func main() {
 	}
 	defer walFile.Close()
 
-	// the length of libonomy/wal/MsgInfo in the wal.json may exceed the defaultBufSize(4096) of bufio
+	// the length of aphelion/wal/MsgInfo in the wal.json may exceed the defaultBufSize(4096) of bufio
 	// because of the byte array in BlockPart
 	// leading to unmarshal error: unexpected end of JSON input
 	br := bufio.NewReaderSize(f, 2*types.BlockPartSizeBytes)

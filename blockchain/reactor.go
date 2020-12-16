@@ -380,11 +380,11 @@ type BlockchainMessage interface {
 
 func RegisterBlockchainMessages(cdc *amino.Codec) {
 	cdc.RegisterInterface((*BlockchainMessage)(nil), nil)
-	cdc.RegisterConcrete(&bcBlockRequestMessage{}, "libonomy/blockchain/BlockRequest", nil)
-	cdc.RegisterConcrete(&bcBlockResponseMessage{}, "libonomy/blockchain/BlockResponse", nil)
-	cdc.RegisterConcrete(&bcNoBlockResponseMessage{}, "libonomy/blockchain/NoBlockResponse", nil)
-	cdc.RegisterConcrete(&bcStatusResponseMessage{}, "libonomy/blockchain/StatusResponse", nil)
-	cdc.RegisterConcrete(&bcStatusRequestMessage{}, "libonomy/blockchain/StatusRequest", nil)
+	cdc.RegisterConcrete(&bcBlockRequestMessage{}, "aphelion/blockchain/BlockRequest", nil)
+	cdc.RegisterConcrete(&bcBlockResponseMessage{}, "aphelion/blockchain/BlockResponse", nil)
+	cdc.RegisterConcrete(&bcNoBlockResponseMessage{}, "aphelion/blockchain/NoBlockResponse", nil)
+	cdc.RegisterConcrete(&bcStatusResponseMessage{}, "aphelion/blockchain/StatusResponse", nil)
+	cdc.RegisterConcrete(&bcStatusRequestMessage{}, "aphelion/blockchain/StatusRequest", nil)
 }
 
 func decodeMsg(bz []byte) (msg BlockchainMessage, err error) {

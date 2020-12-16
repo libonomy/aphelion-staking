@@ -35,12 +35,12 @@ endif
 # Here comes the real deal
 ###
 
-binaries = libonomy basecoind ethermint cusp
-build-binaries = build-libonomy build-basecoind build-ethermint build-cusp
-package-rpm = package-rpm-libonomy package-rpm-basecoind package-rpm-ethermint package-rpm-cusp
-install-rpm = install-rpm-libonomy install-rpm-basecoind install-rpm-ethermint install-rpm-cusp
-package-deb = package-deb-libonomy package-deb-basecoind package-deb-ethermint package-deb-cusp
-install-deb = install-deb-libonomy install-deb-basecoind install-deb-ethermint install-deb-cusp
+binaries = aphelion basecoind ethermint cusp
+build-binaries = build-aphelion build-basecoind build-ethermint build-cusp
+package-rpm = package-rpm-aphelion package-rpm-basecoind package-rpm-ethermint package-rpm-cusp
+install-rpm = install-rpm-aphelion install-rpm-basecoind install-rpm-ethermint install-rpm-cusp
+package-deb = package-deb-aphelion package-deb-basecoind package-deb-ethermint package-deb-cusp
+install-deb = install-deb-aphelion install-deb-basecoind install-deb-ethermint install-deb-cusp
 
 all: $(binaries)
 build: $(build-binaries)
@@ -60,13 +60,13 @@ gopath-setup:
 	test -d $(GOPATH)/bin || mkdir -p $(GOPATH)/bin
 	test -d $(GOPATH)/src || mkdir -p $(GOPATH)/src
 
-build-libonomy: git-branch gopath-setup
-	@echo "*** Building libonomy"
-	go get -d -u github.com/evdatsion/aphelion-dpos-bft/cmd/libonomy
+build-aphelion: git-branch gopath-setup
+	@echo "*** Building aphelion"
+	go get -d -u github.com/evdatsion/aphelion-dpos-bft/cmd/aphelion
 	cd $(GOPATH)/src/github.com/evdatsion/aphelion-dpos-bft && git checkout "$(GIT_BRANCH)" && git pull
 	export PATH=$(GOPATH)/bin:$(PATH) && $(MAKE) -C $(GOPATH)/src/github.com/evdatsion/aphelion-dpos-bft get_tools build
-	cp $(GOPATH)/src/github.com/evdatsion/aphelion-dpos-bft/build/libonomy $(GOPATH)/bin
-	@echo "*** Built libonomy"
+	cp $(GOPATH)/src/github.com/evdatsion/aphelion-dpos-bft/build/aphelion $(GOPATH)/bin
+	@echo "*** Built aphelion"
 
 build-ethermint: git-branch gopath-setup
 	@echo "*** Building ethermint"
@@ -114,7 +114,7 @@ prepare-files = rm -rf $(build_folder) && mkdir -p $(build_folder) && cp -r ./$(
 ## Package customizations for the different applications
 ##
 
-prepare-libonomy =
+prepare-aphelion =
 prepare-ethermint = mkdir -p $(build_folder)/etc/ethermint && \
 	cp $(GOPATH)/src/github.com/evdatsion/ethermint/setup/genesis.json $(build_folder)/etc/ethermint/genesis.json && \
 	cp -r $(GOPATH)/src/github.com/evdatsion/ethermint/setup/keystore $(build_folder)/etc/ethermint
@@ -193,25 +193,25 @@ package-deb-%: folder-%
 install-rpm-%: version-%
 #Make sure your host has the IAM role to read/write the S3 bucket OR that you set up ~/.boto
 	@echo "*** Uploading $*-$($*_version)-$(BUILD_NUMBER).x86_64.rpm to AWS $(DEVOPS_PATH)CentOS repository"
-	aws s3 sync s3://libonomy-packages/$(DEVOPS_PATH)centos/ tmp/s3/ --delete
+	aws s3 sync s3://aphelion-packages/$(DEVOPS_PATH)centos/ tmp/s3/ --delete
 	mkdir -p tmp/s3/7/os/x86_64/Packages
 	cp RPMS/x86_64/$*-$($*_version)-$(BUILD_NUMBER).x86_64.rpm tmp/s3/7/os/x86_64/Packages
 	cp ./RPM-GPG-KEY-Aphelion tmp/s3/7/os/x86_64/
-	cp ./libonomy.repo tmp/s3/7/os/x86_64/
+	cp ./aphelion.repo tmp/s3/7/os/x86_64/
 	rm -f tmp/s3/7/os/x86_64/repodata/*.bz2 tmp/s3/7/os/x86_64/repodata/*.gz tmp/s3/7/os/x86_64/repodata/repomd.xml.asc
-	createrepo tmp/s3/7/os/x86_64/Packages -u https://libonomy-packages.interblock.io/$(DEVOPS_PATH)centos/7/os/x86_64/Packages -o tmp/s3/7/os/x86_64 --update -S --repo Aphelion --content libonomy --content basecoind --content ethermint
+	createrepo tmp/s3/7/os/x86_64/Packages -u https://aphelion-packages.interblock.io/$(DEVOPS_PATH)centos/7/os/x86_64/Packages -o tmp/s3/7/os/x86_64 --update -S --repo Aphelion --content aphelion --content basecoind --content ethermint
 	gpg --batch --passphrase "$(GPG_PASSPHRASE)" --detach-sign -a tmp/s3/7/os/x86_64/repodata/repomd.xml
-	aws s3 sync tmp/s3/ s3://libonomy-packages/$(DEVOPS_PATH)centos/ --delete --acl public-read
+	aws s3 sync tmp/s3/ s3://aphelion-packages/$(DEVOPS_PATH)centos/ --delete --acl public-read
 	@echo "*** Uploaded $* to AWS $(DEVOPS_PATH)CentOS repository"
 
 install-deb-%: version-%
 	@echo "*** Uploading $*-$($*_version)-$(BUILD_NUMBER)_amd64.deb to AWS $(DEVOPS_PATH)Debian repository"
 	@echo "Testing if $*-$($*_version)-$(BUILD_NUMBER)_amd64.deb is already uploaded"
 	test ! -f tmp/debian-s3/pool/$*-$($*_version)-$(BUILD_NUMBER)_amd64.deb
-	aws s3 sync s3://libonomy-packages/$(DEVOPS_PATH)debian/ tmp/debian-s3/ --delete
+	aws s3 sync s3://aphelion-packages/$(DEVOPS_PATH)debian/ tmp/debian-s3/ --delete
 	@echo "Testing if $*-$($*_version)-$(BUILD_NUMBER)_amd64.deb is already uploaded"
 	test ! -f tmp/debian-s3/pool/$*-$($*_version)-$(BUILD_NUMBER)_amd64.deb
-	cp ./libonomy.list tmp/debian-s3/
+	cp ./aphelion.list tmp/debian-s3/
 	mkdir -p tmp/debian-s3/pool tmp/debian-s3/dists/stable/main/binary-amd64
 	cp RPMS/$*-$($*_version)-$(BUILD_NUMBER)_amd64.deb tmp/debian-s3/pool
 	cp ./Release_amd64 tmp/debian-s3/dists/stable/main/binary-amd64/Release
@@ -267,7 +267,7 @@ install-deb-%: version-%
 	gpg --batch --passphrase "$(GPG_PASSPHRASE)" --digest-algo SHA512 --clearsign tmp/debian-s3/dists/stable/Release
 	mv tmp/debian-s3/dists/stable/Release.asc tmp/debian-s3/dists/stable/InRelease
 
-	aws s3 sync tmp/debian-s3/ s3://libonomy-packages/$(DEVOPS_PATH)debian/ --delete --acl public-read
+	aws s3 sync tmp/debian-s3/ s3://aphelion-packages/$(DEVOPS_PATH)debian/ --delete --acl public-read
 	@echo "*** Uploaded $*-$($*_version)-$(BUILD_NUMBER)_amd64.deb to AWS $(DEVOPS_PATH)Debian repository"
 
 mostlyclean:
@@ -280,7 +280,7 @@ distclean: clean
 	rm -rf $(GOPATH)/src/github.com/evdatsion/aphelion-dpos-bft
 	rm -rf $(GOPATH)/src/github.com/evdatsion/cusp-sdk
 	rm -rf $(GOPATH)/src/github.com/evdatsion/ethermint 
-	rm -rf $(GOPATH)/bin/libonomy
+	rm -rf $(GOPATH)/bin/aphelion
 	rm -rf $(GOPATH)/bin/basecoind
 	rm -rf $(GOPATH)/bin/ethermint
 	rm -rf $(GOPATH)/bin/cusp

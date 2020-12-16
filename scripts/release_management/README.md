@@ -24,10 +24,10 @@ Specialized ZIP command for release management. Special features:
 1. Optionally gets file version, Go OS and architecture.
 1. By default all inputs and output is formatted exactly how CircleCI needs it.
 
-By default, the command will try to ZIP the file at `build/libonomy_${GOOS}_${GOARCH}`.
+By default, the command will try to ZIP the file at `build/aphelion_${GOOS}_${GOARCH}`.
 This can be changed with the `--file` input parameter.
 
-By default, the command will output the ZIP file to `build/libonomy_${CIRCLE_TAG}_${GOOS}_${GOARCH}.zip`.
+By default, the command will output the ZIP file to `build/aphelion_${CIRCLE_TAG}_${GOOS}_${GOARCH}.zip`.
 This can be changed with the `--destination` (folder), `--version`, `--goos` and `--goarch` input parameters respectively.
 
 ## sha-files.py
@@ -49,7 +49,7 @@ The below scripts help with these steps.
 ## github-draft.py
 Creates a GitHub release and fills the content with the CHANGELOG.md link. The version number can be changed by the `--version` parameter.
 
-By default, the command will use the libonomy/libonomy organization/repo, which can be changed using the `--org` and `--repo` parameters.
+By default, the command will use the aphelion/aphelion organization/repo, which can be changed using the `--org` and `--repo` parameters.
 
 By default, the command will get the version number from the `${CIRCLE_TAG}` variable.
 
@@ -58,7 +58,7 @@ Returns the GitHub release ID.
 ## github-upload.py
 Upload a file to a GitHub release. The release is defined by the mandatory `--id` (release ID) input parameter.
 
-By default, the command will upload the file `/tmp/workspace/libonomy_${CIRCLE_TAG}_${GOOS}_${GOARCH}.zip`. This can be changed by the `--file` input parameter.
+By default, the command will upload the file `/tmp/workspace/aphelion_${CIRCLE_TAG}_${GOOS}_${GOARCH}.zip`. This can be changed by the `--file` input parameter.
 
 ## github-publish.py
 Publish a GitHub release. The release is defined by the mandatory `--id` (release ID) input parameter.

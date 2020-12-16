@@ -49,7 +49,7 @@ Vagrant.configure("2") do |config|
     echo 'cd go/src/github.com/evdatsion/aphelion-dpos-bft' >> /home/vagrant/.bash_profile
 
     mkdir -p /home/vagrant/go/bin
-    mkdir -p /home/vagrant/go/src/github.com/libonomy
+    mkdir -p /home/vagrant/go/src/github.com/aphelion
     ln -s /vagrant /home/vagrant/go/src/github.com/evdatsion/aphelion-dpos-bft
 
     chown -R vagrant:vagrant /home/vagrant/go

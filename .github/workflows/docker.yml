@@ -1,5 +1,5 @@
 name: Build & Push
-#  Build & Push rebuilds the libonomy docker image on every push to master and creation of tags
+#  Build & Push rebuilds the aphelion docker image on every push to master and creation of tags
 # and pushes the image to https://hub.docker.com/r/interchainio/simapp/tags
 on:
   pull_request:
@@ -21,7 +21,7 @@ jobs:
       - name: Prepare
         id: prep
         run: |
-          DOCKER_IMAGE=libonomy/libonomy
+          DOCKER_IMAGE=aphelion/aphelion
           VERSION=noop
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF#refs/tags/}
@@ -48,7 +48,7 @@ jobs:
 
       - name: Build Aphelion
         run: |
-          make build-linux && cp build/libonomy DOCKER/libonomy
+          make build-linux && cp build/aphelion DOCKER/aphelion
 
       - name: Publish to Docker Hub
         uses: docker/build-push-action@v2

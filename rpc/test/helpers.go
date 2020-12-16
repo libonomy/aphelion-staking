@@ -95,7 +95,7 @@ func createConfig() *cfg.Config {
 	tm, rpc, grpc := makeAddrs()
 	c.P2P.ListenAddress = tm
 	c.RPC.ListenAddress = rpc
-	c.RPC.CORSAllowedOrigins = []string{"https://libonomy.com/"}
+	c.RPC.CORSAllowedOrigins = []string{"https://aphelion.com/"}
 	c.RPC.GRPCListenAddress = grpc
 	c.TxIndex.IndexTags = "app.creator,tx.height" // see kvstore application
 	return c
@@ -114,7 +114,7 @@ func GetGRPCClient() core_grpc.BroadcastAPIClient {
 	return core_grpc.StartGRPCClient(grpcAddr)
 }
 
-// StartAphelion starts a test libonomy server in a go routine and returns when it is initialized
+// StartAphelion starts a test aphelion server in a go routine and returns when it is initialized
 func StartAphelion(app abci.Application, opts ...func(*Options)) *nm.Node {
 	nodeOpts := defaultOptions
 	for _, opt := range opts {
@@ -137,7 +137,7 @@ func StartAphelion(app abci.Application, opts ...func(*Options)) *nm.Node {
 	return node
 }
 
-// StopAphelion stops a test libonomy server, waits until it's stopped and
+// StopAphelion stops a test aphelion server, waits until it's stopped and
 // cleans up test/config files.
 func StopAphelion(node *nm.Node) {
 	node.Stop()
@@ -145,7 +145,7 @@ func StopAphelion(node *nm.Node) {
 	os.RemoveAll(node.Config().RootDir)
 }
 
-// NewAphelion creates a new libonomy server and sleeps forever
+// NewAphelion creates a new aphelion server and sleeps forever
 func NewAphelion(app abci.Application, opts *Options) *nm.Node {
 	// Create & start node
 	config := GetConfig(opts.recreateConfig)

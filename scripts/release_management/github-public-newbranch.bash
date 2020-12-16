@@ -18,11 +18,11 @@ fi
 git checkout "${BRANCH}"
 
 # Add entry to public repository
-git remote add libonomy-origin git@github.com:libonomy/libonomy.git
+git remote add aphelion-origin git@github.com:aphelion/aphelion.git
 
 # Push branch and tag to public repository
-git push libonomy-origin
-git push libonomy-origin --tags
+git push aphelion-origin
+git push aphelion-origin --tags
 
 # Create a PR from the public branch to the assumed release branch in public (release branch has to exist)
 python -u scripts/release_management/github-openpr.py --head "${BRANCH}" --base "${BRANCH:%.*}"

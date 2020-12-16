@@ -28,7 +28,7 @@ const (
 // config/toml.go
 // NOTE: libs/cli must know to look in the config dir!
 var (
-	DefaultAphelionDir = ".libonomy"
+	DefaultAphelionDir = ".aphelion"
 	defaultConfigDir     = "config"
 	defaultDataDir       = "data"
 
@@ -226,7 +226,7 @@ func DefaultBaseConfig() BaseConfig {
 // TestBaseConfig returns a base configuration for testing a Aphelion node
 func TestBaseConfig() BaseConfig {
 	cfg := DefaultBaseConfig()
-	cfg.chainID = "libonomy_test"
+	cfg.chainID = "aphelion_test"
 	cfg.ProxyApp = "kvstore"
 	cfg.FastSync = false
 	cfg.DBBackend = "memdb"
@@ -352,7 +352,7 @@ type RPCConfig struct {
 	TimeoutBroadcastTxCommit time.Duration `mapstructure:"timeout_broadcast_tx_commit"`
 
 	// The path to a file containing certificate that is used to create the HTTPS server.
-	// Migth be either absolute path or path related to libonomy's config directory.
+	// Migth be either absolute path or path related to aphelion's config directory.
 	//
 	// If the certificate is signed by a certificate authority,
 	// the certFile should be the concatenation of the server's certificate, any intermediates,
@@ -362,7 +362,7 @@ type RPCConfig struct {
 	TLSCertFile string `mapstructure:"tls_cert_file"`
 
 	// The path to a file containing matching private key that is used to create the HTTPS server.
-	// Migth be either absolute path or path related to libonomy's config directory.
+	// Migth be either absolute path or path related to aphelion's config directory.
 	//
 	// NOTE: both tls_cert_file and tls_key_file must be present for Aphelion to create HTTPS server. Otherwise, HTTP server is run.
 	TLSKeyFile string `mapstructure:"tls_key_file"`
@@ -884,7 +884,7 @@ func DefaultInstrumentationConfig() *InstrumentationConfig {
 		Prometheus:           false,
 		PrometheusListenAddr: ":26660",
 		MaxOpenConnections:   3,
-		Namespace:            "libonomy",
+		Namespace:            "aphelion",
 	}
 }
 

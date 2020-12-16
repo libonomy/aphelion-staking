@@ -14,12 +14,12 @@ import (
 // LiteCmd represents the base command when called without any subcommands
 var LiteCmd = &cobra.Command{
 	Use:   "lite",
-	Short: "Run lite-client proxy server, verifying libonomy rpc",
-	Long: `This node will run a secure proxy to a libonomy rpc server.
+	Short: "Run lite-client proxy server, verifying aphelion rpc",
+	Long: `This node will run a secure proxy to a aphelion rpc server.
 
 All calls that can be tracked back to a block header by a proof
 will be verified before passing them back to the caller. Other that
-that it will present the same interface as a full libonomy node,
+that it will present the same interface as a full aphelion node,
 just with added trust and running locally.`,
 	RunE:         runProxy,
 	SilenceUsage: true,
@@ -37,8 +37,8 @@ var (
 func init() {
 	LiteCmd.Flags().StringVar(&listenAddr, "laddr", "tcp://localhost:8888", "Serve the proxy on the given address")
 	LiteCmd.Flags().StringVar(&nodeAddr, "node", "tcp://localhost:26657", "Connect to a Aphelion node at this address")
-	LiteCmd.Flags().StringVar(&chainID, "chain-id", "libonomy", "Specify the Aphelion chain ID")
-	LiteCmd.Flags().StringVar(&home, "home-dir", ".libonomy-lite", "Specify the home directory")
+	LiteCmd.Flags().StringVar(&chainID, "chain-id", "aphelion", "Specify the Aphelion chain ID")
+	LiteCmd.Flags().StringVar(&home, "home-dir", ".aphelion-lite", "Specify the home directory")
 	LiteCmd.Flags().IntVar(&maxOpenConnections, "max-open-connections", 900, "Maximum number of simultaneous connections (including WebSocket).")
 	LiteCmd.Flags().IntVar(&cacheSize, "cache-size", 10, "Specify the memory trust store cache size")
 }

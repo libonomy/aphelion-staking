@@ -10,8 +10,8 @@
 .bak
 .idea/
 .revision
-.libonomy
-.libonomy-lite
+.aphelion
+.aphelion-lite
 .terraform
 .vagrant
 .vendor-new/
@@ -29,7 +29,7 @@ index.html.md
 libs/pubsub/query/fuzz_test/output
 profile\.out
 remote_dump
-rpc/test/.libonomy
+rpc/test/.aphelion
 scripts/cutWALUntil/cutWALUntil
 scripts/wal2json/wal2json
 shunit2

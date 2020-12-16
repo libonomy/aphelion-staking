@@ -10,7 +10,7 @@ Summary: @PACKAGE_SUMMARY@
 License: Apache 2.0
 URL: @PACKAGE_URL@
 Packager: Greg Szabo
-Requires: libonomy >= 0.11.0
+Requires: aphelion >= 0.11.0
 @PACKAGE_ADDITIONAL_HEADER@
 
 %description
@@ -35,7 +35,7 @@ cd %{name}-%{version}-%{release}
 %{__cp} -a * %{buildroot}
 
 %post
-sudo -Hu %{name} libonomy init --home %{_sysconfdir}/%{name}
+sudo -Hu %{name} aphelion init --home %{_sysconfdir}/%{name}
 sudo -Hu %{name} %{name} --datadir %{_sysconfdir}/%{name} init %{_sysconfdir}/%{name}/genesis.json
 
 systemctl daemon-reload

@@ -11,14 +11,14 @@ type RemoteSignerMsg interface{}
 
 func RegisterRemoteSignerMsg(cdc *amino.Codec) {
 	cdc.RegisterInterface((*RemoteSignerMsg)(nil), nil)
-	cdc.RegisterConcrete(&PubKeyRequest{}, "libonomy/remotesigner/PubKeyRequest", nil)
-	cdc.RegisterConcrete(&PubKeyResponse{}, "libonomy/remotesigner/PubKeyResponse", nil)
-	cdc.RegisterConcrete(&SignVoteRequest{}, "libonomy/remotesigner/SignVoteRequest", nil)
-	cdc.RegisterConcrete(&SignedVoteResponse{}, "libonomy/remotesigner/SignedVoteResponse", nil)
-	cdc.RegisterConcrete(&SignProposalRequest{}, "libonomy/remotesigner/SignProposalRequest", nil)
-	cdc.RegisterConcrete(&SignedProposalResponse{}, "libonomy/remotesigner/SignedProposalResponse", nil)
-	cdc.RegisterConcrete(&PingRequest{}, "libonomy/remotesigner/PingRequest", nil)
-	cdc.RegisterConcrete(&PingResponse{}, "libonomy/remotesigner/PingResponse", nil)
+	cdc.RegisterConcrete(&PubKeyRequest{}, "aphelion/remotesigner/PubKeyRequest", nil)
+	cdc.RegisterConcrete(&PubKeyResponse{}, "aphelion/remotesigner/PubKeyResponse", nil)
+	cdc.RegisterConcrete(&SignVoteRequest{}, "aphelion/remotesigner/SignVoteRequest", nil)
+	cdc.RegisterConcrete(&SignedVoteResponse{}, "aphelion/remotesigner/SignedVoteResponse", nil)
+	cdc.RegisterConcrete(&SignProposalRequest{}, "aphelion/remotesigner/SignProposalRequest", nil)
+	cdc.RegisterConcrete(&SignedProposalResponse{}, "aphelion/remotesigner/SignedProposalResponse", nil)
+	cdc.RegisterConcrete(&PingRequest{}, "aphelion/remotesigner/PingRequest", nil)
+	cdc.RegisterConcrete(&PingResponse{}, "aphelion/remotesigner/PingResponse", nil)
 }
 
 // PubKeyRequest requests the consensus public key from the remote signer.

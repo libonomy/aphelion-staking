@@ -839,9 +839,9 @@ type Packet interface {
 
 func RegisterPacket(cdc *amino.Codec) {
 	cdc.RegisterInterface((*Packet)(nil), nil)
-	cdc.RegisterConcrete(PacketPing{}, "libonomy/p2p/PacketPing", nil)
-	cdc.RegisterConcrete(PacketPong{}, "libonomy/p2p/PacketPong", nil)
-	cdc.RegisterConcrete(PacketMsg{}, "libonomy/p2p/PacketMsg", nil)
+	cdc.RegisterConcrete(PacketPing{}, "aphelion/p2p/PacketPing", nil)
+	cdc.RegisterConcrete(PacketPong{}, "aphelion/p2p/PacketPong", nil)
+	cdc.RegisterConcrete(PacketMsg{}, "aphelion/p2p/PacketMsg", nil)
 }
 
 func (_ PacketPing) AssertIsPacket() {}

@@ -1,5 +1,5 @@
 ---
-name: "libonomy-darwin"
+name: "aphelion-darwin"
 enable_cache: true
 distro: "ubuntu"
 suites:
@@ -21,7 +21,7 @@ packages:
 - "quilt"
 remotes:
 - "url": "https://github.com/evdatsion/aphelion-dpos-bft.git"
-  "dir": "libonomy"
+  "dir": "aphelion"
 files:
 - "golang-debian-1.12.5-1.tar.gz"
 script: |
@@ -53,12 +53,12 @@ script: |
   export GO111MODULE=on
 
   # Make release tarball
-  pushd libonomy
+  pushd aphelion
   VERSION=$(git describe --tags | sed 's/^v//')
   COMMIT=$(git rev-parse --short=8 HEAD)
-  DISTNAME=libonomy-${VERSION}
+  DISTNAME=aphelion-${VERSION}
   git archive --format tar.gz --prefix ${DISTNAME}/ -o ${DISTNAME}.tar.gz HEAD
-  SOURCEDIST=`pwd`/`echo libonomy-*.tar.gz`
+  SOURCEDIST=`pwd`/`echo aphelion-*.tar.gz`
   popd
 
   # Correct tar file order
@@ -66,7 +66,7 @@ script: |
   pushd temp
   tar xf $SOURCEDIST
   rm $SOURCEDIST
-  find libonomy-* | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > $SOURCEDIST
+  find aphelion-* | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > $SOURCEDIST
   popd
 
   # Prepare GOPATH and install deps
@@ -86,14 +86,14 @@ script: |
     INSTALLPATH=`pwd`/installed/${DISTNAME}-${arch}
     mkdir -p ${INSTALLPATH}
 
-    # Build libonomy binary
+    # Build aphelion binary
     pushd ${distsrc}
     GOARCH=${arch} GOROOT_FINAL=${GOROOT} go build -a \
       -gcflags=all=-trimpath=${GOPATH} \
       -asmflags=all=-trimpath=${GOPATH} \
-      -mod=readonly -tags "libonomy" \
+      -mod=readonly -tags "aphelion" \
       -ldflags="${LDFLAGS}" \
-      -o ${INSTALLPATH}/libonomy ./cmd/libonomy/
+      -o ${INSTALLPATH}/aphelion ./cmd/aphelion/
 
     popd # ${distsrc}
 

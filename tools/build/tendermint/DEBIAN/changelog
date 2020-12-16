@@ -1,4 +1,4 @@
-libonomy (@VERSION@) @STABILITY@; urgency=medium
+aphelion (@VERSION@) @STABILITY@; urgency=medium
 
   * Automatic build. See https://github.com/evdatsion/aphelion-dpos-bft for more information.
 

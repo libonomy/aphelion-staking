@@ -63,7 +63,7 @@ import (
 //   	"validator_info": {
 //   		"address": "D9F56456D7C5793815D0E9AF07C3A355D0FC64FD",
 //   		"pub_key": {
-//   			"type": "libonomy/PubKeyEd25519",
+//   			"type": "aphelion/PubKeyEd25519",
 //   			"value": "wVxKNtEsJmR4vvh651LrVoRguPs+6yJJ9Bz174gw9DM="
 //   		},
 //   		"voting_power": "10"

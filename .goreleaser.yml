@@ -6,7 +6,7 @@ env:
 
 builds:
   - id: "Aphelion"
-    main: ./cmd/libonomy/main.go
+    main: ./cmd/aphelion/main.go
     ldflags:
      - -s -w -X github.com/evdatsion/aphelion-dpos-bft/version.TMCoreSemVer={{ .Version }}
     env:

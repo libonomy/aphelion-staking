@@ -13,7 +13,7 @@ import (
 )
 
 func TestMain(m *testing.M) {
-	// start a libonomy node in the background to test against
+	// start a aphelion node in the background to test against
 	app := kvstore.NewKVStoreApplication()
 	node := rpctest.StartAphelion(app)
 

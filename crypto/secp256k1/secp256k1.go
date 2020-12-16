@@ -19,8 +19,8 @@ import (
 
 //-------------------------------------
 const (
-	PrivKeyAminoName = "libonomy/PrivKeySecp256k1"
-	PubKeyAminoName  = "libonomy/PubKeySecp256k1"
+	PrivKeyAminoName = "aphelion/PrivKeySecp256k1"
+	PubKeyAminoName  = "aphelion/PubKeySecp256k1"
 )
 
 var cdc = amino.NewCodec()

@@ -3,7 +3,7 @@ configuration: Release
 platform:
 - x64
 - x86
-clone_folder: c:\go\path\src\github.com\libonomy\libonomy
+clone_folder: c:\go\path\src\github.com\aphelion\aphelion
 before_build:
 - cmd: set GOPATH=%GOROOT%\path
 - cmd: set PATH=%GOPATH%\bin;%PATH%

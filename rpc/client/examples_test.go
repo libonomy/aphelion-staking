@@ -11,7 +11,7 @@ import (
 )
 
 func ExampleHTTP_simple() {
-	// Start a libonomy node (and kvstore) in the background to test against
+	// Start a aphelion node (and kvstore) in the background to test against
 	app := kvstore.NewKVStoreApplication()
 	node := rpctest.StartAphelion(app, rpctest.SuppressStdout, rpctest.RecreateConfig)
 	defer rpctest.StopAphelion(node)
@@ -61,7 +61,7 @@ func ExampleHTTP_simple() {
 }
 
 func ExampleHTTP_batching() {
-	// Start a libonomy node (and kvstore) in the background to test against
+	// Start a aphelion node (and kvstore) in the background to test against
 	app := kvstore.NewKVStoreApplication()
 	node := rpctest.StartAphelion(app, rpctest.SuppressStdout, rpctest.RecreateConfig)
 	defer rpctest.StopAphelion(node)

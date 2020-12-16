@@ -58,7 +58,7 @@ func StartProxy(c rpcclient.Client, listenAddr string, logger log.Logger, maxOpe
 }
 
 // RPCRoutes just routes everything to the given client, as if it were
-// a libonomy fullnode.
+// a aphelion fullnode.
 //
 // if we want security, the client must implement it as a secure client
 func RPCRoutes(c rpcclient.Client) map[string]*rpcserver.RPCFunc {

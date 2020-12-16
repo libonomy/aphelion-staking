@@ -52,7 +52,7 @@ then query the Aphelion app logs from the first pod:
 
 ``kubectl logs -c tm -f tm-0``
 
-finally, use our `Rest API <https://libonomy.com/docs/libonomy-core/rpc.html>`__ to fetch the status of the second pod's Aphelion app.
+finally, use our `Rest API <https://aphelion.com/docs/aphelion-core/rpc.html>`__ to fetch the status of the second pod's Aphelion app.
 
 Note we are using ``kubectl exec`` because pods are not exposed (and should not be) to the
 outer network:

@@ -21,7 +21,7 @@ func TestProto3Compatibility(t *testing.T) {
 	t.Log("nanos", nanos)
 
 	pbHeader := proto3.Header{
-		ChainID: "libonomy",
+		ChainID: "aphelion",
 		Height:  150,
 		Time:    &proto3.Timestamp{Seconds: seconds, Nanos: nanos},
 		NumTxs:  7,
@@ -38,7 +38,7 @@ func TestProto3Compatibility(t *testing.T) {
 		ValidatorsHash: []byte("validators hash"),
 	}
 	aminoHeader := Header{
-		ChainID: "libonomy",
+		ChainID: "aphelion",
 		Height:  150,
 		Time:    tm,
 		NumTxs:  7,
@@ -63,7 +63,7 @@ func TestProto3Compatibility(t *testing.T) {
 	assert.Equal(t, ab, pb, "encoding doesn't match")
 
 	emptyLastBlockPb := proto3.Header{
-		ChainID:        "libonomy",
+		ChainID:        "aphelion",
 		Height:         150,
 		Time:           &proto3.Timestamp{Seconds: seconds, Nanos: nanos},
 		NumTxs:         7,
@@ -73,7 +73,7 @@ func TestProto3Compatibility(t *testing.T) {
 		ValidatorsHash: []byte("validators hash"),
 	}
 	emptyLastBlockAm := Header{
-		ChainID:        "libonomy",
+		ChainID:        "aphelion",
 		Height:         150,
 		Time:           tm,
 		NumTxs:         7,

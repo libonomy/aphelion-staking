@@ -31,7 +31,7 @@ type MetricHistoryJSON struct {
 }
 
 // TrustMetric - keeps track of peer reliability
-// See libonomy/docs/architecture/adr-006-trust-metric.md for details
+// See aphelion/docs/architecture/adr-006-trust-metric.md for details
 type TrustMetric struct {
 	cmn.BaseService
 
