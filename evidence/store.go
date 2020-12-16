@@ -3,7 +3,7 @@ package evidence
 import (
 	"fmt"
 
-	"github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 	dbm "github.com/evdatsion/tm-db"
 )
 

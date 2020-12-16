@@ -14,8 +14,8 @@ import (
 	"github.com/pkg/errors"
 	"golang.org/x/net/netutil"
 
-	"github.com/evdatsion/tendermint/libs/log"
-	types "github.com/evdatsion/tendermint/rpc/lib/types"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	types "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
 )
 
 // Config is a RPC server configuration.

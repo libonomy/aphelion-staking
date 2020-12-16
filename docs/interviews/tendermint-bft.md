@@ -247,4 +247,4 @@ keep the list of new nodes it discovers, and when you need to establish
 connection to a peer, you'll look to address book and get some addresses from
 there. There's categorization/ranking of nodes there.
 
-[1]: https://github.com/evdatsion/tendermint/blob/master/docs/spec/reactors/consensus/proposer-selection.md
+[1]: https://github.com/evdatsion/aphelion-dpos-bft/blob/master/docs/spec/reactors/consensus/proposer-selection.md

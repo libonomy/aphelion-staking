@@ -6,12 +6,12 @@
 [State Machines](https://en.wikipedia.org/wiki/State_machine_replication).
 Or [Blockchain](<https://en.wikipedia.org/wiki/Blockchain_(database)>), for short.
 
-[![version](https://img.shields.io/github/tag/tendermint/tendermint.svg)](https://github.com/evdatsion/tendermint/releases/latest)
-[![API Reference](https://camo.githubusercontent.com/915b7be44ada53c290eb157634330494ebe3e30a/68747470733a2f2f676f646f632e6f72672f6769746875622e636f6d2f676f6c616e672f6764646f3f7374617475732e737667)](https://godoc.org/github.com/evdatsion/tendermint)
+[![version](https://img.shields.io/github/tag/tendermint/tendermint.svg)](https://github.com/evdatsion/aphelion-dpos-bft/releases/latest)
+[![API Reference](https://camo.githubusercontent.com/915b7be44ada53c290eb157634330494ebe3e30a/68747470733a2f2f676f646f632e6f72672f6769746875622e636f6d2f676f6c616e672f6764646f3f7374617475732e737667)](https://godoc.org/github.com/evdatsion/aphelion-dpos-bft)
 [![Go version](https://img.shields.io/badge/go-1.12.0-blue.svg)](https://github.com/moovweb/gvm)
 [![riot.im](https://img.shields.io/badge/riot.im-JOIN%20CHAT-green.svg)](https://riot.im/app/#/room/#tendermint:matrix.org)
-[![license](https://img.shields.io/github/license/tendermint/tendermint.svg)](https://github.com/evdatsion/tendermint/blob/master/LICENSE)
-[![](https://tokei.rs/b1/github/tendermint/tendermint?category=lines)](https://github.com/evdatsion/tendermint)
+[![license](https://img.shields.io/github/license/tendermint/tendermint.svg)](https://github.com/evdatsion/aphelion-dpos-bft/blob/master/LICENSE)
+[![](https://tokei.rs/b1/github/tendermint/tendermint?category=lines)](https://github.com/evdatsion/aphelion-dpos-bft)
 
 | Branch | Tests                                                                                                                                                | Coverage                                                                                                                             |
 | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
@@ -28,7 +28,7 @@ see our recent paper, "[The latest gossip on BFT consensus](https://arxiv.org/ab
 ## Releases
 
 NOTE: The master branch is now an active development branch (starting with `v0.32`). Please, do not depend on it and
-use [releases](https://github.com/evdatsion/tendermint/releases) instead.
+use [releases](https://github.com/evdatsion/aphelion-dpos-bft/releases) instead.
 
 Tendermint is being used in production in both private and public environments,
 most notably the blockchains of the [Cosmos Network](https://cosmos.network/).
@@ -75,10 +75,10 @@ Join the larger community on the [forum](https://forum.cosmos.network/) and the 
 
 To learn more about the structure of the software, watch the [Developer
 Sessions](/docs/DEV_SESSIONS.md) and read some [Architectural Decision
-Records](https://github.com/evdatsion/tendermint/tree/master/docs/architecture).
+Records](https://github.com/evdatsion/aphelion-dpos-bft/tree/master/docs/architecture).
 
 Learn more by reading the code and comparing it to the
-[specification](https://github.com/evdatsion/tendermint/tree/master/docs/spec).
+[specification](https://github.com/evdatsion/aphelion-dpos-bft/tree/master/docs/spec).
 
 ## Versioning
 
@@ -120,7 +120,7 @@ have to start a new blockchain, or write something custom to get the old
 data into the new chain.
 
 However, any bump in the PATCH version should be compatible with existing histories
-(if not please open an [issue](https://github.com/evdatsion/tendermint/issues)).
+(if not please open an [issue](https://github.com/evdatsion/aphelion-dpos-bft/issues)).
 
 For more information on upgrading, see [UPGRADING.md](./UPGRADING.md)
 

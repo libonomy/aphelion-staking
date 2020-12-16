@@ -18,7 +18,7 @@ graceful here, but that's for another day.
 
 It's possible to fool lite clients without there being a fork on the
 main chain - so called Fork-Lite. See the
-[fork accountability](https://github.com/evdatsion/tendermint/blob/master/docs/spec/consensus/fork-accountability.md)
+[fork accountability](https://github.com/evdatsion/aphelion-dpos-bft/blob/master/docs/spec/consensus/fork-accountability.md)
 document for more details. For a sequential lite client, this can happen via
 equivocation or amnesia attacks. For a skipping lite client this can also happen
 via lunatic validator attacks. There must be some way for applications to punish
@@ -31,7 +31,7 @@ checking).
 
 Currently, evidence verification is handled by Tendermint. Once committed,
 [evidence is passed over
-ABCI](https://github.com/evdatsion/tendermint/blob/master/abci/types/types.proto#L321)
+ABCI](https://github.com/evdatsion/aphelion-dpos-bft/blob/master/abci/types/types.proto#L321)
 in BeginBlock in a reduced form that includes only
 the type of evidence, its height and timestamp, the validator it's from, and the
 total voting power of the validator set at the height. The app trusts Tendermint
@@ -49,7 +49,7 @@ Arguments in favor of leaving evidence handling in Tendermint:
 2) Amensia attacks can not be easily detected - they require an interactive
   protocol among all the validators to submit justification for their past
   votes. Our best notion of [how to do this
-  currently](https://github.com/evdatsion/tendermint/blob/c67154232ca8be8f5c21dff65d154127adc4f7bb/docs/spec/consensus/fork-detection.md)
+  currently](https://github.com/evdatsion/aphelion-dpos-bft/blob/c67154232ca8be8f5c21dff65d154127adc4f7bb/docs/spec/consensus/fork-detection.md)
   is via a centralized
   monitor service that is trusted for liveness to aggregate data from
   current and past validators, but which produces a proof of misbehaviour (ie.
@@ -116,7 +116,7 @@ data in the first place.
 A separate ADR will describe how Tendermint will handle these new forms of
 evidence, in terms of how it will engage the monitoring protocol described in
 the [fork
-detection](https://github.com/evdatsion/tendermint/blob/c67154232ca8be8f5c21dff65d154127adc4f7bb/docs/spec/consensus/fork-detection.md) document,
+detection](https://github.com/evdatsion/aphelion-dpos-bft/blob/c67154232ca8be8f5c21dff65d154127adc4f7bb/docs/spec/consensus/fork-detection.md) document,
 and how it will track past validators and manage DoS issues.
 
 ## Status

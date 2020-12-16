@@ -12,7 +12,7 @@ testnets on those servers.
 ## Install
 
 NOTE: see the [integration bash
-script](https://github.com/evdatsion/tendermint/blob/master/networks/remote/integration.sh)
+script](https://github.com/evdatsion/aphelion-dpos-bft/blob/master/networks/remote/integration.sh)
 that can be run on a fresh DO droplet and will automatically spin up a 4
 node testnet. The script more or less does everything described below.
 
@@ -39,7 +39,7 @@ This step will create four Digital Ocean droplets. First, go to the
 correct directory:
 
 ```
-cd $GOPATH/src/github.com/evdatsion/tendermint/networks/remote/terraform
+cd $GOPATH/src/github.com/evdatsion/aphelion-dpos-bft/networks/remote/terraform
 ```
 
 then:
@@ -56,10 +56,10 @@ With the droplets created and running, let's setup Ansible.
 ## Ansible
 
 The playbooks in [the ansible
-directory](https://github.com/evdatsion/tendermint/tree/master/networks/remote/ansible)
+directory](https://github.com/evdatsion/aphelion-dpos-bft/tree/master/networks/remote/ansible)
 run ansible roles to configure the sentry node architecture. You must
 switch to this directory to run ansible
-(`cd $GOPATH/src/github.com/evdatsion/tendermint/networks/remote/ansible`).
+(`cd $GOPATH/src/github.com/evdatsion/aphelion-dpos-bft/networks/remote/ansible`).
 
 There are several roles that are self-explanatory:
 
@@ -77,7 +77,7 @@ tendermint testnet
 Then, to configure our droplets run:
 
 ```
-ansible-playbook -i inventory/digital_ocean.py -l sentrynet config.yml -e BINARY=$GOPATH/src/github.com/evdatsion/tendermint/build/tendermint -e CONFIGDIR=$GOPATH/src/github.com/evdatsion/tendermint/networks/remote/ansible/mytestnet
+ansible-playbook -i inventory/digital_ocean.py -l sentrynet config.yml -e BINARY=$GOPATH/src/github.com/evdatsion/aphelion-dpos-bft/build/tendermint -e CONFIGDIR=$GOPATH/src/github.com/evdatsion/aphelion-dpos-bft/networks/remote/ansible/mytestnet
 ```
 
 Voila! All your droplets now have the `tendermint` binary and required

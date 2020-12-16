@@ -5,9 +5,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/libs/log"
-	"github.com/evdatsion/tendermint/privval"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/privval"
 )
 
 // ResetAllCmd removes the database of this Tendermint core

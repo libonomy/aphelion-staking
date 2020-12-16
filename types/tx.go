@@ -7,10 +7,10 @@ import (
 
 	amino "github.com/evdatsion/go-amino"
 
-	abci "github.com/evdatsion/tendermint/abci/types"
-	"github.com/evdatsion/tendermint/crypto/merkle"
-	"github.com/evdatsion/tendermint/crypto/tmhash"
-	cmn "github.com/evdatsion/tendermint/libs/common"
+	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/merkle"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/tmhash"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
 )
 
 // Tx is an arbitrary byte array.

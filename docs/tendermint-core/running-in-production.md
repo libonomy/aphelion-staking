@@ -33,7 +33,7 @@ or by increasing the `consensus.timeout_commit` param. Note both of these are
 local settings and not enforced by the consensus.
 
 We're working on [state
-syncing](https://github.com/evdatsion/tendermint/issues/828),
+syncing](https://github.com/evdatsion/aphelion-dpos-bft/issues/828),
 which will enable history to be thrown away
 and recent application state to be directly synced. We'll need to develop solutions
 for archival nodes that allow queries on historical transactions and states.
@@ -137,7 +137,7 @@ curl http(s)://{ip}:{rpcPort}/dump_consensus_state
 There is a reduced version of this endpoint - `consensus_state`, which
 returns just the votes seen at the current height.
 
-- [Github Issues](https://github.com/evdatsion/tendermint/issues)
+- [Github Issues](https://github.com/evdatsion/aphelion-dpos-bft/issues)
 - [StackOverflow
   questions](https://stackoverflow.com/questions/tagged/tendermint)
 
@@ -152,7 +152,7 @@ Other useful endpoints include mentioned earlier `/status`, `/net_info` and
 
 We have a small tool, called `tm-monitor`, which outputs information from
 the endpoints above plus some statistics. The tool can be found
-[here](https://github.com/evdatsion/tendermint/tree/master/tools/tm-monitor).
+[here](https://github.com/evdatsion/aphelion-dpos-bft/tree/master/tools/tm-monitor).
 
 Tendermint also can report and serve Prometheus metrics. See
 [Metrics](./metrics.md).
@@ -263,7 +263,7 @@ Recommended:
 While for now, Tendermint stores all the history and it may require
 significant disk space over time, we are planning to implement state
 syncing (See
-[this issue](https://github.com/evdatsion/tendermint/issues/828)). So,
+[this issue](https://github.com/evdatsion/aphelion-dpos-bft/issues/828)). So,
 storing all the past blocks will not be necessary.
 
 ### Operating Systems
@@ -340,7 +340,7 @@ proposing the next block).
 By default, Tendermint checks whenever a peer's address is routable before
 saving it to the address book. The address is considered as routable if the IP
 is [valid and within allowed
-ranges](https://github.com/evdatsion/tendermint/blob/27bd1deabe4ba6a2d9b463b8f3e3f1e31b993e61/p2p/netaddress.go#L209).
+ranges](https://github.com/evdatsion/aphelion-dpos-bft/blob/27bd1deabe4ba6a2d9b463b8f3e3f1e31b993e61/p2p/netaddress.go#L209).
 
 This may not be the case for private or local networks, where your IP range is usually
 strictly limited and private. If that case, you need to set `addr_book_strict`

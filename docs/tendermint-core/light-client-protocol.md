@@ -9,7 +9,7 @@ for most applications. Tendermint provides unique speed and security
 properties for light client applications.
 
 See our [lite
-package](https://godoc.org/github.com/evdatsion/tendermint/lite).
+package](https://godoc.org/github.com/evdatsion/aphelion-dpos-bft/lite).
 
 ## Overview
 

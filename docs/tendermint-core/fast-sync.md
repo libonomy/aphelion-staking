@@ -26,7 +26,7 @@ daemon will switch out of fast sync and into the normal consensus mode.
 After running for some time, the node is considered `caught up` if it
 has at least one peer and it's height is at least as high as the max
 reported peer height. See [the IsCaughtUp
-method](https://github.com/evdatsion/tendermint/blob/b467515719e686e4678e6da4e102f32a491b85a0/blockchain/pool.go#L128).
+method](https://github.com/evdatsion/aphelion-dpos-bft/blob/b467515719e686e4678e6da4e102f32a491b85a0/blockchain/pool.go#L128).
 
 If we're lagging sufficiently, we should go back to fast syncing, but
-this is an [open issue](https://github.com/evdatsion/tendermint/issues/129).
+this is an [open issue](https://github.com/evdatsion/aphelion-dpos-bft/issues/129).

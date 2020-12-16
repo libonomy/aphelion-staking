@@ -1,7 +1,7 @@
 package merkle
 
 import (
-	"github.com/evdatsion/tendermint/crypto/tmhash"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/tmhash"
 )
 
 // TODO: make these have a large predefined capacity

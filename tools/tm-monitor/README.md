@@ -3,7 +3,7 @@
 Tendermint blockchain monitoring tool; watches over one or more nodes,
 collecting and providing various statistics to the user:
 
-- [https://github.com/evdatsion/tendermint/tree/master/tools/tm-monitor](https://github.com/evdatsion/tendermint/tree/master/tools/tm-monitor)
+- [https://github.com/evdatsion/aphelion-dpos-bft/tree/master/tools/tm-monitor](https://github.com/evdatsion/aphelion-dpos-bft/tree/master/tools/tm-monitor)
 
 ## Quick Start
 
@@ -31,7 +31,7 @@ docker run -it --rm -p "26670:26670" --link=tm tendermint/monitor tm:26657
 
 ### Using Binaries
 
-[Install Tendermint](https://github.com/evdatsion/tendermint#install)
+[Install Tendermint](https://github.com/evdatsion/aphelion-dpos-bft#install)
 
 then run:
 

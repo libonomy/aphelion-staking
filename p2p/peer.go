@@ -5,10 +5,10 @@ import (
 	"net"
 	"time"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/libs/log"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
 
-	tmconn "github.com/evdatsion/tendermint/p2p/conn"
+	tmconn "github.com/evdatsion/aphelion-dpos-bft/p2p/conn"
 )
 
 const metricsTickerDuration = 10 * time.Second

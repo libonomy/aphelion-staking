@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	tmflags "github.com/evdatsion/tendermint/libs/cli/flags"
-	"github.com/evdatsion/tendermint/libs/log"
+	tmflags "github.com/evdatsion/aphelion-dpos-bft/libs/cli/flags"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
 )
 
 const (

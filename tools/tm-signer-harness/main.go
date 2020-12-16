@@ -8,11 +8,11 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/evdatsion/tendermint/crypto/ed25519"
-	"github.com/evdatsion/tendermint/libs/log"
-	"github.com/evdatsion/tendermint/privval"
-	"github.com/evdatsion/tendermint/tools/tm-signer-harness/internal"
-	"github.com/evdatsion/tendermint/version"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/privval"
+	"github.com/evdatsion/aphelion-dpos-bft/tools/tm-signer-harness/internal"
+	"github.com/evdatsion/aphelion-dpos-bft/version"
 )
 
 const (

@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	log "github.com/evdatsion/tendermint/libs/log"
-	"github.com/evdatsion/tendermint/types"
+	log "github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 	dbm "github.com/evdatsion/tm-db"
 )
 

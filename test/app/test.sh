@@ -96,7 +96,7 @@ function counter_over_grpc_grpc() {
     kill -9 $pid_counter $pid_tendermint
 }
 
-cd $GOPATH/src/github.com/evdatsion/tendermint/test/app
+cd $GOPATH/src/github.com/evdatsion/aphelion-dpos-bft/test/app
 
 case "$1" in 
     "kvstore_over_socket")

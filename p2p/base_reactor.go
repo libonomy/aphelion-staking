@@ -1,8 +1,8 @@
 package p2p
 
 import (
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/p2p/conn"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p/conn"
 )
 
 // Reactor is responsible for handling incoming messages on one or more

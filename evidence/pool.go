@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"sync"
 
-	clist "github.com/evdatsion/tendermint/libs/clist"
-	"github.com/evdatsion/tendermint/libs/log"
+	clist "github.com/evdatsion/aphelion-dpos-bft/libs/clist"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
 	dbm "github.com/evdatsion/tm-db"
 
-	sm "github.com/evdatsion/tendermint/state"
-	"github.com/evdatsion/tendermint/types"
+	sm "github.com/evdatsion/aphelion-dpos-bft/state"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 // EvidencePool maintains a pool of valid evidence

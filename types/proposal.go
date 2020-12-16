@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	tmtime "github.com/evdatsion/tendermint/types/time"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
 )
 
 var (

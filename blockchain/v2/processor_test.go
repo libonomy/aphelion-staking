@@ -4,9 +4,9 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/evdatsion/tendermint/p2p"
-	tdState "github.com/evdatsion/tendermint/state"
-	"github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p"
+	tdState "github.com/evdatsion/aphelion-dpos-bft/state"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 // pcBlock is a test helper structure with simple types. Its purpose is to help with test readability.

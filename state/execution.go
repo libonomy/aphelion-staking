@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"time"
 
-	abci "github.com/evdatsion/tendermint/abci/types"
-	"github.com/evdatsion/tendermint/libs/fail"
-	"github.com/evdatsion/tendermint/libs/log"
-	mempl "github.com/evdatsion/tendermint/mempool"
-	"github.com/evdatsion/tendermint/proxy"
-	"github.com/evdatsion/tendermint/types"
+	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/fail"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	mempl "github.com/evdatsion/aphelion-dpos-bft/mempool"
+	"github.com/evdatsion/aphelion-dpos-bft/proxy"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 	dbm "github.com/evdatsion/tm-db"
 )
 

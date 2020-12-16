@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/evdatsion/tendermint/p2p"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p"
 )
 
 func TestStatusIndexer(t *testing.T) {

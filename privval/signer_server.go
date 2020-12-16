@@ -4,8 +4,8 @@ import (
 	"io"
 	"sync"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/types"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 // ValidationRequestHandlerFunc handles different remoteSigner requests

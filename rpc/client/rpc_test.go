@@ -12,18 +12,18 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	abci "github.com/evdatsion/tendermint/abci/types"
+	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
 
-	"github.com/evdatsion/tendermint/crypto/ed25519"
-	"github.com/evdatsion/tendermint/crypto/tmhash"
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	mempl "github.com/evdatsion/tendermint/mempool"
-	"github.com/evdatsion/tendermint/privval"
-	"github.com/evdatsion/tendermint/rpc/client"
-	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
-	rpcclient "github.com/evdatsion/tendermint/rpc/lib/client"
-	rpctest "github.com/evdatsion/tendermint/rpc/test"
-	"github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/tmhash"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	mempl "github.com/evdatsion/aphelion-dpos-bft/mempool"
+	"github.com/evdatsion/aphelion-dpos-bft/privval"
+	"github.com/evdatsion/aphelion-dpos-bft/rpc/client"
+	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
+	rpcclient "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/client"
+	rpctest "github.com/evdatsion/aphelion-dpos-bft/rpc/test"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 func getHTTPClient() *client.HTTP {

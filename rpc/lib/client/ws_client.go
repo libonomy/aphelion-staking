@@ -14,8 +14,8 @@ import (
 	metrics "github.com/rcrowley/go-metrics"
 
 	amino "github.com/evdatsion/go-amino"
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	types "github.com/evdatsion/tendermint/rpc/lib/types"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	types "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
 )
 
 const (

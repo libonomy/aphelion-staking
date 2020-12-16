@@ -17,8 +17,8 @@ experts.
 
 Addresses:
 
-- [#1495](https://github.com/evdatsion/tendermint/issues/1495)
-- [#1692](https://github.com/evdatsion/tendermint/issues/1692)
+- [#1495](https://github.com/evdatsion/aphelion-dpos-bft/issues/1495)
+- [#1692](https://github.com/evdatsion/aphelion-dpos-bft/issues/1692)
 
 ## Decision
 

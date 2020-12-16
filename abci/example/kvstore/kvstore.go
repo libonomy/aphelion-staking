@@ -6,10 +6,10 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/evdatsion/tendermint/abci/example/code"
-	"github.com/evdatsion/tendermint/abci/types"
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/version"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/example/code"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/version"
 	dbm "github.com/evdatsion/tm-db"
 )
 

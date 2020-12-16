@@ -1,7 +1,7 @@
 package types
 
 import (
-	tmtime "github.com/evdatsion/tendermint/types/time"
+	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
 )
 
 func MakeCommit(blockID BlockID, height int64, round int,

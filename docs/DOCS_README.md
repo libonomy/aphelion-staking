@@ -6,7 +6,7 @@ The documentation for Tendermint Core is hosted at:
 - https://tendermint-staging.interblock.io/docs/
 
 built from the files in this (`/docs`) directory for
-[master](https://github.com/evdatsion/tendermint/tree/master/docs) respectively.
+[master](https://github.com/evdatsion/aphelion-dpos-bft/tree/master/docs) respectively.
 
 ## How It Works
 

@@ -1,16 +1,16 @@
 package types
 
 import (
-	abci "github.com/evdatsion/tendermint/abci/types"
-	"github.com/evdatsion/tendermint/crypto/merkle"
-	cmn "github.com/evdatsion/tendermint/libs/common"
+	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/merkle"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
 )
 
 //-----------------------------------------------------------------------------
 
 // ABCIResult is the deterministic component of a ResponseDeliverTx.
 // TODO: add tags and other fields
-// https://github.com/evdatsion/tendermint/issues/1007
+// https://github.com/evdatsion/aphelion-dpos-bft/issues/1007
 type ABCIResult struct {
 	Code uint32       `json:"code"`
 	Data cmn.HexBytes `json:"data"`

@@ -84,7 +84,7 @@ Hello, Tendermint Core
 
 Tendermint Core communicates with the application through the Application
 BlockChain Interface (ABCI). All message types are defined in the [protobuf
-file](https://github.com/evdatsion/tendermint/blob/master/abci/types/types.proto).
+file](https://github.com/evdatsion/aphelion-dpos-bft/blob/master/abci/types/types.proto).
 This allows Tendermint Core to run applications written in any programming
 language.
 
@@ -94,7 +94,7 @@ Create a file called `app.go` with the following content:
 package main
 
 import (
-	abcitypes "github.com/evdatsion/tendermint/abci/types"
+	abcitypes "github.com/evdatsion/aphelion-dpos-bft/abci/types"
 )
 
 type KVStoreApplication struct {}
@@ -286,7 +286,7 @@ the application's `Query` method.
 
 Applications are free to provide their own APIs. But by using Tendermint Core
 as a proxy, clients (including [light client
-package](https://godoc.org/github.com/evdatsion/tendermint/lite)) can leverage
+package](https://godoc.org/github.com/evdatsion/aphelion-dpos-bft/lite)) can leverage
 the unified API across different applications. Plus they won't have to call the
 otherwise separate Tendermint Core API for additional proofs.
 
@@ -340,14 +340,14 @@ import (
 	"github.com/pkg/errors"
 	"github.com/spf13/viper"
 
-	abci "github.com/evdatsion/tendermint/abci/types"
-	cfg "github.com/evdatsion/tendermint/config"
-	tmflags "github.com/evdatsion/tendermint/libs/cli/flags"
-	"github.com/evdatsion/tendermint/libs/log"
-	nm "github.com/evdatsion/tendermint/node"
-	"github.com/evdatsion/tendermint/p2p"
-	"github.com/evdatsion/tendermint/privval"
-	"github.com/evdatsion/tendermint/proxy"
+	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
+	tmflags "github.com/evdatsion/aphelion-dpos-bft/libs/cli/flags"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	nm "github.com/evdatsion/aphelion-dpos-bft/node"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p"
+	"github.com/evdatsion/aphelion-dpos-bft/privval"
+	"github.com/evdatsion/aphelion-dpos-bft/proxy"
 )
 
 var configFile string
@@ -580,7 +580,7 @@ Tendermint Core.
 
 ```sh
 $ rm -rf /tmp/example
-$ cd $GOPATH/src/github.com/evdatsion/tendermint
+$ cd $GOPATH/src/github.com/evdatsion/aphelion-dpos-bft
 $ make install
 $ TMHOME="/tmp/example" tendermint init
 
@@ -646,5 +646,5 @@ $ curl -s 'localhost:26657/abci_query?data="tendermint"'
 
 I hope everything went smoothly and your first, but hopefully not the last,
 Tendermint Core application is up and running. If not, please [open an issue on
-Github](https://github.com/evdatsion/tendermint/issues/new/choose). To dig
+Github](https://github.com/evdatsion/aphelion-dpos-bft/issues/new/choose). To dig
 deeper, read [the docs](https://tendermint.com/docs/).

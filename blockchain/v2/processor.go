@@ -3,9 +3,9 @@ package v2
 import (
 	"fmt"
 
-	"github.com/evdatsion/tendermint/p2p"
-	tdState "github.com/evdatsion/tendermint/state"
-	"github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p"
+	tdState "github.com/evdatsion/aphelion-dpos-bft/state"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 type peerError struct {

@@ -14,12 +14,12 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/evdatsion/tendermint/crypto"
-	"github.com/evdatsion/tendermint/crypto/merkle"
-	"github.com/evdatsion/tendermint/crypto/tmhash"
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	tmtime "github.com/evdatsion/tendermint/types/time"
-	"github.com/evdatsion/tendermint/version"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/merkle"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/tmhash"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
+	"github.com/evdatsion/aphelion-dpos-bft/version"
 )
 
 func TestMain(m *testing.M) {

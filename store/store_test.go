@@ -15,12 +15,12 @@ import (
 	db "github.com/evdatsion/tm-db"
 	dbm "github.com/evdatsion/tm-db"
 
-	cfg "github.com/evdatsion/tendermint/config"
-	"github.com/evdatsion/tendermint/libs/log"
-	sm "github.com/evdatsion/tendermint/state"
+	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	sm "github.com/evdatsion/aphelion-dpos-bft/state"
 
-	"github.com/evdatsion/tendermint/types"
-	tmtime "github.com/evdatsion/tendermint/types/time"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
+	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
 )
 
 // A cleanupFunc cleans up any config / test files created for a particular

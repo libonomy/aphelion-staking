@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/evdatsion/tendermint/abci/types"
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/libs/log"
-	tmpubsub "github.com/evdatsion/tendermint/libs/pubsub"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	tmpubsub "github.com/evdatsion/aphelion-dpos-bft/libs/pubsub"
 )
 
 const defaultCapacity = 0

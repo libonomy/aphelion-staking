@@ -10,7 +10,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/evdatsion/tendermint/crypto/merkle"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/merkle"
 )
 
 // MaxTotalVotingPower - the maximum allowed total voting power.

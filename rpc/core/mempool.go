@@ -7,11 +7,11 @@ import (
 
 	"github.com/pkg/errors"
 
-	abci "github.com/evdatsion/tendermint/abci/types"
-	mempl "github.com/evdatsion/tendermint/mempool"
-	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
-	rpctypes "github.com/evdatsion/tendermint/rpc/lib/types"
-	"github.com/evdatsion/tendermint/types"
+	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	mempl "github.com/evdatsion/aphelion-dpos-bft/mempool"
+	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
+	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 //-----------------------------------------------------------------------------

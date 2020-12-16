@@ -5,10 +5,10 @@ import (
 	"math"
 	"time"
 
-	flow "github.com/evdatsion/tendermint/libs/flowrate"
-	"github.com/evdatsion/tendermint/libs/log"
-	"github.com/evdatsion/tendermint/p2p"
-	"github.com/evdatsion/tendermint/types"
+	flow "github.com/evdatsion/aphelion-dpos-bft/libs/flowrate"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 //--------

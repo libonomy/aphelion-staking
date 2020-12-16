@@ -7,11 +7,11 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/evdatsion/tendermint/abci/example/code"
-	"github.com/evdatsion/tendermint/abci/types"
-	"github.com/evdatsion/tendermint/crypto/ed25519"
-	"github.com/evdatsion/tendermint/libs/log"
-	tmtypes "github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/example/code"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	tmtypes "github.com/evdatsion/aphelion-dpos-bft/types"
 	dbm "github.com/evdatsion/tm-db"
 )
 

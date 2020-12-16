@@ -135,7 +135,7 @@ type Commit struct {
 ```
 
 NOTE: this will likely change to reduce the commit size by eliminating redundant
-information - see [issue #1648](https://github.com/evdatsion/tendermint/issues/1648).
+information - see [issue #1648](https://github.com/evdatsion/aphelion-dpos-bft/issues/1648).
 
 ## Vote
 

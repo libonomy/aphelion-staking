@@ -6,10 +6,10 @@ import (
 	"strconv"
 
 	amino "github.com/evdatsion/go-amino"
-	cryptoAmino "github.com/evdatsion/tendermint/crypto/encoding/amino"
-	log "github.com/evdatsion/tendermint/libs/log"
-	lerr "github.com/evdatsion/tendermint/lite/errors"
-	"github.com/evdatsion/tendermint/types"
+	cryptoAmino "github.com/evdatsion/aphelion-dpos-bft/crypto/encoding/amino"
+	log "github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	lerr "github.com/evdatsion/aphelion-dpos-bft/lite/errors"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 	dbm "github.com/evdatsion/tm-db"
 )
 

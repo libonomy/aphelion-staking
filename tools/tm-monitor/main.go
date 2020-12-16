@@ -6,9 +6,9 @@ import (
 	"os"
 	"strings"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/libs/log"
-	monitor "github.com/evdatsion/tendermint/tools/tm-monitor/monitor"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	monitor "github.com/evdatsion/aphelion-dpos-bft/tools/tm-monitor/monitor"
 )
 
 var logger = log.NewNopLogger()

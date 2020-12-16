@@ -6,10 +6,10 @@ import (
 
 	"github.com/pkg/errors"
 
-	tmpubsub "github.com/evdatsion/tendermint/libs/pubsub"
-	tmquery "github.com/evdatsion/tendermint/libs/pubsub/query"
-	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
-	rpctypes "github.com/evdatsion/tendermint/rpc/lib/types"
+	tmpubsub "github.com/evdatsion/aphelion-dpos-bft/libs/pubsub"
+	tmquery "github.com/evdatsion/aphelion-dpos-bft/libs/pubsub/query"
+	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
+	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
 )
 
 // Subscribe for events via WebSocket.

@@ -9,10 +9,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	abci "github.com/evdatsion/tendermint/abci/types"
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	tmpubsub "github.com/evdatsion/tendermint/libs/pubsub"
-	tmquery "github.com/evdatsion/tendermint/libs/pubsub/query"
+	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	tmpubsub "github.com/evdatsion/aphelion-dpos-bft/libs/pubsub"
+	tmquery "github.com/evdatsion/aphelion-dpos-bft/libs/pubsub/query"
 )
 
 func TestEventBusPublishEventTx(t *testing.T) {

@@ -9,11 +9,11 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/evdatsion/tendermint/abci/example/code"
-	abci "github.com/evdatsion/tendermint/abci/types"
-	mempl "github.com/evdatsion/tendermint/mempool"
-	sm "github.com/evdatsion/tendermint/state"
-	"github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/example/code"
+	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	mempl "github.com/evdatsion/aphelion-dpos-bft/mempool"
+	sm "github.com/evdatsion/aphelion-dpos-bft/state"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 	dbm "github.com/evdatsion/tm-db"
 )
 

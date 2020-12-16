@@ -3,13 +3,13 @@ package core
 import (
 	"fmt"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
 
-	tmquery "github.com/evdatsion/tendermint/libs/pubsub/query"
-	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
-	rpctypes "github.com/evdatsion/tendermint/rpc/lib/types"
-	"github.com/evdatsion/tendermint/state/txindex/null"
-	"github.com/evdatsion/tendermint/types"
+	tmquery "github.com/evdatsion/aphelion-dpos-bft/libs/pubsub/query"
+	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
+	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
+	"github.com/evdatsion/aphelion-dpos-bft/state/txindex/null"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 // Tx allows you to query the transaction results. `nil` could mean the

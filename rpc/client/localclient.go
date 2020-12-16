@@ -6,15 +6,15 @@ import (
 
 	"github.com/pkg/errors"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/libs/log"
-	tmpubsub "github.com/evdatsion/tendermint/libs/pubsub"
-	tmquery "github.com/evdatsion/tendermint/libs/pubsub/query"
-	nm "github.com/evdatsion/tendermint/node"
-	"github.com/evdatsion/tendermint/rpc/core"
-	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
-	rpctypes "github.com/evdatsion/tendermint/rpc/lib/types"
-	"github.com/evdatsion/tendermint/types"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	tmpubsub "github.com/evdatsion/aphelion-dpos-bft/libs/pubsub"
+	tmquery "github.com/evdatsion/aphelion-dpos-bft/libs/pubsub/query"
+	nm "github.com/evdatsion/aphelion-dpos-bft/node"
+	"github.com/evdatsion/aphelion-dpos-bft/rpc/core"
+	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
+	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 /*

@@ -5,15 +5,15 @@ order: 3
 # Install Tendermint
 
 The fastest and easiest way to install the `tendermint` binary
-is to run [this script](https://github.com/evdatsion/tendermint/blob/master/scripts/install/install_tendermint_ubuntu.sh) on
+is to run [this script](https://github.com/evdatsion/aphelion-dpos-bft/blob/master/scripts/install/install_tendermint_ubuntu.sh) on
 a fresh Ubuntu instance,
-or [this script](https://github.com/evdatsion/tendermint/blob/master/scripts/install/install_tendermint_bsd.sh)
+or [this script](https://github.com/evdatsion/aphelion-dpos-bft/blob/master/scripts/install/install_tendermint_bsd.sh)
 on a fresh FreeBSD instance. Read the comments / instructions carefully (i.e., reset your terminal after running the script,
 make sure you are okay with the network connections being made).
 
 ## From Binary
 
-To download pre-built binaries, see the [releases page](https://github.com/evdatsion/tendermint/releases).
+To download pre-built binaries, see the [releases page](https://github.com/evdatsion/aphelion-dpos-bft/releases).
 
 ## From Source
 
@@ -30,7 +30,7 @@ echo export GO111MODULE=on >> ~/.bash_profile
 ```
 mkdir -p $GOPATH/src/github.com/evdatsion
 cd $GOPATH/src/github.com/evdatsion
-git clone https://github.com/evdatsion/tendermint.git
+git clone https://github.com/evdatsion/aphelion-dpos-bft.git
 cd tendermint
 ```
 
@@ -72,14 +72,14 @@ tendermint node --proxy_app=kvstore
 If you already have Tendermint installed, and you make updates, simply
 
 ```
-cd $GOPATH/src/github.com/evdatsion/tendermint
+cd $GOPATH/src/github.com/evdatsion/aphelion-dpos-bft
 make install
 ```
 
 To upgrade, run
 
 ```
-cd $GOPATH/src/github.com/evdatsion/tendermint
+cd $GOPATH/src/github.com/evdatsion/aphelion-dpos-bft
 git pull origin master
 make install
 ```

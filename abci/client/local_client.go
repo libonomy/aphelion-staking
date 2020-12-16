@@ -3,8 +3,8 @@ package abcicli
 import (
 	"sync"
 
-	types "github.com/evdatsion/tendermint/abci/types"
-	cmn "github.com/evdatsion/tendermint/libs/common"
+	types "github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
 )
 
 var _ Client = (*localClient)(nil)

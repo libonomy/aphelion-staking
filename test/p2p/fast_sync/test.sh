@@ -6,7 +6,7 @@ NETWORK_NAME=$2
 N=$3
 PROXY_APP=$4
 
-cd $GOPATH/src/github.com/evdatsion/tendermint
+cd $GOPATH/src/github.com/evdatsion/aphelion-dpos-bft
 
 # run it on each of them
 for i in `seq 1 $N`; do

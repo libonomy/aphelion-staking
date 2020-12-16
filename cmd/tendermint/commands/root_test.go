@@ -13,9 +13,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	cfg "github.com/evdatsion/tendermint/config"
-	"github.com/evdatsion/tendermint/libs/cli"
-	cmn "github.com/evdatsion/tendermint/libs/common"
+	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/cli"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
 )
 
 var (

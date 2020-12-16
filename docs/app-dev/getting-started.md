@@ -32,8 +32,8 @@ echo export GO111MODULE=on >> ~/.bash_profile
 Then run
 
 ```
-go get github.com/evdatsion/tendermint
-cd $GOPATH/src/github.com/evdatsion/tendermint
+go get github.com/evdatsion/aphelion-dpos-bft
+cd $GOPATH/src/github.com/evdatsion/aphelion-dpos-bft
 make tools
 make install_abci
 ```
@@ -148,7 +148,7 @@ of the ASCII of `abcd`. You can verify this in a python 2 shell by
 running `"YWJjZA==".decode('base64')` or in python 3 shell by running
 `import codecs; codecs.decode(b"YWJjZA==", 'base64').decode('ascii')`.
 Stay tuned for a future release that [makes this output more
-human-readable](https://github.com/evdatsion/tendermint/issues/1794).
+human-readable](https://github.com/evdatsion/aphelion-dpos-bft/issues/1794).
 
 Now let's try setting a different key and value:
 

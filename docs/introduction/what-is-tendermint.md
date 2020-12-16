@@ -120,7 +120,7 @@ consensus engine, and provides a particular application state.
 ## ABCI Overview
 
 The [Application BlockChain Interface
-(ABCI)](https://github.com/evdatsion/tendermint/tree/master/abci)
+(ABCI)](https://github.com/evdatsion/aphelion-dpos-bft/tree/master/abci)
 allows for Byzantine Fault Tolerant replication of applications
 written in any programming language.
 
@@ -158,7 +158,7 @@ Teaspoon).
 
 ### Intro to ABCI
 
-[Tendermint Core](https://github.com/evdatsion/tendermint) (the
+[Tendermint Core](https://github.com/evdatsion/aphelion-dpos-bft) (the
 "consensus engine") communicates with the application via a socket
 protocol that satisfies the ABCI.
 
@@ -188,7 +188,7 @@ core to the application. The application replies with corresponding
 response messages.
 
 The messages are specified here: [ABCI Message
-Types](https://github.com/evdatsion/tendermint/blob/master/abci/README.md#message-types).
+Types](https://github.com/evdatsion/aphelion-dpos-bft/blob/master/abci/README.md#message-types).
 
 The **DeliverTx** message is the work horse of the application. Each
 transaction in the blockchain is delivered with this message. The

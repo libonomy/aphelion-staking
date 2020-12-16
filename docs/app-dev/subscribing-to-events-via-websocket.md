@@ -8,7 +8,7 @@ Tendermint emits different events, to which you can subscribe via
 [Websocket](https://en.wikipedia.org/wiki/WebSocket). This can be useful
 for third-party applications (for analysis) or inspecting state.
 
-[List of events](https://godoc.org/github.com/evdatsion/tendermint/types#pkg-constants)
+[List of events](https://godoc.org/github.com/evdatsion/aphelion-dpos-bft/types#pkg-constants)
 
 You can subscribe to any of the events above by calling `subscribe` RPC
 method via Websocket.

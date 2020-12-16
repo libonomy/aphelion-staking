@@ -8,7 +8,7 @@
 
 # as written, this script will install
 # tendermint core from master branch
-REPO=github.com/evdatsion/tendermint
+REPO=github.com/evdatsion/aphelion-dpos-bft
 
 # change this to a specific release or branch
 BRANCH=master

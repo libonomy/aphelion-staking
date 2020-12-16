@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/evdatsion/tendermint/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
 )
 
 func TestLoggerLogsItsErrors(t *testing.T) {

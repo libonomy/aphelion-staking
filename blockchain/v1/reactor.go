@@ -7,12 +7,12 @@ import (
 	"time"
 
 	amino "github.com/evdatsion/go-amino"
-	"github.com/evdatsion/tendermint/behaviour"
-	"github.com/evdatsion/tendermint/libs/log"
-	"github.com/evdatsion/tendermint/p2p"
-	sm "github.com/evdatsion/tendermint/state"
-	"github.com/evdatsion/tendermint/store"
-	"github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/behaviour"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p"
+	sm "github.com/evdatsion/aphelion-dpos-bft/state"
+	"github.com/evdatsion/aphelion-dpos-bft/store"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 const (

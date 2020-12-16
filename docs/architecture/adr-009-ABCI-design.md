@@ -264,8 +264,8 @@ Accepted.
 - [Ed25519 addresses](https://github.com/evdatsion/go-crypto/issues/103)
 - [InitChain contains the
   Genesis](https://github.com/evdatsion/abci/issues/216)
-- [PubKeys](https://github.com/evdatsion/tendermint/issues/1524)
+- [PubKeys](https://github.com/evdatsion/aphelion-dpos-bft/issues/1524)
 - [Notes on
-  Header](https://github.com/evdatsion/tendermint/issues/1605)
+  Header](https://github.com/evdatsion/aphelion-dpos-bft/issues/1605)
 - [Gogoproto issues](https://github.com/evdatsion/abci/issues/256)
 - [Absent Validators](https://github.com/evdatsion/abci/issues/231)

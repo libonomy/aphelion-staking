@@ -15,8 +15,8 @@ import (
 	"strings"
 
 	amino "github.com/evdatsion/go-amino"
-	cs "github.com/evdatsion/tendermint/consensus"
-	"github.com/evdatsion/tendermint/types"
+	cs "github.com/evdatsion/aphelion-dpos-bft/consensus"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 var cdc = amino.NewCodec()

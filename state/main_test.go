@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 func TestMain(m *testing.M) {

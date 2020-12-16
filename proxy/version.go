@@ -1,8 +1,8 @@
 package proxy
 
 import (
-	abci "github.com/evdatsion/tendermint/abci/types"
-	"github.com/evdatsion/tendermint/version"
+	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	"github.com/evdatsion/aphelion-dpos-bft/version"
 )
 
 // RequestInfo contains all the information for sending

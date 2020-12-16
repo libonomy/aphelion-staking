@@ -6,8 +6,8 @@ import (
 	"sync"
 	"time"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/libs/log"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
 )
 
 // SignerListenerEndpointOption sets an optional parameter on the SignerListenerEndpoint.

@@ -155,5 +155,5 @@ Accepted
 
 ## References
 
-1. Issue [#2067](https://github.com/evdatsion/tendermint/issues/2067): P2P Refactor
-2. PR: [#3506](https://github.com/evdatsion/tendermint/pull/3506): ADR 036: Blockchain Reactor Refactor
+1. Issue [#2067](https://github.com/evdatsion/aphelion-dpos-bft/issues/2067): P2P Refactor
+2. PR: [#3506](https://github.com/evdatsion/aphelion-dpos-bft/pull/3506): ADR 036: Blockchain Reactor Refactor

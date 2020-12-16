@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/evdatsion/tendermint/lite/proxy"
-	"github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/lite/proxy"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 var (

@@ -4,7 +4,7 @@
 
 Tendermint blockchain benchmarking tool:
 
-- [https://github.com/evdatsion/tendermint/tree/master/tools/tm-bench](https://github.com/evdatsion/tendermint/tree/master/tools/tm-bench)
+- [https://github.com/evdatsion/aphelion-dpos-bft/tree/master/tools/tm-bench](https://github.com/evdatsion/aphelion-dpos-bft/tree/master/tools/tm-bench)
 
 For example, the following:
 

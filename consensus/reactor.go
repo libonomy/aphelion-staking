@@ -9,14 +9,14 @@ import (
 	"github.com/pkg/errors"
 
 	amino "github.com/evdatsion/go-amino"
-	cstypes "github.com/evdatsion/tendermint/consensus/types"
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	tmevents "github.com/evdatsion/tendermint/libs/events"
-	"github.com/evdatsion/tendermint/libs/log"
-	"github.com/evdatsion/tendermint/p2p"
-	sm "github.com/evdatsion/tendermint/state"
-	"github.com/evdatsion/tendermint/types"
-	tmtime "github.com/evdatsion/tendermint/types/time"
+	cstypes "github.com/evdatsion/aphelion-dpos-bft/consensus/types"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	tmevents "github.com/evdatsion/aphelion-dpos-bft/libs/events"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p"
+	sm "github.com/evdatsion/aphelion-dpos-bft/state"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
+	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
 )
 
 const (

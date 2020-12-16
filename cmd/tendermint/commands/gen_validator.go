@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/evdatsion/tendermint/privval"
+	"github.com/evdatsion/aphelion-dpos-bft/privval"
 )
 
 // GenValidatorCmd allows the generation of a keypair for a

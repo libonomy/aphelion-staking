@@ -10,18 +10,18 @@ import (
 
 	"github.com/pkg/errors"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/libs/fail"
-	"github.com/evdatsion/tendermint/libs/log"
-	tmtime "github.com/evdatsion/tendermint/types/time"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/fail"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
 
-	cfg "github.com/evdatsion/tendermint/config"
-	cstypes "github.com/evdatsion/tendermint/consensus/types"
-	"github.com/evdatsion/tendermint/crypto"
-	tmevents "github.com/evdatsion/tendermint/libs/events"
-	"github.com/evdatsion/tendermint/p2p"
-	sm "github.com/evdatsion/tendermint/state"
-	"github.com/evdatsion/tendermint/types"
+	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
+	cstypes "github.com/evdatsion/aphelion-dpos-bft/consensus/types"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto"
+	tmevents "github.com/evdatsion/aphelion-dpos-bft/libs/events"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p"
+	sm "github.com/evdatsion/aphelion-dpos-bft/state"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 //-----------------------------------------------------------------------------
@@ -726,7 +726,7 @@ func (cs *ConsensusState) handleMsg(mi msgInfo) {
 		// We probably don't want to stop the peer here. The vote does not
 		// necessarily comes from a malicious peer but can be just broadcasted by
 		// a typical peer.
-		// https://github.com/evdatsion/tendermint/issues/1281
+		// https://github.com/evdatsion/aphelion-dpos-bft/issues/1281
 		// }
 
 		// NOTE: the vote is broadcast to peers by the reactor listening
@@ -742,7 +742,7 @@ func (cs *ConsensusState) handleMsg(mi msgInfo) {
 
 	if err != nil { // nolint:staticcheck
 		// Causes TestReactorValidatorSetChanges to timeout
-		// https://github.com/evdatsion/tendermint/issues/3406
+		// https://github.com/evdatsion/aphelion-dpos-bft/issues/3406
 		// cs.Logger.Error("Error with msg", "height", cs.Height, "round", cs.Round,
 		// 	"peer", peerID, "err", err, "msg", msg)
 	}
@@ -1695,7 +1695,7 @@ func (cs *ConsensusState) tryAddVote(vote *types.Vote, peerID p2p.ID) (bool, err
 			// 1) bad peer OR
 			// 2) not a bad peer? this can also err sometimes with "Unexpected step" OR
 			// 3) tmkms use with multiple validators connecting to a single tmkms instance
-			// 		(https://github.com/evdatsion/tendermint/issues/3839).
+			// 		(https://github.com/evdatsion/aphelion-dpos-bft/issues/3839).
 			cs.Logger.Info("Error attempting to add vote", "err", err)
 			return added, ErrAddingVote
 		}

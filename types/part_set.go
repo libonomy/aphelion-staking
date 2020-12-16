@@ -8,8 +8,8 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/evdatsion/tendermint/crypto/merkle"
-	cmn "github.com/evdatsion/tendermint/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/merkle"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
 )
 
 var (

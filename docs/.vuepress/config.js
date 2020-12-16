@@ -106,11 +106,11 @@ module.exports = {
           children: [
             {
               title: "Contributing to the docs",
-              url: "https://github.com/evdatsion/tendermint"
+              url: "https://github.com/evdatsion/aphelion-dpos-bft"
             },
             {
               title: "Source code on GitHub",
-              url: "https://github.com/evdatsion/tendermint"
+              url: "https://github.com/evdatsion/aphelion-dpos-bft"
             },
             {
               title: "Careers at Tendermint",

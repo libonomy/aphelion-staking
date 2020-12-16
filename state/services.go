@@ -1,7 +1,7 @@
 package state
 
 import (
-	"github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 //------------------------------------------------------

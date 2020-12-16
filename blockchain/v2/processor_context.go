@@ -3,9 +3,9 @@ package v2
 import (
 	"fmt"
 
-	"github.com/evdatsion/tendermint/state"
-	"github.com/evdatsion/tendermint/store"
-	"github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/state"
+	"github.com/evdatsion/aphelion-dpos-bft/store"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 type processorContext interface {

@@ -7,9 +7,9 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/evdatsion/tendermint/abci/example/kvstore"
-	core_grpc "github.com/evdatsion/tendermint/rpc/grpc"
-	rpctest "github.com/evdatsion/tendermint/rpc/test"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/example/kvstore"
+	core_grpc "github.com/evdatsion/aphelion-dpos-bft/rpc/grpc"
+	rpctest "github.com/evdatsion/aphelion-dpos-bft/rpc/test"
 )
 
 func TestMain(m *testing.M) {

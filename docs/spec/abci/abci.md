@@ -3,7 +3,7 @@
 ## Overview
 
 The ABCI message types are defined in a [protobuf
-file](https://github.com/evdatsion/tendermint/blob/master/abci/types/types.proto).
+file](https://github.com/evdatsion/aphelion-dpos-bft/blob/master/abci/types/types.proto).
 
 ABCI methods are split across 3 separate ABCI _connections_:
 

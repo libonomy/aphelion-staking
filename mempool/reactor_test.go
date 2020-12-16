@@ -11,13 +11,13 @@ import (
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/evdatsion/tendermint/abci/example/kvstore"
-	cfg "github.com/evdatsion/tendermint/config"
-	"github.com/evdatsion/tendermint/libs/log"
-	"github.com/evdatsion/tendermint/p2p"
-	"github.com/evdatsion/tendermint/p2p/mock"
-	"github.com/evdatsion/tendermint/proxy"
-	"github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/example/kvstore"
+	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p/mock"
+	"github.com/evdatsion/aphelion-dpos-bft/proxy"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 type peerState struct {

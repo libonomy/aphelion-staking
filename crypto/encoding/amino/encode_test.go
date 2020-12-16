@@ -9,10 +9,10 @@ import (
 	"github.com/stretchr/testify/require"
 
 	amino "github.com/evdatsion/go-amino"
-	"github.com/evdatsion/tendermint/crypto"
-	"github.com/evdatsion/tendermint/crypto/ed25519"
-	"github.com/evdatsion/tendermint/crypto/multisig"
-	"github.com/evdatsion/tendermint/crypto/secp256k1"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/multisig"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/secp256k1"
 )
 
 type byter interface {

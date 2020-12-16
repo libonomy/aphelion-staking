@@ -17,7 +17,7 @@ Next, install the `abci-cli` tool and example applications:
 ```
 mkdir -p $GOPATH/src/github.com/evdatsion
 cd $GOPATH/src/github.com/evdatsion
-git clone https://github.com/evdatsion/tendermint.git
+git clone https://github.com/evdatsion/aphelion-dpos-bft.git
 cd tendermint
 make tools
 make install_abci
@@ -66,7 +66,7 @@ as `abci-cli` above. The kvstore just stores transactions in a merkle
 tree.
 
 Its code can be found
-[here](https://github.com/evdatsion/tendermint/blob/master/abci/cmd/abci-cli/abci-cli.go)
+[here](https://github.com/evdatsion/aphelion-dpos-bft/blob/master/abci/cmd/abci-cli/abci-cli.go)
 and looks like:
 
 ```
@@ -141,7 +141,7 @@ response.
 
 The server may be generic for a particular language, and we provide a
 [reference implementation in
-Golang](https://github.com/evdatsion/tendermint/tree/master/abci/server). See the
+Golang](https://github.com/evdatsion/aphelion-dpos-bft/tree/master/abci/server). See the
 [list of other ABCI implementations](./ecosystem.md) for servers in
 other languages.
 
@@ -223,7 +223,7 @@ Now that we've got the hang of it, let's try another application, the
 "counter" app.
 
 Like the kvstore app, its code can be found
-[here](https://github.com/evdatsion/tendermint/blob/master/abci/cmd/abci-cli/abci-cli.go)
+[here](https://github.com/evdatsion/aphelion-dpos-bft/blob/master/abci/cmd/abci-cli/abci-cli.go)
 and looks like:
 
 ```
@@ -328,7 +328,7 @@ But the ultimate flexibility comes from being able to write the
 application easily in any language.
 
 We have implemented the counter in a number of languages [see the
-example directory](https://github.com/evdatsion/tendermint/tree/master/abci/example).
+example directory](https://github.com/evdatsion/aphelion-dpos-bft/tree/master/abci/example).
 
 To run the Node.js version, fist download & install [the Javascript ABCI server](https://github.com/evdatsion/js-abci):
 

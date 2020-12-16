@@ -6,8 +6,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/evdatsion/tendermint/p2p"
-	"github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 type RoundVoteSet struct {

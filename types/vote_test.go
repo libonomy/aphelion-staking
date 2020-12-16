@@ -9,9 +9,9 @@ import (
 	"github.com/stretchr/testify/require"
 
 	amino "github.com/evdatsion/go-amino"
-	"github.com/evdatsion/tendermint/crypto"
-	"github.com/evdatsion/tendermint/crypto/ed25519"
-	"github.com/evdatsion/tendermint/crypto/tmhash"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/tmhash"
 )
 
 func examplePrevote() *Vote {
