@@ -1,3 +1,4 @@
+#todo restructure the docker to libonomy
 version: '3'
 
 services:

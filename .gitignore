@@ -1,3 +1,4 @@
+#todo remove the useless ignores with modified version
 *.bak
 *.iml
 *.log
