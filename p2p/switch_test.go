@@ -20,10 +20,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/evdatsion/tendermint/config"
-	"github.com/evdatsion/tendermint/crypto/ed25519"
-	"github.com/evdatsion/tendermint/libs/log"
-	"github.com/evdatsion/tendermint/p2p/conn"
+	"github.com/evdatsion/aphelion-dpos-bft/config"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p/conn"
 )
 
 var (

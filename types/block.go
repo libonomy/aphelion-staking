@@ -9,11 +9,11 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/evdatsion/tendermint/crypto"
-	"github.com/evdatsion/tendermint/crypto/merkle"
-	"github.com/evdatsion/tendermint/crypto/tmhash"
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/version"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/merkle"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/tmhash"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/version"
 )
 
 const (
@@ -481,7 +481,7 @@ func (h *Header) StringIndented(indent string) string {
 // For now, it is identical to a vote,
 // but in the future it will contain fewer fields
 // to eliminate the redundancy in commits.
-// See https://github.com/evdatsion/tendermint/issues/1648.
+// See https://github.com/evdatsion/aphelion-dpos-bft/issues/1648.
 type CommitSig Vote
 
 // String returns the underlying Vote.String()

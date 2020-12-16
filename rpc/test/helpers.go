@@ -8,18 +8,18 @@ import (
 	"strings"
 	"time"
 
-	abci "github.com/evdatsion/tendermint/abci/types"
-	"github.com/evdatsion/tendermint/libs/log"
+	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
 
-	cfg "github.com/evdatsion/tendermint/config"
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	nm "github.com/evdatsion/tendermint/node"
-	"github.com/evdatsion/tendermint/p2p"
-	"github.com/evdatsion/tendermint/privval"
-	"github.com/evdatsion/tendermint/proxy"
-	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
-	core_grpc "github.com/evdatsion/tendermint/rpc/grpc"
-	rpcclient "github.com/evdatsion/tendermint/rpc/lib/client"
+	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	nm "github.com/evdatsion/aphelion-dpos-bft/node"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p"
+	"github.com/evdatsion/aphelion-dpos-bft/privval"
+	"github.com/evdatsion/aphelion-dpos-bft/proxy"
+	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
+	core_grpc "github.com/evdatsion/aphelion-dpos-bft/rpc/grpc"
+	rpcclient "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/client"
 )
 
 // Options helps with specifying some parameters for our RPC testing for greater

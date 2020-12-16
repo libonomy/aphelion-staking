@@ -3,11 +3,11 @@ package core
 import (
 	"fmt"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
-	rpctypes "github.com/evdatsion/tendermint/rpc/lib/types"
-	sm "github.com/evdatsion/tendermint/state"
-	"github.com/evdatsion/tendermint/types"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
+	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
+	sm "github.com/evdatsion/aphelion-dpos-bft/state"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 // Get block headers for minHeight <= height <= maxHeight.

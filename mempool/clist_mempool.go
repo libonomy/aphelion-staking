@@ -11,14 +11,14 @@ import (
 
 	"github.com/pkg/errors"
 
-	abci "github.com/evdatsion/tendermint/abci/types"
-	cfg "github.com/evdatsion/tendermint/config"
-	auto "github.com/evdatsion/tendermint/libs/autofile"
-	"github.com/evdatsion/tendermint/libs/clist"
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/libs/log"
-	"github.com/evdatsion/tendermint/proxy"
-	"github.com/evdatsion/tendermint/types"
+	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
+	auto "github.com/evdatsion/aphelion-dpos-bft/libs/autofile"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/clist"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/proxy"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 //--------------------------------------------------------------------------------
@@ -552,7 +552,7 @@ func (mem *CListMempool) Update(
 		//   101 -> 102
 		// Mempool after:
 		//   100
-		// https://github.com/evdatsion/tendermint/issues/3322.
+		// https://github.com/evdatsion/aphelion-dpos-bft/issues/3322.
 		if e, ok := mem.txsMap.Load(txKey(tx)); ok {
 			mem.removeTx(tx, e.(*clist.CElement), false)
 		}

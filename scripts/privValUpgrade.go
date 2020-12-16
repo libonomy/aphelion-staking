@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/evdatsion/tendermint/libs/log"
-	"github.com/evdatsion/tendermint/privval"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/privval"
 )
 
 var (

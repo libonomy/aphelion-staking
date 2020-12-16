@@ -11,11 +11,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/evdatsion/tendermint/consensus/types"
-	"github.com/evdatsion/tendermint/libs/autofile"
-	"github.com/evdatsion/tendermint/libs/log"
-	tmtypes "github.com/evdatsion/tendermint/types"
-	tmtime "github.com/evdatsion/tendermint/types/time"
+	"github.com/evdatsion/aphelion-dpos-bft/consensus/types"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/autofile"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	tmtypes "github.com/evdatsion/aphelion-dpos-bft/types"
+	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

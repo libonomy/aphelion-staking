@@ -11,11 +11,11 @@ import (
 
 	"github.com/pkg/errors"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	dbm "github.com/evdatsion/tendermint/libs/db"
-	"github.com/evdatsion/tendermint/libs/pubsub/query"
-	"github.com/evdatsion/tendermint/state/txindex"
-	"github.com/evdatsion/tendermint/types"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/pubsub/query"
+	"github.com/evdatsion/aphelion-dpos-bft/state/txindex"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 const (

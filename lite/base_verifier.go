@@ -3,9 +3,9 @@ package lite
 import (
 	"bytes"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	lerr "github.com/evdatsion/tendermint/lite/errors"
-	"github.com/evdatsion/tendermint/types"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	lerr "github.com/evdatsion/aphelion-dpos-bft/lite/errors"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 var _ Verifier = (*BaseVerifier)(nil)

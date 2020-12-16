@@ -6,7 +6,7 @@ NETWORK_NAME=$2
 NUM_OF_PEERS=$3
 NUM_OF_CRASHES=$4
 
-cd "$GOPATH/src/github.com/evdatsion/tendermint"
+cd "$GOPATH/src/github.com/evdatsion/aphelion-dpos-bft"
 
 ###############################################################
 # NUM_OF_CRASHES times:

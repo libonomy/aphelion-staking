@@ -7,9 +7,9 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/evdatsion/tendermint/crypto"
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 // SignerRemote implements PrivValidator.

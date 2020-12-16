@@ -4,11 +4,11 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/evdatsion/tendermint/libs/cli"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/cli"
 
-	cmd "github.com/evdatsion/tendermint/cmd/tendermint/commands"
-	cfg "github.com/evdatsion/tendermint/config"
-	nm "github.com/evdatsion/tendermint/node"
+	cmd "github.com/evdatsion/aphelion-dpos-bft/cmd/tendermint/commands"
+	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
+	nm "github.com/evdatsion/aphelion-dpos-bft/node"
 )
 
 func main() {

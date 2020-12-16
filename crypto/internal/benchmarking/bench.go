@@ -4,7 +4,7 @@ import (
 	"io"
 	"testing"
 
-	"github.com/evdatsion/tendermint/crypto"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto"
 )
 
 // The code in this file is adapted from agl/ed25519.

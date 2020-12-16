@@ -2,7 +2,7 @@
 
 TENDERMINT_VERSION?=latest
 BUILD_TAGS?='tendermint'
-BUILD_FLAGS = -ldflags "-X github.com/evdatsion/tendermint/version.GitCommit=`git rev-parse --short=8 HEAD`"
+BUILD_FLAGS = -ldflags "-X github.com/evdatsion/aphelion-dpos-bft/version.GitCommit=`git rev-parse --short=8 HEAD`"
 
 .DEFAULT_GOAL := build
 

@@ -7,10 +7,10 @@ import (
 
 	"github.com/pkg/errors"
 
-	abci "github.com/evdatsion/tendermint/abci/types"
-	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
-	rpctypes "github.com/evdatsion/tendermint/rpc/lib/types"
-	"github.com/evdatsion/tendermint/types"
+	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
+	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 //-----------------------------------------------------------------------------
@@ -29,7 +29,7 @@ import (
 // 1. malicious node can drop or pretend it had committed your tx
 // 2. malicious proposer (not necessary the one you're communicating with) can
 // drop transactions, which might become valid in the future
-// (https://github.com/evdatsion/tendermint/issues/3322)
+// (https://github.com/evdatsion/aphelion-dpos-bft/issues/3322)
 // 3. node can be offline
 //
 // Please refer to
@@ -92,7 +92,7 @@ func BroadcastTxAsync(ctx *rpctypes.Context, tx types.Tx) (*ctypes.ResultBroadca
 // 1. malicious node can drop or pretend it had committed your tx
 // 2. malicious proposer (not necessary the one you're communicating with) can
 // drop transactions, which might become valid in the future
-// (https://github.com/evdatsion/tendermint/issues/3322)
+// (https://github.com/evdatsion/aphelion-dpos-bft/issues/3322)
 //
 // Please refer to
 // https://tendermint.com/docs/tendermint-core/using-tendermint.html#formatting

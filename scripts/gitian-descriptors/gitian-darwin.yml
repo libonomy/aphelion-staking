@@ -20,7 +20,7 @@ packages:
 - "xxd"
 - "quilt"
 remotes:
-- "url": "https://github.com/evdatsion/tendermint.git"
+- "url": "https://github.com/evdatsion/aphelion-dpos-bft.git"
   "dir": "tendermint"
 files:
 - "golang-debian-1.12.5-1.tar.gz"
@@ -70,7 +70,7 @@ script: |
   popd
 
   # Prepare GOPATH and install deps
-  distsrc=${GOPATH}/src/github.com/evdatsion/tendermint
+  distsrc=${GOPATH}/src/github.com/evdatsion/aphelion-dpos-bft
   mkdir -p ${distsrc}
   pushd ${distsrc}
   tar --strip-components=1 -xf $SOURCEDIST
@@ -79,7 +79,7 @@ script: |
 
   # Configure LDFLAGS for reproducible builds
   LDFLAGS="-extldflags=-static -buildid=${VERSION} -s -w \
-    -X github.com/evdatsion/tendermint/version.GitCommit=${COMMIT}"
+    -X github.com/evdatsion/aphelion-dpos-bft/version.GitCommit=${COMMIT}"
 
   # Extract release tarball and build
   for arch in ${ARCHS}; do

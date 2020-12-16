@@ -1,7 +1,7 @@
 package test
 
 import (
-	cmn "github.com/evdatsion/tendermint/libs/common"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
 )
 
 // Contract: !bytes.Equal(input, output) && len(input) >= len(output)

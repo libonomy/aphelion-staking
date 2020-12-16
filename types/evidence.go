@@ -5,12 +5,12 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	"github.com/evdatsion/tendermint/crypto/tmhash"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/tmhash"
 
 	amino "github.com/evdatsion/go-amino"
 
-	"github.com/evdatsion/tendermint/crypto"
-	"github.com/evdatsion/tendermint/crypto/merkle"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/merkle"
 )
 
 const (
@@ -84,7 +84,7 @@ const (
 // allowed in the block and their maximum total size (limitted to 1/10th
 // of the maximum block size).
 // TODO: change to a constant, or to a fraction of the validator set size.
-// See https://github.com/evdatsion/tendermint/issues/2590
+// See https://github.com/evdatsion/aphelion-dpos-bft/issues/2590
 func MaxEvidencePerBlock(blockMaxBytes int64) (int64, int64) {
 	maxBytes := blockMaxBytes / MaxEvidenceBytesDenominator
 	maxNum := maxBytes / MaxEvidenceBytes

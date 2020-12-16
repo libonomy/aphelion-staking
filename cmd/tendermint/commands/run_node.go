@@ -5,8 +5,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	nm "github.com/evdatsion/tendermint/node"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	nm "github.com/evdatsion/aphelion-dpos-bft/node"
 )
 
 // AddNodeFlags exposes some common configuration options on the command-line

@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	amino "github.com/evdatsion/go-amino"
-	"github.com/evdatsion/tendermint/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
 )
 
 const maxPingPongPacketSize = 1024 // bytes
@@ -266,7 +266,7 @@ func TestMConnectionMultiplePings(t *testing.T) {
 	defer mconn.Stop()
 
 	// sending 3 pings in a row (abuse)
-	// see https://github.com/evdatsion/tendermint/issues/1190
+	// see https://github.com/evdatsion/aphelion-dpos-bft/issues/1190
 	_, err = server.Write(cdc.MustMarshalBinaryLengthPrefixed(PacketPing{}))
 	require.Nil(t, err)
 	var pkt PacketPong

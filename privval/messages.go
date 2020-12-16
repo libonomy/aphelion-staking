@@ -2,8 +2,8 @@ package privval
 
 import (
 	amino "github.com/evdatsion/go-amino"
-	"github.com/evdatsion/tendermint/crypto"
-	"github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 // RemoteSignerMsg is sent between SignerServiceEndpoint and the SignerServiceEndpoint client.

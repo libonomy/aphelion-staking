@@ -8,10 +8,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	cfg "github.com/evdatsion/tendermint/config"
-	dbm "github.com/evdatsion/tendermint/libs/db"
-	sm "github.com/evdatsion/tendermint/state"
-	"github.com/evdatsion/tendermint/types"
+	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
+	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
+	sm "github.com/evdatsion/aphelion-dpos-bft/state"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 func TestStoreLoadValidators(t *testing.T) {
@@ -29,7 +29,7 @@ func TestStoreLoadValidators(t *testing.T) {
 	// 2) LoadValidators loads validators using a checkpoint height
 
 	// TODO(melekes): REMOVE in 0.33 release
-	// https://github.com/evdatsion/tendermint/issues/3543
+	// https://github.com/evdatsion/aphelion-dpos-bft/issues/3543
 	// for releases prior to v0.31.4, it uses last height changed
 	valInfo := &sm.ValidatorsInfo{
 		LastHeightChanged: sm.ValSetCheckpointInterval,

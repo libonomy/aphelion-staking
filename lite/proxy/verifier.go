@@ -1,11 +1,11 @@
 package proxy
 
 import (
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	dbm "github.com/evdatsion/tendermint/libs/db"
-	log "github.com/evdatsion/tendermint/libs/log"
-	"github.com/evdatsion/tendermint/lite"
-	lclient "github.com/evdatsion/tendermint/lite/client"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
+	log "github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/lite"
+	lclient "github.com/evdatsion/aphelion-dpos-bft/lite/client"
 )
 
 func NewVerifier(chainID, rootDir string, client lclient.SignStatusClient, logger log.Logger, cacheSize int) (*lite.DynamicVerifier, error) {

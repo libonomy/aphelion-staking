@@ -8,10 +8,10 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/require"
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/p2p"
-	sm "github.com/evdatsion/tendermint/state"
-	"github.com/evdatsion/tendermint/types"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p"
+	sm "github.com/evdatsion/aphelion-dpos-bft/state"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 //----------------------------------------------

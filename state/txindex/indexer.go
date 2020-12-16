@@ -3,8 +3,8 @@ package txindex
 import (
 	"errors"
 
-	"github.com/evdatsion/tendermint/libs/pubsub/query"
-	"github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/pubsub/query"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 // TxIndexer interface defines methods to index and search transactions.

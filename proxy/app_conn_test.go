@@ -5,12 +5,12 @@ import (
 	"strings"
 	"testing"
 
-	abcicli "github.com/evdatsion/tendermint/abci/client"
-	"github.com/evdatsion/tendermint/abci/example/kvstore"
-	"github.com/evdatsion/tendermint/abci/server"
-	"github.com/evdatsion/tendermint/abci/types"
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/libs/log"
+	abcicli "github.com/evdatsion/aphelion-dpos-bft/abci/client"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/example/kvstore"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/server"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
 )
 
 //----------------------------------------

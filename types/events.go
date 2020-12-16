@@ -4,9 +4,9 @@ import (
 	"fmt"
 
 	amino "github.com/evdatsion/go-amino"
-	abci "github.com/evdatsion/tendermint/abci/types"
-	tmpubsub "github.com/evdatsion/tendermint/libs/pubsub"
-	tmquery "github.com/evdatsion/tendermint/libs/pubsub/query"
+	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	tmpubsub "github.com/evdatsion/aphelion-dpos-bft/libs/pubsub"
+	tmquery "github.com/evdatsion/aphelion-dpos-bft/libs/pubsub/query"
 )
 
 // Reserved event types (alphabetically sorted).

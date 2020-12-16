@@ -1,12 +1,12 @@
 package mock
 
 import (
-	abci "github.com/evdatsion/tendermint/abci/types"
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/proxy"
-	"github.com/evdatsion/tendermint/rpc/client"
-	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
-	"github.com/evdatsion/tendermint/types"
+	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/proxy"
+	"github.com/evdatsion/aphelion-dpos-bft/rpc/client"
+	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 // ABCIApp will send all abci related request to the named app,

@@ -12,9 +12,9 @@ import (
 
 	"github.com/gorilla/websocket"
 	"github.com/stretchr/testify/require"
-	"github.com/evdatsion/tendermint/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
 
-	types "github.com/evdatsion/tendermint/rpc/lib/types"
+	types "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
 )
 
 var wsCallTimeout = 5 * time.Second

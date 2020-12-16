@@ -8,12 +8,12 @@ package client
 import (
 	"fmt"
 
-	log "github.com/evdatsion/tendermint/libs/log"
-	"github.com/evdatsion/tendermint/lite"
-	lerr "github.com/evdatsion/tendermint/lite/errors"
-	rpcclient "github.com/evdatsion/tendermint/rpc/client"
-	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
-	"github.com/evdatsion/tendermint/types"
+	log "github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/lite"
+	lerr "github.com/evdatsion/aphelion-dpos-bft/lite/errors"
+	rpcclient "github.com/evdatsion/aphelion-dpos-bft/rpc/client"
+	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 // SignStatusClient combines a SignClient and StatusClient.

@@ -3,8 +3,8 @@ package consensus
 import (
 	"time"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/libs/log"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
 )
 
 var (

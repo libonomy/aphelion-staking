@@ -4,7 +4,7 @@ set -u
 N=$1
 PEERS=$2
 
-cd "$GOPATH/src/github.com/evdatsion/tendermint"
+cd "$GOPATH/src/github.com/evdatsion/aphelion-dpos-bft"
 
 echo "Waiting for nodes to come online"
 for i in $(seq 1 "$N"); do

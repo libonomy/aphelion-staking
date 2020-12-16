@@ -10,9 +10,9 @@ import (
 
 	"github.com/go-kit/kit/log/term"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/libs/log"
-	tmrpc "github.com/evdatsion/tendermint/rpc/client"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	tmrpc "github.com/evdatsion/aphelion-dpos-bft/rpc/client"
 )
 
 var logger = log.NewNopLogger()

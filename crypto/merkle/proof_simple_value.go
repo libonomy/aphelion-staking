@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/evdatsion/tendermint/crypto/tmhash"
-	cmn "github.com/evdatsion/tendermint/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/tmhash"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
 )
 
 const ProofOpSimpleValue = "simple:v"

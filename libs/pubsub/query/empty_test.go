@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/evdatsion/tendermint/libs/pubsub/query"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/pubsub/query"
 )
 
 func TestEmptyQueryMatchesAnything(t *testing.T) {

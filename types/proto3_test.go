@@ -7,7 +7,7 @@ import (
 	"github.com/golang/protobuf/proto"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/evdatsion/tendermint/types/proto3"
+	"github.com/evdatsion/aphelion-dpos-bft/types/proto3"
 )
 
 func TestProto3Compatibility(t *testing.T) {

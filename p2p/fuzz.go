@@ -5,8 +5,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/evdatsion/tendermint/config"
-	cmn "github.com/evdatsion/tendermint/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/config"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
 )
 
 // FuzzedConnection wraps any net.Conn and depending on the mode either delays

@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/evdatsion/tendermint/version"
+	"github.com/evdatsion/aphelion-dpos-bft/version"
 )
 
 // VersionCmd ...

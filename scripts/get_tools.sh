@@ -60,7 +60,7 @@ installFromGithub mitchellh/gox 51ed453898ca5579fea9ad1f08dff6b121d9f2e8
 installFromGithub golangci/golangci-lint 7b2421d55194c9dc385eff7720a037aa9244ca3c cmd/golangci-lint
 
 ## make test_with_deadlock
-## XXX: https://github.com/evdatsion/tendermint/issues/3242
+## XXX: https://github.com/evdatsion/aphelion-dpos-bft/issues/3242
 installFromGithub petermattis/goid b0b1615b78e5ee59739545bb38426383b2cda4c9
 installFromGithub sasha-s/go-deadlock d68e2bc52ae3291765881b9056f2c1527f245f1e
 go get golang.org/x/tools/cmd/goimports

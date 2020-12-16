@@ -10,7 +10,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
 )
 
 func BenchmarkRandomReadsWrites2(b *testing.B) {

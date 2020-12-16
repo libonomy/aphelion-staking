@@ -7,8 +7,8 @@ import (
 	"net"
 	"reflect"
 
-	"github.com/evdatsion/tendermint/abci/types"
-	cmn "github.com/evdatsion/tendermint/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
 )
 
 func main() {

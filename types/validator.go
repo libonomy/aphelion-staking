@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/evdatsion/tendermint/crypto"
-	cmn "github.com/evdatsion/tendermint/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
 )
 
 // Volatile state for each Validator

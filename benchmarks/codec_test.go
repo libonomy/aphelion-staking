@@ -6,10 +6,10 @@ import (
 
 	amino "github.com/evdatsion/go-amino"
 
-	proto "github.com/evdatsion/tendermint/benchmarks/proto"
-	"github.com/evdatsion/tendermint/crypto/ed25519"
-	"github.com/evdatsion/tendermint/p2p"
-	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
+	proto "github.com/evdatsion/aphelion-dpos-bft/benchmarks/proto"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p"
+	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
 )
 
 func testNodeInfo(id p2p.ID) p2p.DefaultNodeInfo {

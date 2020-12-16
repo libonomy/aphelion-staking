@@ -7,9 +7,9 @@ import (
 	"io/ioutil"
 	"time"
 
-	"github.com/evdatsion/tendermint/crypto"
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	tmtime "github.com/evdatsion/tendermint/types/time"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
 )
 
 const (

@@ -1,4 +1,4 @@
-module github.com/evdatsion/tendermint
+module github.com/evdatsion/aphelion-dpos-bft
 
 go 1.12
 

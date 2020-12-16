@@ -1,7 +1,7 @@
 package multisig
 
 import (
-	"github.com/evdatsion/tendermint/crypto"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto"
 )
 
 // PubKeyMultisigThreshold implements a K of N threshold multisig.

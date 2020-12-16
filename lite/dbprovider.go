@@ -6,11 +6,11 @@ import (
 	"strconv"
 
 	amino "github.com/evdatsion/go-amino"
-	cryptoAmino "github.com/evdatsion/tendermint/crypto/encoding/amino"
-	dbm "github.com/evdatsion/tendermint/libs/db"
-	log "github.com/evdatsion/tendermint/libs/log"
-	lerr "github.com/evdatsion/tendermint/lite/errors"
-	"github.com/evdatsion/tendermint/types"
+	cryptoAmino "github.com/evdatsion/aphelion-dpos-bft/crypto/encoding/amino"
+	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
+	log "github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	lerr "github.com/evdatsion/aphelion-dpos-bft/lite/errors"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 var _ PersistentProvider = (*DBProvider)(nil)

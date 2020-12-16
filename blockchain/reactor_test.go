@@ -8,17 +8,17 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	abci "github.com/evdatsion/tendermint/abci/types"
-	cfg "github.com/evdatsion/tendermint/config"
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	dbm "github.com/evdatsion/tendermint/libs/db"
-	"github.com/evdatsion/tendermint/libs/log"
-	"github.com/evdatsion/tendermint/mock"
-	"github.com/evdatsion/tendermint/p2p"
-	"github.com/evdatsion/tendermint/proxy"
-	sm "github.com/evdatsion/tendermint/state"
-	"github.com/evdatsion/tendermint/types"
-	tmtime "github.com/evdatsion/tendermint/types/time"
+	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/mock"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p"
+	"github.com/evdatsion/aphelion-dpos-bft/proxy"
+	sm "github.com/evdatsion/aphelion-dpos-bft/state"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
+	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
 )
 
 var config *cfg.Config

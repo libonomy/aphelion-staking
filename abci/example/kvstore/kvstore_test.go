@@ -9,13 +9,13 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/libs/log"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
 
-	abcicli "github.com/evdatsion/tendermint/abci/client"
-	"github.com/evdatsion/tendermint/abci/example/code"
-	abciserver "github.com/evdatsion/tendermint/abci/server"
-	"github.com/evdatsion/tendermint/abci/types"
+	abcicli "github.com/evdatsion/aphelion-dpos-bft/abci/client"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/example/code"
+	abciserver "github.com/evdatsion/aphelion-dpos-bft/abci/server"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/types"
 )
 
 func testKVStore(t *testing.T, app types.Application, tx []byte, key, value string) {

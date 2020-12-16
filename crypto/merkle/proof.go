@@ -3,7 +3,7 @@ package merkle
 import (
 	"bytes"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
 )
 
 //----------------------------------------

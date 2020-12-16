@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/evdatsion/tendermint/libs/db"
-	"github.com/evdatsion/tendermint/libs/db/remotedb/grpcdb"
-	protodb "github.com/evdatsion/tendermint/libs/db/remotedb/proto"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/db"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/db/remotedb/grpcdb"
+	protodb "github.com/evdatsion/aphelion-dpos-bft/libs/db/remotedb/proto"
 )
 
 type RemoteDB struct {

@@ -10,8 +10,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	dbm "github.com/evdatsion/tendermint/libs/db"
-	"github.com/evdatsion/tendermint/libs/log"
+	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
 )
 
 func TestTrustMetricStoreSaveLoad(t *testing.T) {

@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/evdatsion/tendermint/crypto/ed25519"
-	"github.com/evdatsion/tendermint/p2p/conn"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p/conn"
 )
 
 var defaultNodeName = "host_peer"

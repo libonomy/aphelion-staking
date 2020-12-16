@@ -8,14 +8,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/evdatsion/tendermint/crypto"
-	"github.com/evdatsion/tendermint/privval"
-	"github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto"
+	"github.com/evdatsion/aphelion-dpos-bft/privval"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/evdatsion/tendermint/crypto/ed25519"
-	"github.com/evdatsion/tendermint/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
 )
 
 const (

@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	dbm "github.com/evdatsion/tendermint/libs/db"
-	"github.com/evdatsion/tendermint/types"
+	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 //-------------------------------------------

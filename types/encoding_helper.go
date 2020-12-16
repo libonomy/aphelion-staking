@@ -1,7 +1,7 @@
 package types
 
 import (
-	cmn "github.com/evdatsion/tendermint/libs/common"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
 )
 
 // cdcEncode returns nil if the input is nil, otherwise returns

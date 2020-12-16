@@ -17,34 +17,34 @@ import (
 	"github.com/rs/cors"
 
 	amino "github.com/evdatsion/go-amino"
-	abci "github.com/evdatsion/tendermint/abci/types"
-	"github.com/evdatsion/tendermint/blockchain"
-	bc "github.com/evdatsion/tendermint/blockchain"
-	cfg "github.com/evdatsion/tendermint/config"
-	"github.com/evdatsion/tendermint/consensus"
-	cs "github.com/evdatsion/tendermint/consensus"
-	"github.com/evdatsion/tendermint/crypto/ed25519"
-	"github.com/evdatsion/tendermint/evidence"
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	dbm "github.com/evdatsion/tendermint/libs/db"
-	"github.com/evdatsion/tendermint/libs/log"
-	tmpubsub "github.com/evdatsion/tendermint/libs/pubsub"
-	mempl "github.com/evdatsion/tendermint/mempool"
-	"github.com/evdatsion/tendermint/p2p"
-	"github.com/evdatsion/tendermint/p2p/pex"
-	"github.com/evdatsion/tendermint/privval"
-	"github.com/evdatsion/tendermint/proxy"
-	rpccore "github.com/evdatsion/tendermint/rpc/core"
-	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
-	grpccore "github.com/evdatsion/tendermint/rpc/grpc"
-	rpcserver "github.com/evdatsion/tendermint/rpc/lib/server"
-	sm "github.com/evdatsion/tendermint/state"
-	"github.com/evdatsion/tendermint/state/txindex"
-	"github.com/evdatsion/tendermint/state/txindex/kv"
-	"github.com/evdatsion/tendermint/state/txindex/null"
-	"github.com/evdatsion/tendermint/types"
-	tmtime "github.com/evdatsion/tendermint/types/time"
-	"github.com/evdatsion/tendermint/version"
+	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	"github.com/evdatsion/aphelion-dpos-bft/blockchain"
+	bc "github.com/evdatsion/aphelion-dpos-bft/blockchain"
+	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
+	"github.com/evdatsion/aphelion-dpos-bft/consensus"
+	cs "github.com/evdatsion/aphelion-dpos-bft/consensus"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
+	"github.com/evdatsion/aphelion-dpos-bft/evidence"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	tmpubsub "github.com/evdatsion/aphelion-dpos-bft/libs/pubsub"
+	mempl "github.com/evdatsion/aphelion-dpos-bft/mempool"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p/pex"
+	"github.com/evdatsion/aphelion-dpos-bft/privval"
+	"github.com/evdatsion/aphelion-dpos-bft/proxy"
+	rpccore "github.com/evdatsion/aphelion-dpos-bft/rpc/core"
+	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
+	grpccore "github.com/evdatsion/aphelion-dpos-bft/rpc/grpc"
+	rpcserver "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/server"
+	sm "github.com/evdatsion/aphelion-dpos-bft/state"
+	"github.com/evdatsion/aphelion-dpos-bft/state/txindex"
+	"github.com/evdatsion/aphelion-dpos-bft/state/txindex/kv"
+	"github.com/evdatsion/aphelion-dpos-bft/state/txindex/null"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
+	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
+	"github.com/evdatsion/aphelion-dpos-bft/version"
 )
 
 // CustomReactorNamePrefix is a prefix for all custom reactors to prevent
@@ -496,7 +496,7 @@ func createPEXReactorAndAddToSwitch(addrBook pex.AddrBook, config *cfg.Config,
 			// blocks assuming 10s blocks ~ 28 hours.
 			// TODO (melekes): make it dynamic based on the actual block latencies
 			// from the live network.
-			// https://github.com/evdatsion/tendermint/issues/3523
+			// https://github.com/evdatsion/aphelion-dpos-bft/issues/3523
 			SeedDisconnectWaitPeriod: 28 * time.Hour,
 		})
 	pexReactor.SetLogger(logger.With("module", "pex"))
@@ -841,7 +841,7 @@ func (n *Node) startRPC() ([]net.Listener, error) {
 		config.MaxOpenConnections = n.config.RPC.MaxOpenConnections
 		// If necessary adjust global WriteTimeout to ensure it's greater than
 		// TimeoutBroadcastTxCommit.
-		// See https://github.com/evdatsion/tendermint/issues/3435
+		// See https://github.com/evdatsion/aphelion-dpos-bft/issues/3435
 		if config.WriteTimeout <= n.config.RPC.TimeoutBroadcastTxCommit {
 			config.WriteTimeout = n.config.RPC.TimeoutBroadcastTxCommit + 1*time.Second
 		}

@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/evdatsion/tendermint/crypto"
-	"github.com/evdatsion/tendermint/crypto/ed25519"
-	cmn "github.com/evdatsion/tendermint/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
 )
 
 // ID is a hex-encoded crypto.Address

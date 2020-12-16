@@ -8,7 +8,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/evdatsion/tendermint/privval"
+	"github.com/evdatsion/aphelion-dpos-bft/privval"
 )
 
 const oldPrivvalContent = `{

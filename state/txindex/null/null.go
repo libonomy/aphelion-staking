@@ -3,9 +3,9 @@ package null
 import (
 	"errors"
 
-	"github.com/evdatsion/tendermint/libs/pubsub/query"
-	"github.com/evdatsion/tendermint/state/txindex"
-	"github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/pubsub/query"
+	"github.com/evdatsion/aphelion-dpos-bft/state/txindex"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 var _ txindex.TxIndexer = (*TxIndex)(nil)

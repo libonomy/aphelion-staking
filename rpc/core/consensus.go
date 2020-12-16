@@ -1,11 +1,11 @@
 package core
 
 import (
-	cm "github.com/evdatsion/tendermint/consensus"
-	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
-	rpctypes "github.com/evdatsion/tendermint/rpc/lib/types"
-	sm "github.com/evdatsion/tendermint/state"
-	"github.com/evdatsion/tendermint/types"
+	cm "github.com/evdatsion/aphelion-dpos-bft/consensus"
+	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
+	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
+	sm "github.com/evdatsion/aphelion-dpos-bft/state"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 // Get the validator set at the given block height.

@@ -10,11 +10,11 @@ import (
 
 	amino "github.com/evdatsion/go-amino"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	tmpubsub "github.com/evdatsion/tendermint/libs/pubsub"
-	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
-	rpcclient "github.com/evdatsion/tendermint/rpc/lib/client"
-	"github.com/evdatsion/tendermint/types"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	tmpubsub "github.com/evdatsion/aphelion-dpos-bft/libs/pubsub"
+	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
+	rpcclient "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/client"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 /*

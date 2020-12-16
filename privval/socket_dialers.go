@@ -5,9 +5,9 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
-	"github.com/evdatsion/tendermint/crypto/ed25519"
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	p2pconn "github.com/evdatsion/tendermint/p2p/conn"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	p2pconn "github.com/evdatsion/aphelion-dpos-bft/p2p/conn"
 )
 
 // Socket errors.

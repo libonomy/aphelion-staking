@@ -14,8 +14,8 @@ import fmt "fmt"
 import math "math"
 import _ "github.com/gogo/protobuf/gogoproto"
 import _ "github.com/golang/protobuf/ptypes/timestamp"
-import _ "github.com/evdatsion/tendermint/crypto/merkle"
-import _ "github.com/evdatsion/tendermint/libs/common"
+import _ "github.com/evdatsion/aphelion-dpos-bft/crypto/merkle"
+import _ "github.com/evdatsion/aphelion-dpos-bft/libs/common"
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal

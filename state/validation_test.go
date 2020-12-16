@@ -5,14 +5,14 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/require"
-	"github.com/evdatsion/tendermint/mock"
+	"github.com/evdatsion/aphelion-dpos-bft/mock"
 
-	"github.com/evdatsion/tendermint/crypto/ed25519"
-	"github.com/evdatsion/tendermint/crypto/tmhash"
-	"github.com/evdatsion/tendermint/libs/log"
-	sm "github.com/evdatsion/tendermint/state"
-	"github.com/evdatsion/tendermint/types"
-	tmtime "github.com/evdatsion/tendermint/types/time"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/tmhash"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	sm "github.com/evdatsion/aphelion-dpos-bft/state"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
+	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
 )
 
 const validationTestsStopHeight int64 = 10

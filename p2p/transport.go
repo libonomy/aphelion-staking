@@ -6,8 +6,8 @@ import (
 	"net"
 	"time"
 
-	"github.com/evdatsion/tendermint/crypto"
-	"github.com/evdatsion/tendermint/p2p/conn"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p/conn"
 )
 
 const (
@@ -266,7 +266,7 @@ func (mt *MultiplexTransport) acceptPeers() {
 
 		// Connection upgrade and filtering should be asynchronous to avoid
 		// Head-of-line blocking[0].
-		// Reference:  https://github.com/evdatsion/tendermint/issues/2047
+		// Reference:  https://github.com/evdatsion/aphelion-dpos-bft/issues/2047
 		//
 		// [0] https://en.wikipedia.org/wiki/Head-of-line_blocking
 		go func(c net.Conn) {

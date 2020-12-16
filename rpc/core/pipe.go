@@ -3,17 +3,17 @@ package core
 import (
 	"time"
 
-	cfg "github.com/evdatsion/tendermint/config"
-	"github.com/evdatsion/tendermint/consensus"
-	"github.com/evdatsion/tendermint/crypto"
-	dbm "github.com/evdatsion/tendermint/libs/db"
-	"github.com/evdatsion/tendermint/libs/log"
-	mempl "github.com/evdatsion/tendermint/mempool"
-	"github.com/evdatsion/tendermint/p2p"
-	"github.com/evdatsion/tendermint/proxy"
-	sm "github.com/evdatsion/tendermint/state"
-	"github.com/evdatsion/tendermint/state/txindex"
-	"github.com/evdatsion/tendermint/types"
+	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
+	"github.com/evdatsion/aphelion-dpos-bft/consensus"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto"
+	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	mempl "github.com/evdatsion/aphelion-dpos-bft/mempool"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p"
+	"github.com/evdatsion/aphelion-dpos-bft/proxy"
+	sm "github.com/evdatsion/aphelion-dpos-bft/state"
+	"github.com/evdatsion/aphelion-dpos-bft/state/txindex"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 const (

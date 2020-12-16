@@ -7,10 +7,10 @@ import (
 
 	amino "github.com/evdatsion/go-amino"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/libs/log"
-	rpcserver "github.com/evdatsion/tendermint/rpc/lib/server"
-	rpctypes "github.com/evdatsion/tendermint/rpc/lib/types"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	rpcserver "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/server"
+	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
 )
 
 var routes = map[string]*rpcserver.RPCFunc{

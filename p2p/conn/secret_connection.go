@@ -17,8 +17,8 @@ import (
 	"golang.org/x/crypto/curve25519"
 	"golang.org/x/crypto/nacl/box"
 
-	"github.com/evdatsion/tendermint/crypto"
-	cmn "github.com/evdatsion/tendermint/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
 	"golang.org/x/crypto/hkdf"
 )
 
@@ -37,13 +37,13 @@ var (
 
 // SecretConnection implements net.Conn.
 // It is an implementation of the STS protocol.
-// See https://github.com/evdatsion/tendermint/blob/0.1/docs/sts-final.pdf for
+// See https://github.com/evdatsion/aphelion-dpos-bft/blob/0.1/docs/sts-final.pdf for
 // details on the protocol.
 //
 // Consumers of the SecretConnection are responsible for authenticating
 // the remote peer's pubkey against known information, like a nodeID.
 // Otherwise they are vulnerable to MITM.
-// (TODO(ismail): see also https://github.com/evdatsion/tendermint/issues/3010)
+// (TODO(ismail): see also https://github.com/evdatsion/aphelion-dpos-bft/issues/3010)
 type SecretConnection struct {
 
 	// immutable
@@ -368,7 +368,7 @@ func computeDHSecret(remPubKey, locPrivKey *[32]byte) (shrKey *[32]byte, err err
 	curve25519.ScalarMult(shrKey, locPrivKey, remPubKey)
 
 	// reject if the returned shared secret is all zeroes
-	// related to: https://github.com/evdatsion/tendermint/issues/3010
+	// related to: https://github.com/evdatsion/aphelion-dpos-bft/issues/3010
 	zero := new([32]byte)
 	if subtle.ConstantTimeCompare(shrKey[:], zero[:]) == 1 {
 		return nil, ErrSharedSecretIsZero
@@ -442,7 +442,7 @@ func incrNonce(nonce *[aeadNonceSize]byte) {
 	counter := binary.LittleEndian.Uint64(nonce[4:])
 	if counter == math.MaxUint64 {
 		// Terminates the session and makes sure the nonce would not re-used.
-		// See https://github.com/evdatsion/tendermint/issues/3531
+		// See https://github.com/evdatsion/aphelion-dpos-bft/issues/3531
 		panic("can't increase nonce without overflow")
 	}
 	counter++

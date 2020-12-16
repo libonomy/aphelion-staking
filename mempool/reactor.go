@@ -9,11 +9,11 @@ import (
 
 	amino "github.com/evdatsion/go-amino"
 
-	cfg "github.com/evdatsion/tendermint/config"
-	"github.com/evdatsion/tendermint/libs/clist"
-	"github.com/evdatsion/tendermint/libs/log"
-	"github.com/evdatsion/tendermint/p2p"
-	"github.com/evdatsion/tendermint/types"
+	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/clist"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 const (

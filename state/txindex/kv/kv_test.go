@@ -8,13 +8,13 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	abci "github.com/evdatsion/tendermint/abci/types"
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	db "github.com/evdatsion/tendermint/libs/db"
+	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	db "github.com/evdatsion/aphelion-dpos-bft/libs/db"
 
-	"github.com/evdatsion/tendermint/libs/pubsub/query"
-	"github.com/evdatsion/tendermint/state/txindex"
-	"github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/pubsub/query"
+	"github.com/evdatsion/aphelion-dpos-bft/state/txindex"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 func TestTxIndex(t *testing.T) {
@@ -249,7 +249,7 @@ func TestTxSearchMultipleTxs(t *testing.T) {
 	require.NoError(t, err)
 
 	// indexed fourth (to test we don't include txs with similar tags)
-	// https://github.com/evdatsion/tendermint/issues/2908
+	// https://github.com/evdatsion/aphelion-dpos-bft/issues/2908
 	txResult4 := txResultWithEvents([]abci.Event{
 		{Type: "account", Attributes: []cmn.KVPair{{Key: []byte("number.id"), Value: []byte("1")}}},
 	})

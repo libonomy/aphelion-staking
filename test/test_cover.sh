@@ -1,6 +1,6 @@
 #! /bin/bash
 
-PKGS=$(go list github.com/evdatsion/tendermint/...)
+PKGS=$(go list github.com/evdatsion/aphelion-dpos-bft/...)
 
 set -e
 

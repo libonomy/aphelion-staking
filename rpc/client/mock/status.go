@@ -1,8 +1,8 @@
 package mock
 
 import (
-	"github.com/evdatsion/tendermint/rpc/client"
-	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
+	"github.com/evdatsion/aphelion-dpos-bft/rpc/client"
+	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
 )
 
 // StatusMock returns the result specified by the Call

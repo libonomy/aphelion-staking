@@ -2,9 +2,9 @@ package multisig
 
 import (
 	amino "github.com/evdatsion/go-amino"
-	"github.com/evdatsion/tendermint/crypto"
-	"github.com/evdatsion/tendermint/crypto/ed25519"
-	"github.com/evdatsion/tendermint/crypto/secp256k1"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/secp256k1"
 )
 
 // TODO: Figure out API for others to either add their own pubkey types, or

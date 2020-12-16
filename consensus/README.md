@@ -1,1 +1,1 @@
-See the [consensus spec](https://github.com/evdatsion/tendermint/tree/master/docs/spec/consensus) and the [reactor consensus spec](https://github.com/evdatsion/tendermint/tree/master/docs/spec/reactors/consensus) for more information.
+See the [consensus spec](https://github.com/evdatsion/aphelion-dpos-bft/tree/master/docs/spec/consensus) and the [reactor consensus spec](https://github.com/evdatsion/aphelion-dpos-bft/tree/master/docs/spec/reactors/consensus) for more information.

@@ -8,7 +8,7 @@ import (
 	"context"
 
 	amino "github.com/evdatsion/go-amino"
-	core_grpc "github.com/evdatsion/tendermint/rpc/grpc"
+	core_grpc "github.com/evdatsion/aphelion-dpos-bft/rpc/grpc"
 )
 
 var grpcAddr = "tcp://localhost:36656"

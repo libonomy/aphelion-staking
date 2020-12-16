@@ -5,9 +5,9 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/evdatsion/tendermint/p2p"
-	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
-	rpctypes "github.com/evdatsion/tendermint/rpc/lib/types"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p"
+	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
+	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
 )
 
 // Get network info.

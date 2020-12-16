@@ -6,9 +6,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/rpc/client/mock"
-	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/rpc/client/mock"
+	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
 )
 
 func TestStatus(t *testing.T) {

@@ -5,7 +5,7 @@
 *June 24th, 2018*
 
 BREAKING:
- - [events, pubsub] Removed - moved to github.com/evdatsion/tendermint
+ - [events, pubsub] Removed - moved to github.com/evdatsion/aphelion-dpos-bft
  - [merkle] Use 20-bytes of SHA256 instead of RIPEMD160. NOTE: this package is
    moving to github.com/evdatsion/go-crypto !
  - [common] Remove gogoproto from KVPair types

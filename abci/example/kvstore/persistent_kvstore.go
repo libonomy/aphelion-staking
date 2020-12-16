@@ -7,10 +7,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/evdatsion/tendermint/abci/example/code"
-	"github.com/evdatsion/tendermint/abci/types"
-	dbm "github.com/evdatsion/tendermint/libs/db"
-	"github.com/evdatsion/tendermint/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/example/code"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
 )
 
 const (

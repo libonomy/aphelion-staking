@@ -20,13 +20,13 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/pkg/errors"
 
-	"github.com/evdatsion/tendermint/libs/log"
-	rpctypes "github.com/evdatsion/tendermint/rpc/lib/types"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
 )
 
 const (
 	sendTimeout = 10 * time.Second
-	// see https://github.com/evdatsion/tendermint/blob/master/rpc/lib/server/handlers.go
+	// see https://github.com/evdatsion/aphelion-dpos-bft/blob/master/rpc/lib/server/handlers.go
 	pingPeriod = (30 * 9 / 10) * time.Second
 )
 

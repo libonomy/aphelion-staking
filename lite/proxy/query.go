@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"strings"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
 
-	"github.com/evdatsion/tendermint/crypto/merkle"
-	"github.com/evdatsion/tendermint/lite"
-	lerr "github.com/evdatsion/tendermint/lite/errors"
-	rpcclient "github.com/evdatsion/tendermint/rpc/client"
-	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
-	"github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/merkle"
+	"github.com/evdatsion/aphelion-dpos-bft/lite"
+	lerr "github.com/evdatsion/aphelion-dpos-bft/lite/errors"
+	rpcclient "github.com/evdatsion/aphelion-dpos-bft/rpc/client"
+	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 // GetWithProof will query the key on the given node, and verify it has

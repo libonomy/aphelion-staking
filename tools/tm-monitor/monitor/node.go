@@ -7,13 +7,13 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/evdatsion/tendermint/crypto"
-	"github.com/evdatsion/tendermint/libs/events"
-	"github.com/evdatsion/tendermint/libs/log"
-	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
-	rpc_client "github.com/evdatsion/tendermint/rpc/lib/client"
-	em "github.com/evdatsion/tendermint/tools/tm-monitor/eventmeter"
-	tmtypes "github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/events"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
+	rpc_client "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/client"
+	em "github.com/evdatsion/aphelion-dpos-bft/tools/tm-monitor/eventmeter"
+	tmtypes "github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 const maxRestarts = 25

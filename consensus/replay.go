@@ -11,16 +11,16 @@ import (
 	//"strings"
 	"time"
 
-	abci "github.com/evdatsion/tendermint/abci/types"
-	//auto "github.com/evdatsion/tendermint/libs/autofile"
+	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	//auto "github.com/evdatsion/aphelion-dpos-bft/libs/autofile"
 
-	dbm "github.com/evdatsion/tendermint/libs/db"
-	"github.com/evdatsion/tendermint/libs/log"
-	"github.com/evdatsion/tendermint/mock"
-	"github.com/evdatsion/tendermint/proxy"
-	sm "github.com/evdatsion/tendermint/state"
-	"github.com/evdatsion/tendermint/types"
-	"github.com/evdatsion/tendermint/version"
+	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/mock"
+	"github.com/evdatsion/aphelion-dpos-bft/proxy"
+	sm "github.com/evdatsion/aphelion-dpos-bft/state"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/evdatsion/aphelion-dpos-bft/version"
 )
 
 var crc32c = crc32.MakeTable(crc32.Castagnoli)

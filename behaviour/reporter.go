@@ -4,7 +4,7 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/evdatsion/tendermint/p2p"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p"
 )
 
 // Reporter provides an interface for reactors to report the behaviour

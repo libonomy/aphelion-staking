@@ -5,10 +5,10 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	. "github.com/evdatsion/tendermint/libs/test"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	. "github.com/evdatsion/aphelion-dpos-bft/libs/test"
 
-	"github.com/evdatsion/tendermint/crypto/tmhash"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/tmhash"
 )
 
 type testItem []byte

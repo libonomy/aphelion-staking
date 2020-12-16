@@ -6,10 +6,10 @@ import (
 
 	"github.com/pkg/errors"
 
-	tmpubsub "github.com/evdatsion/tendermint/libs/pubsub"
-	tmquery "github.com/evdatsion/tendermint/libs/pubsub/query"
-	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
-	rpctypes "github.com/evdatsion/tendermint/rpc/lib/types"
+	tmpubsub "github.com/evdatsion/aphelion-dpos-bft/libs/pubsub"
+	tmquery "github.com/evdatsion/aphelion-dpos-bft/libs/pubsub/query"
+	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
+	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
 )
 
 // Subscribe for events via WebSocket.
@@ -33,8 +33,8 @@ import (
 // DeliverTx response.
 //
 //  import (
-//	  abci "github.com/evdatsion/tendermint/abci/types"
-// 	  "github.com/evdatsion/tendermint/libs/pubsub/query"
+//	  abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
+// 	  "github.com/evdatsion/aphelion-dpos-bft/libs/pubsub/query"
 //  )
 //
 //  abci.ResponseDeliverTx{
@@ -101,13 +101,13 @@ import (
 //  query.MustParse("tm.event = 'Tx' AND rewards.withdraw.source = 'W'")
 //
 // See list of all possible events here
-// https://godoc.org/github.com/evdatsion/tendermint/types#pkg-constants
+// https://godoc.org/github.com/evdatsion/aphelion-dpos-bft/types#pkg-constants
 //
 // For complete query syntax, check out
-// https://godoc.org/github.com/evdatsion/tendermint/libs/pubsub/query.
+// https://godoc.org/github.com/evdatsion/aphelion-dpos-bft/libs/pubsub/query.
 //
 // ```go
-// import "github.com/evdatsion/tendermint/types"
+// import "github.com/evdatsion/aphelion-dpos-bft/types"
 //
 // client := client.NewHTTP("tcp://0.0.0.0:26657", "/websocket")
 // err := client.Start()

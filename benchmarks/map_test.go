@@ -3,7 +3,7 @@ package benchmarks
 import (
 	"testing"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
 )
 
 func BenchmarkSomething(b *testing.B) {

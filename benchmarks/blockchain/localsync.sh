@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DATA=$GOPATH/src/github.com/evdatsion/tendermint/benchmarks/blockchain/data
+DATA=$GOPATH/src/github.com/evdatsion/aphelion-dpos-bft/benchmarks/blockchain/data
 if [ ! -d $DATA ]; then
   echo "no data found, generating a chain... (this only has to happen once)"
 

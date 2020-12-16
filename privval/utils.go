@@ -1,7 +1,7 @@
 package privval
 
 import (
-	cmn "github.com/evdatsion/tendermint/libs/common"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
 )
 
 // IsConnTimeout returns a boolean indicating whether the error is known to

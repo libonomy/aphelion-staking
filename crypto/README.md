@@ -4,17 +4,17 @@ crypto is the cryptographic package adapted for Tendermint's uses
 
 ## Importing it
 To get the interfaces,
-`import "github.com/evdatsion/tendermint/crypto"`
+`import "github.com/evdatsion/aphelion-dpos-bft/crypto"`
 
 For any specific algorithm, use its specific module e.g.
-`import "github.com/evdatsion/tendermint/crypto/ed25519"`
+`import "github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"`
 
 If you want to decode bytes into one of the types, but don't care about the specific algorithm, use
-`import "github.com/evdatsion/tendermint/crypto/amino"`
+`import "github.com/evdatsion/aphelion-dpos-bft/crypto/amino"`
 
 ## Binary encoding
 
-For Binary encoding, please refer to the [Tendermint encoding spec](https://github.com/evdatsion/tendermint/blob/master/docs/spec/blockchain/encoding.md).
+For Binary encoding, please refer to the [Tendermint encoding spec](https://github.com/evdatsion/aphelion-dpos-bft/blob/master/docs/spec/blockchain/encoding.md).
 
 ## JSON Encoding
 

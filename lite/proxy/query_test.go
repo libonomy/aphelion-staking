@@ -9,14 +9,14 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/evdatsion/tendermint/abci/example/kvstore"
-	"github.com/evdatsion/tendermint/crypto/merkle"
-	"github.com/evdatsion/tendermint/lite"
-	certclient "github.com/evdatsion/tendermint/lite/client"
-	nm "github.com/evdatsion/tendermint/node"
-	"github.com/evdatsion/tendermint/rpc/client"
-	rpctest "github.com/evdatsion/tendermint/rpc/test"
-	"github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/example/kvstore"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/merkle"
+	"github.com/evdatsion/aphelion-dpos-bft/lite"
+	certclient "github.com/evdatsion/aphelion-dpos-bft/lite/client"
+	nm "github.com/evdatsion/aphelion-dpos-bft/node"
+	"github.com/evdatsion/aphelion-dpos-bft/rpc/client"
+	rpctest "github.com/evdatsion/aphelion-dpos-bft/rpc/test"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 var node *nm.Node

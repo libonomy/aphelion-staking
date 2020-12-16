@@ -23,9 +23,9 @@ implementation.
 import (
 	"context"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
-	"github.com/evdatsion/tendermint/types"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 // ABCIClient groups together the functionality that principally

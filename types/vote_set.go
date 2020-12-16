@@ -8,7 +8,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
 )
 
 // UNSTABLE

@@ -1,8 +1,8 @@
 package state
 
 import (
-	mempl "github.com/evdatsion/tendermint/mempool"
-	"github.com/evdatsion/tendermint/types"
+	mempl "github.com/evdatsion/aphelion-dpos-bft/mempool"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 // TxPreCheck returns a function to filter transactions before processing.

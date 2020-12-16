@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"sync"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	dbm "github.com/evdatsion/tendermint/libs/db"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
 
-	"github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 /*

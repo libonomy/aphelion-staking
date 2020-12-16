@@ -4,8 +4,8 @@ import (
 	"net"
 	"time"
 
-	"github.com/evdatsion/tendermint/crypto/ed25519"
-	p2pconn "github.com/evdatsion/tendermint/p2p/conn"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
+	p2pconn "github.com/evdatsion/aphelion-dpos-bft/p2p/conn"
 )
 
 const (
@@ -141,7 +141,7 @@ func (ln *unixListener) Accept() (net.Conn, error) {
 	conn := newTimeoutConn(tc, ln.timeoutReadWrite)
 
 	// TODO: wrap in something that authenticates
-	// with a MAC - https://github.com/evdatsion/tendermint/issues/3099
+	// with a MAC - https://github.com/evdatsion/aphelion-dpos-bft/issues/3099
 
 	return conn, nil
 }

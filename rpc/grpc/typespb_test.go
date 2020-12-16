@@ -13,7 +13,7 @@ import golang_proto "github.com/golang/protobuf/proto"
 import fmt "fmt"
 import math "math"
 import _ "github.com/gogo/protobuf/gogoproto"
-import _ "github.com/evdatsion/tendermint/abci/types"
+import _ "github.com/evdatsion/aphelion-dpos-bft/abci/types"
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal

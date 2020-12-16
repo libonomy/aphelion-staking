@@ -10,9 +10,9 @@ import (
 
 	metrics "github.com/rcrowley/go-metrics"
 
-	"github.com/evdatsion/tendermint/libs/events"
-	"github.com/evdatsion/tendermint/libs/log"
-	client "github.com/evdatsion/tendermint/rpc/lib/client"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/events"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	client "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/client"
 )
 
 const (

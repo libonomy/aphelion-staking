@@ -1,7 +1,7 @@
 
 
 # events
-`import "github.com/evdatsion/tendermint/libs/events"`
+`import "github.com/evdatsion/aphelion-dpos-bft/libs/events"`
 
 * [Overview](#pkg-overview)
 * [Index](#pkg-index)
@@ -26,7 +26,7 @@ Pub-Sub in go with event caching
 
 
 #### <a name="pkg-files">Package files</a>
-[event_cache.go](/src/github.com/evdatsion/tendermint/libs/events/event_cache.go) [events.go](/src/github.com/evdatsion/tendermint/libs/events/events.go) 
+[event_cache.go](/src/github.com/evdatsion/aphelion-dpos-bft/libs/events/event_cache.go) [events.go](/src/github.com/evdatsion/aphelion-dpos-bft/libs/events/events.go) 
 
 
 

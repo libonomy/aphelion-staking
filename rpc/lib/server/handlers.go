@@ -18,9 +18,9 @@ import (
 	"github.com/pkg/errors"
 
 	amino "github.com/evdatsion/go-amino"
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/libs/log"
-	types "github.com/evdatsion/tendermint/rpc/lib/types"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	types "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
 )
 
 // RegisterRPCFuncs adds a route for each function in the funcMap, as well as general jsonrpc and websocket handlers for all functions.
@@ -738,7 +738,7 @@ func (wsc *wsConnection) writeRoutine() {
 }
 
 // All writes to the websocket must (re)set the write deadline.
-// If some writes don't set it while others do, they may timeout incorrectly (https://github.com/evdatsion/tendermint/issues/553)
+// If some writes don't set it while others do, they may timeout incorrectly (https://github.com/evdatsion/aphelion-dpos-bft/issues/553)
 func (wsc *wsConnection) writeMessageWithDeadline(msgType int, msg []byte) error {
 	if err := wsc.baseConn.SetWriteDeadline(time.Now().Add(wsc.writeWait)); err != nil {
 		return err

@@ -6,14 +6,14 @@ import (
 
 	amino "github.com/evdatsion/go-amino"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/libs/log"
-	rpcclient "github.com/evdatsion/tendermint/rpc/client"
-	"github.com/evdatsion/tendermint/rpc/core"
-	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
-	rpcserver "github.com/evdatsion/tendermint/rpc/lib/server"
-	rpctypes "github.com/evdatsion/tendermint/rpc/lib/types"
-	"github.com/evdatsion/tendermint/types"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	rpcclient "github.com/evdatsion/aphelion-dpos-bft/rpc/client"
+	"github.com/evdatsion/aphelion-dpos-bft/rpc/core"
+	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
+	rpcserver "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/server"
+	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 const (

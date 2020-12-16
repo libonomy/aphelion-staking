@@ -1,8 +1,8 @@
 package lite
 
 import (
-	"github.com/evdatsion/tendermint/libs/log"
-	"github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 // Provider provides information for the lite client to sync validators.

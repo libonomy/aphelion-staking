@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"strings"
 
-	auto "github.com/evdatsion/tendermint/libs/autofile"
-	cmn "github.com/evdatsion/tendermint/libs/common"
+	auto "github.com/evdatsion/aphelion-dpos-bft/libs/autofile"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
 )
 
 const Version = "0.0.1"

@@ -6,7 +6,7 @@ import (
 
 	"google.golang.org/grpc"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
 )
 
 // Config is an gRPC server configuration.

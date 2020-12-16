@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	rpcclient "github.com/evdatsion/tendermint/rpc/lib/client"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	rpcclient "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/client"
 )
 
 func main() {

@@ -9,8 +9,8 @@ import (
 	"sync"
 	"time"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	dbm "github.com/evdatsion/tendermint/libs/db"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
 )
 
 const defaultStorePeriodicSaveInterval = 1 * time.Minute

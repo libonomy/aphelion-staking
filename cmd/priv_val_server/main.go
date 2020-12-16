@@ -5,11 +5,11 @@ import (
 	"os"
 	"time"
 
-	"github.com/evdatsion/tendermint/crypto/ed25519"
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
 
-	"github.com/evdatsion/tendermint/privval"
+	"github.com/evdatsion/aphelion-dpos-bft/privval"
 )
 
 func main() {

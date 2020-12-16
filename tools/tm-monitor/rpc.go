@@ -5,11 +5,11 @@ import (
 	"net"
 	"net/http"
 
-	rpctypes "github.com/evdatsion/tendermint/rpc/lib/types"
+	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
 
-	"github.com/evdatsion/tendermint/libs/log"
-	rpc "github.com/evdatsion/tendermint/rpc/lib/server"
-	"github.com/evdatsion/tendermint/tools/tm-monitor/monitor"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	rpc "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/server"
+	"github.com/evdatsion/aphelion-dpos-bft/tools/tm-monitor/monitor"
 )
 
 func startRPC(listenAddr string, m *monitor.Monitor, logger log.Logger) net.Listener {

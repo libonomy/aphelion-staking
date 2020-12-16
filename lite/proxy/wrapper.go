@@ -4,13 +4,13 @@ import (
 	"context"
 	"fmt"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
 
-	"github.com/evdatsion/tendermint/crypto/merkle"
-	"github.com/evdatsion/tendermint/lite"
-	rpcclient "github.com/evdatsion/tendermint/rpc/client"
-	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
-	rpctypes "github.com/evdatsion/tendermint/rpc/lib/types"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto/merkle"
+	"github.com/evdatsion/aphelion-dpos-bft/lite"
+	rpcclient "github.com/evdatsion/aphelion-dpos-bft/rpc/client"
+	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
+	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
 )
 
 var _ rpcclient.Client = Wrapper{}

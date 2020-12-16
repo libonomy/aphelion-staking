@@ -3,8 +3,8 @@ package mempool
 import (
 	"fmt"
 
-	abci "github.com/evdatsion/tendermint/abci/types"
-	"github.com/evdatsion/tendermint/types"
+	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 // Mempool defines the mempool interface.

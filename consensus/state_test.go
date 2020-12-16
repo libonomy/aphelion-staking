@@ -10,12 +10,12 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	cstypes "github.com/evdatsion/tendermint/consensus/types"
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/libs/log"
-	tmpubsub "github.com/evdatsion/tendermint/libs/pubsub"
-	p2pmock "github.com/evdatsion/tendermint/p2p/mock"
-	"github.com/evdatsion/tendermint/types"
+	cstypes "github.com/evdatsion/aphelion-dpos-bft/consensus/types"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	tmpubsub "github.com/evdatsion/aphelion-dpos-bft/libs/pubsub"
+	p2pmock "github.com/evdatsion/aphelion-dpos-bft/p2p/mock"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 /*

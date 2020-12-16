@@ -1,9 +1,9 @@
 package lite
 
 import (
-	log "github.com/evdatsion/tendermint/libs/log"
-	lerr "github.com/evdatsion/tendermint/lite/errors"
-	"github.com/evdatsion/tendermint/types"
+	log "github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	lerr "github.com/evdatsion/aphelion-dpos-bft/lite/errors"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 var _ PersistentProvider = (*multiProvider)(nil)

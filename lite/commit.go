@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 // FullCommit contains a SignedHeader (the block header and a commit that signs it),

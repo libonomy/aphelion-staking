@@ -5,7 +5,7 @@ import (
 	"net"
 	"time"
 
-	"github.com/evdatsion/tendermint/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
 )
 
 type UPNPCapabilities struct {

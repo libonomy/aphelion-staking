@@ -1,9 +1,9 @@
 package state
 
 import (
-	abci "github.com/evdatsion/tendermint/abci/types"
-	dbm "github.com/evdatsion/tendermint/libs/db"
-	"github.com/evdatsion/tendermint/types"
+	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 //

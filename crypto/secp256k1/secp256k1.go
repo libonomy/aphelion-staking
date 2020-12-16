@@ -14,7 +14,7 @@ import (
 
 	amino "github.com/evdatsion/go-amino"
 
-	"github.com/evdatsion/tendermint/crypto"
+	"github.com/evdatsion/aphelion-dpos-bft/crypto"
 )
 
 //-------------------------------------

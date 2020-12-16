@@ -6,10 +6,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	cfg "github.com/evdatsion/tendermint/config"
-	"github.com/evdatsion/tendermint/libs/log"
-	"github.com/evdatsion/tendermint/p2p"
-	rpctypes "github.com/evdatsion/tendermint/rpc/lib/types"
+	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p"
+	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
 )
 
 func TestUnsafeDialSeeds(t *testing.T) {

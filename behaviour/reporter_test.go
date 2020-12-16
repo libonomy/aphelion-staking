@@ -4,8 +4,8 @@ import (
 	"sync"
 	"testing"
 
-	bh "github.com/evdatsion/tendermint/behaviour"
-	"github.com/evdatsion/tendermint/p2p"
+	bh "github.com/evdatsion/aphelion-dpos-bft/behaviour"
+	"github.com/evdatsion/aphelion-dpos-bft/p2p"
 )
 
 // TestMockReporter tests the MockReporter's ability to store reported

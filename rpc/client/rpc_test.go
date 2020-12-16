@@ -10,13 +10,13 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	abci "github.com/evdatsion/tendermint/abci/types"
+	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
 
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/rpc/client"
-	ctypes "github.com/evdatsion/tendermint/rpc/core/types"
-	rpctest "github.com/evdatsion/tendermint/rpc/test"
-	"github.com/evdatsion/tendermint/types"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/rpc/client"
+	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
+	rpctest "github.com/evdatsion/aphelion-dpos-bft/rpc/test"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 func getHTTPClient() *client.HTTP {

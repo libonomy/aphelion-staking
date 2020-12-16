@@ -17,15 +17,15 @@ import (
 
 	amino "github.com/evdatsion/go-amino"
 
-	"github.com/evdatsion/tendermint/abci/example/counter"
-	"github.com/evdatsion/tendermint/abci/example/kvstore"
-	abciserver "github.com/evdatsion/tendermint/abci/server"
-	abci "github.com/evdatsion/tendermint/abci/types"
-	cfg "github.com/evdatsion/tendermint/config"
-	cmn "github.com/evdatsion/tendermint/libs/common"
-	"github.com/evdatsion/tendermint/libs/log"
-	"github.com/evdatsion/tendermint/proxy"
-	"github.com/evdatsion/tendermint/types"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/example/counter"
+	"github.com/evdatsion/aphelion-dpos-bft/abci/example/kvstore"
+	abciserver "github.com/evdatsion/aphelion-dpos-bft/abci/server"
+	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
+	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	"github.com/evdatsion/aphelion-dpos-bft/proxy"
+	"github.com/evdatsion/aphelion-dpos-bft/types"
 )
 
 // A cleanupFunc cleans up any config / test files created for a particular
@@ -535,7 +535,7 @@ func TestMempoolTxsBytes(t *testing.T) {
 }
 
 // This will non-deterministically catch some concurrency failures like
-// https://github.com/evdatsion/tendermint/issues/3509
+// https://github.com/evdatsion/aphelion-dpos-bft/issues/3509
 // TODO: all of the tests should probably also run using the remote proxy app
 // since otherwise we're not actually testing the concurrency of the mempool here!
 func TestMempoolRemoteAppConcurrency(t *testing.T) {
