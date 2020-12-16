@@ -9,31 +9,31 @@ set -ex
 # TODO: install everything
 
 export PATH="$GOBIN:$PATH"
-export TMHOME=$HOME/.tendermint_app
+export TMHOME=$HOME/.libonomy_app
 
 function kvstore_over_socket(){
     rm -rf $TMHOME
-    tendermint init
+    libonomy init
     echo "Starting kvstore_over_socket"
     abci-cli kvstore > /dev/null &
     pid_kvstore=$!
-    tendermint node > tendermint.log &
-    pid_tendermint=$!
+    libonomy node > libonomy.log &
+    pid_libonomy=$!
     sleep 5
 
     echo "running test"
     bash kvstore_test.sh "KVStore over Socket"
 
-    kill -9 $pid_kvstore $pid_tendermint
+    kill -9 $pid_kvstore $pid_libonomy
 }
 
-# start tendermint first
+# start libonomy first
 function kvstore_over_socket_reorder(){
     rm -rf $TMHOME
-    tendermint init
-    echo "Starting kvstore_over_socket_reorder (ie. start tendermint first)"
-    tendermint node > tendermint.log &
-    pid_tendermint=$!
+    libonomy init
+    echo "Starting kvstore_over_socket_reorder (ie. start libonomy first)"
+    libonomy node > libonomy.log &
+    pid_libonomy=$!
     sleep 2
     abci-cli kvstore > /dev/null &
     pid_kvstore=$!
@@ -42,58 +42,58 @@ function kvstore_over_socket_reorder(){
     echo "running test"
     bash kvstore_test.sh "KVStore over Socket"
 
-    kill -9 $pid_kvstore $pid_tendermint
+    kill -9 $pid_kvstore $pid_libonomy
 }
 
 
 function counter_over_socket() {
     rm -rf $TMHOME
-    tendermint init
+    libonomy init
     echo "Starting counter_over_socket"
     abci-cli counter --serial > /dev/null &
     pid_counter=$!
-    tendermint node > tendermint.log &
-    pid_tendermint=$!
+    libonomy node > libonomy.log &
+    pid_libonomy=$!
     sleep 5
 
     echo "running test"
     bash counter_test.sh "Counter over Socket"
 
-    kill -9 $pid_counter $pid_tendermint
+    kill -9 $pid_counter $pid_libonomy
 }
 
 function counter_over_grpc() {
     rm -rf $TMHOME
-    tendermint init
+    libonomy init
     echo "Starting counter_over_grpc"
     abci-cli counter --serial --abci grpc > /dev/null &
     pid_counter=$!
-    tendermint node --abci grpc > tendermint.log &
-    pid_tendermint=$!
+    libonomy node --abci grpc > libonomy.log &
+    pid_libonomy=$!
     sleep 5
 
     echo "running test"
     bash counter_test.sh "Counter over GRPC"
 
-    kill -9 $pid_counter $pid_tendermint
+    kill -9 $pid_counter $pid_libonomy
 }
 
 function counter_over_grpc_grpc() {
     rm -rf $TMHOME
-    tendermint init
+    libonomy init
     echo "Starting counter_over_grpc_grpc (ie. with grpc broadcast_tx)"
     abci-cli counter --serial --abci grpc > /dev/null &
     pid_counter=$!
     sleep 1
     GRPC_PORT=36656
-    tendermint node --abci grpc --rpc.grpc_laddr tcp://localhost:$GRPC_PORT > tendermint.log &
-    pid_tendermint=$!
+    libonomy node --abci grpc --rpc.grpc_laddr tcp://localhost:$GRPC_PORT > libonomy.log &
+    pid_libonomy=$!
     sleep 5
 
     echo "running test"
     GRPC_BROADCAST_TX=true bash counter_test.sh "Counter over GRPC via GRPC BroadcastTx"
 
-    kill -9 $pid_counter $pid_tendermint
+    kill -9 $pid_counter $pid_libonomy
 }
 
 cd $GOPATH/src/github.com/evdatsion/aphelion-dpos-bft/test/app

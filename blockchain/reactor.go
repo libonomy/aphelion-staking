@@ -154,7 +154,7 @@ func (bcR *BlockchainReactor) RemovePeer(peer p2p.Peer, reason interface{}) {
 
 // respondToPeer loads a block and sends it to the requesting peer,
 // if we have it. Otherwise, we'll respond saying we don't have it.
-// According to the Tendermint spec, if all nodes are honest,
+// According to the Aphelion spec, if all nodes are honest,
 // no node should be requesting for a block that's non-existent.
 func (bcR *BlockchainReactor) respondToPeer(msg *bcBlockRequestMessage,
 	src p2p.Peer) (queued bool) {
@@ -380,11 +380,11 @@ type BlockchainMessage interface {
 
 func RegisterBlockchainMessages(cdc *amino.Codec) {
 	cdc.RegisterInterface((*BlockchainMessage)(nil), nil)
-	cdc.RegisterConcrete(&bcBlockRequestMessage{}, "tendermint/blockchain/BlockRequest", nil)
-	cdc.RegisterConcrete(&bcBlockResponseMessage{}, "tendermint/blockchain/BlockResponse", nil)
-	cdc.RegisterConcrete(&bcNoBlockResponseMessage{}, "tendermint/blockchain/NoBlockResponse", nil)
-	cdc.RegisterConcrete(&bcStatusResponseMessage{}, "tendermint/blockchain/StatusResponse", nil)
-	cdc.RegisterConcrete(&bcStatusRequestMessage{}, "tendermint/blockchain/StatusRequest", nil)
+	cdc.RegisterConcrete(&bcBlockRequestMessage{}, "libonomy/blockchain/BlockRequest", nil)
+	cdc.RegisterConcrete(&bcBlockResponseMessage{}, "libonomy/blockchain/BlockResponse", nil)
+	cdc.RegisterConcrete(&bcNoBlockResponseMessage{}, "libonomy/blockchain/NoBlockResponse", nil)
+	cdc.RegisterConcrete(&bcStatusResponseMessage{}, "libonomy/blockchain/StatusResponse", nil)
+	cdc.RegisterConcrete(&bcStatusRequestMessage{}, "libonomy/blockchain/StatusRequest", nil)
 }
 
 func decodeMsg(bz []byte) (msg BlockchainMessage, err error) {

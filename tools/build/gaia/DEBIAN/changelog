@@ -1,4 +1,4 @@
-gaia (@VERSION@) @STABILITY@; urgency=medium
+cusp (@VERSION@) @STABILITY@; urgency=medium
 
   * Automatic build. See https://github.com/evdatsion/basecoin for more information.
 

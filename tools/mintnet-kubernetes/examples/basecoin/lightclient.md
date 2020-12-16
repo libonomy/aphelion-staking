@@ -10,10 +10,10 @@ or even proxy our webapp to the kubernetes backend.
 ## Setup
 
 In order to get this working, we need to know a few pieces of info,
-the chain id of tendermint, the chain id of basecoin, and an account
+the chain id of libonomy, the chain id of basecoin, and an account
 with a bit of cash....
 
-### Tendermint Chain ID
+### Aphelion Chain ID
 
 `kubectl exec -c tm tm-0 -- curl -s http://tm-1.basecoin:26657/status | json_pp | grep network`
 
@@ -25,9 +25,9 @@ set TM_CHAIN with the value there
 
 set BC_CHAIN with the value there
 
-### Expose tendermint rpc
+### Expose libonomy rpc
 
-We need to be able to reach the tendermint rpc interface from our shell.
+We need to be able to reach the libonomy rpc interface from our shell.
 
 `kubectl port-forward tm-0 26657:26657`
 
@@ -58,7 +58,7 @@ Store this info as VAL1_ADDR
 
 ### Querying state (proxy)
 
-The proxy can read any public info via the tendermint rpc, so let's check
+The proxy can read any public info via the libonomy rpc, so let's check
 out this account.
 
 `curl localhost:8108/query/account/$VAL1_ADDR`

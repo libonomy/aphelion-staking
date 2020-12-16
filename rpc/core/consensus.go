@@ -103,7 +103,7 @@ func Validators(ctx *rpctypes.Context, heightPtr *int64) (*ctypes.ResultValidato
 //           {
 //             "address": "B5B3D40BE53982AD294EF99FF5A34C0C3E5A3244",
 //             "pub_key": {
-//               "type": "tendermint/PubKeyEd25519",
+//               "type": "libonomy/PubKeyEd25519",
 //               "value": "SBctdhRBcXtBgdI/8a/alTsUhGXqGs9k5ylV1u5iKHg="
 //             },
 //             "voting_power": "10",
@@ -113,7 +113,7 @@ func Validators(ctx *rpctypes.Context, heightPtr *int64) (*ctypes.ResultValidato
 //         "proposer": {
 //           "address": "B5B3D40BE53982AD294EF99FF5A34C0C3E5A3244",
 //           "pub_key": {
-//             "type": "tendermint/PubKeyEd25519",
+//             "type": "libonomy/PubKeyEd25519",
 //             "value": "SBctdhRBcXtBgdI/8a/alTsUhGXqGs9k5ylV1u5iKHg="
 //           },
 //           "voting_power": "10",
@@ -149,7 +149,7 @@ func Validators(ctx *rpctypes.Context, heightPtr *int64) (*ctypes.ResultValidato
 //           {
 //             "address": "B5B3D40BE53982AD294EF99FF5A34C0C3E5A3244",
 //             "pub_key": {
-//               "type": "tendermint/PubKeyEd25519",
+//               "type": "libonomy/PubKeyEd25519",
 //               "value": "SBctdhRBcXtBgdI/8a/alTsUhGXqGs9k5ylV1u5iKHg="
 //             },
 //             "voting_power": "10",
@@ -159,7 +159,7 @@ func Validators(ctx *rpctypes.Context, heightPtr *int64) (*ctypes.ResultValidato
 //         "proposer": {
 //           "address": "B5B3D40BE53982AD294EF99FF5A34C0C3E5A3244",
 //           "pub_key": {
-//             "type": "tendermint/PubKeyEd25519",
+//             "type": "libonomy/PubKeyEd25519",
 //             "value": "SBctdhRBcXtBgdI/8a/alTsUhGXqGs9k5ylV1u5iKHg="
 //           },
 //           "voting_power": "10",

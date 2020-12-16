@@ -18,8 +18,8 @@ import (
 var _ crypto.PrivKey = PrivKeyEd25519{}
 
 const (
-	PrivKeyAminoName = "tendermint/PrivKeyEd25519"
-	PubKeyAminoName  = "tendermint/PubKeyEd25519"
+	PrivKeyAminoName = "libonomy/PrivKeyEd25519"
+	PubKeyAminoName  = "libonomy/PubKeyEd25519"
 	// Size of an Edwards25519 signature. Namely the size of a compressed
 	// Edwards25519 point, and a field element. Both of which are 32 bytes.
 	SignatureSize = 64
@@ -92,7 +92,7 @@ func (privKey PrivKeyEd25519) Equals(other crypto.PrivKey) bool {
 
 // GenPrivKey generates a new ed25519 private key.
 // It uses OS randomness in conjunction with the current global random seed
-// in tendermint/libs/common to generate the private key.
+// in libonomy/libs/common to generate the private key.
 func GenPrivKey() PrivKeyEd25519 {
 	return genPrivKey(crypto.CReader())
 }

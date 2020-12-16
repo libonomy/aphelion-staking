@@ -14,14 +14,14 @@ import (
 )
 
 //-----------------------------------------------------------------------------
-// NOTE: tx should be signed, but this is only checked at the app level (not by Tendermint!)
+// NOTE: tx should be signed, but this is only checked at the app level (not by Aphelion!)
 
 // Returns right away, with no response. Does not wait for CheckTx nor
 // DeliverTx results.
 //
 // If you want to be sure that the transaction is included in a block, you can
 // subscribe for the result using JSONRPC via a websocket. See
-// https://tendermint.com/docs/app-dev/subscribing-to-events-via-websocket.html
+// https://libonomy.com/docs/app-dev/subscribing-to-events-via-websocket.html
 // If you haven't received anything after a couple of blocks, resend it. If the
 // same happens again, send it to some other node. A few reasons why it could
 // happen:
@@ -33,7 +33,7 @@ import (
 // 3. node can be offline
 //
 // Please refer to
-// https://tendermint.com/docs/tendermint-core/using-tendermint.html#formatting
+// https://libonomy.com/docs/libonomy-core/using-libonomy.html#formatting
 // for formatting/encoding rules.
 //
 //
@@ -84,7 +84,7 @@ func BroadcastTxAsync(ctx *rpctypes.Context, tx types.Tx) (*ctypes.ResultBroadca
 //
 // If you want to be sure that the transaction is included in a block, you can
 // subscribe for the result using JSONRPC via a websocket. See
-// https://tendermint.com/docs/app-dev/subscribing-to-events-via-websocket.html
+// https://libonomy.com/docs/app-dev/subscribing-to-events-via-websocket.html
 // If you haven't received anything after a couple of blocks, resend it. If the
 // same happens again, send it to some other node. A few reasons why it could
 // happen:
@@ -95,7 +95,7 @@ func BroadcastTxAsync(ctx *rpctypes.Context, tx types.Tx) (*ctypes.ResultBroadca
 // (https://github.com/evdatsion/aphelion-dpos-bft/issues/3322)
 //
 // Please refer to
-// https://tendermint.com/docs/tendermint-core/using-tendermint.html#formatting
+// https://libonomy.com/docs/libonomy-core/using-libonomy.html#formatting
 // for formatting/encoding rules.
 //
 // ```shell
@@ -156,7 +156,7 @@ func BroadcastTxSync(ctx *rpctypes.Context, tx types.Tx) (*ctypes.ResultBroadcas
 // IMPORTANT: use only for testing and development. In production, use
 // BroadcastTxSync or BroadcastTxAsync. You can subscribe for the transaction
 // result using JSONRPC via a websocket. See
-// https://tendermint.com/docs/app-dev/subscribing-to-events-via-websocket.html
+// https://libonomy.com/docs/app-dev/subscribing-to-events-via-websocket.html
 //
 // CONTRACT: only returns error if mempool.CheckTx() errs or if we timeout
 // waiting for tx to commit.
@@ -165,7 +165,7 @@ func BroadcastTxSync(ctx *rpctypes.Context, tx types.Tx) (*ctypes.ResultBroadcas
 // will contain a non-OK ABCI code.
 //
 // Please refer to
-// https://tendermint.com/docs/tendermint-core/using-tendermint.html#formatting
+// https://libonomy.com/docs/libonomy-core/using-libonomy.html#formatting
 // for formatting/encoding rules.
 //
 //
@@ -265,7 +265,7 @@ func BroadcastTxCommit(ctx *rpctypes.Context, tx types.Tx) (*ctypes.ResultBroadc
 	case <-deliverTxSub.Cancelled():
 		var reason string
 		if deliverTxSub.Err() == nil {
-			reason = "Tendermint exited"
+			reason = "Aphelion exited"
 		} else {
 			reason = deliverTxSub.Err().Error()
 		}

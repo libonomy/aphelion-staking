@@ -1,6 +1,6 @@
 # tm-monitor
 
-Tendermint blockchain monitoring tool; watches over one or more nodes,
+Aphelion blockchain monitoring tool; watches over one or more nodes,
 collecting and providing various statistics to the user:
 
 - [https://github.com/evdatsion/aphelion-dpos-bft/tree/master/tools/tm-monitor](https://github.com/evdatsion/aphelion-dpos-bft/tree/master/tools/tm-monitor)
@@ -13,31 +13,31 @@ Assuming your application is running in another container with the name
 `app`:
 
 ```
-docker run -it --rm -v "/tmp:/tendermint" tendermint/tendermint init
-docker run -it --rm -v "/tmp:/tendermint" -p "26657:26657" --name=tm --link=app tendermint/tendermint node --proxy_app=tcp://app:26658
+docker run -it --rm -v "/tmp:/libonomy" libonomy/libonomy init
+docker run -it --rm -v "/tmp:/libonomy" -p "26657:26657" --name=tm --link=app libonomy/libonomy node --proxy_app=tcp://app:26658
 
-docker run -it --rm -p "26670:26670" --link=tm tendermint/monitor tm:26657
+docker run -it --rm -p "26670:26670" --link=tm libonomy/monitor tm:26657
 ```
 
 If you don't have an application yet, but still want to try monitor out,
 use `kvstore`:
 
 ```
-docker run -it --rm -v "/tmp:/tendermint" tendermint/tendermint init
-docker run -it --rm -v "/tmp:/tendermint" -p "26657:26657" --name=tm tendermint/tendermint node --proxy_app=kvstore
+docker run -it --rm -v "/tmp:/libonomy" libonomy/libonomy init
+docker run -it --rm -v "/tmp:/libonomy" -p "26657:26657" --name=tm libonomy/libonomy node --proxy_app=kvstore
 
-docker run -it --rm -p "26670:26670" --link=tm tendermint/monitor tm:26657
+docker run -it --rm -p "26670:26670" --link=tm libonomy/monitor tm:26657
 ```
 
 ### Using Binaries
 
-[Install Tendermint](https://github.com/evdatsion/aphelion-dpos-bft#install)
+[Install Aphelion](https://github.com/evdatsion/aphelion-dpos-bft#install)
 
 then run:
 
 ```
-tendermint init
-tendermint node --proxy_app=kvstore
+libonomy init
+libonomy node --proxy_app=kvstore
 
 tm-monitor localhost:26657
 ```
@@ -47,7 +47,7 @@ with the last command being in a separate window.
 ## Usage
 
 ```
-Tendermint monitor watches over one or more Tendermint core
+Aphelion monitor watches over one or more Aphelion core
 applications, collecting and providing various statistics to the user.
 
 Usage:

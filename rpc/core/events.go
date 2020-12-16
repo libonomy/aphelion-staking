@@ -28,7 +28,7 @@ import (
 //		tm.event = 'Tx' AND tx.height = 5   # all txs of the fifth block
 //		tx.height = 5                       # all txs of the fifth block
 //
-// Tendermint provides a few predefined keys: tm.event, tx.hash and tx.height.
+// Aphelion provides a few predefined keys: tm.event, tx.hash and tx.height.
 // Note for transactions, you can define additional keys by providing events with
 // DeliverTx response.
 //
@@ -187,7 +187,7 @@ func Subscribe(ctx *rpctypes.Context, query string) (*ctypes.ResultSubscribe, er
 				if sub.Err() != tmpubsub.ErrUnsubscribed {
 					var reason string
 					if sub.Err() == nil {
-						reason = "Tendermint exited"
+						reason = "Aphelion exited"
 					} else {
 						reason = sub.Err().Error()
 					}

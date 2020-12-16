@@ -260,7 +260,7 @@ type MempoolMessage interface{}
 
 func RegisterMempoolMessages(cdc *amino.Codec) {
 	cdc.RegisterInterface((*MempoolMessage)(nil), nil)
-	cdc.RegisterConcrete(&TxMessage{}, "tendermint/mempool/TxMessage", nil)
+	cdc.RegisterConcrete(&TxMessage{}, "libonomy/mempool/TxMessage", nil)
 }
 
 func decodeMsg(bz []byte) (msg MempoolMessage, err error) {

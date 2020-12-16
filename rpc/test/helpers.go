@@ -95,7 +95,7 @@ func createConfig() *cfg.Config {
 	tm, rpc, grpc := makeAddrs()
 	c.P2P.ListenAddress = tm
 	c.RPC.ListenAddress = rpc
-	c.RPC.CORSAllowedOrigins = []string{"https://tendermint.com/"}
+	c.RPC.CORSAllowedOrigins = []string{"https://libonomy.com/"}
 	c.RPC.GRPCListenAddress = grpc
 	c.TxIndex.IndexTags = "app.creator,tx.height" // see kvstore application
 	return c
@@ -114,13 +114,13 @@ func GetGRPCClient() core_grpc.BroadcastAPIClient {
 	return core_grpc.StartGRPCClient(grpcAddr)
 }
 
-// StartTendermint starts a test tendermint server in a go routine and returns when it is initialized
-func StartTendermint(app abci.Application, opts ...func(*Options)) *nm.Node {
+// StartAphelion starts a test libonomy server in a go routine and returns when it is initialized
+func StartAphelion(app abci.Application, opts ...func(*Options)) *nm.Node {
 	nodeOpts := defaultOptions
 	for _, opt := range opts {
 		opt(&nodeOpts)
 	}
-	node := NewTendermint(app, &nodeOpts)
+	node := NewAphelion(app, &nodeOpts)
 	err := node.Start()
 	if err != nil {
 		panic(err)
@@ -131,22 +131,22 @@ func StartTendermint(app abci.Application, opts ...func(*Options)) *nm.Node {
 	waitForGRPC()
 
 	if !nodeOpts.suppressStdout {
-		fmt.Println("Tendermint running!")
+		fmt.Println("Aphelion running!")
 	}
 
 	return node
 }
 
-// StopTendermint stops a test tendermint server, waits until it's stopped and
+// StopAphelion stops a test libonomy server, waits until it's stopped and
 // cleans up test/config files.
-func StopTendermint(node *nm.Node) {
+func StopAphelion(node *nm.Node) {
 	node.Stop()
 	node.Wait()
 	os.RemoveAll(node.Config().RootDir)
 }
 
-// NewTendermint creates a new tendermint server and sleeps forever
-func NewTendermint(app abci.Application, opts *Options) *nm.Node {
+// NewAphelion creates a new libonomy server and sleeps forever
+func NewAphelion(app abci.Application, opts *Options) *nm.Node {
 	// Create & start node
 	config := GetConfig(opts.recreateConfig)
 	var logger log.Logger
@@ -175,7 +175,7 @@ func NewTendermint(app abci.Application, opts *Options) *nm.Node {
 	return node
 }
 
-// SuppressStdout is an option that tries to make sure the RPC test Tendermint
+// SuppressStdout is an option that tries to make sure the RPC test Aphelion
 // node doesn't log anything to stdout.
 func SuppressStdout(o *Options) {
 	o.suppressStdout = true

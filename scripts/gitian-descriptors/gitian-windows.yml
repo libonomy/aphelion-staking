@@ -1,5 +1,5 @@
 ---
-name: "tendermint-windows"
+name: "libonomy-windows"
 enable_cache: true
 distro: "ubuntu"
 suites:
@@ -21,7 +21,7 @@ packages:
 - "quilt"
 remotes:
 - "url": "https://github.com/evdatsion/aphelion-dpos-bft.git"
-  "dir": "tendermint"
+  "dir": "libonomy"
 files:
 - "golang-debian-1.12.5-1.tar.gz"
 script: |
@@ -53,12 +53,12 @@ script: |
   export GO111MODULE=on
 
   # Make release tarball
-  pushd tendermint
+  pushd libonomy
   VERSION=$(git describe --tags | sed 's/^v//')
   COMMIT=$(git rev-parse --short=8 HEAD)
-  DISTNAME=tendermint-${VERSION}
+  DISTNAME=libonomy-${VERSION}
   git archive --format tar.gz --prefix ${DISTNAME}/ -o ${DISTNAME}.tar.gz HEAD
-  SOURCEDIST=`pwd`/`echo tendermint-*.tar.gz`
+  SOURCEDIST=`pwd`/`echo libonomy-*.tar.gz`
   popd
 
   # Correct tar file order
@@ -66,7 +66,7 @@ script: |
   pushd temp
   tar xf $SOURCEDIST
   rm $SOURCEDIST
-  find tendermint-* | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > $SOURCEDIST
+  find libonomy-* | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > $SOURCEDIST
   popd
 
   # Prepare GOPATH and install deps
@@ -86,14 +86,14 @@ script: |
     INSTALLPATH=`pwd`/installed/${DISTNAME}-${arch}
     mkdir -p ${INSTALLPATH}
 
-    # Build tendermint binary
+    # Build libonomy binary
     pushd ${distsrc}
     GOARCH=${arch} GOROOT_FINAL=${GOROOT} go build -a \
       -gcflags=all=-trimpath=${GOPATH} \
       -asmflags=all=-trimpath=${GOPATH} \
-      -mod=readonly -tags "tendermint" \
+      -mod=readonly -tags "libonomy" \
       -ldflags="${LDFLAGS}" \
-      -o ${INSTALLPATH}/tendermint.exe ./cmd/tendermint/
+      -o ${INSTALLPATH}/libonomy.exe ./cmd/libonomy/
 
     popd # ${distsrc}
 

@@ -11,10 +11,10 @@ import (
 )
 
 func ExampleHTTP_simple() {
-	// Start a tendermint node (and kvstore) in the background to test against
+	// Start a libonomy node (and kvstore) in the background to test against
 	app := kvstore.NewKVStoreApplication()
-	node := rpctest.StartTendermint(app, rpctest.SuppressStdout, rpctest.RecreateConfig)
-	defer rpctest.StopTendermint(node)
+	node := rpctest.StartAphelion(app, rpctest.SuppressStdout, rpctest.RecreateConfig)
+	defer rpctest.StopAphelion(node)
 
 	// Create our RPC client
 	rpcAddr := rpctest.GetConfig().RPC.ListenAddress
@@ -61,10 +61,10 @@ func ExampleHTTP_simple() {
 }
 
 func ExampleHTTP_batching() {
-	// Start a tendermint node (and kvstore) in the background to test against
+	// Start a libonomy node (and kvstore) in the background to test against
 	app := kvstore.NewKVStoreApplication()
-	node := rpctest.StartTendermint(app, rpctest.SuppressStdout, rpctest.RecreateConfig)
-	defer rpctest.StopTendermint(node)
+	node := rpctest.StartAphelion(app, rpctest.SuppressStdout, rpctest.RecreateConfig)
+	defer rpctest.StopAphelion(node)
 
 	// Create our RPC client
 	rpcAddr := rpctest.GetConfig().RPC.ListenAddress

@@ -203,7 +203,7 @@ type EvidenceMessage interface {
 func RegisterEvidenceMessages(cdc *amino.Codec) {
 	cdc.RegisterInterface((*EvidenceMessage)(nil), nil)
 	cdc.RegisterConcrete(&EvidenceListMessage{},
-		"tendermint/evidence/EvidenceListMessage", nil)
+		"libonomy/evidence/EvidenceListMessage", nil)
 }
 
 func decodeMsg(bz []byte) (msg EvidenceMessage, err error) {

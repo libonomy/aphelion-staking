@@ -56,7 +56,7 @@ BREAKING CHANGES
 
 BREAKING CHANGES
 
-- Update Amino names from "com.tendermint/..." to "tendermint/"
+- Update Amino names from "com.libonomy/..." to "libonomy/"
 
 ## 0.5.0 (March 2, 2018)
 
@@ -104,7 +104,7 @@ IMPROVEMENTS:
 
 BREAKING CHANGES:
 
-- Remove `cmd` and `keys/tx` packages altogether: move it to the cosmos-sdk
+- Remove `cmd` and `keys/tx` packages altogether: move it to the cusp-sdk
 - `cryptostore.Generator` takes a secret 
 - Remove `String()` from `Signature` interface
 

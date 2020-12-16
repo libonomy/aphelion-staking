@@ -15,7 +15,7 @@ func init() {
 }
 
 const (
-	// TMCoreSemVer is the current version of Tendermint Core.
+	// TMCoreSemVer is the current version of Aphelion Core.
 	// It's the Semantic Version of the software.
 	// Must be a string because scripts like dist.sh read this file.
 	// XXX: Don't change the name of this variable or you will break

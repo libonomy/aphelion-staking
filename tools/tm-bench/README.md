@@ -1,6 +1,6 @@
 # tm-bench
 
-Tendermint blockchain benchmarking tool:
+Aphelion blockchain benchmarking tool:
 
 - [https://github.com/evdatsion/aphelion-dpos-bft/tree/master/tools/tm-bench](https://github.com/evdatsion/aphelion-dpos-bft/tree/master/tools/tm-bench)
 
@@ -24,21 +24,21 @@ In the future, we plan to support scriptable transactions (see
 ### Docker
 
 ```
-docker run -it --rm -v "/tmp:/tendermint" tendermint/tendermint init
-docker run -it --rm -v "/tmp:/tendermint" -p "26657:26657" --name=tm tendermint/tendermint node --proxy_app=kvstore
+docker run -it --rm -v "/tmp:/libonomy" libonomy/libonomy init
+docker run -it --rm -v "/tmp:/libonomy" -p "26657:26657" --name=tm libonomy/libonomy node --proxy_app=kvstore
 
-docker run -it --rm --link=tm tendermint/bench tm:26657
+docker run -it --rm --link=tm libonomy/bench tm:26657
 ```
 
 ### Using binaries
 
-[Install Tendermint](https://github.com/evdatsion/aphelion-dpos-bft#install)
+[Install Aphelion](https://github.com/evdatsion/aphelion-dpos-bft#install)
 
 then run:
 
 ```
-tendermint init
-tendermint node --proxy_app=kvstore
+libonomy init
+libonomy node --proxy_app=kvstore
 
 tm-bench localhost:26657
 ```
@@ -48,7 +48,7 @@ with the last command being in a separate window.
 ## Usage
 
 ```
-Tendermint blockchain benchmarking tool.
+Aphelion blockchain benchmarking tool.
 
 Usage:
         tm-bench [-c 1] [-T 10] [-r 1000] [-s 250] [endpoints] [-output-format <plain|json> [-broadcast-tx-method <async|sync|commit>]]
@@ -89,10 +89,10 @@ block.
 
 Note that there will be edge effects on the number of transactions in the first
 and last blocks.
-This is because transactions may start sending midway through when tendermint
+This is because transactions may start sending midway through when libonomy
 starts building the next block, so it only has half as much time to gather txs
 that tm-bench sends.
-Similarly the end of the duration will likely end mid-way through tendermint
+Similarly the end of the duration will likely end mid-way through libonomy
 trying to build the next block.
 
 Each of the connections is handled via two separate goroutines.

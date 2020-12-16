@@ -8,7 +8,7 @@ import (
 
 //-----------------------------
 
-// Tendermint's interface to the application consists of multiple connections
+// Aphelion's interface to the application consists of multiple connections
 type AppConns interface {
 	cmn.Service
 

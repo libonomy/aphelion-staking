@@ -92,7 +92,7 @@ func (app *KVStoreApplication) DeliverTx(req types.RequestDeliverTx) types.Respo
 		{
 			Type: "app",
 			Attributes: []cmn.KVPair{
-				{Key: []byte("creator"), Value: []byte("Cosmoshi Netowoko")},
+				{Key: []byte("creator"), Value: []byte("Libonomy Network")},
 				{Key: []byte("key"), Value: key},
 			},
 		},

@@ -1,5 +1,5 @@
 #!/bin/sh
-# preinst script for gaia
+# preinst script for cusp
 #
 
 set -e
@@ -15,9 +15,9 @@ set -e
 
 case "$1" in
     install|upgrade)
-    if ! grep -q '^gaia:' /etc/passwd ; then
-      useradd -k /dev/null -r -m -b /etc gaia
-      chmod 755 /etc/gaia
+    if ! grep -q '^cusp:' /etc/passwd ; then
+      useradd -k /dev/null -r -m -b /etc cusp
+      chmod 755 /etc/cusp
     fi
     ;;
 

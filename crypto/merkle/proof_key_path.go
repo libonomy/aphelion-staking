@@ -17,7 +17,7 @@ import (
 	TODO: In the future, more encodings may be supported, like base32 (e.g.
 	/32:)
 
-	For example, for a Cosmos-SDK application where the first two proof layers
+	For example, for a Cusp-SDK application where the first two proof layers
 	are SimpleValueOps, and the third proof layer is an IAVLValueOp, the keys
 	might look like:
 

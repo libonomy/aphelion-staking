@@ -3,7 +3,7 @@ version: 2.1
 executors:
   golang:
     docker:
-      - image: tendermintdev/docker-tendermint-build
+      - image: libonomydev/docker-libonomy-build
     working_directory: /go/src/github.com/evdatsion/aphelion-dpos-bft
     environment:
       GOBIN: /tmp/bin
@@ -11,7 +11,7 @@ executors:
     machine: true
   docs:
     docker:
-      - image: tendermintdev/docker-website-deployment
+      - image: libonomydev/docker-website-deployment
     environment:
       AWS_REGION: us-east-1
 
@@ -149,7 +149,7 @@ workflows:
   docs:
     jobs:
       - deploy_docs:
-          context: tendermint-docs
+          context: libonomy-docs
           filters:
             branches:
               only:
@@ -158,7 +158,7 @@ workflows:
               only:
                 - /^v.*/
       - deploy_docs:
-          context: tendermint-docs-staging
+          context: libonomy-docs-staging
           filters:
             branches:
               only:

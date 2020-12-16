@@ -1,3 +1,3 @@
-killall tendermint
+killall libonomy
 killall abci-cli
-rm -rf ~/.tendermint_app
+rm -rf ~/.libonomy_app

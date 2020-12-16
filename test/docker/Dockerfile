@@ -8,7 +8,7 @@ RUN apt-get update && \
   apt-get install -y --no-install-recommends \
   jq bsdmainutils vim-common psmisc netcat curl
 
-# Setup tendermint repo
+# Setup libonomy repo
 ENV REPO $GOPATH/src/github.com/evdatsion/aphelion-dpos-bft
 ENV GOBIN $GOPATH/bin
 WORKDIR $REPO
@@ -24,10 +24,10 @@ RUN make get_tools
 # install ABCI CLI
 RUN make install_abci
 
-# install Tendermint
+# install Aphelion
 RUN make install
 
-RUN tendermint testnet \
+RUN libonomy testnet \
         --config $REPO/test/docker/config-template.toml \
         --node-dir-prefix="mach" \
         --v=4 \

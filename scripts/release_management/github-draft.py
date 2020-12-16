@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Create a draft release on GitHub. By default in the tendermint/tendermint repo.
+# Create a draft release on GitHub. By default in the libonomy/libonomy repo.
 # Optimized for CircleCI
 
 import argparse
@@ -43,8 +43,8 @@ def create_draft(org,repo,branch,version):
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser()
-  parser.add_argument("--org", default="tendermint", help="GitHub organization")
-  parser.add_argument("--repo", default="tendermint", help="GitHub repository")
+  parser.add_argument("--org", default="libonomy", help="GitHub organization")
+  parser.add_argument("--repo", default="libonomy", help="GitHub repository")
   parser.add_argument("--branch", default=os.environ.get('CIRCLE_BRANCH'), help="Branch to build from, e.g.: v1.0")
   parser.add_argument("--version", default=os.environ.get('CIRCLE_TAG'), help="Version number for binary, e.g.: v1.0.0")
   args = parser.parse_args()

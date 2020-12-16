@@ -14,7 +14,7 @@ var (
 	ErrTxTooLarge = fmt.Errorf("Tx too large. Max size is %d", maxTxSize)
 )
 
-// ErrMempoolIsFull means Tendermint & an application can't handle that much load
+// ErrMempoolIsFull means Aphelion & an application can't handle that much load
 type ErrMempoolIsFull struct {
 	numTxs int
 	maxTxs int

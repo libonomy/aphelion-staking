@@ -10,8 +10,8 @@
 .bak
 .idea/
 .revision
-.tendermint
-.tendermint-lite
+.libonomy
+.libonomy-lite
 .terraform
 .vagrant
 .vendor-new/
@@ -29,7 +29,7 @@ index.html.md
 libs/pubsub/query/fuzz_test/output
 profile\.out
 remote_dump
-rpc/test/.tendermint
+rpc/test/.libonomy
 scripts/cutWALUntil/cutWALUntil
 scripts/wal2json/wal2json
 shunit2

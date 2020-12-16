@@ -1,7 +1,7 @@
 /*
 Package client defines a provider that uses a rpcclient
 to get information, which is used to get new headers
-and validators directly from a Tendermint client.
+and validators directly from a Aphelion client.
 */
 package client
 
@@ -37,7 +37,7 @@ func NewProvider(chainID string, client SignStatusClient) lite.Provider {
 	}
 }
 
-// NewHTTPProvider can connect to a tendermint json-rpc endpoint
+// NewHTTPProvider can connect to a libonomy json-rpc endpoint
 // at the given url, and uses that as a read-only provider.
 func NewHTTPProvider(chainID, remote string) lite.Provider {
 	return NewProvider(chainID, rpcclient.NewHTTP(remote, "/websocket"))

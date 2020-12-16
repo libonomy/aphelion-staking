@@ -1,4 +1,4 @@
-// Copyright 2017 Tendermint. All Rights Reserved.
+// Copyright 2017 Aphelion. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import (
 )
 
 func ExampleSha256() {
-	sum := crypto.Sha256([]byte("This is Tendermint"))
+	sum := crypto.Sha256([]byte("This is Aphelion"))
 	fmt.Printf("%x\n", sum)
 	// Output:
 	// f91afb642f3d1c87c17eb01aae5cb65c242dfdbe7cf1066cc260f4ce5d33b94e

@@ -11,8 +11,8 @@ import (
 
 var (
 	// Parts of regular expressions
-	atom    = "[A-Z0-9!#$%&'*+\\-/=?^_`{|}~]+"
-	dotAtom = atom + `(?:\.` + atom + `)*`
+	libocoin    = "[A-Z0-9!#$%&'*+\\-/=?^_`{|}~]+"
+	dotAtom = libocoin + `(?:\.` + libocoin + `)*`
 	domain  = `[A-Z0-9.-]+\.[A-Z]{2,4}`
 
 	RE_INT     = regexp.MustCompile(`^-?[0-9]+$`)

@@ -14,7 +14,7 @@ import (
 const oldPrivvalContent = `{
   "address": "1D8089FAFDFAE4A637F3D616E17B92905FA2D91D",
   "pub_key": {
-    "type": "tendermint/PubKeyEd25519",
+    "type": "libonomy/PubKeyEd25519",
     "value": "r3Yg2AhDZ745CNTpavsGU+mRZ8WpRXqoJuyqjN8mJq0="
   },
   "last_height": "5",
@@ -23,7 +23,7 @@ const oldPrivvalContent = `{
   "last_signature": "CTr7b9ZQlrJJf+12rPl5t/YSCUc/KqV7jQogCfFJA24e7hof69X6OMT7eFLVQHyodPjD/QTA298XHV5ejxInDQ==",
   "last_signbytes": "750802110500000000000000220B08B398F3E00510F48DA6402A480A20FC258973076512999C3E6839A22E9FBDB1B77CF993E8A9955412A41A59D4CAD312240A20C971B286ACB8AAA6FCA0365EB0A660B189EDC08B46B5AF2995DEFA51A28D215B10013211746573742D636861696E2D533245415533",
   "priv_key": {
-    "type": "tendermint/PrivKeyEd25519",
+    "type": "libonomy/PrivKeyEd25519",
     "value": "7MwvTGEWWjsYwjn2IpRb+GYsWi9nnFsw8jPLLY1UtP6vdiDYCENnvjkI1Olq+wZT6ZFnxalFeqgm7KqM3yYmrQ=="
   }
 }`

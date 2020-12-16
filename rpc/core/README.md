@@ -1,4 +1,4 @@
-# Tendermint RPC
+# Aphelion RPC
 
 We are using [Slate](https://github.com/lord/slate) to power our RPC
 documentation. For generating markdown use:

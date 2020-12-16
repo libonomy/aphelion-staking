@@ -20,7 +20,7 @@ var (
 var hdrHeight11 = types.Header{
 	Height:         11,
 	Time:           testTime1,
-	ValidatorsHash: []byte("Tendermint"),
+	ValidatorsHash: []byte("Aphelion"),
 }
 
 func TestValidateBlock(t *testing.T) {
@@ -159,14 +159,14 @@ func TestValidateBlockMeta(t *testing.T) {
 			meta: &types.BlockMeta{
 				Header: types.Header{
 					Height: 11, DataHash: deadBeefHash,
-					ValidatorsHash: []byte("Tendermint"),
+					ValidatorsHash: []byte("Aphelion"),
 					Time:           testTime1,
 				},
 			},
 			signedHeader: types.SignedHeader{
 				Header: &types.Header{
 					Height: 11, DataHash: deadBeefHash,
-					ValidatorsHash: []byte("Tendermint"),
+					ValidatorsHash: []byte("Aphelion"),
 					Time:           testTime2,
 				},
 				Commit: types.NewCommit(types.BlockID{Hash: []byte("DEADBEEF")}, nil),
@@ -178,14 +178,14 @@ func TestValidateBlockMeta(t *testing.T) {
 			meta: &types.BlockMeta{
 				Header: types.Header{
 					Height: 11, DataHash: deadBeefHash,
-					ValidatorsHash: []byte("Tendermint"),
+					ValidatorsHash: []byte("Aphelion"),
 					Time:           testTime2,
 				},
 			},
 			signedHeader: types.SignedHeader{
 				Header: &types.Header{
 					Height: 11, DataHash: deadBeefHash,
-					ValidatorsHash: []byte("Tendermint-x"),
+					ValidatorsHash: []byte("Aphelion-x"),
 					Time:           testTime2,
 				},
 				Commit: types.NewCommit(types.BlockID{Hash: []byte("DEADBEEF")}, nil),

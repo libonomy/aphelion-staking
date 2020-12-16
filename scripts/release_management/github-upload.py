@@ -38,7 +38,7 @@ def request(baseurl, path, mimetype, mimeencoding, data):
 if __name__ == "__main__":
   parser = argparse.ArgumentParser()
   parser.add_argument("--id", help="GitHub release ID", required=True, type=int)
-  parser.add_argument("--file", default="/tmp/workspace/tendermint_{0}_{1}_{2}.zip".format(os.environ.get('CIRCLE_TAG'),os.environ.get('GOOS'),os.environ.get('GOARCH')), help="File to upload")
+  parser.add_argument("--file", default="/tmp/workspace/libonomy_{0}_{1}_{2}.zip".format(os.environ.get('CIRCLE_TAG'),os.environ.get('GOOS'),os.environ.get('GOARCH')), help="File to upload")
   parser.add_argument("--return-id-only", help="Return only the release ID after upload to GitHub.", action='store_true')
   args = parser.parse_args()
 
@@ -59,7 +59,7 @@ if __name__ == "__main__":
   with open(args.file,'rb') as f:
     asset = f.read()
 
-  result = request('uploads.github.com', '/repos/tendermint/tendermint/releases/{0}/assets?name={1}'.format(args.id, filename), mimetype, mimeencoding, asset)
+  result = request('uploads.github.com', '/repos/libonomy/libonomy/releases/{0}/assets?name={1}'.format(args.id, filename), mimetype, mimeencoding, asset)
 
   if args.return_id_only:
     print(result['id'])

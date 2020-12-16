@@ -13,14 +13,14 @@ import (
 )
 
 func TestMain(m *testing.M) {
-	// start a tendermint node in the background to test against
+	// start a libonomy node in the background to test against
 	app := kvstore.NewKVStoreApplication()
-	node := rpctest.StartTendermint(app)
+	node := rpctest.StartAphelion(app)
 
 	code := m.Run()
 
 	// and shut down proper at the end
-	rpctest.StopTendermint(node)
+	rpctest.StopAphelion(node)
 	os.Exit(code)
 }
 

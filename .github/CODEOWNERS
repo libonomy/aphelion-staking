@@ -14,7 +14,7 @@
 .github/ @marbar3778 @ebuchman @erikgrinaker @melekes @tessr 
 DOCKER/ @marbar3778 @ebuchman @erikgrinaker @melekes @tessr 
 
-# Overrides for core Tendermint packages 
+# Overrides for core Aphelion packages 
 abci/  @marbar3778 @ebuchman @erikgrinaker @melekes @tessr 
 evidence/ @cmwaters @ebuchman @erikgrinaker @melekes @tessr
 light/ @cmwaters @melekes @ebuchman

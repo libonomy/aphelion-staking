@@ -46,7 +46,7 @@ type TestHarnessError struct {
 var _ error = (*TestHarnessError)(nil)
 
 // TestHarness allows for testing of a remote signer to ensure compatibility
-// with this version of Tendermint.
+// with this version of Aphelion.
 type TestHarness struct {
 	addr             string
 	spv              *privval.SignerValidatorEndpoint
@@ -82,7 +82,7 @@ type timeoutError interface {
 	Timeout() bool
 }
 
-// NewTestHarness will load Tendermint data from the given files (including
+// NewTestHarness will load Aphelion data from the given files (including
 // validator public/private keypairs and chain details) and create a new
 // harness.
 func NewTestHarness(logger log.Logger, cfg TestHarnessConfig) (*TestHarness, error) {
@@ -178,7 +178,7 @@ func (th *TestHarness) Run() {
 
 // TestPublicKey just validates that we can (1) fetch the public key from the
 // remote signer, and (2) it matches the public key we've configured for our
-// local Tendermint version.
+// local Aphelion version.
 func (th *TestHarness) TestPublicKey() error {
 	th.logger.Info("TEST: Public key of remote signer")
 	th.logger.Info("Local", "pubKey", th.fpv.GetPubKey())

@@ -67,13 +67,13 @@ type Evidence interface {
 
 func RegisterEvidences(cdc *amino.Codec) {
 	cdc.RegisterInterface((*Evidence)(nil), nil)
-	cdc.RegisterConcrete(&DuplicateVoteEvidence{}, "tendermint/DuplicateVoteEvidence", nil)
+	cdc.RegisterConcrete(&DuplicateVoteEvidence{}, "libonomy/DuplicateVoteEvidence", nil)
 }
 
 func RegisterMockEvidences(cdc *amino.Codec) {
-	cdc.RegisterConcrete(MockGoodEvidence{}, "tendermint/MockGoodEvidence", nil)
-	cdc.RegisterConcrete(MockRandomGoodEvidence{}, "tendermint/MockRandomGoodEvidence", nil)
-	cdc.RegisterConcrete(MockBadEvidence{}, "tendermint/MockBadEvidence", nil)
+	cdc.RegisterConcrete(MockGoodEvidence{}, "libonomy/MockGoodEvidence", nil)
+	cdc.RegisterConcrete(MockRandomGoodEvidence{}, "libonomy/MockRandomGoodEvidence", nil)
+	cdc.RegisterConcrete(MockBadEvidence{}, "libonomy/MockBadEvidence", nil)
 }
 
 const (

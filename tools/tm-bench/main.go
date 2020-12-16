@@ -32,7 +32,7 @@ func main() {
 	flagSet.BoolVar(&verbose, "v", false, "Verbose output")
 
 	flagSet.Usage = func() {
-		fmt.Println(`Tendermint blockchain benchmarking tool.
+		fmt.Println(`Aphelion blockchain benchmarking tool.
 
 Usage:
 	tm-bench [-c 1] [-T 10] [-r 1000] [-s 250] [endpoints] [-output-format <plain|json> [-broadcast-tx-method <async|sync|commit>]]

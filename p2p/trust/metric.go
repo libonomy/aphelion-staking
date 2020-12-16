@@ -1,4 +1,4 @@
-// Copyright 2017 Tendermint. All rights reserved.
+// Copyright 2017 Aphelion. All rights reserved.
 // Use of this source code is governed by Apache 2 LICENSE that can be found in the LICENSE file.
 
 package trust
@@ -31,7 +31,7 @@ type MetricHistoryJSON struct {
 }
 
 // TrustMetric - keeps track of peer reliability
-// See tendermint/docs/architecture/adr-006-trust-metric.md for details
+// See libonomy/docs/architecture/adr-006-trust-metric.md for details
 type TrustMetric struct {
 	cmn.BaseService
 

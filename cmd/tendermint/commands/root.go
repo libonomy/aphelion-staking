@@ -27,7 +27,7 @@ func registerFlagsRootCmd(cmd *cobra.Command) {
 }
 
 // ParseConfig retrieves the default environment configuration,
-// sets up the Tendermint root and ensures that the root exists
+// sets up the Aphelion root and ensures that the root exists
 func ParseConfig() (*cfg.Config, error) {
 	conf := cfg.DefaultConfig()
 	err := viper.Unmarshal(conf)
@@ -42,10 +42,10 @@ func ParseConfig() (*cfg.Config, error) {
 	return conf, err
 }
 
-// RootCmd is the root command for Tendermint core.
+// RootCmd is the root command for Aphelion core.
 var RootCmd = &cobra.Command{
-	Use:   "tendermint",
-	Short: "Tendermint Core (BFT Consensus) in Go",
+	Use:   "libonomy",
+	Short: "Aphelion Core (BFT Consensus) in Go",
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) (err error) {
 		if cmd.Name() == VersionCmd.Name() {
 			return nil

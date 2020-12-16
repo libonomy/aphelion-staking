@@ -1,12 +1,12 @@
-project_name: Tendermint
+project_name: Aphelion
 
 env:
   # Require use of Go modules.
   - GO111MODULE=on
 
 builds:
-  - id: "Tendermint"
-    main: ./cmd/tendermint/main.go
+  - id: "Aphelion"
+    main: ./cmd/libonomy/main.go
     ldflags:
      - -s -w -X github.com/evdatsion/aphelion-dpos-bft/version.TMCoreSemVer={{ .Version }}
     env:

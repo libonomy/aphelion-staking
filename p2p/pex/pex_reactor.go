@@ -733,8 +733,8 @@ type PexMessage interface{}
 
 func RegisterPexMessage(cdc *amino.Codec) {
 	cdc.RegisterInterface((*PexMessage)(nil), nil)
-	cdc.RegisterConcrete(&pexRequestMessage{}, "tendermint/p2p/PexRequestMessage", nil)
-	cdc.RegisterConcrete(&pexAddrsMessage{}, "tendermint/p2p/PexAddrsMessage", nil)
+	cdc.RegisterConcrete(&pexRequestMessage{}, "libonomy/p2p/PexRequestMessage", nil)
+	cdc.RegisterConcrete(&pexAddrsMessage{}, "libonomy/p2p/PexAddrsMessage", nil)
 }
 
 func decodeMsg(bz []byte) (msg PexMessage, err error) {

@@ -4,7 +4,7 @@ DATA=$GOPATH/src/github.com/evdatsion/aphelion-dpos-bft/benchmarks/blockchain/da
 if [ ! -d $DATA ]; then
   echo "no data found, generating a chain... (this only has to happen once)"
 
-  tendermint init --home $DATA
+  libonomy init --home $DATA
   cp $DATA/config.toml $DATA/config2.toml
   echo "
   [consensus]
@@ -12,7 +12,7 @@ if [ ! -d $DATA ]; then
   " >> $DATA/config.toml
 
   echo "starting node"
-  tendermint node \
+  libonomy node \
     --home $DATA \
     --proxy_app kvstore \
     --p2p.laddr tcp://127.0.0.1:56656 \
@@ -33,7 +33,7 @@ fi
 HOME1=$TMPDIR$RANDOM$RANDOM
 cp -R $DATA $HOME1
 echo "starting validator node"
-tendermint node \
+libonomy node \
   --home $HOME1 \
   --proxy_app kvstore \
   --p2p.laddr tcp://127.0.0.1:56656 \
@@ -43,10 +43,10 @@ sleep 1
 
 # downloader node
 HOME2=$TMPDIR$RANDOM$RANDOM
-tendermint init --home $HOME2
+libonomy init --home $HOME2
 cp $HOME1/genesis.json $HOME2
 printf "starting downloader node"
-tendermint node \
+libonomy node \
   --home $HOME2 \
   --proxy_app kvstore \
   --p2p.laddr tcp://127.0.0.1:56666 \

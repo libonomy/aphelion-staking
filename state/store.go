@@ -97,7 +97,7 @@ func saveState(db dbm.DB, state State, key []byte) {
 	nextHeight := state.LastBlockHeight + 1
 	// If first block, save validators for block 1.
 	if nextHeight == 1 {
-		// This extra logic due to Tendermint validator set changes being delayed 1 block.
+		// This extra logic due to Aphelion validator set changes being delayed 1 block.
 		// It may get overwritten due to InitChain validator updates.
 		lastHeightVoteChanged := int64(1)
 		saveValidatorsInfo(db, nextHeight, lastHeightVoteChanged, state.Validators)

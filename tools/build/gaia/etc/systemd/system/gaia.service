@@ -1,14 +1,14 @@
 [Unit]
-Description=Gaia
+Description=Cusp
 Requires=network-online.target
 After=network-online.target
 
 [Service]
 Restart=on-failure
-User=gaia
-Group=gaia
+User=cusp
+Group=cusp
 PermissionsStartOnly=true
-ExecStart=/usr/bin/gaia node start --home=/etc/gaia
+ExecStart=/usr/bin/cusp node start --home=/etc/cusp
 ExecReload=/bin/kill -HUP $MAINPID
 KillSignal=SIGTERM
 

@@ -95,7 +95,7 @@ type EventCallback func(data EventData)
 type EventData interface {
 }
 ```
-Generic event data can be typed and registered with tendermint/go-amino
+Generic event data can be typed and registered with libonomy/go-amino
 via concrete implementation of this interface
 
 

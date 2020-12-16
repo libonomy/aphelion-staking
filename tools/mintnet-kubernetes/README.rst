@@ -2,9 +2,9 @@ Using Kubernetes
 ================
 
 .. figure:: assets/t_plus_k.png
-   :alt: Tendermint plus Kubernetes
+   :alt: Aphelion plus Kubernetes
 
-   Tendermint plus Kubernetes
+   Aphelion plus Kubernetes
 
 This should primarily be used for testing purposes or for
 tightly-defined chains operated by a single stakeholder (see `the
@@ -48,11 +48,11 @@ First wait until all the pods are ``Running``:
 
 ``kubectl get pods -w -o wide -L tm``
 
-then query the Tendermint app logs from the first pod:
+then query the Aphelion app logs from the first pod:
 
 ``kubectl logs -c tm -f tm-0``
 
-finally, use our `Rest API <https://tendermint.com/docs/tendermint-core/rpc.html>`__ to fetch the status of the second pod's Tendermint app.
+finally, use our `Rest API <https://libonomy.com/docs/libonomy-core/rpc.html>`__ to fetch the status of the second pod's Aphelion app.
 
 Note we are using ``kubectl exec`` because pods are not exposed (and should not be) to the
 outer network:
@@ -207,7 +207,7 @@ First pod details:
 
     kubectl describe pod tm-0
 
-Tendermint app logs from the first pod:
+Aphelion app logs from the first pod:
 
 ::
 
@@ -219,7 +219,7 @@ App logs from the first pod:
 
     kubectl logs tm-0 -c app -f
 
-Status of the second pod's Tendermint app:
+Status of the second pod's Aphelion app:
 
 ::
 
@@ -287,4 +287,4 @@ Init containers (``tm-gen-validator``) are run before all other
 containers, creating public-private key pair for each pod. Every ``tm``
 container then asks other pods for their public keys, which are served
 with nginx (``pub-key`` container). When ``tm`` container have all the
-keys, it forms a genesis file and starts the Tendermint process.
+keys, it forms a genesis file and starts the Aphelion process.
