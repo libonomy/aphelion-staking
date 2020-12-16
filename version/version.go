@@ -14,16 +14,16 @@ func init() {
 	}
 }
 
-const (
+const ( 
 	// TMCoreSemVer is the current version of Aphelion Core.
 	// It's the Semantic Version of the software.
 	// Must be a string because scripts like dist.sh read this file.
 	// XXX: Don't change the name of this variable or you will break
 	// automation :)
-	TMCoreSemVer = "0.32.1"
+	TMCoreSemVer = "0.1.1"
 
 	// ABCISemVer is the semantic version of the ABCI library
-	ABCISemVer  = "0.16.1"
+	ABCISemVer  = "0.0.1"
 	ABCIVersion = ABCISemVer
 )
 
