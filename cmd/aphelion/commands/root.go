@@ -7,10 +7,10 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/cli"
-	tmflags "github.com/evdatsion/aphelion-dpos-bft/libs/cli/flags"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	cfg "github.com/libonomy/aphelion-staking/config"
+	"github.com/libonomy/aphelion-staking/libs/cli"
+	tmflags "github.com/libonomy/aphelion-staking/libs/cli/flags"
+	"github.com/libonomy/aphelion-staking/libs/log"
 )
 
 var (

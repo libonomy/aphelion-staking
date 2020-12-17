@@ -8,18 +8,18 @@ import (
 	"strings"
 	"time"
 
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
+	"github.com/libonomy/aphelion-staking/libs/log"
 
-	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	nm "github.com/evdatsion/aphelion-dpos-bft/node"
-	"github.com/evdatsion/aphelion-dpos-bft/p2p"
-	"github.com/evdatsion/aphelion-dpos-bft/privval"
-	"github.com/evdatsion/aphelion-dpos-bft/proxy"
-	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
-	core_grpc "github.com/evdatsion/aphelion-dpos-bft/rpc/grpc"
-	rpcclient "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/client"
+	cfg "github.com/libonomy/aphelion-staking/config"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	nm "github.com/libonomy/aphelion-staking/node"
+	"github.com/libonomy/aphelion-staking/p2p"
+	"github.com/libonomy/aphelion-staking/privval"
+	"github.com/libonomy/aphelion-staking/proxy"
+	ctypes "github.com/libonomy/aphelion-staking/rpc/core/types"
+	core_grpc "github.com/libonomy/aphelion-staking/rpc/grpc"
+	rpcclient "github.com/libonomy/aphelion-staking/rpc/lib/client"
 )
 
 // Options helps with specifying some parameters for our RPC testing for greater

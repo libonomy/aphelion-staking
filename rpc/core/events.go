@@ -6,10 +6,10 @@ import (
 
 	"github.com/pkg/errors"
 
-	tmpubsub "github.com/evdatsion/aphelion-dpos-bft/libs/pubsub"
-	tmquery "github.com/evdatsion/aphelion-dpos-bft/libs/pubsub/query"
-	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
-	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
+	tmpubsub "github.com/libonomy/aphelion-staking/libs/pubsub"
+	tmquery "github.com/libonomy/aphelion-staking/libs/pubsub/query"
+	ctypes "github.com/libonomy/aphelion-staking/rpc/core/types"
+	rpctypes "github.com/libonomy/aphelion-staking/rpc/lib/types"
 )
 
 // Subscribe for events via WebSocket.

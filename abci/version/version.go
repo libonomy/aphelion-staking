@@ -1,7 +1,7 @@
 package version
 
 import (
-	"github.com/evdatsion/aphelion-dpos-bft/version"
+	"github.com/libonomy/aphelion-staking/version"
 )
 
 // TODO: eliminate this after some version refactor

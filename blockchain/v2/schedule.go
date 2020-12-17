@@ -7,7 +7,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/evdatsion/aphelion-dpos-bft/p2p"
+	"github.com/libonomy/aphelion-staking/p2p"
 )
 
 type blockState int

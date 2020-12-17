@@ -5,10 +5,10 @@ import (
 	"net"
 	"time"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/libs/log"
 
-	tmconn "github.com/evdatsion/aphelion-dpos-bft/p2p/conn"
+	tmconn "github.com/libonomy/aphelion-staking/p2p/conn"
 )
 
 const metricsTickerDuration = 10 * time.Second

@@ -1,7 +1,7 @@
 package state
 
 import (
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 //------------------------------------------------------

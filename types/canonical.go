@@ -3,8 +3,8 @@ package types
 import (
 	"time"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	tmtime "github.com/libonomy/aphelion-staking/types/time"
 )
 
 // Canonical* wraps the structs in types for amino encoding them for use in SignBytes / the Signable interface.

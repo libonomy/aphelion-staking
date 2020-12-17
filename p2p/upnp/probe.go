@@ -5,7 +5,7 @@ import (
 	"net"
 	"time"
 
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	"github.com/libonomy/aphelion-staking/libs/log"
 )
 
 type UPNPCapabilities struct {

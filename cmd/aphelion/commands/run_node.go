@@ -5,8 +5,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	nm "github.com/evdatsion/aphelion-dpos-bft/node"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	nm "github.com/libonomy/aphelion-staking/node"
 )
 
 // AddNodeFlags exposes some common configuration options on the command-line

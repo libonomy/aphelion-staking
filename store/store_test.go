@@ -15,12 +15,12 @@ import (
 	db "github.com/evdatsion/tm-db"
 	dbm "github.com/evdatsion/tm-db"
 
-	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	sm "github.com/evdatsion/aphelion-dpos-bft/state"
+	cfg "github.com/libonomy/aphelion-staking/config"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	sm "github.com/libonomy/aphelion-staking/state"
 
-	"github.com/evdatsion/aphelion-dpos-bft/types"
-	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
+	"github.com/libonomy/aphelion-staking/types"
+	tmtime "github.com/libonomy/aphelion-staking/types/time"
 )
 
 // A cleanupFunc cleans up any config / test files created for a particular

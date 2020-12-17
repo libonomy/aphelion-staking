@@ -11,16 +11,16 @@ import (
 	//"strings"
 	"time"
 
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	//auto "github.com/evdatsion/aphelion-dpos-bft/libs/autofile"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
+	//auto "github.com/libonomy/aphelion-staking/libs/autofile"
 	dbm "github.com/evdatsion/tm-db"
 
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	"github.com/evdatsion/aphelion-dpos-bft/mock"
-	"github.com/evdatsion/aphelion-dpos-bft/proxy"
-	sm "github.com/evdatsion/aphelion-dpos-bft/state"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
-	"github.com/evdatsion/aphelion-dpos-bft/version"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	"github.com/libonomy/aphelion-staking/mock"
+	"github.com/libonomy/aphelion-staking/proxy"
+	sm "github.com/libonomy/aphelion-staking/state"
+	"github.com/libonomy/aphelion-staking/types"
+	"github.com/libonomy/aphelion-staking/version"
 )
 
 var crc32c = crc32.MakeTable(crc32.Castagnoli)

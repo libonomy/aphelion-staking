@@ -1,8 +1,8 @@
 package p2p
 
 import (
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/p2p/conn"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/p2p/conn"
 )
 
 // Reactor is responsible for handling incoming messages on one or more

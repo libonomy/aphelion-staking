@@ -7,15 +7,15 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/tmhash"
+	"github.com/libonomy/aphelion-staking/crypto/tmhash"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
-	"github.com/evdatsion/aphelion-dpos-bft/privval"
-	"github.com/evdatsion/aphelion-dpos-bft/state"
+	"github.com/libonomy/aphelion-staking/crypto/ed25519"
+	"github.com/libonomy/aphelion-staking/privval"
+	"github.com/libonomy/aphelion-staking/state"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 // Test harness error codes (which act as exit codes when the test harness fails).

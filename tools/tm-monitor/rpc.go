@@ -5,11 +5,11 @@ import (
 	"net"
 	"net/http"
 
-	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
+	rpctypes "github.com/libonomy/aphelion-staking/rpc/lib/types"
 
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	rpc "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/server"
-	"github.com/evdatsion/aphelion-dpos-bft/tools/tm-monitor/monitor"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	rpc "github.com/libonomy/aphelion-staking/rpc/lib/server"
+	"github.com/libonomy/aphelion-staking/tools/tm-monitor/monitor"
 )
 
 func startRPC(listenAddr string, m *monitor.Monitor, logger log.Logger) net.Listener {

@@ -3,9 +3,9 @@ package null
 import (
 	"errors"
 
-	"github.com/evdatsion/aphelion-dpos-bft/libs/pubsub/query"
-	"github.com/evdatsion/aphelion-dpos-bft/state/txindex"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/libs/pubsub/query"
+	"github.com/libonomy/aphelion-staking/state/txindex"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 var _ txindex.TxIndexer = (*TxIndex)(nil)

@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"sync"
 
-	clist "github.com/evdatsion/aphelion-dpos-bft/libs/clist"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	clist "github.com/libonomy/aphelion-staking/libs/clist"
+	"github.com/libonomy/aphelion-staking/libs/log"
 	dbm "github.com/evdatsion/tm-db"
 
-	sm "github.com/evdatsion/aphelion-dpos-bft/state"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	sm "github.com/libonomy/aphelion-staking/state"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 // EvidencePool maintains a pool of valid evidence

@@ -1,7 +1,7 @@
 package behaviour
 
 import (
-	"github.com/evdatsion/aphelion-dpos-bft/p2p"
+	"github.com/libonomy/aphelion-staking/p2p"
 )
 
 // PeerBehaviour is a struct describing a behaviour a peer performed.

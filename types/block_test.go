@@ -14,12 +14,12 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/merkle"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/tmhash"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
-	"github.com/evdatsion/aphelion-dpos-bft/version"
+	"github.com/libonomy/aphelion-staking/crypto"
+	"github.com/libonomy/aphelion-staking/crypto/merkle"
+	"github.com/libonomy/aphelion-staking/crypto/tmhash"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	tmtime "github.com/libonomy/aphelion-staking/types/time"
+	"github.com/libonomy/aphelion-staking/version"
 )
 
 func TestMain(m *testing.M) {

@@ -3,9 +3,9 @@ package v1
 import (
 	"sort"
 
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	"github.com/evdatsion/aphelion-dpos-bft/p2p"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	"github.com/libonomy/aphelion-staking/p2p"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 // BlockPool keeps track of the fast sync peers, block requests and block responses.

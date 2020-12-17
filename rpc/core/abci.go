@@ -1,11 +1,11 @@
 package core
 
 import (
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/proxy"
-	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
-	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/proxy"
+	ctypes "github.com/libonomy/aphelion-staking/rpc/core/types"
+	rpctypes "github.com/libonomy/aphelion-staking/rpc/lib/types"
 )
 
 // ABCIQuery queries the application for some information.

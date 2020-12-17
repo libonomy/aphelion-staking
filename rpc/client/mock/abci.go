@@ -1,12 +1,12 @@
 package mock
 
 import (
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/proxy"
-	"github.com/evdatsion/aphelion-dpos-bft/rpc/client"
-	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/proxy"
+	"github.com/libonomy/aphelion-staking/rpc/client"
+	ctypes "github.com/libonomy/aphelion-staking/rpc/core/types"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 // ABCIApp will send all abci related request to the named app,

@@ -1,9 +1,9 @@
 package lite
 
 import (
-	log "github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	lerr "github.com/evdatsion/aphelion-dpos-bft/lite/errors"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	log "github.com/libonomy/aphelion-staking/libs/log"
+	lerr "github.com/libonomy/aphelion-staking/lite/errors"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 var _ PersistentProvider = (*multiProvider)(nil)

@@ -37,7 +37,7 @@ dist: build-all
 
 build-docker:
 	rm -f ./tm-bench
-	docker run -it --rm -v "$(PWD)/../../:/go/src/github.com/evdatsion/aphelion-dpos-bft" -w "/go/src/github.com/evdatsion/aphelion-dpos-bft/tools/tm-bench" -e "CGO_ENABLED=0" golang:alpine go build -ldflags "-s -w" -o tm-bench
+	docker run -it --rm -v "$(PWD)/../../:/go/src/github.com/libonomy/aphelion-staking" -w "/go/src/github.com/libonomy/aphelion-staking/tools/tm-bench" -e "CGO_ENABLED=0" golang:alpine go build -ldflags "-s -w" -o tm-bench
 	docker build -t "aphelion/bench" .
 
 clean:

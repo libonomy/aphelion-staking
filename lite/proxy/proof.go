@@ -1,7 +1,7 @@
 package proxy
 
 import (
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/merkle"
+	"github.com/libonomy/aphelion-staking/crypto/merkle"
 )
 
 func defaultProofRuntime() *merkle.ProofRuntime {

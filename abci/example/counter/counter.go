@@ -4,8 +4,8 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/evdatsion/aphelion-dpos-bft/abci/example/code"
-	"github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	"github.com/libonomy/aphelion-staking/abci/example/code"
+	"github.com/libonomy/aphelion-staking/abci/types"
 )
 
 type CounterApplication struct {

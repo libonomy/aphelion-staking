@@ -5,9 +5,9 @@ import (
 
 	"github.com/pkg/errors"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	lerr "github.com/evdatsion/aphelion-dpos-bft/lite/errors"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	lerr "github.com/libonomy/aphelion-staking/lite/errors"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 var _ Verifier = (*BaseVerifier)(nil)

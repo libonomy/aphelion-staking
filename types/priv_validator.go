@@ -5,14 +5,14 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
+	"github.com/libonomy/aphelion-staking/crypto"
+	"github.com/libonomy/aphelion-staking/crypto/ed25519"
 )
 
 // PrivValidator defines the functionality of a local Aphelion validator
 // that signs votes and proposals, and never double signs.
 type PrivValidator interface {
-	// TODO: Extend the interface to return errors too. Issue: https://github.com/evdatsion/aphelion-dpos-bft/issues/3602
+	// TODO: Extend the interface to return errors too. Issue: https://github.com/libonomy/aphelion-staking/issues/3602
 	GetPubKey() crypto.PubKey
 
 	SignVote(chainID string, vote *Vote) error

@@ -17,12 +17,12 @@ want to directly call a aphelion node in process, you can use the
 import (
 	"reflect"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/rpc/client"
-	"github.com/evdatsion/aphelion-dpos-bft/rpc/core"
-	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
-	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/rpc/client"
+	"github.com/libonomy/aphelion-staking/rpc/core"
+	ctypes "github.com/libonomy/aphelion-staking/rpc/core/types"
+	rpctypes "github.com/libonomy/aphelion-staking/rpc/lib/types"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 // Client wraps arbitrary implementations of the various interfaces.

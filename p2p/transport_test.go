@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
-	"github.com/evdatsion/aphelion-dpos-bft/p2p/conn"
+	"github.com/libonomy/aphelion-staking/crypto/ed25519"
+	"github.com/libonomy/aphelion-staking/p2p/conn"
 )
 
 var defaultNodeName = "host_peer"

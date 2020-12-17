@@ -11,11 +11,11 @@ import (
 
 	db "github.com/evdatsion/tm-db"
 
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/pubsub/query"
-	"github.com/evdatsion/aphelion-dpos-bft/state/txindex"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/libs/pubsub/query"
+	"github.com/libonomy/aphelion-staking/state/txindex"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 func TestTxIndex(t *testing.T) {
@@ -257,7 +257,7 @@ func TestTxSearchMultipleTxs(t *testing.T) {
 	require.NoError(t, err)
 
 	// indexed fourth (to test we don't include txs with similar tags)
-	// https://github.com/evdatsion/aphelion-dpos-bft/issues/2908
+	// https://github.com/libonomy/aphelion-staking/issues/2908
 	txResult4 := txResultWithEvents([]abci.Event{
 		{Type: "account", Attributes: []cmn.KVPair{{Key: []byte("number.id"), Value: []byte("1")}}},
 	})

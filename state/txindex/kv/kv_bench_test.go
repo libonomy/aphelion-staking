@@ -6,10 +6,10 @@ import (
 	"io/ioutil"
 	"testing"
 
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/pubsub/query"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/libs/pubsub/query"
+	"github.com/libonomy/aphelion-staking/types"
 	dbm "github.com/evdatsion/tm-db"
 )
 

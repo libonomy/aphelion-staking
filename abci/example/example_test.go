@@ -13,14 +13,14 @@ import (
 
 	"golang.org/x/net/context"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/libs/log"
 
-	abcicli "github.com/evdatsion/aphelion-dpos-bft/abci/client"
-	"github.com/evdatsion/aphelion-dpos-bft/abci/example/code"
-	"github.com/evdatsion/aphelion-dpos-bft/abci/example/kvstore"
-	abciserver "github.com/evdatsion/aphelion-dpos-bft/abci/server"
-	"github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	abcicli "github.com/libonomy/aphelion-staking/abci/client"
+	"github.com/libonomy/aphelion-staking/abci/example/code"
+	"github.com/libonomy/aphelion-staking/abci/example/kvstore"
+	abciserver "github.com/libonomy/aphelion-staking/abci/server"
+	"github.com/libonomy/aphelion-staking/abci/types"
 )
 
 func TestKVStore(t *testing.T) {

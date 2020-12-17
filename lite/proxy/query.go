@@ -6,13 +6,13 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/merkle"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/lite"
-	lerr "github.com/evdatsion/aphelion-dpos-bft/lite/errors"
-	rpcclient "github.com/evdatsion/aphelion-dpos-bft/rpc/client"
-	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/crypto/merkle"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/lite"
+	lerr "github.com/libonomy/aphelion-staking/lite/errors"
+	rpcclient "github.com/libonomy/aphelion-staking/rpc/client"
+	ctypes "github.com/libonomy/aphelion-staking/rpc/core/types"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 // GetWithProof will query the key on the given node, and verify it has

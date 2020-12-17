@@ -4,8 +4,8 @@ import (
 	"errors"
 	"time"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/crypto"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 // RetrySignerClient wraps SignerClient adding retry for each operation (except

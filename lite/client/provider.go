@@ -8,12 +8,12 @@ package client
 import (
 	"fmt"
 
-	log "github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	"github.com/evdatsion/aphelion-dpos-bft/lite"
-	lerr "github.com/evdatsion/aphelion-dpos-bft/lite/errors"
-	rpcclient "github.com/evdatsion/aphelion-dpos-bft/rpc/client"
-	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	log "github.com/libonomy/aphelion-staking/libs/log"
+	"github.com/libonomy/aphelion-staking/lite"
+	lerr "github.com/libonomy/aphelion-staking/lite/errors"
+	rpcclient "github.com/libonomy/aphelion-staking/rpc/client"
+	ctypes "github.com/libonomy/aphelion-staking/rpc/core/types"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 // SignStatusClient combines a SignClient and StatusClient.

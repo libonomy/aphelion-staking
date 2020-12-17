@@ -2,8 +2,8 @@ package privval
 
 import (
 	amino "github.com/evdatsion/go-amino"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/crypto"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 // SignerMessage is sent between Signer Clients and Servers.

@@ -7,13 +7,13 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/events"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
-	rpc_client "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/client"
-	em "github.com/evdatsion/aphelion-dpos-bft/tools/tm-monitor/eventmeter"
-	tmtypes "github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/crypto"
+	"github.com/libonomy/aphelion-staking/libs/events"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	ctypes "github.com/libonomy/aphelion-staking/rpc/core/types"
+	rpc_client "github.com/libonomy/aphelion-staking/rpc/lib/client"
+	em "github.com/libonomy/aphelion-staking/tools/tm-monitor/eventmeter"
+	tmtypes "github.com/libonomy/aphelion-staking/types"
 )
 
 const maxRestarts = 25

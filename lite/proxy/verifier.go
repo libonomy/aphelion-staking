@@ -3,9 +3,9 @@ package proxy
 import (
 	"github.com/pkg/errors"
 
-	log "github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	"github.com/evdatsion/aphelion-dpos-bft/lite"
-	lclient "github.com/evdatsion/aphelion-dpos-bft/lite/client"
+	log "github.com/libonomy/aphelion-staking/libs/log"
+	"github.com/libonomy/aphelion-staking/lite"
+	lclient "github.com/libonomy/aphelion-staking/lite/client"
 	dbm "github.com/evdatsion/tm-db"
 )
 

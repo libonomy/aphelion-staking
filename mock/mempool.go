@@ -1,10 +1,10 @@
 package mock
 
 import (
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/clist"
-	mempl "github.com/evdatsion/aphelion-dpos-bft/mempool"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
+	"github.com/libonomy/aphelion-staking/libs/clist"
+	mempl "github.com/libonomy/aphelion-staking/mempool"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 // Mempool is an empty implementation of a Mempool, useful for testing.

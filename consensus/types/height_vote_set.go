@@ -6,8 +6,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/evdatsion/aphelion-dpos-bft/p2p"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/p2p"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 type RoundVoteSet struct {

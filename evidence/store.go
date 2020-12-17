@@ -3,7 +3,7 @@ package evidence
 import (
 	"fmt"
 
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/types"
 	dbm "github.com/evdatsion/tm-db"
 )
 

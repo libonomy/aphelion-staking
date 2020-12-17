@@ -9,8 +9,8 @@ import (
 	"time"
 
 	metrics "github.com/rcrowley/go-metrics"
-	tmrpc "github.com/evdatsion/aphelion-dpos-bft/rpc/client"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	tmrpc "github.com/libonomy/aphelion-staking/rpc/client"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 type statistics struct {

@@ -4,7 +4,7 @@ These scripts facilitate setting up and testing a local testnet using docker con
 
 Setup your own local testnet as follows.
 
-For consistency, we assume all commands are run from the Aphelion repository root (ie. $GOPATH/src/github.com/evdatsion/aphelion-dpos-bft).
+For consistency, we assume all commands are run from the Aphelion repository root (ie. $GOPATH/src/github.com/libonomy/aphelion-staking).
 
 First, build the docker image:
 
@@ -37,7 +37,7 @@ for i in $(seq 1 4); do
 	  --ip="172.57.0.$((100 + $i))" \
 	  --name local_testnet_$i \
 	  --entrypoint aphelion \
-	  -e TMHOME=/go/src/github.com/evdatsion/aphelion-dpos-bft/test/p2p/data/mach$((i-1)) \
+	  -e TMHOME=/go/src/github.com/libonomy/aphelion-staking/test/p2p/data/mach$((i-1)) \
 	  aphelion_tester node --p2p.persistent_peers 172.57.0.101:26656,172.57.0.102:26656,172.57.0.103:26656,172.57.0.104:26656 --proxy_app=kvstore
 done
 ```

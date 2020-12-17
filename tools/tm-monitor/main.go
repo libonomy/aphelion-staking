@@ -6,9 +6,9 @@ import (
 	"os"
 	"strings"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	monitor "github.com/evdatsion/aphelion-dpos-bft/tools/tm-monitor/monitor"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	monitor "github.com/libonomy/aphelion-staking/tools/tm-monitor/monitor"
 )
 
 var logger = log.NewNopLogger()

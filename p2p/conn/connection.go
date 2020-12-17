@@ -16,9 +16,9 @@ import (
 	"github.com/pkg/errors"
 
 	amino "github.com/evdatsion/go-amino"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	flow "github.com/evdatsion/aphelion-dpos-bft/libs/flowrate"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	flow "github.com/libonomy/aphelion-staking/libs/flowrate"
+	"github.com/libonomy/aphelion-staking/libs/log"
 )
 
 const (
@@ -600,7 +600,7 @@ FOR_LOOP:
 		switch pkt := packet.(type) {
 		case PacketPing:
 			// TODO: prevent abuse, as they cause flush()'s.
-			// https://github.com/evdatsion/aphelion-dpos-bft/issues/1190
+			// https://github.com/libonomy/aphelion-staking/issues/1190
 			c.Logger.Debug("Receive Ping")
 			select {
 			case c.pong <- struct{}{}:

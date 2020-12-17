@@ -3,16 +3,16 @@ package state
 import (
 	"fmt"
 
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/types"
 	dbm "github.com/evdatsion/tm-db"
 )
 
 const (
 	// persist validators every valSetCheckpointInterval blocks to avoid
 	// LoadValidators taking too much time.
-	// https://github.com/evdatsion/aphelion-dpos-bft/pull/3438
+	// https://github.com/libonomy/aphelion-staking/pull/3438
 	// 100000 results in ~ 100ms to get 100 validators (see BenchmarkLoadValidators)
 	valSetCheckpointInterval = 100000
 )
@@ -198,7 +198,7 @@ func LoadValidators(db dbm.DB, height int64) (*types.ValidatorSet, error) {
 			// release and just panic. Old chains might panic otherwise if they
 			// haven't saved validators at intermediate (%valSetCheckpointInterval)
 			// height yet.
-			// https://github.com/evdatsion/aphelion-dpos-bft/issues/3543
+			// https://github.com/libonomy/aphelion-staking/issues/3543
 			valInfo2 = loadValidatorsInfo(db, valInfo.LastHeightChanged)
 			lastStoredHeight = valInfo.LastHeightChanged
 			if valInfo2 == nil || valInfo2.ValidatorSet == nil {

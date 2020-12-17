@@ -7,11 +7,11 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	"github.com/evdatsion/aphelion-dpos-bft/state/txindex"
-	"github.com/evdatsion/aphelion-dpos-bft/state/txindex/kv"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	"github.com/libonomy/aphelion-staking/state/txindex"
+	"github.com/libonomy/aphelion-staking/state/txindex/kv"
+	"github.com/libonomy/aphelion-staking/types"
 	db "github.com/evdatsion/tm-db"
 )
 

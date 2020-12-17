@@ -3,9 +3,9 @@ package v2
 import (
 	"fmt"
 
-	"github.com/evdatsion/aphelion-dpos-bft/state"
-	"github.com/evdatsion/aphelion-dpos-bft/store"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/state"
+	"github.com/libonomy/aphelion-staking/store"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 type processorContext interface {

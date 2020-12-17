@@ -3,9 +3,9 @@ package core_grpc
 import (
 	"context"
 
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	core "github.com/evdatsion/aphelion-dpos-bft/rpc/core"
-	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
+	core "github.com/libonomy/aphelion-staking/rpc/core"
+	rpctypes "github.com/libonomy/aphelion-staking/rpc/lib/types"
 )
 
 type broadcastAPI struct {

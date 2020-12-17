@@ -1,6 +1,6 @@
 #! /bin/bash
 
-PKGS=$(go list github.com/evdatsion/aphelion-dpos-bft/...)
+PKGS=$(go list github.com/libonomy/aphelion-staking/...)
 
 set -e
 

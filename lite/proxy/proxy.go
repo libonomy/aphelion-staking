@@ -6,15 +6,15 @@ import (
 
 	amino "github.com/evdatsion/go-amino"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	"github.com/evdatsion/aphelion-dpos-bft/rpc/client"
-	rpcclient "github.com/evdatsion/aphelion-dpos-bft/rpc/client"
-	"github.com/evdatsion/aphelion-dpos-bft/rpc/core"
-	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
-	rpcserver "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/server"
-	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	"github.com/libonomy/aphelion-staking/rpc/client"
+	rpcclient "github.com/libonomy/aphelion-staking/rpc/client"
+	"github.com/libonomy/aphelion-staking/rpc/core"
+	ctypes "github.com/libonomy/aphelion-staking/rpc/core/types"
+	rpcserver "github.com/libonomy/aphelion-staking/rpc/lib/server"
+	rpctypes "github.com/libonomy/aphelion-staking/rpc/lib/types"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 const (

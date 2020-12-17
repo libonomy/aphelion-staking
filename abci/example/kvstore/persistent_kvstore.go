@@ -7,11 +7,11 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/evdatsion/aphelion-dpos-bft/abci/example/code"
-	"github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	tmtypes "github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/abci/example/code"
+	"github.com/libonomy/aphelion-staking/abci/types"
+	"github.com/libonomy/aphelion-staking/crypto/ed25519"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	tmtypes "github.com/libonomy/aphelion-staking/types"
 	dbm "github.com/evdatsion/tm-db"
 )
 

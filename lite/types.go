@@ -1,7 +1,7 @@
 package lite
 
 import (
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 // Verifier checks the votes to make sure the block really is signed properly.

@@ -11,15 +11,15 @@ import (
 
 	"github.com/pkg/errors"
 
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
-	auto "github.com/evdatsion/aphelion-dpos-bft/libs/autofile"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/clist"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	"github.com/evdatsion/aphelion-dpos-bft/p2p"
-	"github.com/evdatsion/aphelion-dpos-bft/proxy"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
+	cfg "github.com/libonomy/aphelion-staking/config"
+	auto "github.com/libonomy/aphelion-staking/libs/autofile"
+	"github.com/libonomy/aphelion-staking/libs/clist"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	"github.com/libonomy/aphelion-staking/p2p"
+	"github.com/libonomy/aphelion-staking/proxy"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 //--------------------------------------------------------------------------------
@@ -561,7 +561,7 @@ func (mem *CListMempool) Update(
 		//   101 -> 102
 		// Mempool after:
 		//   100
-		// https://github.com/evdatsion/aphelion-dpos-bft/issues/3322.
+		// https://github.com/libonomy/aphelion-staking/issues/3322.
 		if e, ok := mem.txsMap.Load(txKey(tx)); ok {
 			mem.removeTx(tx, e.(*clist.CElement), false)
 		}

@@ -6,7 +6,7 @@ RUN apt-get update && \
   jq bsdmainutils vim-common psmisc netcat curl
 
 # Setup aphelion repo
-ENV REPO $GOPATH/src/github.com/evdatsion/aphelion-dpos-bft
+ENV REPO $GOPATH/src/github.com/libonomy/aphelion-staking
 ENV GOBIN $GOPATH/bin
 WORKDIR $REPO
 

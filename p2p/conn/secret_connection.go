@@ -20,9 +20,9 @@ import (
 	"golang.org/x/crypto/hkdf"
 	"golang.org/x/crypto/nacl/box"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/libonomy/aphelion-staking/crypto"
+	"github.com/libonomy/aphelion-staking/crypto/ed25519"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
 )
 
 // 4 + 1024 == 1028 total frame size
@@ -40,13 +40,13 @@ var (
 
 // SecretConnection implements net.Conn.
 // It is an implementation of the STS protocol.
-// See https://github.com/evdatsion/aphelion-dpos-bft/blob/0.1/docs/sts-final.pdf for
+// See https://github.com/libonomy/aphelion-staking/blob/0.1/docs/sts-final.pdf for
 // details on the protocol.
 //
 // Consumers of the SecretConnection are responsible for authenticating
 // the remote peer's pubkey against known information, like a nodeID.
 // Otherwise they are vulnerable to MITM.
-// (TODO(ismail): see also https://github.com/evdatsion/aphelion-dpos-bft/issues/3010)
+// (TODO(ismail): see also https://github.com/libonomy/aphelion-staking/issues/3010)
 type SecretConnection struct {
 
 	// immutable
@@ -392,7 +392,7 @@ func computeDHSecret(remPubKey, locPrivKey *[32]byte) (shrKey *[32]byte, err err
 	curve25519.ScalarMult(shrKey, locPrivKey, remPubKey)
 
 	// reject if the returned shared secret is all zeroes
-	// related to: https://github.com/evdatsion/aphelion-dpos-bft/issues/3010
+	// related to: https://github.com/libonomy/aphelion-staking/issues/3010
 	zero := new([32]byte)
 	if subtle.ConstantTimeCompare(shrKey[:], zero[:]) == 1 {
 		return nil, ErrSharedSecretIsZero
@@ -466,7 +466,7 @@ func incrNonce(nonce *[aeadNonceSize]byte) {
 	counter := binary.LittleEndian.Uint64(nonce[4:])
 	if counter == math.MaxUint64 {
 		// Terminates the session and makes sure the nonce would not re-used.
-		// See https://github.com/evdatsion/aphelion-dpos-bft/issues/3531
+		// See https://github.com/libonomy/aphelion-staking/issues/3531
 		panic("can't increase nonce without overflow")
 	}
 	counter++

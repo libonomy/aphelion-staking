@@ -8,7 +8,7 @@ PROXY_APP=$4
 
 ID=1
 
-cd $GOPATH/src/github.com/evdatsion/aphelion-dpos-bft
+cd $GOPATH/src/github.com/libonomy/aphelion-staking
 
 echo "----------------------------------------------------------------------"
 echo "Testing full network connection using one /dial_peers call"

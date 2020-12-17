@@ -5,7 +5,7 @@ import (
 	"sync/atomic"
 
 	"github.com/Workiva/go-datastructures/queue"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	"github.com/libonomy/aphelion-staking/libs/log"
 )
 
 type handleFunc = func(event Event) (Event, error)

@@ -11,11 +11,11 @@ import (
 
 	amino "github.com/evdatsion/go-amino"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	tmpubsub "github.com/evdatsion/aphelion-dpos-bft/libs/pubsub"
-	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
-	rpcclient "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/client"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	tmpubsub "github.com/libonomy/aphelion-staking/libs/pubsub"
+	ctypes "github.com/libonomy/aphelion-staking/rpc/core/types"
+	rpcclient "github.com/libonomy/aphelion-staking/rpc/lib/client"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 /*

@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	tmtypes "github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	tmtypes "github.com/libonomy/aphelion-staking/types"
 )
 
 // waiting more than this many seconds for a block means we're unhealthy

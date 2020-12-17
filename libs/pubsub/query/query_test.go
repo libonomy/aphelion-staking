@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/evdatsion/aphelion-dpos-bft/libs/pubsub/query"
+	"github.com/libonomy/aphelion-staking/libs/pubsub/query"
 )
 
 func TestMatches(t *testing.T) {

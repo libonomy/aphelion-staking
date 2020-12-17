@@ -3,8 +3,8 @@ package privval
 import (
 	"fmt"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/crypto"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 func DefaultValidationRequestHandler(

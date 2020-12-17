@@ -7,11 +7,11 @@ import (
 
 	"github.com/pkg/errors"
 
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	mempl "github.com/evdatsion/aphelion-dpos-bft/mempool"
-	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
-	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
+	mempl "github.com/libonomy/aphelion-staking/mempool"
+	ctypes "github.com/libonomy/aphelion-staking/rpc/core/types"
+	rpctypes "github.com/libonomy/aphelion-staking/rpc/lib/types"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 //-----------------------------------------------------------------------------

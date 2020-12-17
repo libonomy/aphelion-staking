@@ -2,8 +2,8 @@ package evidence
 
 import (
 	amino "github.com/evdatsion/go-amino"
-	cryptoAmino "github.com/evdatsion/aphelion-dpos-bft/crypto/encoding/amino"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	cryptoAmino "github.com/libonomy/aphelion-staking/crypto/encoding/amino"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 var cdc = amino.NewCodec()

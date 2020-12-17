@@ -8,9 +8,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
-	sm "github.com/evdatsion/aphelion-dpos-bft/state"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	cfg "github.com/libonomy/aphelion-staking/config"
+	sm "github.com/libonomy/aphelion-staking/state"
+	"github.com/libonomy/aphelion-staking/types"
 	dbm "github.com/evdatsion/tm-db"
 )
 
@@ -29,7 +29,7 @@ func TestStoreLoadValidators(t *testing.T) {
 	// 2) LoadValidators loads validators using a checkpoint height
 
 	// TODO(melekes): REMOVE in 0.33 release
-	// https://github.com/evdatsion/aphelion-dpos-bft/issues/3543
+	// https://github.com/libonomy/aphelion-staking/issues/3543
 	// for releases prior to v0.31.4, it uses last height changed
 	valInfo := &sm.ValidatorsInfo{
 		LastHeightChanged: sm.ValSetCheckpointInterval,

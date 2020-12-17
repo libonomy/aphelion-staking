@@ -2,7 +2,7 @@ package main
 
 import (
 	amino "github.com/evdatsion/go-amino"
-	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
+	ctypes "github.com/libonomy/aphelion-staking/rpc/core/types"
 )
 
 var cdc = amino.NewCodec()

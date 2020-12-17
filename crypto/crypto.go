@@ -1,8 +1,8 @@
 package crypto
 
 import (
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/tmhash"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/libonomy/aphelion-staking/crypto/tmhash"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
 )
 
 const (

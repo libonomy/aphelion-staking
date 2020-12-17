@@ -4,10 +4,10 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/evdatsion/aphelion-dpos-bft/abci/example/kvstore"
-	"github.com/evdatsion/aphelion-dpos-bft/rpc/client"
-	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
-	rpctest "github.com/evdatsion/aphelion-dpos-bft/rpc/test"
+	"github.com/libonomy/aphelion-staking/abci/example/kvstore"
+	"github.com/libonomy/aphelion-staking/rpc/client"
+	ctypes "github.com/libonomy/aphelion-staking/rpc/core/types"
+	rpctest "github.com/libonomy/aphelion-staking/rpc/test"
 )
 
 func ExampleHTTP_simple() {

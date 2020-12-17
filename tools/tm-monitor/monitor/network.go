@@ -5,7 +5,7 @@ import (
 	"time"
 
 	metrics "github.com/rcrowley/go-metrics"
-	tmtypes "github.com/evdatsion/aphelion-dpos-bft/types"
+	tmtypes "github.com/libonomy/aphelion-staking/types"
 )
 
 // UptimeData stores data for how long network has been running.

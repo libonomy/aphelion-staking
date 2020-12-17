@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	monitor "github.com/evdatsion/aphelion-dpos-bft/tools/tm-monitor/monitor"
-	tmtypes "github.com/evdatsion/aphelion-dpos-bft/types"
+	monitor "github.com/libonomy/aphelion-staking/tools/tm-monitor/monitor"
+	tmtypes "github.com/libonomy/aphelion-staking/types"
 )
 
 func TestNetworkNewBlock(t *testing.T) {

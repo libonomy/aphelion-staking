@@ -80,6 +80,6 @@
 //
 // Examples
 //
-// - [Aphelion](https://github.com/evdatsion/aphelion-dpos-bft/blob/master/rpc/core/routes.go)
-// - [tm-monitor](https://github.com/evdatsion/aphelion-dpos-bft/blob/master/tools/tm-monitor/rpc.go)
+// - [Aphelion](https://github.com/libonomy/aphelion-staking/blob/master/rpc/core/routes.go)
+// - [tm-monitor](https://github.com/libonomy/aphelion-staking/blob/master/tools/tm-monitor/rpc.go)
 package rpc

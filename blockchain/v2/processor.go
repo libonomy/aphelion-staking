@@ -3,9 +3,9 @@ package v2
 import (
 	"fmt"
 
-	"github.com/evdatsion/aphelion-dpos-bft/p2p"
-	tdState "github.com/evdatsion/aphelion-dpos-bft/state"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/p2p"
+	tdState "github.com/libonomy/aphelion-staking/state"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 type peerError struct {

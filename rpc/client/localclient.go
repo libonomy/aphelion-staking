@@ -6,15 +6,15 @@ import (
 
 	"github.com/pkg/errors"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	tmpubsub "github.com/evdatsion/aphelion-dpos-bft/libs/pubsub"
-	tmquery "github.com/evdatsion/aphelion-dpos-bft/libs/pubsub/query"
-	nm "github.com/evdatsion/aphelion-dpos-bft/node"
-	"github.com/evdatsion/aphelion-dpos-bft/rpc/core"
-	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
-	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	tmpubsub "github.com/libonomy/aphelion-staking/libs/pubsub"
+	tmquery "github.com/libonomy/aphelion-staking/libs/pubsub/query"
+	nm "github.com/libonomy/aphelion-staking/node"
+	"github.com/libonomy/aphelion-staking/rpc/core"
+	ctypes "github.com/libonomy/aphelion-staking/rpc/core/types"
+	rpctypes "github.com/libonomy/aphelion-staking/rpc/lib/types"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 /*

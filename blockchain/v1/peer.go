@@ -5,10 +5,10 @@ import (
 	"math"
 	"time"
 
-	flow "github.com/evdatsion/aphelion-dpos-bft/libs/flowrate"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	"github.com/evdatsion/aphelion-dpos-bft/p2p"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	flow "github.com/libonomy/aphelion-staking/libs/flowrate"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	"github.com/libonomy/aphelion-staking/p2p"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 //--------

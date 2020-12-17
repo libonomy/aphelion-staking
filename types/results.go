@@ -1,16 +1,16 @@
 package types
 
 import (
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/merkle"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
+	"github.com/libonomy/aphelion-staking/crypto/merkle"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
 )
 
 //-----------------------------------------------------------------------------
 
 // ABCIResult is the deterministic component of a ResponseDeliverTx.
 // TODO: add tags and other fields
-// https://github.com/evdatsion/aphelion-dpos-bft/issues/1007
+// https://github.com/libonomy/aphelion-staking/issues/1007
 type ABCIResult struct {
 	Code uint32       `json:"code"`
 	Data cmn.HexBytes `json:"data"`

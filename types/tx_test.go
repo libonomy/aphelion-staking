@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	ctest "github.com/evdatsion/aphelion-dpos-bft/libs/test"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	ctest "github.com/libonomy/aphelion-staking/libs/test"
 )
 
 func makeTxs(cnt, size int) Txs {

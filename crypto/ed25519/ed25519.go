@@ -9,8 +9,8 @@ import (
 	amino "github.com/evdatsion/go-amino"
 	"golang.org/x/crypto/ed25519"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/tmhash"
+	"github.com/libonomy/aphelion-staking/crypto"
+	"github.com/libonomy/aphelion-staking/crypto/tmhash"
 )
 
 //-------------------------------------

@@ -3,7 +3,7 @@ package pex
 import (
 	"time"
 
-	"github.com/evdatsion/aphelion-dpos-bft/p2p"
+	"github.com/libonomy/aphelion-staking/p2p"
 )
 
 // knownAddress tracks information about a known network address

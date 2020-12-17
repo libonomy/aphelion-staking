@@ -11,18 +11,18 @@ import (
 
 	"github.com/spf13/cobra"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/libs/log"
 
-	abcicli "github.com/evdatsion/aphelion-dpos-bft/abci/client"
-	"github.com/evdatsion/aphelion-dpos-bft/abci/example/code"
-	"github.com/evdatsion/aphelion-dpos-bft/abci/example/counter"
-	"github.com/evdatsion/aphelion-dpos-bft/abci/example/kvstore"
-	"github.com/evdatsion/aphelion-dpos-bft/abci/server"
-	servertest "github.com/evdatsion/aphelion-dpos-bft/abci/tests/server"
-	"github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	"github.com/evdatsion/aphelion-dpos-bft/abci/version"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/merkle"
+	abcicli "github.com/libonomy/aphelion-staking/abci/client"
+	"github.com/libonomy/aphelion-staking/abci/example/code"
+	"github.com/libonomy/aphelion-staking/abci/example/counter"
+	"github.com/libonomy/aphelion-staking/abci/example/kvstore"
+	"github.com/libonomy/aphelion-staking/abci/server"
+	servertest "github.com/libonomy/aphelion-staking/abci/tests/server"
+	"github.com/libonomy/aphelion-staking/abci/types"
+	"github.com/libonomy/aphelion-staking/abci/version"
+	"github.com/libonomy/aphelion-staking/crypto/merkle"
 )
 
 // client is a global variable so it can be reused by the console

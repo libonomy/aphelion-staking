@@ -17,34 +17,34 @@ import (
 	"github.com/rs/cors"
 
 	amino "github.com/evdatsion/go-amino"
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	bcv0 "github.com/evdatsion/aphelion-dpos-bft/blockchain/v0"
-	bcv1 "github.com/evdatsion/aphelion-dpos-bft/blockchain/v1"
-	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
-	"github.com/evdatsion/aphelion-dpos-bft/consensus"
-	cs "github.com/evdatsion/aphelion-dpos-bft/consensus"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
-	"github.com/evdatsion/aphelion-dpos-bft/evidence"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	tmpubsub "github.com/evdatsion/aphelion-dpos-bft/libs/pubsub"
-	mempl "github.com/evdatsion/aphelion-dpos-bft/mempool"
-	"github.com/evdatsion/aphelion-dpos-bft/p2p"
-	"github.com/evdatsion/aphelion-dpos-bft/p2p/pex"
-	"github.com/evdatsion/aphelion-dpos-bft/privval"
-	"github.com/evdatsion/aphelion-dpos-bft/proxy"
-	rpccore "github.com/evdatsion/aphelion-dpos-bft/rpc/core"
-	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
-	grpccore "github.com/evdatsion/aphelion-dpos-bft/rpc/grpc"
-	rpcserver "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/server"
-	sm "github.com/evdatsion/aphelion-dpos-bft/state"
-	"github.com/evdatsion/aphelion-dpos-bft/state/txindex"
-	"github.com/evdatsion/aphelion-dpos-bft/state/txindex/kv"
-	"github.com/evdatsion/aphelion-dpos-bft/state/txindex/null"
-	"github.com/evdatsion/aphelion-dpos-bft/store"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
-	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
-	"github.com/evdatsion/aphelion-dpos-bft/version"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
+	bcv0 "github.com/libonomy/aphelion-staking/blockchain/v0"
+	bcv1 "github.com/libonomy/aphelion-staking/blockchain/v1"
+	cfg "github.com/libonomy/aphelion-staking/config"
+	"github.com/libonomy/aphelion-staking/consensus"
+	cs "github.com/libonomy/aphelion-staking/consensus"
+	"github.com/libonomy/aphelion-staking/crypto"
+	"github.com/libonomy/aphelion-staking/evidence"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	tmpubsub "github.com/libonomy/aphelion-staking/libs/pubsub"
+	mempl "github.com/libonomy/aphelion-staking/mempool"
+	"github.com/libonomy/aphelion-staking/p2p"
+	"github.com/libonomy/aphelion-staking/p2p/pex"
+	"github.com/libonomy/aphelion-staking/privval"
+	"github.com/libonomy/aphelion-staking/proxy"
+	rpccore "github.com/libonomy/aphelion-staking/rpc/core"
+	ctypes "github.com/libonomy/aphelion-staking/rpc/core/types"
+	grpccore "github.com/libonomy/aphelion-staking/rpc/grpc"
+	rpcserver "github.com/libonomy/aphelion-staking/rpc/lib/server"
+	sm "github.com/libonomy/aphelion-staking/state"
+	"github.com/libonomy/aphelion-staking/state/txindex"
+	"github.com/libonomy/aphelion-staking/state/txindex/kv"
+	"github.com/libonomy/aphelion-staking/state/txindex/null"
+	"github.com/libonomy/aphelion-staking/store"
+	"github.com/libonomy/aphelion-staking/types"
+	tmtime "github.com/libonomy/aphelion-staking/types/time"
+	"github.com/libonomy/aphelion-staking/version"
 	dbm "github.com/evdatsion/tm-db"
 )
 
@@ -545,7 +545,7 @@ func createPEXReactorAndAddToSwitch(addrBook pex.AddrBook, config *cfg.Config,
 			// blocks assuming 10s blocks ~ 28 hours.
 			// TODO (melekes): make it dynamic based on the actual block latencies
 			// from the live network.
-			// https://github.com/evdatsion/aphelion-dpos-bft/issues/3523
+			// https://github.com/libonomy/aphelion-staking/issues/3523
 			SeedDisconnectWaitPeriod: 28 * time.Hour,
 		})
 	pexReactor.SetLogger(logger.With("module", "pex"))
@@ -619,7 +619,7 @@ func NewNode(config *cfg.Config,
 
 	pubKey := privValidator.GetPubKey()
 	if pubKey == nil {
-		// TODO: GetPubKey should return errors - https://github.com/evdatsion/aphelion-dpos-bft/issues/3602
+		// TODO: GetPubKey should return errors - https://github.com/libonomy/aphelion-staking/issues/3602
 		return nil, errors.New("could not retrieve public key from private validator")
 	}
 
@@ -882,7 +882,7 @@ func (n *Node) startRPC() ([]net.Listener, error) {
 	config.MaxOpenConnections = n.config.RPC.MaxOpenConnections
 	// If necessary adjust global WriteTimeout to ensure it's greater than
 	// TimeoutBroadcastTxCommit.
-	// See https://github.com/evdatsion/aphelion-dpos-bft/issues/3435
+	// See https://github.com/libonomy/aphelion-staking/issues/3435
 	if config.WriteTimeout <= n.config.RPC.TimeoutBroadcastTxCommit {
 		config.WriteTimeout = n.config.RPC.TimeoutBroadcastTxCommit + 1*time.Second
 	}

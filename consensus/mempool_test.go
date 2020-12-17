@@ -9,11 +9,11 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/evdatsion/aphelion-dpos-bft/abci/example/code"
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	mempl "github.com/evdatsion/aphelion-dpos-bft/mempool"
-	sm "github.com/evdatsion/aphelion-dpos-bft/state"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/abci/example/code"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
+	mempl "github.com/libonomy/aphelion-staking/mempool"
+	sm "github.com/libonomy/aphelion-staking/state"
+	"github.com/libonomy/aphelion-staking/types"
 	dbm "github.com/evdatsion/tm-db"
 )
 

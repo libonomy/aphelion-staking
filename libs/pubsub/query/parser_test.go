@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/evdatsion/aphelion-dpos-bft/libs/pubsub/query"
+	"github.com/libonomy/aphelion-staking/libs/pubsub/query"
 )
 
 // TODO: fuzzy testing?

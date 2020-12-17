@@ -1,4 +1,4 @@
-module github.com/evdatsion/aphelion-dpos-bft
+module github.com/libonomy/aphelion-staking
 
 go 1.12
 
@@ -7,14 +7,14 @@ require (
 	github.com/Workiva/go-datastructures v1.0.50
 	github.com/btcsuite/btcd v0.0.0-20190115013929-ed77733ec07d
 	github.com/btcsuite/btcutil v0.0.0-20180706230648-ab6388e0c60a
-	github.com/evdatsion/go-amino v0.1.1-t0141
-	github.com/evdatsion/tm-db v0.1.1-e
+	github.com/evdatsion/go-amino v0.14.1
+	github.com/evdatsion/tm-db v0.1.1-t020
 	github.com/fortytw2/leaktest v1.3.0
 	github.com/go-kit/kit v0.9.0
 	github.com/go-logfmt/logfmt v0.4.0
 	github.com/gogo/protobuf v1.3.1
 	github.com/golang/protobuf v1.3.2
-	github.com/google/gofuzz v1.0.0 // indirect
+	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/gorilla/websocket v1.4.1
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/libp2p/go-buffer-pool v0.0.2

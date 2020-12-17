@@ -3,7 +3,7 @@ package node
 import (
 	"time"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
+	"github.com/libonomy/aphelion-staking/crypto"
 )
 
 type NodeID struct {

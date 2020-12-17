@@ -12,18 +12,18 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/tmhash"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	mempl "github.com/evdatsion/aphelion-dpos-bft/mempool"
-	"github.com/evdatsion/aphelion-dpos-bft/privval"
-	"github.com/evdatsion/aphelion-dpos-bft/rpc/client"
-	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
-	rpcclient "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/client"
-	rpctest "github.com/evdatsion/aphelion-dpos-bft/rpc/test"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/crypto/ed25519"
+	"github.com/libonomy/aphelion-staking/crypto/tmhash"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	mempl "github.com/libonomy/aphelion-staking/mempool"
+	"github.com/libonomy/aphelion-staking/privval"
+	"github.com/libonomy/aphelion-staking/rpc/client"
+	ctypes "github.com/libonomy/aphelion-staking/rpc/core/types"
+	rpcclient "github.com/libonomy/aphelion-staking/rpc/lib/client"
+	rpctest "github.com/libonomy/aphelion-staking/rpc/test"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 func getHTTPClient() *client.HTTP {

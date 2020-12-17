@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"sync"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
 )
 
 // ErrListenerWasRemoved is returned by AddEvent if the listener was removed.
