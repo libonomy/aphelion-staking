@@ -1,11 +1,11 @@
 package proxy
 
 import (
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
-	log "github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	"github.com/evdatsion/aphelion-dpos-bft/lite"
-	lclient "github.com/evdatsion/aphelion-dpos-bft/lite/client"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	dbm "github.com/libonomy/aphelion-staking/libs/db"
+	log "github.com/libonomy/aphelion-staking/libs/log"
+	"github.com/libonomy/aphelion-staking/lite"
+	lclient "github.com/libonomy/aphelion-staking/lite/client"
 )
 
 func NewVerifier(chainID, rootDir string, client lclient.SignStatusClient, logger log.Logger, cacheSize int) (*lite.DynamicVerifier, error) {

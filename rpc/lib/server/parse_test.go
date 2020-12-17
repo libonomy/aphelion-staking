@@ -9,8 +9,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	amino "github.com/evdatsion/go-amino"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	types "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	types "github.com/libonomy/aphelion-staking/rpc/lib/types"
 )
 
 func TestParseJSONMap(t *testing.T) {

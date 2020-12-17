@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
+	"github.com/libonomy/aphelion-staking/crypto/ed25519"
 )
 
 //-------------------------------------------

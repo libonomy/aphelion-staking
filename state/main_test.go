@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 func TestMain(m *testing.M) {

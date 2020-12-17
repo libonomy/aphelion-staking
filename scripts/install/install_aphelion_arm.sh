@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-REPO=github.com/evdatsion/aphelion-dpos-bft
+REPO=github.com/libonomy/aphelion-staking
 
 # change this to a specific release or branch
 BRANCH=master

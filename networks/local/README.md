@@ -18,7 +18,7 @@ Note the binary will be mounted into the container so it can be updated without
 rebuilding the image.
 
 ```
-cd $GOPATH/src/github.com/evdatsion/aphelion-dpos-bft
+cd $GOPATH/src/github.com/libonomy/aphelion-staking
 
 # Build the linux binary in ./build
 make build-linux
@@ -57,7 +57,7 @@ The `./build` directory is mounted to the `/aphelion` mount point to attach the 
 For instance, to create a single node testnet:
 
 ```
-cd $GOPATH/src/github.com/evdatsion/aphelion-dpos-bft
+cd $GOPATH/src/github.com/libonomy/aphelion-staking
 
 # Clear the build folder
 rm -rf ./build

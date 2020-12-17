@@ -1,9 +1,9 @@
 package mock
 
 import (
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	"github.com/evdatsion/aphelion-dpos-bft/p2p"
-	"github.com/evdatsion/aphelion-dpos-bft/p2p/conn"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	"github.com/libonomy/aphelion-staking/p2p"
+	"github.com/libonomy/aphelion-staking/p2p/conn"
 )
 
 type Reactor struct {

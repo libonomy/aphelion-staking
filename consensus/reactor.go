@@ -9,14 +9,14 @@ import (
 	"github.com/pkg/errors"
 
 	amino "github.com/evdatsion/go-amino"
-	cstypes "github.com/evdatsion/aphelion-dpos-bft/consensus/types"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	tmevents "github.com/evdatsion/aphelion-dpos-bft/libs/events"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	"github.com/evdatsion/aphelion-dpos-bft/p2p"
-	sm "github.com/evdatsion/aphelion-dpos-bft/state"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
-	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
+	cstypes "github.com/libonomy/aphelion-staking/consensus/types"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	tmevents "github.com/libonomy/aphelion-staking/libs/events"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	"github.com/libonomy/aphelion-staking/p2p"
+	sm "github.com/libonomy/aphelion-staking/state"
+	"github.com/libonomy/aphelion-staking/types"
+	tmtime "github.com/libonomy/aphelion-staking/types/time"
 )
 
 const (

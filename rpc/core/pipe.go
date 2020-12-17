@@ -3,17 +3,17 @@ package core
 import (
 	"time"
 
-	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
-	"github.com/evdatsion/aphelion-dpos-bft/consensus"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
-	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	mempl "github.com/evdatsion/aphelion-dpos-bft/mempool"
-	"github.com/evdatsion/aphelion-dpos-bft/p2p"
-	"github.com/evdatsion/aphelion-dpos-bft/proxy"
-	sm "github.com/evdatsion/aphelion-dpos-bft/state"
-	"github.com/evdatsion/aphelion-dpos-bft/state/txindex"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	cfg "github.com/libonomy/aphelion-staking/config"
+	"github.com/libonomy/aphelion-staking/consensus"
+	"github.com/libonomy/aphelion-staking/crypto"
+	dbm "github.com/libonomy/aphelion-staking/libs/db"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	mempl "github.com/libonomy/aphelion-staking/mempool"
+	"github.com/libonomy/aphelion-staking/p2p"
+	"github.com/libonomy/aphelion-staking/proxy"
+	sm "github.com/libonomy/aphelion-staking/state"
+	"github.com/libonomy/aphelion-staking/state/txindex"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 const (

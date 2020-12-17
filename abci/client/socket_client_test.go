@@ -9,10 +9,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	abcicli "github.com/evdatsion/aphelion-dpos-bft/abci/client"
-	"github.com/evdatsion/aphelion-dpos-bft/abci/server"
-	"github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	abcicli "github.com/libonomy/aphelion-staking/abci/client"
+	"github.com/libonomy/aphelion-staking/abci/server"
+	"github.com/libonomy/aphelion-staking/abci/types"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
 )
 
 func TestSocketClientStopForErrorDeadlock(t *testing.T) {

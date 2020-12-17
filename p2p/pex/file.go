@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
 )
 
 /* Loading & Saving */

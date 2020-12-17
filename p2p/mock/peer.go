@@ -3,10 +3,10 @@ package mock
 import (
 	"net"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/p2p"
-	"github.com/evdatsion/aphelion-dpos-bft/p2p/conn"
+	"github.com/libonomy/aphelion-staking/crypto/ed25519"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/p2p"
+	"github.com/libonomy/aphelion-staking/p2p/conn"
 )
 
 type Peer struct {

@@ -11,15 +11,15 @@ import (
 
 	"github.com/pkg/errors"
 
-	bc "github.com/evdatsion/aphelion-dpos-bft/blockchain"
-	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	"github.com/evdatsion/aphelion-dpos-bft/mock"
-	"github.com/evdatsion/aphelion-dpos-bft/proxy"
-	sm "github.com/evdatsion/aphelion-dpos-bft/state"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	bc "github.com/libonomy/aphelion-staking/blockchain"
+	cfg "github.com/libonomy/aphelion-staking/config"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	dbm "github.com/libonomy/aphelion-staking/libs/db"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	"github.com/libonomy/aphelion-staking/mock"
+	"github.com/libonomy/aphelion-staking/proxy"
+	sm "github.com/libonomy/aphelion-staking/state"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 const (

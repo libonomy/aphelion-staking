@@ -8,7 +8,7 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
+	"github.com/libonomy/aphelion-staking/crypto"
 )
 
 func TestSimple(t *testing.T) {

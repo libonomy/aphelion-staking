@@ -9,7 +9,7 @@ import (
 	"github.com/gogo/protobuf/proto"
 	"github.com/stretchr/testify/assert"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
 )
 
 func TestMarshalJSON(t *testing.T) {

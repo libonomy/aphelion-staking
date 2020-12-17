@@ -1,8 +1,8 @@
 package lite
 
 import (
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 // Provider provides information for the lite client to sync validators.

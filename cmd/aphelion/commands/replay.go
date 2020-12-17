@@ -3,7 +3,7 @@ package commands
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/evdatsion/aphelion-dpos-bft/consensus"
+	"github.com/libonomy/aphelion-staking/consensus"
 )
 
 // ReplayCmd allows replaying of messages from the WAL.

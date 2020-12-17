@@ -5,9 +5,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
-	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/crypto"
+	dbm "github.com/libonomy/aphelion-staking/libs/db"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 //-----------------------------------------------------
@@ -186,7 +186,7 @@ func VerifyEvidence(stateDB dbm.DB, state State, evidence types.Evidence) error 
 	// NOTE: we will ignore evidence from H if the key was not a validator
 	// at H, even if it is a validator at some nearby H'
 	// XXX: this makes lite-client bisection as is unsafe
-	// See https://github.com/evdatsion/aphelion-dpos-bft/issues/3244
+	// See https://github.com/libonomy/aphelion-staking/issues/3244
 	ev := evidence
 	height, addr := ev.Height(), ev.Address()
 	_, val := valset.GetByAddress(addr)

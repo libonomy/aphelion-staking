@@ -1,4 +1,4 @@
-module github.com/evdatsion/aphelion-dpos-bft
+module github.com/libonomy/aphelion-staking
 
 go 1.12
 

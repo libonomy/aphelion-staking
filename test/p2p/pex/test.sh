@@ -6,7 +6,7 @@ NETWORK_NAME=$2
 N=$3
 PROXY_APP=$4
 
-cd "$GOPATH/src/github.com/evdatsion/aphelion-dpos-bft"
+cd "$GOPATH/src/github.com/libonomy/aphelion-staking"
 
 echo "Test reconnecting from the address book"
 bash test/p2p/pex/test_addrbook.sh "$DOCKER_IMAGE" "$NETWORK_NAME" "$N" "$PROXY_APP"

@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"strings"
 
-	auto "github.com/evdatsion/aphelion-dpos-bft/libs/autofile"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	auto "github.com/libonomy/aphelion-staking/libs/autofile"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
 )
 
 const Version = "0.0.1"

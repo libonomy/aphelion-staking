@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/go-logfmt/logfmt"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	"github.com/libonomy/aphelion-staking/libs/log"
 )
 
 func TestLoggerLogsItsErrors(t *testing.T) {

@@ -1,5 +1,5 @@
 .PHONY: docs
-REPO:=github.com/evdatsion/aphelion-dpos-bft/libs/events
+REPO:=github.com/libonomy/aphelion-staking/libs/events
 
 docs:
 	@go get github.com/davecheney/godoc2md

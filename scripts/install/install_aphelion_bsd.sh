@@ -14,7 +14,7 @@
 
 # change this to a specific release or branch
 set BRANCH=master
-set REPO=github.com/evdatsion/aphelion-dpos-bft
+set REPO=github.com/libonomy/aphelion-staking
 
 set GO_VERSION=1.12
 

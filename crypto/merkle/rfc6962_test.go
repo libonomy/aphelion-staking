@@ -20,7 +20,7 @@ import (
 	"encoding/hex"
 	"testing"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/tmhash"
+	"github.com/libonomy/aphelion-staking/crypto/tmhash"
 )
 
 func TestRFC6962Hasher(t *testing.T) {

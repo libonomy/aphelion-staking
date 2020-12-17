@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"sync"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	dbm "github.com/libonomy/aphelion-staking/libs/db"
 
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 /*

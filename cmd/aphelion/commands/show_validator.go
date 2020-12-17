@@ -6,8 +6,8 @@ import (
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/privval"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/privval"
 )
 
 // ShowValidatorCmd adds capabilities for showing the validator info.

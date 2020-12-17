@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	rpcclient "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/client"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	rpcclient "github.com/libonomy/aphelion-staking/rpc/lib/client"
 )
 
 func main() {

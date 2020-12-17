@@ -9,9 +9,9 @@ import (
 	"github.com/pkg/errors"
 
 	amino "github.com/evdatsion/go-amino"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/p2p"
-	"github.com/evdatsion/aphelion-dpos-bft/p2p/conn"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/p2p"
+	"github.com/libonomy/aphelion-staking/p2p/conn"
 )
 
 type Peer = p2p.Peer
@@ -521,7 +521,7 @@ func (r *PEXReactor) dialPeer(addr *p2p.NetAddress) error {
 		// TODO(melekes): have a blacklist in the addrbook with peers whom we've
 		// failed to connect to. Then we can clean up attemptsToDial, which acts as
 		// a blacklist currently.
-		// https://github.com/evdatsion/aphelion-dpos-bft/issues/3572
+		// https://github.com/libonomy/aphelion-staking/issues/3572
 		r.book.MarkBad(addr)
 		return errMaxAttemptsToDial{}
 	}

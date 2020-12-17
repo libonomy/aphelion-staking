@@ -4,7 +4,7 @@ import (
 	"io"
 	"testing"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
+	"github.com/libonomy/aphelion-staking/crypto"
 )
 
 // The code in this file is adapted from agl/ed25519.

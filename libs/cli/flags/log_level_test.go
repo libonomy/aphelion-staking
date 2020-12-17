@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	tmflags "github.com/evdatsion/aphelion-dpos-bft/libs/cli/flags"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	tmflags "github.com/libonomy/aphelion-staking/libs/cli/flags"
+	"github.com/libonomy/aphelion-staking/libs/log"
 )
 
 const (

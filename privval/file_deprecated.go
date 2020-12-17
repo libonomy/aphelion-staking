@@ -4,9 +4,9 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/crypto"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 // OldFilePV is the old version of the FilePV, pre v0.28.0.

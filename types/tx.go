@@ -7,10 +7,10 @@ import (
 
 	amino "github.com/evdatsion/go-amino"
 
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/merkle"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/tmhash"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
+	"github.com/libonomy/aphelion-staking/crypto/merkle"
+	"github.com/libonomy/aphelion-staking/crypto/tmhash"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
 )
 
 // Tx is an arbitrary byte array.

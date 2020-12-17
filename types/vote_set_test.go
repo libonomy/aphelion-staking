@@ -6,9 +6,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
+	"github.com/libonomy/aphelion-staking/crypto"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	tmtime "github.com/libonomy/aphelion-staking/types/time"
 )
 
 // NOTE: privValidators are in order

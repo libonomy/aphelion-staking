@@ -6,11 +6,11 @@ import (
 	"strconv"
 
 	amino "github.com/evdatsion/go-amino"
-	cryptoAmino "github.com/evdatsion/aphelion-dpos-bft/crypto/encoding/amino"
-	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
-	log "github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	lerr "github.com/evdatsion/aphelion-dpos-bft/lite/errors"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	cryptoAmino "github.com/libonomy/aphelion-staking/crypto/encoding/amino"
+	dbm "github.com/libonomy/aphelion-staking/libs/db"
+	log "github.com/libonomy/aphelion-staking/libs/log"
+	lerr "github.com/libonomy/aphelion-staking/lite/errors"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 var _ PersistentProvider = (*DBProvider)(nil)

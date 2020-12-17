@@ -11,15 +11,15 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/db"
-	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	sm "github.com/evdatsion/aphelion-dpos-bft/state"
+	cfg "github.com/libonomy/aphelion-staking/config"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/libs/db"
+	dbm "github.com/libonomy/aphelion-staking/libs/db"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	sm "github.com/libonomy/aphelion-staking/state"
 
-	"github.com/evdatsion/aphelion-dpos-bft/types"
-	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
+	"github.com/libonomy/aphelion-staking/types"
+	tmtime "github.com/libonomy/aphelion-staking/types/time"
 )
 
 // A cleanupFunc cleans up any config / test files created for a particular

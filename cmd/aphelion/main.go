@@ -4,11 +4,11 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/evdatsion/aphelion-dpos-bft/libs/cli"
+	"github.com/libonomy/aphelion-staking/libs/cli"
 
-	cmd "github.com/evdatsion/aphelion-dpos-bft/cmd/aphelion/commands"
-	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
-	nm "github.com/evdatsion/aphelion-dpos-bft/node"
+	cmd "github.com/libonomy/aphelion-staking/cmd/aphelion/commands"
+	cfg "github.com/libonomy/aphelion-staking/config"
+	nm "github.com/libonomy/aphelion-staking/node"
 )
 
 func main() {

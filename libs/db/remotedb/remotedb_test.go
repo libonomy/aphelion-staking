@@ -7,8 +7,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/evdatsion/aphelion-dpos-bft/libs/db/remotedb"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/db/remotedb/grpcdb"
+	"github.com/libonomy/aphelion-staking/libs/db/remotedb"
+	"github.com/libonomy/aphelion-staking/libs/db/remotedb/grpcdb"
 )
 
 func TestRemoteDB(t *testing.T) {

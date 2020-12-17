@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/evdatsion/aphelion-dpos-bft/p2p"
+	"github.com/libonomy/aphelion-staking/p2p"
 )
 
 // ShowNodeIDCmd dumps node's ID to the standard output.

@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"os"
 
-	abcicli "github.com/evdatsion/aphelion-dpos-bft/abci/client"
-	"github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	abcicli "github.com/libonomy/aphelion-staking/abci/client"
+	"github.com/libonomy/aphelion-staking/abci/types"
+	"github.com/libonomy/aphelion-staking/libs/log"
 )
 
 func startClient(abciType string) abcicli.Client {

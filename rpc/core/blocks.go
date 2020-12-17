@@ -3,11 +3,11 @@ package core
 import (
 	"fmt"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
-	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
-	sm "github.com/evdatsion/aphelion-dpos-bft/state"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	ctypes "github.com/libonomy/aphelion-staking/rpc/core/types"
+	rpctypes "github.com/libonomy/aphelion-staking/rpc/lib/types"
+	sm "github.com/libonomy/aphelion-staking/state"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 // Get block headers for minHeight <= height <= maxHeight.

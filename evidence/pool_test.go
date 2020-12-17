@@ -7,10 +7,10 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
-	sm "github.com/evdatsion/aphelion-dpos-bft/state"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
-	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
+	dbm "github.com/libonomy/aphelion-staking/libs/db"
+	sm "github.com/libonomy/aphelion-staking/state"
+	"github.com/libonomy/aphelion-staking/types"
+	tmtime "github.com/libonomy/aphelion-staking/types/time"
 )
 
 func TestMain(m *testing.M) {

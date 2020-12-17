@@ -17,12 +17,12 @@ import (
 	"github.com/stretchr/testify/require"
 
 	amino "github.com/evdatsion/go-amino"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/libs/log"
 
-	client "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/client"
-	server "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/server"
-	types "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
+	client "github.com/libonomy/aphelion-staking/rpc/lib/client"
+	server "github.com/libonomy/aphelion-staking/rpc/lib/server"
+	types "github.com/libonomy/aphelion-staking/rpc/lib/types"
 )
 
 // Client and Server should work over tcp or unix sockets

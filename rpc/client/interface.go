@@ -23,9 +23,9 @@ implementation.
 import (
 	"context"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	ctypes "github.com/libonomy/aphelion-staking/rpc/core/types"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 // ABCIClient groups together the functionality that principally

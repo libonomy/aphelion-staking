@@ -11,11 +11,11 @@ import (
 
 	"github.com/pkg/errors"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/pubsub/query"
-	"github.com/evdatsion/aphelion-dpos-bft/state/txindex"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	dbm "github.com/libonomy/aphelion-staking/libs/db"
+	"github.com/libonomy/aphelion-staking/libs/pubsub/query"
+	"github.com/libonomy/aphelion-staking/state/txindex"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 const (

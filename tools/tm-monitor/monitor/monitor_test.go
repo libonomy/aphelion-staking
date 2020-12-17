@@ -8,11 +8,11 @@ import (
 	"github.com/stretchr/testify/require"
 
 	amino "github.com/evdatsion/go-amino"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
-	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
-	mock "github.com/evdatsion/aphelion-dpos-bft/tools/tm-monitor/mock"
-	monitor "github.com/evdatsion/aphelion-dpos-bft/tools/tm-monitor/monitor"
-	tmtypes "github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/crypto/ed25519"
+	ctypes "github.com/libonomy/aphelion-staking/rpc/core/types"
+	mock "github.com/libonomy/aphelion-staking/tools/tm-monitor/mock"
+	monitor "github.com/libonomy/aphelion-staking/tools/tm-monitor/monitor"
+	tmtypes "github.com/libonomy/aphelion-staking/types"
 )
 
 func TestMonitorUpdatesNumberOfValidators(t *testing.T) {

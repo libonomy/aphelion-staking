@@ -5,9 +5,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	"github.com/evdatsion/aphelion-dpos-bft/privval"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	"github.com/libonomy/aphelion-staking/privval"
 )
 
 // ResetAllCmd removes the database of this Aphelion core

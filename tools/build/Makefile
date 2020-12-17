@@ -62,10 +62,10 @@ gopath-setup:
 
 build-aphelion: git-branch gopath-setup
 	@echo "*** Building aphelion"
-	go get -d -u github.com/evdatsion/aphelion-dpos-bft/cmd/aphelion
-	cd $(GOPATH)/src/github.com/evdatsion/aphelion-dpos-bft && git checkout "$(GIT_BRANCH)" && git pull
-	export PATH=$(GOPATH)/bin:$(PATH) && $(MAKE) -C $(GOPATH)/src/github.com/evdatsion/aphelion-dpos-bft get_tools build
-	cp $(GOPATH)/src/github.com/evdatsion/aphelion-dpos-bft/build/aphelion $(GOPATH)/bin
+	go get -d -u github.com/libonomy/aphelion-staking/cmd/aphelion
+	cd $(GOPATH)/src/github.com/libonomy/aphelion-staking && git checkout "$(GIT_BRANCH)" && git pull
+	export PATH=$(GOPATH)/bin:$(PATH) && $(MAKE) -C $(GOPATH)/src/github.com/libonomy/aphelion-staking get_tools build
+	cp $(GOPATH)/src/github.com/libonomy/aphelion-staking/build/aphelion $(GOPATH)/bin
 	@echo "*** Built aphelion"
 
 build-ethermint: git-branch gopath-setup
@@ -277,7 +277,7 @@ clean: mostlyclean
 	rm -rf {BUILD,RPMS}
 
 distclean: clean
-	rm -rf $(GOPATH)/src/github.com/evdatsion/aphelion-dpos-bft
+	rm -rf $(GOPATH)/src/github.com/libonomy/aphelion-staking
 	rm -rf $(GOPATH)/src/github.com/evdatsion/cusp-sdk
 	rm -rf $(GOPATH)/src/github.com/evdatsion/ethermint 
 	rm -rf $(GOPATH)/bin/aphelion

@@ -2,7 +2,7 @@ package core_types
 
 import (
 	amino "github.com/evdatsion/go-amino"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 func RegisterAmino(cdc *amino.Codec) {

@@ -1,7 +1,7 @@
 package multisig
 
 import (
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
+	"github.com/libonomy/aphelion-staking/crypto"
 )
 
 // PubKeyMultisigThreshold implements a K of N threshold multisig.

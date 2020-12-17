@@ -18,7 +18,7 @@ DEFAULT_SIGN_COMMAND='gpg --detach-sign'
 DEFAULT_APHELION_SIGS=${APHELION_SIGS:-'aphelion.sigs'}
 DEFAULT_GITIAN_REPO='https://github.com/devrandom/gitian-builder'
 DEFAULT_GBUILD_FLAGS=''
-DEFAULT_SIGS_REPO='https://github.com/evdatsion/aphelion-dpos-bft.sigs'
+DEFAULT_SIGS_REPO='https://github.com/libonomy/aphelion-staking.sigs'
 
 # Overrides
 

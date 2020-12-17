@@ -10,9 +10,9 @@ import (
 
 	"github.com/go-kit/kit/log/term"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	tmrpc "github.com/evdatsion/aphelion-dpos-bft/rpc/client"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	tmrpc "github.com/libonomy/aphelion-staking/rpc/client"
 )
 
 var logger = log.NewNopLogger()

@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
+	"github.com/libonomy/aphelion-staking/crypto"
+	"github.com/libonomy/aphelion-staking/crypto/ed25519"
 )
 
 // PrivValidator defines the functionality of a local Aphelion validator

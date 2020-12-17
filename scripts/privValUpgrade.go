@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	"github.com/evdatsion/aphelion-dpos-bft/privval"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	"github.com/libonomy/aphelion-staking/privval"
 )
 
 var (

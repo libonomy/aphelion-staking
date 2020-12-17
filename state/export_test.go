@@ -1,9 +1,9 @@
 package state
 
 import (
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
+	dbm "github.com/libonomy/aphelion-staking/libs/db"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 //

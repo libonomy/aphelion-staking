@@ -10,12 +10,12 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/p2p"
-	"github.com/evdatsion/aphelion-dpos-bft/privval"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
-	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
+	cfg "github.com/libonomy/aphelion-staking/config"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/p2p"
+	"github.com/libonomy/aphelion-staking/privval"
+	"github.com/libonomy/aphelion-staking/types"
+	tmtime "github.com/libonomy/aphelion-staking/types/time"
 )
 
 var (

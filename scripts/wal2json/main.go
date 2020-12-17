@@ -13,8 +13,8 @@ import (
 	"os"
 
 	amino "github.com/evdatsion/go-amino"
-	cs "github.com/evdatsion/aphelion-dpos-bft/consensus"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	cs "github.com/libonomy/aphelion-staking/consensus"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 var cdc = amino.NewCodec()

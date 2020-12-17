@@ -5,11 +5,11 @@ import (
 	"os"
 	"time"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	"github.com/libonomy/aphelion-staking/crypto/ed25519"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/libs/log"
 
-	"github.com/evdatsion/aphelion-dpos-bft/privval"
+	"github.com/libonomy/aphelion-staking/privval"
 )
 
 func main() {

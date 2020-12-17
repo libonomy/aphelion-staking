@@ -8,11 +8,11 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	amino "github.com/evdatsion/go-amino"
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/secp256k1"
-	"github.com/evdatsion/aphelion-dpos-bft/version"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
+	"github.com/libonomy/aphelion-staking/crypto"
+	"github.com/libonomy/aphelion-staking/crypto/ed25519"
+	"github.com/libonomy/aphelion-staking/crypto/secp256k1"
+	"github.com/libonomy/aphelion-staking/version"
 )
 
 func TestABCIPubKey(t *testing.T) {
@@ -130,7 +130,7 @@ func TestABCIHeader(t *testing.T) {
 	// assert the encodings match
 	// NOTE: they don't yet because Amino encodes
 	// int64 as zig-zag and we're using non-zigzag in the protobuf.
-	// See https://github.com/evdatsion/aphelion-dpos-bft/issues/2682
+	// See https://github.com/libonomy/aphelion-staking/issues/2682
 	_, _ = headerBz, pbHeaderBz
 	// assert.EqualValues(t, headerBz, pbHeaderBz)
 

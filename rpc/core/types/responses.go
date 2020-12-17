@@ -4,13 +4,13 @@ import (
 	"encoding/json"
 	"time"
 
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
+	"github.com/libonomy/aphelion-staking/crypto"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
 
-	"github.com/evdatsion/aphelion-dpos-bft/p2p"
-	"github.com/evdatsion/aphelion-dpos-bft/state"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/p2p"
+	"github.com/libonomy/aphelion-staking/state"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 // List of blocks

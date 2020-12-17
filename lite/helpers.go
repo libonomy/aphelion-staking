@@ -1,12 +1,12 @@
 package lite
 
 import (
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/secp256k1"
+	"github.com/libonomy/aphelion-staking/crypto"
+	"github.com/libonomy/aphelion-staking/crypto/ed25519"
+	"github.com/libonomy/aphelion-staking/crypto/secp256k1"
 
-	"github.com/evdatsion/aphelion-dpos-bft/types"
-	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
+	"github.com/libonomy/aphelion-staking/types"
+	tmtime "github.com/libonomy/aphelion-staking/types/time"
 )
 
 // privKeys is a helper type for testing.

@@ -5,8 +5,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/evdatsion/aphelion-dpos-bft/config"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/libonomy/aphelion-staking/config"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
 )
 
 // FuzzedConnection wraps any net.Conn and depending on the mode either delays

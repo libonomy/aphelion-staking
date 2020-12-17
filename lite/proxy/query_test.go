@@ -9,14 +9,14 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/evdatsion/aphelion-dpos-bft/abci/example/kvstore"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/merkle"
-	"github.com/evdatsion/aphelion-dpos-bft/lite"
-	certclient "github.com/evdatsion/aphelion-dpos-bft/lite/client"
-	nm "github.com/evdatsion/aphelion-dpos-bft/node"
-	"github.com/evdatsion/aphelion-dpos-bft/rpc/client"
-	rpctest "github.com/evdatsion/aphelion-dpos-bft/rpc/test"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/abci/example/kvstore"
+	"github.com/libonomy/aphelion-staking/crypto/merkle"
+	"github.com/libonomy/aphelion-staking/lite"
+	certclient "github.com/libonomy/aphelion-staking/lite/client"
+	nm "github.com/libonomy/aphelion-staking/node"
+	"github.com/libonomy/aphelion-staking/rpc/client"
+	rpctest "github.com/libonomy/aphelion-staking/rpc/test"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 var node *nm.Node

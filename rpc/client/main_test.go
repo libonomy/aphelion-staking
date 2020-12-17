@@ -4,9 +4,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/evdatsion/aphelion-dpos-bft/abci/example/kvstore"
-	nm "github.com/evdatsion/aphelion-dpos-bft/node"
-	rpctest "github.com/evdatsion/aphelion-dpos-bft/rpc/test"
+	"github.com/libonomy/aphelion-staking/abci/example/kvstore"
+	nm "github.com/libonomy/aphelion-staking/node"
+	rpctest "github.com/libonomy/aphelion-staking/rpc/test"
 )
 
 var node *nm.Node

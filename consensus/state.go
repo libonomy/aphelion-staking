@@ -10,17 +10,17 @@ import (
 
 	"github.com/pkg/errors"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/fail"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/libs/fail"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	tmtime "github.com/libonomy/aphelion-staking/types/time"
 
-	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
-	cstypes "github.com/evdatsion/aphelion-dpos-bft/consensus/types"
-	tmevents "github.com/evdatsion/aphelion-dpos-bft/libs/events"
-	"github.com/evdatsion/aphelion-dpos-bft/p2p"
-	sm "github.com/evdatsion/aphelion-dpos-bft/state"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	cfg "github.com/libonomy/aphelion-staking/config"
+	cstypes "github.com/libonomy/aphelion-staking/consensus/types"
+	tmevents "github.com/libonomy/aphelion-staking/libs/events"
+	"github.com/libonomy/aphelion-staking/p2p"
+	sm "github.com/libonomy/aphelion-staking/state"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 //-----------------------------------------------------------------------------
@@ -695,7 +695,7 @@ func (cs *ConsensusState) handleMsg(mi msgInfo) {
 			// We probably don't want to stop the peer here. The vote does not
 			// necessarily comes from a malicious peer but can be just broadcasted by
 			// a typical peer.
-			// https://github.com/evdatsion/aphelion-dpos-bft/issues/1281
+			// https://github.com/libonomy/aphelion-staking/issues/1281
 		}
 
 		// NOTE: the vote is broadcast to peers by the reactor listening
@@ -711,7 +711,7 @@ func (cs *ConsensusState) handleMsg(mi msgInfo) {
 
 	if err != nil {
 		// Causes TestReactorValidatorSetChanges to timeout
-		// https://github.com/evdatsion/aphelion-dpos-bft/issues/3406
+		// https://github.com/libonomy/aphelion-staking/issues/3406
 		// cs.Logger.Error("Error with msg", "height", cs.Height, "round", cs.Round,
 		// 	"peer", peerID, "err", err, "msg", msg)
 	}

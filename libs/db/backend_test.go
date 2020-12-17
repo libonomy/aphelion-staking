@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
 )
 
 func cleanupDBDir(dir, name string) {

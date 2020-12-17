@@ -1,8 +1,8 @@
 package proxy
 
 import (
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	"github.com/evdatsion/aphelion-dpos-bft/version"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
+	"github.com/libonomy/aphelion-staking/version"
 )
 
 // RequestInfo contains all the information for sending

@@ -6,10 +6,10 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	"github.com/libonomy/aphelion-staking/libs/log"
 
-	"github.com/evdatsion/aphelion-dpos-bft/libs/pubsub"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/pubsub/query"
+	"github.com/libonomy/aphelion-staking/libs/pubsub"
+	"github.com/libonomy/aphelion-staking/libs/pubsub/query"
 )
 
 func TestExample(t *testing.T) {

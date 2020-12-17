@@ -9,11 +9,11 @@ import (
 
 	amino "github.com/evdatsion/go-amino"
 
-	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/clist"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	"github.com/evdatsion/aphelion-dpos-bft/p2p"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	cfg "github.com/libonomy/aphelion-staking/config"
+	"github.com/libonomy/aphelion-staking/libs/clist"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	"github.com/libonomy/aphelion-staking/p2p"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 const (

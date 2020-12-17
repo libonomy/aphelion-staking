@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
 )
 
 func BenchmarkFileWrite(b *testing.B) {

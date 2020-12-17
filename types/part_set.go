@@ -8,8 +8,8 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/merkle"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/libonomy/aphelion-staking/crypto/merkle"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
 )
 
 var (

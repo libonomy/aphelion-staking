@@ -5,10 +5,10 @@ import (
 
 	"github.com/pkg/errors"
 
-	abcicli "github.com/evdatsion/aphelion-dpos-bft/abci/client"
-	"github.com/evdatsion/aphelion-dpos-bft/abci/example/counter"
-	"github.com/evdatsion/aphelion-dpos-bft/abci/example/kvstore"
-	"github.com/evdatsion/aphelion-dpos-bft/abci/types"
+	abcicli "github.com/libonomy/aphelion-staking/abci/client"
+	"github.com/libonomy/aphelion-staking/abci/example/counter"
+	"github.com/libonomy/aphelion-staking/abci/example/kvstore"
+	"github.com/libonomy/aphelion-staking/abci/types"
 )
 
 // NewABCIClient returns newly connected client

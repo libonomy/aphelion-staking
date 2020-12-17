@@ -4,13 +4,13 @@ import (
 	"context"
 	"fmt"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/merkle"
-	"github.com/evdatsion/aphelion-dpos-bft/lite"
-	rpcclient "github.com/evdatsion/aphelion-dpos-bft/rpc/client"
-	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
-	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
+	"github.com/libonomy/aphelion-staking/crypto/merkle"
+	"github.com/libonomy/aphelion-staking/lite"
+	rpcclient "github.com/libonomy/aphelion-staking/rpc/client"
+	ctypes "github.com/libonomy/aphelion-staking/rpc/core/types"
+	rpctypes "github.com/libonomy/aphelion-staking/rpc/lib/types"
 )
 
 var _ rpcclient.Client = Wrapper{}

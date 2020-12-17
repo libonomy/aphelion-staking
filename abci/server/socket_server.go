@@ -7,8 +7,8 @@ import (
 	"net"
 	"sync"
 
-	"github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/libonomy/aphelion-staking/abci/types"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
 )
 
 // var maxNumberConnections = 2

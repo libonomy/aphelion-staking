@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	amino "github.com/evdatsion/go-amino"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
 )
 
 const ProofOpDomino = "test:domino"

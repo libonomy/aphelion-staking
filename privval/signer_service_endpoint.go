@@ -5,9 +5,9 @@ import (
 	"net"
 	"time"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 // SignerServiceEndpointOption sets an optional parameter on the SignerServiceEndpoint.

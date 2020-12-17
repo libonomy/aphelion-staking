@@ -8,7 +8,7 @@ Aphelion supports the following RPC protocols:
 * JSONRPC over websockets
 
 Aphelion RPC is built using our own RPC library which contains its own set of documentation and tests.
-See it here: https://github.com/evdatsion/aphelion-dpos-bft/tree/master/rpc/lib
+See it here: https://github.com/libonomy/aphelion-staking/tree/master/rpc/lib
 
 ## Configuration
 

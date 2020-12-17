@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/libonomy/aphelion-staking/crypto/ed25519"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
 )
 
 func TestIsConnTimeoutForFundamentalTimeouts(t *testing.T) {

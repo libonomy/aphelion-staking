@@ -5,8 +5,8 @@ import (
 	"reflect"
 
 	amino "github.com/evdatsion/go-amino"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	em "github.com/evdatsion/aphelion-dpos-bft/tools/tm-monitor/eventmeter"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	em "github.com/libonomy/aphelion-staking/tools/tm-monitor/eventmeter"
 )
 
 type EventMeter struct {

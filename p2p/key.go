@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	"github.com/libonomy/aphelion-staking/crypto"
+	"github.com/libonomy/aphelion-staking/crypto/ed25519"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
 )
 
 // ID is a hex-encoded crypto.Address

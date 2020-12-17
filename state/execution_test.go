@@ -7,16 +7,16 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/evdatsion/aphelion-dpos-bft/abci/example/kvstore"
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/secp256k1"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	"github.com/evdatsion/aphelion-dpos-bft/mock"
-	"github.com/evdatsion/aphelion-dpos-bft/proxy"
-	sm "github.com/evdatsion/aphelion-dpos-bft/state"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
-	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
+	"github.com/libonomy/aphelion-staking/abci/example/kvstore"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
+	"github.com/libonomy/aphelion-staking/crypto/ed25519"
+	"github.com/libonomy/aphelion-staking/crypto/secp256k1"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	"github.com/libonomy/aphelion-staking/mock"
+	"github.com/libonomy/aphelion-staking/proxy"
+	sm "github.com/libonomy/aphelion-staking/state"
+	"github.com/libonomy/aphelion-staking/types"
+	tmtime "github.com/libonomy/aphelion-staking/types/time"
 )
 
 var (

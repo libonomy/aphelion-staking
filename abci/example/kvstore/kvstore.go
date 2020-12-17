@@ -6,11 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/evdatsion/aphelion-dpos-bft/abci/example/code"
-	"github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
-	"github.com/evdatsion/aphelion-dpos-bft/version"
+	"github.com/libonomy/aphelion-staking/abci/example/code"
+	"github.com/libonomy/aphelion-staking/abci/types"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	dbm "github.com/libonomy/aphelion-staking/libs/db"
+	"github.com/libonomy/aphelion-staking/version"
 )
 
 var (

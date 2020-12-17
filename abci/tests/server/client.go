@@ -5,9 +5,9 @@ import (
 	"errors"
 	"fmt"
 
-	abcicli "github.com/evdatsion/aphelion-dpos-bft/abci/client"
-	"github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	abcicli "github.com/libonomy/aphelion-staking/abci/client"
+	"github.com/libonomy/aphelion-staking/abci/types"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
 )
 
 func InitChain(client abcicli.Client) error {

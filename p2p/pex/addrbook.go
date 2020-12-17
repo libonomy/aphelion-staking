@@ -14,9 +14,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/p2p"
+	"github.com/libonomy/aphelion-staking/crypto"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/p2p"
 )
 
 const (

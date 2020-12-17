@@ -11,11 +11,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/evdatsion/aphelion-dpos-bft/consensus/types"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/autofile"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	tmtypes "github.com/evdatsion/aphelion-dpos-bft/types"
-	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
+	"github.com/libonomy/aphelion-staking/consensus/types"
+	"github.com/libonomy/aphelion-staking/libs/autofile"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	tmtypes "github.com/libonomy/aphelion-staking/types"
+	tmtime "github.com/libonomy/aphelion-staking/types/time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

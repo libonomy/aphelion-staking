@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
+	"github.com/libonomy/aphelion-staking/crypto"
 )
 
 // the purpose of this test is primarily to ensure that the randomness

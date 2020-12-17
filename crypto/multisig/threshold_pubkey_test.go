@@ -6,9 +6,9 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/secp256k1"
+	"github.com/libonomy/aphelion-staking/crypto"
+	"github.com/libonomy/aphelion-staking/crypto/ed25519"
+	"github.com/libonomy/aphelion-staking/crypto/secp256k1"
 )
 
 // This tests multisig functionality, but it expects the first k signatures to be valid

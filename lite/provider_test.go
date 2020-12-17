@@ -7,10 +7,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
-	log "github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	lerr "github.com/evdatsion/aphelion-dpos-bft/lite/errors"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	dbm "github.com/libonomy/aphelion-staking/libs/db"
+	log "github.com/libonomy/aphelion-staking/libs/log"
+	lerr "github.com/libonomy/aphelion-staking/lite/errors"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 // missingProvider doesn't store anything, always a miss.

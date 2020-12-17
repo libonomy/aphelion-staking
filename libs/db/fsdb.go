@@ -11,7 +11,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
 )
 
 const (

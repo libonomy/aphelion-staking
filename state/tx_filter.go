@@ -1,8 +1,8 @@
 package state
 
 import (
-	mempl "github.com/evdatsion/aphelion-dpos-bft/mempool"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	mempl "github.com/libonomy/aphelion-staking/mempool"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 // TxPreCheck returns a function to filter transactions before processing.

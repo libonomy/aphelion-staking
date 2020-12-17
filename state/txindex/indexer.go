@@ -3,8 +3,8 @@ package txindex
 import (
 	"errors"
 
-	"github.com/evdatsion/aphelion-dpos-bft/libs/pubsub/query"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/libs/pubsub/query"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 // TxIndexer interface defines methods to index and search transactions.

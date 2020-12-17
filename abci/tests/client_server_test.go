@@ -5,9 +5,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	abciclient "github.com/evdatsion/aphelion-dpos-bft/abci/client"
-	"github.com/evdatsion/aphelion-dpos-bft/abci/example/kvstore"
-	abciserver "github.com/evdatsion/aphelion-dpos-bft/abci/server"
+	abciclient "github.com/libonomy/aphelion-staking/abci/client"
+	"github.com/libonomy/aphelion-staking/abci/example/kvstore"
+	abciserver "github.com/libonomy/aphelion-staking/abci/server"
 )
 
 func TestClientServerNoAddrPrefix(t *testing.T) {

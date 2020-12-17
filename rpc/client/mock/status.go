@@ -1,8 +1,8 @@
 package mock
 
 import (
-	"github.com/evdatsion/aphelion-dpos-bft/rpc/client"
-	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
+	"github.com/libonomy/aphelion-staking/rpc/client"
+	ctypes "github.com/libonomy/aphelion-staking/rpc/core/types"
 )
 
 // StatusMock returns the result specified by the Call

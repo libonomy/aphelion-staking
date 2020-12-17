@@ -4,8 +4,8 @@ import (
 	"os"
 	"runtime/pprof"
 
-	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
-	rpctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/types"
+	ctypes "github.com/libonomy/aphelion-staking/rpc/core/types"
+	rpctypes "github.com/libonomy/aphelion-staking/rpc/lib/types"
 )
 
 // UnsafeFlushMempool removes all transactions from the mempool.

@@ -9,13 +9,13 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/evdatsion/aphelion-dpos-bft/abci/example/kvstore"
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/rpc/client"
-	"github.com/evdatsion/aphelion-dpos-bft/rpc/client/mock"
-	ctypes "github.com/evdatsion/aphelion-dpos-bft/rpc/core/types"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/abci/example/kvstore"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/rpc/client"
+	"github.com/libonomy/aphelion-staking/rpc/client/mock"
+	ctypes "github.com/libonomy/aphelion-staking/rpc/core/types"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 func TestABCIMock(t *testing.T) {

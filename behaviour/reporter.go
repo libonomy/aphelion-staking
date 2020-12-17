@@ -4,7 +4,7 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/evdatsion/aphelion-dpos-bft/p2p"
+	"github.com/libonomy/aphelion-staking/p2p"
 )
 
 // Reporter provides an interface for reactors to report the behaviour

@@ -1,7 +1,7 @@
 package core
 
 import (
-	rpc "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/server"
+	rpc "github.com/libonomy/aphelion-staking/rpc/lib/server"
 )
 
 // TODO: better system than "unsafe" prefix

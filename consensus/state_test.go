@@ -10,12 +10,12 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	cstypes "github.com/evdatsion/aphelion-dpos-bft/consensus/types"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	tmpubsub "github.com/evdatsion/aphelion-dpos-bft/libs/pubsub"
-	p2pmock "github.com/evdatsion/aphelion-dpos-bft/p2p/mock"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	cstypes "github.com/libonomy/aphelion-staking/consensus/types"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	tmpubsub "github.com/libonomy/aphelion-staking/libs/pubsub"
+	p2pmock "github.com/libonomy/aphelion-staking/p2p/mock"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 /*

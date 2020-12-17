@@ -5,13 +5,13 @@ import (
 	"net"
 	"time"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto"
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/ed25519"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
+	"github.com/libonomy/aphelion-staking/crypto"
+	"github.com/libonomy/aphelion-staking/crypto/ed25519"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/libs/log"
 
-	"github.com/evdatsion/aphelion-dpos-bft/config"
-	"github.com/evdatsion/aphelion-dpos-bft/p2p/conn"
+	"github.com/libonomy/aphelion-staking/config"
+	"github.com/libonomy/aphelion-staking/p2p/conn"
 )
 
 const testCh = 0x01

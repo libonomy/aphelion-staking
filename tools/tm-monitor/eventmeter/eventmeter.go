@@ -10,9 +10,9 @@ import (
 
 	metrics "github.com/rcrowley/go-metrics"
 
-	"github.com/evdatsion/aphelion-dpos-bft/libs/events"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	client "github.com/evdatsion/aphelion-dpos-bft/rpc/lib/client"
+	"github.com/libonomy/aphelion-staking/libs/events"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	client "github.com/libonomy/aphelion-staking/rpc/lib/client"
 )
 
 const (

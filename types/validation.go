@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/evdatsion/aphelion-dpos-bft/crypto/tmhash"
-	tmtime "github.com/evdatsion/aphelion-dpos-bft/types/time"
+	"github.com/libonomy/aphelion-staking/crypto/tmhash"
+	tmtime "github.com/libonomy/aphelion-staking/types/time"
 )
 
 // ValidateTime does a basic time validation ensuring time does not drift too

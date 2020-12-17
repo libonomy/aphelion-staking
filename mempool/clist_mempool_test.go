@@ -17,15 +17,15 @@ import (
 
 	amino "github.com/evdatsion/go-amino"
 
-	"github.com/evdatsion/aphelion-dpos-bft/abci/example/counter"
-	"github.com/evdatsion/aphelion-dpos-bft/abci/example/kvstore"
-	abciserver "github.com/evdatsion/aphelion-dpos-bft/abci/server"
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	cfg "github.com/evdatsion/aphelion-dpos-bft/config"
-	cmn "github.com/evdatsion/aphelion-dpos-bft/libs/common"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	"github.com/evdatsion/aphelion-dpos-bft/proxy"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	"github.com/libonomy/aphelion-staking/abci/example/counter"
+	"github.com/libonomy/aphelion-staking/abci/example/kvstore"
+	abciserver "github.com/libonomy/aphelion-staking/abci/server"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
+	cfg "github.com/libonomy/aphelion-staking/config"
+	cmn "github.com/libonomy/aphelion-staking/libs/common"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	"github.com/libonomy/aphelion-staking/proxy"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 // A cleanupFunc cleans up any config / test files created for a particular
@@ -535,7 +535,7 @@ func TestMempoolTxsBytes(t *testing.T) {
 }
 
 // This will non-deterministically catch some concurrency failures like
-// https://github.com/evdatsion/aphelion-dpos-bft/issues/3509
+// https://github.com/libonomy/aphelion-staking/issues/3509
 // TODO: all of the tests should probably also run using the remote proxy app
 // since otherwise we're not actually testing the concurrency of the mempool here!
 func TestMempoolRemoteAppConcurrency(t *testing.T) {

@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"time"
 
-	abci "github.com/evdatsion/aphelion-dpos-bft/abci/types"
-	dbm "github.com/evdatsion/aphelion-dpos-bft/libs/db"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/fail"
-	"github.com/evdatsion/aphelion-dpos-bft/libs/log"
-	mempl "github.com/evdatsion/aphelion-dpos-bft/mempool"
-	"github.com/evdatsion/aphelion-dpos-bft/proxy"
-	"github.com/evdatsion/aphelion-dpos-bft/types"
+	abci "github.com/libonomy/aphelion-staking/abci/types"
+	dbm "github.com/libonomy/aphelion-staking/libs/db"
+	"github.com/libonomy/aphelion-staking/libs/fail"
+	"github.com/libonomy/aphelion-staking/libs/log"
+	mempl "github.com/libonomy/aphelion-staking/mempool"
+	"github.com/libonomy/aphelion-staking/proxy"
+	"github.com/libonomy/aphelion-staking/types"
 )
 
 //-----------------------------------------------------------------------------
