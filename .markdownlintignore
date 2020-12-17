@@ -4,3 +4,4 @@ docs/architecture/*
 crypto/secp256k1/**
 scripts/*
 .github
+#TODO:update deps
