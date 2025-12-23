@@ -10,7 +10,7 @@ import (
 	log "github.com/libonomy/aphelion-staking/libs/log"
 	lerr "github.com/libonomy/aphelion-staking/lite/errors"
 	"github.com/libonomy/aphelion-staking/types"
-	dbm "github.com/evdatsion/tm-db"
+	dbm "github.com/libonomy/tm-db"
 )
 
 // missingProvider doesn't store anything, always a miss.

@@ -6,7 +6,7 @@ import (
 
 	clist "github.com/libonomy/aphelion-staking/libs/clist"
 	"github.com/libonomy/aphelion-staking/libs/log"
-	dbm "github.com/evdatsion/tm-db"
+	dbm "github.com/libonomy/tm-db"
 
 	sm "github.com/libonomy/aphelion-staking/state"
 	"github.com/libonomy/aphelion-staking/types"

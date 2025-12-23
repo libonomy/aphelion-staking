@@ -6,7 +6,7 @@ import (
 	log "github.com/libonomy/aphelion-staking/libs/log"
 	"github.com/libonomy/aphelion-staking/lite"
 	lclient "github.com/libonomy/aphelion-staking/lite/client"
-	dbm "github.com/evdatsion/tm-db"
+	dbm "github.com/libonomy/tm-db"
 )
 
 func NewVerifier(

@@ -12,7 +12,7 @@ import (
 	"github.com/libonomy/aphelion-staking/state/txindex"
 	"github.com/libonomy/aphelion-staking/state/txindex/kv"
 	"github.com/libonomy/aphelion-staking/types"
-	db "github.com/evdatsion/tm-db"
+	db "github.com/libonomy/tm-db"
 )
 
 func TestIndexerServiceIndexesBlocks(t *testing.T) {

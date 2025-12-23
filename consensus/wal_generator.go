@@ -21,7 +21,7 @@ import (
 	sm "github.com/libonomy/aphelion-staking/state"
 	"github.com/libonomy/aphelion-staking/store"
 	"github.com/libonomy/aphelion-staking/types"
-	db "github.com/evdatsion/tm-db"
+	db "github.com/libonomy/tm-db"
 )
 
 // WALGenerateNBlocks generates a consensus WAL. It does this by spinning up a

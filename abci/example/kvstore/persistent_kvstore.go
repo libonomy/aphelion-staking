@@ -12,7 +12,7 @@ import (
 	"github.com/libonomy/aphelion-staking/crypto/ed25519"
 	"github.com/libonomy/aphelion-staking/libs/log"
 	tmtypes "github.com/libonomy/aphelion-staking/types"
-	dbm "github.com/evdatsion/tm-db"
+	dbm "github.com/libonomy/tm-db"
 )
 
 const (

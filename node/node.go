@@ -16,7 +16,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/rs/cors"
 
-	amino "github.com/evdatsion/go-amino"
+	amino "github.com/libonomy/go-amino"
 	abci "github.com/libonomy/aphelion-staking/abci/types"
 	bcv0 "github.com/libonomy/aphelion-staking/blockchain/v0"
 	bcv1 "github.com/libonomy/aphelion-staking/blockchain/v1"
@@ -45,7 +45,7 @@ import (
 	"github.com/libonomy/aphelion-staking/types"
 	tmtime "github.com/libonomy/aphelion-staking/types/time"
 	"github.com/libonomy/aphelion-staking/version"
-	dbm "github.com/evdatsion/tm-db"
+	dbm "github.com/libonomy/tm-db"
 )
 
 //------------------------------------------------------------------------------

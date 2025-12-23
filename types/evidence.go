@@ -7,7 +7,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/libonomy/aphelion-staking/crypto/tmhash"
 
-	amino "github.com/evdatsion/go-amino"
+	amino "github.com/libonomy/go-amino"
 
 	"github.com/libonomy/aphelion-staking/crypto"
 	"github.com/libonomy/aphelion-staking/crypto/merkle"

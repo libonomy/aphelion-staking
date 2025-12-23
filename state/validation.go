@@ -7,7 +7,7 @@ import (
 
 	"github.com/libonomy/aphelion-staking/crypto"
 	"github.com/libonomy/aphelion-staking/types"
-	dbm "github.com/evdatsion/tm-db"
+	dbm "github.com/libonomy/tm-db"
 )
 
 //-----------------------------------------------------

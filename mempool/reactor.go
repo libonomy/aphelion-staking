@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	amino "github.com/evdatsion/go-amino"
+	amino "github.com/libonomy/go-amino"
 
 	cfg "github.com/libonomy/aphelion-staking/config"
 	"github.com/libonomy/aphelion-staking/libs/clist"

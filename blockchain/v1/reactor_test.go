@@ -20,7 +20,7 @@ import (
 	"github.com/libonomy/aphelion-staking/store"
 	"github.com/libonomy/aphelion-staking/types"
 	tmtime "github.com/libonomy/aphelion-staking/types/time"
-	dbm "github.com/evdatsion/tm-db"
+	dbm "github.com/libonomy/tm-db"
 )
 
 var config *cfg.Config

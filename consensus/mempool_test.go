@@ -14,7 +14,7 @@ import (
 	mempl "github.com/libonomy/aphelion-staking/mempool"
 	sm "github.com/libonomy/aphelion-staking/state"
 	"github.com/libonomy/aphelion-staking/types"
-	dbm "github.com/evdatsion/tm-db"
+	dbm "github.com/libonomy/tm-db"
 )
 
 // for testing

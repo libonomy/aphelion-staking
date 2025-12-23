@@ -14,7 +14,7 @@ import (
 	"github.com/libonomy/aphelion-staking/libs/log"
 	"github.com/libonomy/aphelion-staking/p2p"
 	"github.com/libonomy/aphelion-staking/types"
-	dbm "github.com/evdatsion/tm-db"
+	dbm "github.com/libonomy/tm-db"
 )
 
 // evidenceLogger is a TestingLogger which uses a different

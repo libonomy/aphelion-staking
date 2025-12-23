@@ -1,7 +1,7 @@
 package node
 
 import (
-	amino "github.com/evdatsion/go-amino"
+	amino "github.com/libonomy/go-amino"
 	cryptoAmino "github.com/libonomy/aphelion-staking/crypto/encoding/amino"
 )
 

@@ -7,7 +7,7 @@ import (
 	"github.com/golang/protobuf/proto"
 	"github.com/stretchr/testify/assert"
 
-	amino "github.com/evdatsion/go-amino"
+	amino "github.com/libonomy/go-amino"
 	abci "github.com/libonomy/aphelion-staking/abci/types"
 	"github.com/libonomy/aphelion-staking/crypto"
 	"github.com/libonomy/aphelion-staking/crypto/ed25519"

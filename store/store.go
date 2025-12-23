@@ -6,7 +6,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	dbm "github.com/evdatsion/tm-db"
+	dbm "github.com/libonomy/tm-db"
 
 	"github.com/libonomy/aphelion-staking/types"
 )

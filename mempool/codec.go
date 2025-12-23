@@ -1,7 +1,7 @@
 package mempool
 
 import (
-	amino "github.com/evdatsion/go-amino"
+	amino "github.com/libonomy/go-amino"
 )
 
 var cdc = amino.NewCodec()

@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	amino "github.com/evdatsion/go-amino"
+	amino "github.com/libonomy/go-amino"
 
 	cmn "github.com/libonomy/aphelion-staking/libs/common"
 	"github.com/libonomy/aphelion-staking/libs/log"

@@ -30,7 +30,7 @@ import (
 	sm "github.com/libonomy/aphelion-staking/state"
 	"github.com/libonomy/aphelion-staking/types"
 	"github.com/libonomy/aphelion-staking/version"
-	dbm "github.com/evdatsion/tm-db"
+	dbm "github.com/libonomy/tm-db"
 )
 
 func TestMain(m *testing.M) {

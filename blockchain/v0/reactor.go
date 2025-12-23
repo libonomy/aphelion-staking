@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"time"
 
-	amino "github.com/evdatsion/go-amino"
+	amino "github.com/libonomy/go-amino"
 
 	"github.com/libonomy/aphelion-staking/libs/log"
 	"github.com/libonomy/aphelion-staking/p2p"

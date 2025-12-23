@@ -27,7 +27,7 @@ import (
 	"github.com/libonomy/aphelion-staking/types"
 	tmtime "github.com/libonomy/aphelion-staking/types/time"
 	"github.com/libonomy/aphelion-staking/version"
-	dbm "github.com/evdatsion/tm-db"
+	dbm "github.com/libonomy/tm-db"
 )
 
 func TestNodeStartStop(t *testing.T) {

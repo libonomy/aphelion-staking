@@ -4,7 +4,7 @@ import (
 	stdlog "log"
 	"reflect"
 
-	amino "github.com/evdatsion/go-amino"
+	amino "github.com/libonomy/go-amino"
 	"github.com/libonomy/aphelion-staking/libs/log"
 	em "github.com/libonomy/aphelion-staking/tools/tm-monitor/eventmeter"
 )

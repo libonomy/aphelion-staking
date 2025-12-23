@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	db "github.com/evdatsion/tm-db"
+	db "github.com/libonomy/tm-db"
 
 	abci "github.com/libonomy/aphelion-staking/abci/types"
 	cmn "github.com/libonomy/aphelion-staking/libs/common"

@@ -11,7 +11,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/libonomy/aphelion-staking/libs/log"
-	dbm "github.com/evdatsion/tm-db"
+	dbm "github.com/libonomy/tm-db"
 )
 
 func TestTrustMetricStoreSaveLoad(t *testing.T) {

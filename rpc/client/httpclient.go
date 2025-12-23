@@ -9,7 +9,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	amino "github.com/evdatsion/go-amino"
+	amino "github.com/libonomy/go-amino"
 
 	cmn "github.com/libonomy/aphelion-staking/libs/common"
 	tmpubsub "github.com/libonomy/aphelion-staking/libs/pubsub"

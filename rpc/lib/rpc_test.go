@@ -16,7 +16,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	amino "github.com/evdatsion/go-amino"
+	amino "github.com/libonomy/go-amino"
 	cmn "github.com/libonomy/aphelion-staking/libs/common"
 	"github.com/libonomy/aphelion-staking/libs/log"
 

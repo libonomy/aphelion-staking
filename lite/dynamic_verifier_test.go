@@ -10,7 +10,7 @@ import (
 
 	log "github.com/libonomy/aphelion-staking/libs/log"
 	"github.com/libonomy/aphelion-staking/types"
-	dbm "github.com/evdatsion/tm-db"
+	dbm "github.com/libonomy/tm-db"
 )
 
 const testChainID = "inquiry-test"

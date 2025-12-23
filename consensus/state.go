@@ -1890,7 +1890,7 @@ func (cs *ConsensusState) voteTime() time.Time {
 	now := tmtime.Now()
 	minVoteTime := now
 	// TODO: We should remove next line in case we don't vote for v in case cs.ProposalBlock == nil,
-	// even if cs.LockedBlock != nil. See https://github.com/evdatsion/spec.
+	// even if cs.LockedBlock != nil. See https://github.com/libonomy/spec.
 	timeIotaMs := time.Duration(cs.state.ConsensusParams.Block.TimeIotaMs) * time.Millisecond
 	if cs.LockedBlock != nil {
 		// See the BFT time spec https://aphelion.com/docs/spec/consensus/bft-time.html

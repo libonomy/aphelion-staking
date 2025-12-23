@@ -13,7 +13,7 @@ import (
 	"github.com/pkg/errors"
 	metrics "github.com/rcrowley/go-metrics"
 
-	amino "github.com/evdatsion/go-amino"
+	amino "github.com/libonomy/go-amino"
 	cmn "github.com/libonomy/aphelion-staking/libs/common"
 	types "github.com/libonomy/aphelion-staking/rpc/lib/types"
 )

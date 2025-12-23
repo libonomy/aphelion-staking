@@ -14,7 +14,7 @@ import (
 	sm "github.com/libonomy/aphelion-staking/state"
 	"github.com/libonomy/aphelion-staking/state/txindex"
 	"github.com/libonomy/aphelion-staking/types"
-	dbm "github.com/evdatsion/tm-db"
+	dbm "github.com/libonomy/tm-db"
 )
 
 const (

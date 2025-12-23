@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"io"
 
-	amino "github.com/evdatsion/go-amino"
+	amino "github.com/libonomy/go-amino"
 	"golang.org/x/crypto/ed25519"
 
 	"github.com/libonomy/aphelion-staking/crypto"

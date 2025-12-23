@@ -13,7 +13,7 @@ import (
 
 	abci "github.com/libonomy/aphelion-staking/abci/types"
 	//auto "github.com/libonomy/aphelion-staking/libs/autofile"
-	dbm "github.com/evdatsion/tm-db"
+	dbm "github.com/libonomy/tm-db"
 
 	"github.com/libonomy/aphelion-staking/libs/log"
 	"github.com/libonomy/aphelion-staking/mock"

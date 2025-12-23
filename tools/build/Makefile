@@ -70,25 +70,25 @@ build-aphelion: git-branch gopath-setup
 
 build-ethermint: git-branch gopath-setup
 	@echo "*** Building ethermint"
-	go get -d -u github.com/evdatsion/ethermint/cmd/ethermint
-	cd $(GOPATH)/src/github.com/evdatsion/ethermint && git checkout "$(GIT_BRANCH)" && git pull
-	export PATH=$(GOPATH)/bin:$(PATH) && $(MAKE) -C $(GOPATH)/src/github.com/evdatsion/ethermint build
-	cp $(GOPATH)/src/github.com/evdatsion/ethermint/build/ethermint $(GOPATH)/bin
+	go get -d -u github.com/libonomy/ethermint/cmd/ethermint
+	cd $(GOPATH)/src/github.com/libonomy/ethermint && git checkout "$(GIT_BRANCH)" && git pull
+	export PATH=$(GOPATH)/bin:$(PATH) && $(MAKE) -C $(GOPATH)/src/github.com/libonomy/ethermint build
+	cp $(GOPATH)/src/github.com/libonomy/ethermint/build/ethermint $(GOPATH)/bin
 	@echo "*** Built ethermint"
 
 build-cusp: git-branch gopath-setup
 	@echo "*** Building cusp"
-	go get -d -u go github.com/evdatsion/cusp || echo "Workaround for go downloads."
-	cd $(GOPATH)/src/github.com/evdatsion/cusp && git checkout "$(GIT_BRANCH)" && git pull
-	export PATH=$(GOPATH)/bin:$(PATH) && $(MAKE) -C $(GOPATH)/src/github.com/evdatsion/cusp install
+	go get -d -u go github.com/libonomy/cusp || echo "Workaround for go downloads."
+	cd $(GOPATH)/src/github.com/libonomy/cusp && git checkout "$(GIT_BRANCH)" && git pull
+	export PATH=$(GOPATH)/bin:$(PATH) && $(MAKE) -C $(GOPATH)/src/github.com/libonomy/cusp install
 	@echo "*** Built cusp"
 
 build-basecoind: git-branch gopath-setup
 	@echo "*** Building basecoind from cusp-sdk"
-	go get -d -u github.com/evdatsion/cusp-sdk/examples/basecoin/cmd/basecoind
-	cd $(GOPATH)/src/github.com/evdatsion/cusp-sdk && git checkout "$(GIT_BRANCH)" && git pull
-	export PATH=$(GOPATH)/bin:$(PATH) && $(MAKE) -C $(GOPATH)/src/github.com/evdatsion/cusp-sdk tools build
-	cp $(GOPATH)/src/github.com/evdatsion/cusp-sdk/build/basecoind $(GOPATH)/bin/basecoind
+	go get -d -u github.com/libonomy/cusp-sdk/examples/basecoin/cmd/basecoind
+	cd $(GOPATH)/src/github.com/libonomy/cusp-sdk && git checkout "$(GIT_BRANCH)" && git pull
+	export PATH=$(GOPATH)/bin:$(PATH) && $(MAKE) -C $(GOPATH)/src/github.com/libonomy/cusp-sdk tools build
+	cp $(GOPATH)/src/github.com/libonomy/cusp-sdk/build/basecoind $(GOPATH)/bin/basecoind
 	@echo "*** Built basecoind from cusp-sdk"
 
 ###
@@ -116,8 +116,8 @@ prepare-files = rm -rf $(build_folder) && mkdir -p $(build_folder) && cp -r ./$(
 
 prepare-aphelion =
 prepare-ethermint = mkdir -p $(build_folder)/etc/ethermint && \
-	cp $(GOPATH)/src/github.com/evdatsion/ethermint/setup/genesis.json $(build_folder)/etc/ethermint/genesis.json && \
-	cp -r $(GOPATH)/src/github.com/evdatsion/ethermint/setup/keystore $(build_folder)/etc/ethermint
+	cp $(GOPATH)/src/github.com/libonomy/ethermint/setup/genesis.json $(build_folder)/etc/ethermint/genesis.json && \
+	cp -r $(GOPATH)/src/github.com/libonomy/ethermint/setup/keystore $(build_folder)/etc/ethermint
 prepare-cusp =
 prepare-basecoind = cp $(GOPATH)/bin/basecoind $(build_folder)/usr/bin
 
@@ -278,8 +278,8 @@ clean: mostlyclean
 
 distclean: clean
 	rm -rf $(GOPATH)/src/github.com/libonomy/aphelion-staking
-	rm -rf $(GOPATH)/src/github.com/evdatsion/cusp-sdk
-	rm -rf $(GOPATH)/src/github.com/evdatsion/ethermint 
+	rm -rf $(GOPATH)/src/github.com/libonomy/cusp-sdk
+	rm -rf $(GOPATH)/src/github.com/libonomy/ethermint 
 	rm -rf $(GOPATH)/bin/aphelion
 	rm -rf $(GOPATH)/bin/basecoind
 	rm -rf $(GOPATH)/bin/ethermint

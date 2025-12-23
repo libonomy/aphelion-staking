@@ -12,7 +12,7 @@ import (
 	"io"
 	"os"
 
-	amino "github.com/evdatsion/go-amino"
+	amino "github.com/libonomy/go-amino"
 	cs "github.com/libonomy/aphelion-staking/consensus"
 	"github.com/libonomy/aphelion-staking/types"
 )

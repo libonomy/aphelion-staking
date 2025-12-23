@@ -8,7 +8,7 @@ import "github.com/libonomy/aphelion-staking/crypto/merkle/merkle.proto";
 import "github.com/libonomy/aphelion-staking/libs/common/types.proto";
 import "google/protobuf/timestamp.proto";
 
-// This file is copied from http://github.com/evdatsion/abci
+// This file is copied from http://github.com/libonomy/abci
 // NOTE: When using custom types, mind the warnings.
 // https://github.com/gogo/protobuf/blob/master/custom_types.md#warnings-and-issues
 

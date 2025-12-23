@@ -10,7 +10,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	amino "github.com/evdatsion/go-amino"
+	amino "github.com/libonomy/go-amino"
 	auto "github.com/libonomy/aphelion-staking/libs/autofile"
 	cmn "github.com/libonomy/aphelion-staking/libs/common"
 	"github.com/libonomy/aphelion-staking/libs/log"

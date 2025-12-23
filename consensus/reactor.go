@@ -8,7 +8,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	amino "github.com/evdatsion/go-amino"
+	amino "github.com/libonomy/go-amino"
 	cstypes "github.com/libonomy/aphelion-staking/consensus/types"
 	cmn "github.com/libonomy/aphelion-staking/libs/common"
 	tmevents "github.com/libonomy/aphelion-staking/libs/events"

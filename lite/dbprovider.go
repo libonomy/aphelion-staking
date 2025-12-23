@@ -5,12 +5,12 @@ import (
 	"regexp"
 	"strconv"
 
-	amino "github.com/evdatsion/go-amino"
+	amino "github.com/libonomy/go-amino"
 	cryptoAmino "github.com/libonomy/aphelion-staking/crypto/encoding/amino"
 	log "github.com/libonomy/aphelion-staking/libs/log"
 	lerr "github.com/libonomy/aphelion-staking/lite/errors"
 	"github.com/libonomy/aphelion-staking/types"
-	dbm "github.com/evdatsion/tm-db"
+	dbm "github.com/libonomy/tm-db"
 )
 
 var _ PersistentProvider = (*DBProvider)(nil)

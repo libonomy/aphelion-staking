@@ -10,7 +10,7 @@ import (
 	"github.com/libonomy/aphelion-staking/abci/types"
 	cmn "github.com/libonomy/aphelion-staking/libs/common"
 	"github.com/libonomy/aphelion-staking/version"
-	dbm "github.com/evdatsion/tm-db"
+	dbm "github.com/libonomy/tm-db"
 )
 
 var (

@@ -15,7 +15,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	amino "github.com/evdatsion/go-amino"
+	amino "github.com/libonomy/go-amino"
 
 	"github.com/libonomy/aphelion-staking/abci/example/counter"
 	"github.com/libonomy/aphelion-staking/abci/example/kvstore"

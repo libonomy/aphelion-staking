@@ -12,7 +12,7 @@ import (
 
 	secp256k1 "github.com/btcsuite/btcd/btcec"
 
-	amino "github.com/evdatsion/go-amino"
+	amino "github.com/libonomy/go-amino"
 
 	"github.com/libonomy/aphelion-staking/crypto"
 )

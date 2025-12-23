@@ -14,7 +14,7 @@ import (
 	"github.com/libonomy/aphelion-staking/crypto/ed25519"
 	cmn "github.com/libonomy/aphelion-staking/libs/common"
 	sm "github.com/libonomy/aphelion-staking/state"
-	dbm "github.com/evdatsion/tm-db"
+	dbm "github.com/libonomy/tm-db"
 
 	cfg "github.com/libonomy/aphelion-staking/config"
 	"github.com/libonomy/aphelion-staking/types"

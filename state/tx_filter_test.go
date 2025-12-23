@@ -10,7 +10,7 @@ import (
 	cmn "github.com/libonomy/aphelion-staking/libs/common"
 	sm "github.com/libonomy/aphelion-staking/state"
 	"github.com/libonomy/aphelion-staking/types"
-	dbm "github.com/evdatsion/tm-db"
+	dbm "github.com/libonomy/tm-db"
 )
 
 func TestTxFilter(t *testing.T) {

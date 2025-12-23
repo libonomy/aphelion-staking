@@ -1,1 +1,0 @@
-See the [consensus spec](https://github.com/libonomy/aphelion-staking/tree/master/docs/spec/consensus) and the [reactor consensus spec](https://github.com/libonomy/aphelion-staking/tree/master/docs/spec/reactors/consensus) for more information.

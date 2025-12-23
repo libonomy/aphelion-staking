@@ -1,7 +1,7 @@
 package monitor
 
 import (
-	amino "github.com/evdatsion/go-amino"
+	amino "github.com/libonomy/go-amino"
 	ctypes "github.com/libonomy/aphelion-staking/rpc/core/types"
 )
 

@@ -12,8 +12,8 @@ import (
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	db "github.com/evdatsion/tm-db"
-	dbm "github.com/evdatsion/tm-db"
+	db "github.com/libonomy/tm-db"
+	dbm "github.com/libonomy/tm-db"
 
 	cfg "github.com/libonomy/aphelion-staking/config"
 	"github.com/libonomy/aphelion-staking/libs/log"

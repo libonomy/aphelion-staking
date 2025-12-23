@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	amino "github.com/evdatsion/go-amino"
+	amino "github.com/libonomy/go-amino"
 
 	abci "github.com/libonomy/aphelion-staking/abci/types"
 	"github.com/libonomy/aphelion-staking/crypto/merkle"

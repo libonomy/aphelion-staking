@@ -1,7 +1,7 @@
 package client
 
 import (
-	amino "github.com/evdatsion/go-amino"
+	amino "github.com/libonomy/go-amino"
 	"github.com/libonomy/aphelion-staking/types"
 )
 

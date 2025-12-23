@@ -10,7 +10,7 @@ import (
 	"time"
 
 	cmn "github.com/libonomy/aphelion-staking/libs/common"
-	dbm "github.com/evdatsion/tm-db"
+	dbm "github.com/libonomy/tm-db"
 )
 
 const defaultStorePeriodicSaveInterval = 1 * time.Minute

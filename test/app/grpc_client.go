@@ -7,7 +7,7 @@ import (
 
 	"context"
 
-	amino "github.com/evdatsion/go-amino"
+	amino "github.com/libonomy/go-amino"
 	core_grpc "github.com/libonomy/aphelion-staking/rpc/grpc"
 )
 

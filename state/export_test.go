@@ -3,7 +3,7 @@ package state
 import (
 	abci "github.com/libonomy/aphelion-staking/abci/types"
 	"github.com/libonomy/aphelion-staking/types"
-	dbm "github.com/evdatsion/tm-db"
+	dbm "github.com/libonomy/tm-db"
 )
 
 //

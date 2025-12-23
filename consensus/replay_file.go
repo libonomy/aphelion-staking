@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	dbm "github.com/evdatsion/tm-db"
+	dbm "github.com/libonomy/tm-db"
 
 	cfg "github.com/libonomy/aphelion-staking/config"
 	cmn "github.com/libonomy/aphelion-staking/libs/common"

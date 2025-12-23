@@ -16,7 +16,7 @@ GO_TARBALL_URL="https://dl.google.com/go/${GO_TARBALL}"
 
 DEFAULT_SIGN_COMMAND='gpg --detach-sign'
 DEFAULT_APHELION_SIGS=${APHELION_SIGS:-'aphelion.sigs'}
-DEFAULT_GITIAN_REPO='https://github.com/evdatsion/gitian-builder'
+DEFAULT_GITIAN_REPO='https://github.com/libonomy/gitian-builder'
 DEFAULT_GBUILD_FLAGS=''
 DEFAULT_SIGS_REPO='https://github.com/libonomy/aphelion-staking.sigs'
 

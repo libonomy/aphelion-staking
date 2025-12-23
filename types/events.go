@@ -3,7 +3,7 @@ package types
 import (
 	"fmt"
 
-	amino "github.com/evdatsion/go-amino"
+	amino "github.com/libonomy/go-amino"
 	abci "github.com/libonomy/aphelion-staking/abci/types"
 	tmpubsub "github.com/libonomy/aphelion-staking/libs/pubsub"
 	tmquery "github.com/libonomy/aphelion-staking/libs/pubsub/query"
